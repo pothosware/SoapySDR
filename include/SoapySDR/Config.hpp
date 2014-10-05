@@ -49,5 +49,3 @@
 #endif // SOAPY_SDR_DLL
 
 #include <ciso646>
-
-#define SOAPY_SDR_BOOST

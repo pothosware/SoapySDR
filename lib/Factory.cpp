@@ -1,12 +1,7 @@
 // Copyright (c) 2014-2014 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
-#include <SoapySDR/Interface.hpp>
-#ifdef SOAPY_SDR_BOOST
-#include <boost/thread/mutex.hpp>
-#else
-#include <mutex>
-#endif
+#include <SoapySDR/Device.hpp>
 
 static std::string getModulesPath(void)
 {
@@ -28,6 +23,7 @@ static void loadModules(void)
 
 #else
 #include <dlfcn.h>
+#include <glob.h>
 
 static void loadModules(void)
 {
@@ -36,18 +32,10 @@ static void loadModules(void)
 
 #endif
 
-SoapySDR::SDRDevice::Sptr SoapySDR::SDRDevice::make(const std::string &args)
+SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args)
 {
     //load the modules on the first call to make
     {
-        #ifdef SOAPY_SDR_BOOST
-        static boost::mutex mutex;
-        boost::mutex::scoped_lock lock(mutex);
-        #else
-        static std::mutex mutex;
-        std::lock_guard<std::mutex> lock(mutex);
-        #endif
-
         static bool loaded = false;
         if (not loaded)
         {

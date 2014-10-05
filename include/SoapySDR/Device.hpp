@@ -10,57 +10,44 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Types.hpp>
 #include <vector>
-#include <map>
 #include <string>
 #include <complex>
-#include <cstddef>
-#ifdef SOAPY_SDR_BOOST
-#include <boost/shared_ptr.hpp>
-#else
-#include <memory> //shared ptr
-#endif
+#include <cstddef> //size_t
 
 namespace SoapySDR
 {
 
-//! Typedef for a dictionary of key-value string arguments
-typedef std::map<std::string, std::string> Kwargs;
-
-//! Typedef for a dictionary of string to numeric values
-typedef std::map<std::string, double> NumericDict;
-
-//! Typedef for a list of min/max range pairs
-typedef std::vector<std::pair<double, double> > RangeList;
-
-enum Direction
-{
-    TX, RX
-};
-
+/*!
+ * Abstraction for an SDR tranceiver device - configuration and streaming.
+ */
 class SOAPY_SDR_API Device
 {
 public:
 
-    #ifdef SOAPY_SDR_BOOST
-    typedef boost::shared_ptr<Device> Sptr;
-    #else
-    typedef std::shared_ptr<Device> Sptr;
-    #endif
-
     /*!
-     * Find a list of available devices.
+     * Enumerate a list of available devices on the system.
      * \param args device construction key/value argument filters
      * \return a list of arguments strings, each unique to a device
      */
-    static std::vector<std::string> find(const std::string &args);
+    static std::vector<Kwargs> enumerate(const Kwargs &args);
 
     /*!
      * Make a new Device object given device construction args.
+     * The device pointer will be stored in a table so subsequent calls
+     * with the same arguments will produce the same device.
+     * For every call to make, there should be a matched call to unmake.
      * \param args device construction key/value argument markup
      * \return a pointer to a new Device object
      */
-    static Sptr make(const std::string &args);
+    static Device *make(const Kwargs &args);
+
+    /*!
+     * Unmake or release a device object handle.
+     * \param device a pointer to a device object
+     */
+    static void unmake(const Device *device);
 
     /*******************************************************************
      * Channels API
