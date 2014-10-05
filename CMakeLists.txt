@@ -18,7 +18,7 @@ install(
 # Build the library
 ########################################################################
 set(SOAPY_SDR_SOURCES
-    lib/Interface.cpp
+    lib/Device.cpp
     lib/Factory.cpp
     lib/Registry.cpp
 )

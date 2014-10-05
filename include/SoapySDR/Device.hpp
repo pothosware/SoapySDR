@@ -1,5 +1,5 @@
 ///
-/// \file SoapySDR/Interface.hpp
+/// \file SoapySDR/Device.hpp
 ///
 /// Interface definition for Soapy SDR devices.
 ///
@@ -14,6 +14,7 @@
 #include <map>
 #include <string>
 #include <complex>
+#include <cstddef>
 #ifdef SOAPY_SDR_BOOST
 #include <boost/shared_ptr.hpp>
 #else
@@ -32,20 +33,32 @@ typedef std::map<std::string, double> NumericDict;
 //! Typedef for a list of min/max range pairs
 typedef std::vector<std::pair<double, double> > RangeList;
 
-class SOAPY_SDR_API SDRDevice
+enum Direction
+{
+    TX, RX
+};
+
+class SOAPY_SDR_API Device
 {
 public:
 
     #ifdef SOAPY_SDR_BOOST
-    typedef boost::shared_ptr<SDRDevice> Sptr;
+    typedef boost::shared_ptr<Device> Sptr;
     #else
-    typedef std::shared_ptr<SDRDevice> Sptr;
+    typedef std::shared_ptr<Device> Sptr;
     #endif
 
     /*!
-     * Make a new SDRDevice object given device construction args.
+     * Find a list of available devices.
+     * \param args device construction key/value argument filters
+     * \return a list of arguments strings, each unique to a device
+     */
+    static std::vector<std::string> find(const std::string &args);
+
+    /*!
+     * Make a new Device object given device construction args.
      * \param args device construction key/value argument markup
-     * \return a pointer to a new SDRDevice object
+     * \return a pointer to a new Device object
      */
     static Sptr make(const std::string &args);
 
@@ -54,14 +67,15 @@ public:
      ******************************************************************/
 
     /*!
-     * Get a list of names for all of the receive channels.
+     * Get a number of channels given the streaming direction
      */
-    virtual std::vector<std::string> getRxChannels(void) const;
+    virtual size_t getNumChannels(const Direction dir) const;
 
-    /*!
-     * Get a list of names for all of the transmit channels.
-     */
-    virtual std::vector<std::string> getTxChannels(void) const;
+    /*******************************************************************
+     * Stream API
+     ******************************************************************/
+
+    //TODO
 
     /*******************************************************************
      * Antenna API
@@ -69,24 +83,27 @@ public:
 
     /*!
      * Get a list of available antennas to select on a given chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of available antenna names
      */
-    virtual std::vector<std::string> listAntennas(const std::string &channel) const;
+    virtual std::vector<std::string> listAntennas(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the selected antenna on a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param name the name of an available antenna
      */
-    virtual void setAntenna(const std::string &channel, const std::string &name);
+    virtual void setAntenna(const Direction dir, const size_t channel, const std::string &name);
 
     /*!
      * Get the selected antenna on a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the name of an available antenna
      */
-    virtual std::string getAntenna(const std::string &channel) const;
+    virtual std::string getAntenna(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Frontend corrections API
@@ -94,31 +111,35 @@ public:
 
     /*!
      * Set the frontend DC offset correction.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param offset the relative correction (1.0 max)
      */
-    virtual void setDCOffset(const std::string &channel, const std::complex<double> &offset);
+    virtual void setDCOffset(const Direction dir, const size_t channel, const std::complex<double> &offset);
 
     /*!
      * Get the frontend DC offset correction.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the relative correction (1.0 max)
      */
-    virtual std::complex<double> getDCOffset(const std::string &channel) const;
+    virtual std::complex<double> getDCOffset(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the frontend IQ balance correction.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param balance the relative correction (1.0 max)
      */
-    virtual void setIQBalance(const std::string &channel, const std::complex<double> &balance);
+    virtual void setIQBalance(const Direction dir, const size_t channel, const std::complex<double> &balance);
 
     /*!
      * Get the frontend IQ balance correction.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the relative correction (1.0 max)
      */
-    virtual std::complex<double> getIQBalance(const std::string &channel) const;
+    virtual std::complex<double> getIQBalance(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Gain API
@@ -126,61 +147,69 @@ public:
 
     /*!
      * List available amplification elements.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel
      */
-    virtual std::vector<std::string> listGains(const std::string &channel) const;
+    virtual std::vector<std::string> listGains(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the automatic gain mode on the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param mode true for automatic gain setting
      */
-    virtual void setGainMode(const std::string &channel, const bool mode);
+    virtual void setGainMode(const Direction dir, const size_t channel, const bool mode);
 
      /*!
      * Get the automatic gain mode on the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return true for automatic gain setting
      */
-    virtual bool getGainMode(const std::string &channel) const;
+    virtual bool getGainMode(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the value of a amplification element in a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param name the name of an amplification element
      * \param value the new amplification value in dB
      */
-    virtual void setGain(const std::string &channel, const std::string &name, const double value);
+    virtual void setGain(const Direction dir, const size_t channel, const std::string &name, const double value);
 
     /*!
      * Set the value of multiple amplification elements in a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param values a dictionary of element names to values
      */
-    virtual void setGains(const std::string &channel, const NumericDict &values);
+    virtual void setGains(const Direction dir, const size_t channel, const NumericDict &values);
 
     /*!
      * Get the value of an individual amplification element in a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param name the name of an amplification element
      * \return the value of the gain in dB
      */
-    virtual double getGainValue(const std::string &channel, const std::string &name) const;
+    virtual double getGainValue(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*!
      * Get the valus of all amplification elements in a chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a dictionary of element names to values
      */
-    virtual NumericDict getGainValues(const std::string &channel) const;
+    virtual NumericDict getGainValues(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the range of possible gain values.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param name the name of an amplification element
      * \return a list of gain ranges in dB
      */
-    virtual RangeList getGainRange(const std::string &channel, const std::string &name) const;
+    virtual RangeList getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*******************************************************************
      * Frequency API
@@ -188,40 +217,45 @@ public:
 
     /*!
      * Set the center frequency of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param frequency the center frequency in Hz
      * \param args optional tuner arguments
      */
-    virtual void setFrequency(const std::string &channel, const double frequency, const Kwargs &args = Kwargs());
+    virtual void setFrequency(const Direction dir, const size_t channel, const double frequency, const Kwargs &args = Kwargs());
 
     /*!
      * Set the center frequency of the chain with control over individual components.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param values a dictionary of component names to frequency values in Hz
      * \param args optional tuner arguments
      */
-    virtual void setFrequency(const std::string &channel, const NumericDict &values, const Kwargs &args = Kwargs());
+    virtual void setFrequency(const Direction dir, const size_t channel, const NumericDict &values, const Kwargs &args = Kwargs());
 
     /*!
      * Get the center frequency of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the center frequency in Hz
      */
-    virtual double getFrequency(const std::string &channel) const;
+    virtual double getFrequency(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the frequencies of various elements in the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a dictionary of tunable elements to frequencies in Hz
      */
-    virtual NumericDict getFrequencyComponents(const std::string &channel) const;
+    virtual NumericDict getFrequencyComponents(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the range of possible frequency values.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of frequency ranges in Hz
      */
-    virtual RangeList getFrequencyRange(const std::string &channel) const;
+    virtual RangeList getFrequencyRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Sample Rate API
@@ -229,45 +263,51 @@ public:
 
     /*!
      * Set the baseband sample rate of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param rate the sample rate in samples per second
      */
-    virtual void setSampleRate(const std::string &channel, const double rate);
+    virtual void setSampleRate(const Direction dir, const size_t channel, const double rate);
 
     /*!
      * Get the baseband sample rate of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the sample rate in samples per second
      */
-    virtual double getSampleRate(const std::string &channel) const;
+    virtual double getSampleRate(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the range of possible baseband sample rates.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible rates in samples per second
      */
-    virtual RangeList getSampleRateRange(const std::string &channel) const;
+    virtual RangeList getSampleRateRange(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the baseband filter width of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param bw the baseband filter width in Hz
      */
-    virtual void setBandwidth(const std::string &channel, const double bw);
+    virtual void setBandwidth(const Direction dir, const size_t channel, const double bw);
 
     /*!
      * Get the baseband filter width of the chain.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the baseband filter width in Hz
      */
-    virtual double getBandwidth(const std::string &channel) const;
+    virtual double getBandwidth(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the range of possible baseband filter widths.
+     * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible bandwidths in Hz
      */
-    virtual RangeList getBandwidthRange(const std::string &channel) const;
+    virtual RangeList getBandwidthRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Clocking API
