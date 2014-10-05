@@ -19,6 +19,18 @@
 namespace SoapySDR
 {
 
+//! Indicates that read or write had a timeout
+static const int STREAM_FLAG_TIMEOUT = (1 << 0);
+
+//! Indicates a end of burst for transmit or receive
+static const int STREAM_FLAG_END_BURST = (1 << 1);
+
+//! Indicates that the time stamp is valid
+static const int STREAM_FLAG_HAS_TIME = (1 << 2);
+
+//! Indicates an overflow error condition
+static const int STREAM_FLAG_OVERFLOW = (1 << 3);
+
 /*!
  * Abstraction for an SDR tranceiver device - configuration and streaming.
  */
@@ -65,7 +77,50 @@ public:
      * Stream API
      ******************************************************************/
 
-    //TODO
+    /*!
+     * Initialize a stream given a list of channels and stream arguments.
+     * \param dir the channel direction RX or TX
+     * \param channels a list of channels for empty for automatic
+     * \param args stream args or empty for defaults.
+     * \return an opaque pointer to a stream handle
+     */
+    virtual void *setupStream(const Direction dir, const std::vector<size_t> &channels = std::vector<size_t>(), const Kwargs &args = Kwargs());
+
+    /*!
+     * Close an open stream created by setupStream
+     * \param handle the opaque pointer to a stream handle
+     */
+    virtual void closeStream(void *handle);
+
+    /*!
+     * Read elements from a stream for reception.
+     * This is a multi-channel call, and buffs should be an array of void *,
+     * where each pointer will be filled with data from a different channel.
+     *
+     * \param handle the opaque pointer to a stream handle
+     * \param buffs an array of void* buffers num chans in size
+     * \param numElems the number of elements in each buffer
+     * \param flags optional flag indicators about the result
+     * \param timeNs the buffer's timestamp in nanoseconds
+     * \param timeoutUs the timeout in microseconds
+     * \return the number of elements read per buffer or error
+     */
+    virtual int readStream(void *handle, const void **buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs = 100000);
+
+    /*!
+     * Write elements to a stream for transmission.
+     * This is a multi-channel call, and buffs should be an array of void *,
+     * where each pointer will be filled with data for a different channel.
+     *
+     * \param handle the opaque pointer to a stream handle
+     * \param buffs an array of void* buffers num chans in size
+     * \param numElems the number of elements in each buffer
+     * \param flags optional input flags and output flags
+     * \param timeNs the buffer's timestamp in nanoseconds
+     * \param timeoutUs the timeout in microseconds
+     * \return the number of elements written per buffer or error
+     */
+    virtual int writeStream(void *handle, const void **buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs = 100000);
 
     /*******************************************************************
      * Antenna API
