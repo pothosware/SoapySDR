@@ -17,7 +17,7 @@
 /***********************************************************************
  * root installation path
  **********************************************************************/
-static std::string getRootPath(void)
+std::string SoapySDR::Registry::getRootPath(void)
 {
     const char *rootPathEnv = getenv("SOAPY_SDR_ROOT");
     if (rootPathEnv != NULL) return rootPathEnv;
@@ -25,15 +25,23 @@ static std::string getRootPath(void)
 }
 
 /***********************************************************************
+ * api version info
+ **********************************************************************/
+std::string SoapySDR::Registry::getAPIVersion(void)
+{
+    return "@SOAPY_SDR_VERSION@";
+}
+
+/***********************************************************************
  * list modules
  **********************************************************************/
-static std::vector<std::string> listModules(void)
+std::vector<std::string> SoapySDR::Registry::listModules(void)
 {
     std::vector<std::string> modulePaths;
 
 #ifdef _MSC_VER
 
-    const std::string pattern = getRootPath() + "\\lib@LIB_SUFFIX@\\SoapySDR\\modules\\*.*";
+    const std::string pattern = SoapySDR::Registry::getRootPath() + "\\lib@LIB_SUFFIX@\\SoapySDR\\modules\\*.*";
 
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
@@ -54,7 +62,7 @@ static std::vector<std::string> listModules(void)
 
 #else
 
-    const std::string pattern = getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/*.*";
+    const std::string pattern = SoapySDR::Registry::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/*.*";
     glob_t globResults;
 
     const int ret = glob(pattern.c_str(), 0/*no flags*/, NULL, &globResults);
@@ -94,7 +102,7 @@ void SoapySDR::Registry::loadModules(void)
     if (loaded) return;
     loaded = true;
 
-    const std::vector<std::string> paths = listModules();
+    const std::vector<std::string> paths = Registry::listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
         loadModule(paths[i]);
