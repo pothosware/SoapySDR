@@ -169,6 +169,31 @@ function(GrOsmoSDRModule)
         list(APPEND OSMO_MODULE_SOURCES ${glob_srcs})
     endif()
 
+    set(HAS_SINK 0)
+    set(HAS_SOURCE 0)
+    unset(LOCAL_INCLUDES)
+    file(GLOB glob_hdrs "${OSMO_MODULE_SOURCE_DIR}/*.h")
+    foreach(hdr ${glob_hdrs})
+        set(LOCAL_INCLUDES "#include \"${hdr}\"\n${LOCAL_INCLUDES}")
+        string(FIND "${hdr}" "source" source_pos)
+        string(FIND "${hdr}" "sink" sink_pos)
+        if ("${source_pos}" STREQUAL "-1")
+        else()
+            set(HAS_SOURCE 1)
+        endif()
+        if ("${sink_pos}" STREQUAL "-1")
+        else()
+            set(HAS_SINK 1)
+        endif()
+    endforeach(hdr)
+
+    set(TARGET ${OSMO_MODULE_TARGET})
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/compat/GrOsmoSDRModReg.in.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/${OSMO_MODULE_TARGET}ModReg.cpp
+    @ONLY)
+    list(APPEND OSMO_MODULE_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${OSMO_MODULE_TARGET}ModReg.cpp)
+
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
     add_library(${OSMO_MODULE_TARGET} MODULE ${OSMO_MODULE_SOURCES})
     target_link_libraries(${OSMO_MODULE_TARGET} osmosdr SoapySDR ${OSMO_MODULE_LIBRARIES} ${Boost_LIBRARIES})

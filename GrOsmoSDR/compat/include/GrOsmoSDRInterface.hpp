@@ -18,11 +18,19 @@
  */
 
 #pragma once
+#include <SoapySDR/Device.hpp>
+#include <boost/shared_ptr.hpp>
 #include "sink_iface.h"
 #include "source_iface.h"
 
-class GrOsmoSDRInterface
+class GrOsmoSDRInterface : public SoapySDR::Device
 {
 public:
-    
+    GrOsmoSDRInterface(
+        boost::shared_ptr<source_iface> source,
+        boost::shared_ptr<sink_iface> sink
+    )
+    {
+        
+    }
 };
