@@ -3,6 +3,11 @@
 
 #include <SoapySDR/Device.hpp>
 
+SoapySDR::Device::~Device(void)
+{
+    return;
+}
+
 size_t SoapySDR::Device::getNumChannels(const Direction) const
 {
     return 0;

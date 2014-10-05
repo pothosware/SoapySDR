@@ -26,6 +26,9 @@ class SOAPY_SDR_API Device
 {
 public:
 
+    //! virtual destructor for inheritance
+    virtual ~Device(void);
+
     /*!
      * Enumerate a list of available devices on the system.
      * \param args device construction key/value argument filters
@@ -47,7 +50,7 @@ public:
      * Unmake or release a device object handle.
      * \param device a pointer to a device object
      */
-    static void unmake(const Device *device);
+    static void unmake(Device *device);
 
     /*******************************************************************
      * Channels API

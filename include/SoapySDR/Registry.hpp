@@ -12,6 +12,8 @@
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.hpp>
 #include <vector>
+#include <string>
+#include <map>
 
 namespace SoapySDR
 {
@@ -39,6 +41,25 @@ public:
      * \param make the make function returns device sptr
      */
     Registry(const std::string &name, const FindFunction &find, const MakeFunction &make);
+
+    /*!
+     * Load the support modules installed on this system.
+     * This call will only actually perform the load once.
+     * Subsequent calls are a NOP.
+     */
+    static void loadModules(void);
+
+    /*!
+     * List all loaded find functions.
+     * \return a dictionary of module name to find function
+     */
+    static std::map<std::string, FindFunction> listFindFunctions(void);
+
+    /*!
+     * List all loaded make functions.
+     * \return a dictionary of module name to make function
+     */
+    static std::map<std::string, MakeFunction> listMakeFunctions(void);
 };
 
 }

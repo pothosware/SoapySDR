@@ -1,7 +1,7 @@
 // Copyright (c) 2014-2014 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
-#include <SoapySDR/Config.hpp>
+#include <SoapySDR/Registry.hpp>
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
@@ -72,19 +72,31 @@ static std::vector<std::string> listModules(void)
 }
 
 /***********************************************************************
- * load modules
+ * load module
  **********************************************************************/
-void loadModules(void)
+static void loadModule(const std::string &path)
 {
+#ifdef _MSC_VER
+    HMODULE handle = LoadLibrary(path.c_str());
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed" << std::endl;
+#else
+    void *handle = dlopen(path.c_str(), RTLD_LAZY);
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed" << std::endl;
+#endif
+}
+
+/***********************************************************************
+ * load modules API call
+ **********************************************************************/
+void SoapySDR::Registry::loadModules(void)
+{
+    static bool loaded = false;
+    if (loaded) return;
+    loaded = true;
+
     const std::vector<std::string> paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
-#ifdef _MSC_VER
-        HMODULE handle = LoadLibrary(paths[i].c_str());
-        if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << paths[i] << ") failed" << std::endl;
-#else
-        void *handle = dlopen(paths[i].c_str(), RTLD_LAZY);
-        if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << paths[i] << ") failed" << std::endl;
-#endif
+        loadModule(paths[i]);
     }
 }

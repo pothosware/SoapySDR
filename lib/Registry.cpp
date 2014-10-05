@@ -23,3 +23,23 @@ SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, 
     entry.make = make;
     getFunctionTable()[name] = entry;
 }
+
+std::map<std::string, SoapySDR::Registry::FindFunction> SoapySDR::Registry::listFindFunctions(void)
+{
+    std::map<std::string, FindFunction> functions;
+    for (std::map<std::string, FunctionsEntry>::iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    {
+        functions[it->first] = it->second.find;
+    }
+    return functions;
+}
+
+std::map<std::string, SoapySDR::Registry::MakeFunction> SoapySDR::Registry::listMakeFunctions(void)
+{
+    std::map<std::string, MakeFunction> functions;
+    for (std::map<std::string, FunctionsEntry>::iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    {
+        functions[it->first] = it->second.make;
+    }
+    return functions;
+}
