@@ -1,7 +1,6 @@
 #pragma once
 #include <osmosdr/api.h>
 #include <gnuradio/basic_block.h>
-#include <gnuradio/io_signature.h>
 
 #define WORK_DONE -1
 

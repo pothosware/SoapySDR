@@ -126,10 +126,10 @@ set(osmosdr_srcs
     #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/sink_impl.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/ranges.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/device.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/io_signature.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/io_signature.cc
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/compat/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib)
 include_directories(${Boost_INCLUDES})
@@ -181,15 +181,25 @@ function(GrOsmoSDRModule)
 endfunction(GrOsmoSDRModule)
 
 ########################################################################
+# Setup BladeRF component
+########################################################################
+if(LIBBLADERF_FOUND)
+    include_directories(${LIBBLADERF_INCLUDE_DIRS})
+    GrOsmoSDRModule(
+        TARGET bladerf
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/bladerf
+        LIBRARIES ${LIBBLADERF_LIBRARIES}
+    )
+endif()
+
+########################################################################
 # Setup HackRF component
 ########################################################################
-include_directories(${LIBHACKRF_INCLUDE_DIRS})
 if(LIBHACKRF_FOUND)
+    include_directories(${LIBHACKRF_INCLUDE_DIRS})
     GrOsmoSDRModule(
         TARGET hackrf
-        SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/hackrf/hackrf_sink_c.cc
-            ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/hackrf/hackrf_source_c.cc
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/hackrf
         LIBRARIES ${LIBHACKRF_LIBRARIES}
     )
-endif(LIBHACKRF_FOUND)
+endif()
