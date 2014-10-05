@@ -1,0 +1,19 @@
+#ifndef CONFIG_H_IN
+#define CONFIG_H_IN
+
+#define GR_OSMOSDR_VERSION "@VERSION@"
+#define GR_OSMOSDR_LIBVER "@LIBVER@"
+
+#cmakedefine ENABLE_OSMOSDR
+#cmakedefine ENABLE_FCD
+#cmakedefine ENABLE_FILE
+#cmakedefine ENABLE_RTL
+#cmakedefine ENABLE_RTL_TCP
+#cmakedefine ENABLE_UHD
+#cmakedefine ENABLE_MIRI
+#cmakedefine ENABLE_HACKRF
+#cmakedefine ENABLE_BLADERF
+#cmakedefine ENABLE_RFSPACE
+#cmakedefine ENABLE_AIRSPY
+
+#endif // CONFIG_H_IN
