@@ -9,6 +9,15 @@ enable_testing()
 set(SOAPY_SDR_VERSION "0.1.0")
 
 ########################################################################
+# select the release build type by default to get optimization flags
+########################################################################
+if(NOT CMAKE_BUILD_TYPE)
+   set(CMAKE_BUILD_TYPE "Release")
+   message(STATUS "Build type not specified: defaulting to release.")
+endif(NOT CMAKE_BUILD_TYPE)
+set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
+
+########################################################################
 # Linux detection stuff
 ########################################################################
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -64,3 +73,8 @@ install(
 # Build library
 ########################################################################
 add_subdirectory(lib)
+
+########################################################################
+# Build in-tree modules
+########################################################################
+add_subdirectory(GrOsmoSDR)
