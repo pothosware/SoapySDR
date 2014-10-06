@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
     std::cout << "done" << std::endl;
 
     std::cout << "Available factories...";
-    std::map<std::string, SoapySDR::Registry::FindFunction> factories = SoapySDR::Registry::listFindFunctions();
-    for (std::map<std::string, SoapySDR::Registry::FindFunction>::iterator it = factories.begin(); it != factories.end(); ++it)
+    const SoapySDR::FindFunctions factories = SoapySDR::Registry::listFindFunctions();
+    for (SoapySDR::FindFunctions::const_iterator it = factories.begin(); it != factories.end(); ++it)
     {
         std::cout << it->first << ", ";
     }

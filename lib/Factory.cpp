@@ -6,16 +6,24 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4503) // 'identifier' : decorated name length exceeded, name was truncated
+#endif
 
-static std::map<SoapySDR::Kwargs, SoapySDR::Device *> &getDeviceTable(void)
+typedef std::map<SoapySDR::Kwargs, SoapySDR::Device *> DeviceTable;
+
+static DeviceTable &getDeviceTable(void)
 {
-    static std::map<SoapySDR::Kwargs, SoapySDR::Device *> table;
+    static DeviceTable table;
     return table;
 }
 
-static std::map<SoapySDR::Device *, size_t> &getDeviceCounts(void)
+typedef std::map<SoapySDR::Device *, size_t> DeviceCounts;
+
+static DeviceCounts &getDeviceCounts(void)
 {
-    static std::map<SoapySDR::Device *, size_t> table;
+    static DeviceCounts table;
     return table;
 }
 
@@ -23,8 +31,8 @@ std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
 {
     loadModules();
     std::vector<SoapySDR::Kwargs> results;
-    std::map<std::string, Registry::FindFunction> findFunctions = Registry::listFindFunctions();
-    for (std::map<std::string, Registry::FindFunction>::iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
+    const FindFunctions findFunctions = Registry::listFindFunctions();
+    for (FindFunctions::const_iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
     {
         if (args.count("module") != 0 and args.at("module") != it->first) continue;
         try
@@ -71,8 +79,8 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
         }
 
         //loop through make functions and call on module match
-        std::map<std::string, Registry::MakeFunction> makeFunctions = Registry::listMakeFunctions();
-        for (std::map<std::string, Registry::MakeFunction>::iterator it = makeFunctions.begin(); it != makeFunctions.end(); ++it)
+        MakeFunctions makeFunctions = Registry::listMakeFunctions();
+        for (MakeFunctions::const_iterator it = makeFunctions.begin(); it != makeFunctions.end(); ++it)
         {
             if (args.count("module") != 0 and args.at("module") != it->first) continue;
             device = it->second(args);
@@ -103,7 +111,7 @@ void SoapySDR::Device::unmake(Device *device)
         delete device;
 
         //cleanup the argument to device table
-        for (std::map<SoapySDR::Kwargs, SoapySDR::Device *>::iterator it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
+        for (DeviceTable::iterator it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
         {
             if (it->second == device)
             {
@@ -113,3 +121,7 @@ void SoapySDR::Device::unmake(Device *device)
         }
     }
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

@@ -113,7 +113,8 @@ set(Boost_ADDITIONAL_VERSIONS
 find_package(Boost COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 
 if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost required to build " ${CMAKE_PROJECT_NAME})
+    message(WARNING "Boost required to build -- ignoring: " ${CMAKE_PROJECT_NAME})
+    return()
 endif()
 
 ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)

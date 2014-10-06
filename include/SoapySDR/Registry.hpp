@@ -22,18 +22,24 @@ namespace SoapySDR
 //! forward declaration of device
 class Device;
 
+//! typedef for a device enumeration function
+typedef std::vector<Kwargs> (*FindFunction)(const Kwargs &);
+
+//! typedef for a device factory function
+typedef Device* (*MakeFunction)(const Kwargs &);
+
+//! typedef for a dictionary of find functions
+typedef std::map<std::string, FindFunction> FindFunctions;
+
+//! typedef for a dictionary of make functions
+typedef std::map<std::string, MakeFunction> MakeFunctions;
+
 /*!
  * A registry object loads device functions into the global registry.
  */
 class SOAPY_SDR_API Registry
 {
 public:
-
-    //! typedef for a device enumeration function
-    typedef std::vector<Kwargs> (*FindFunction)(const Kwargs &);
-
-    //! typedef for a device factory function
-    typedef Device* (*MakeFunction)(const Kwargs &);
 
     /*!
      * Register an SDR device find and make function.
@@ -48,13 +54,13 @@ public:
      * List all loaded find functions.
      * \return a dictionary of module name to find function
      */
-    static std::map<std::string, FindFunction> listFindFunctions(void);
+    static FindFunctions listFindFunctions(void);
 
     /*!
      * List all loaded make functions.
      * \return a dictionary of module name to make function
      */
-    static std::map<std::string, MakeFunction> listMakeFunctions(void);
+    static MakeFunctions listMakeFunctions(void);
 };
 
 }

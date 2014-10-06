@@ -3,16 +3,22 @@
 
 #include <SoapySDR/Registry.hpp>
 #include <iostream>
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4503) // 'identifier' : decorated name length exceeded, name was truncated
+#endif
 
 struct FunctionsEntry
 {
-    SoapySDR::Registry::FindFunction find;
-    SoapySDR::Registry::MakeFunction make;
+    SoapySDR::FindFunction find;
+    SoapySDR::MakeFunction make;
 };
 
-static std::map<std::string, FunctionsEntry> &getFunctionTable(void)
+typedef std::map<std::string, FunctionsEntry> FunctionTable;
+
+static FunctionTable &getFunctionTable(void)
 {
-    static std::map<std::string, FunctionsEntry> table;
+    static FunctionTable table;
     return table;
 }
 
@@ -32,22 +38,26 @@ SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, 
     getFunctionTable()[name] = entry;
 }
 
-std::map<std::string, SoapySDR::Registry::FindFunction> SoapySDR::Registry::listFindFunctions(void)
+SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 {
-    std::map<std::string, FindFunction> functions;
-    for (std::map<std::string, FunctionsEntry>::iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    FindFunctions functions;
+    for (FunctionTable::const_iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
     {
         functions[it->first] = it->second.find;
     }
     return functions;
 }
 
-std::map<std::string, SoapySDR::Registry::MakeFunction> SoapySDR::Registry::listMakeFunctions(void)
+SoapySDR::MakeFunctions SoapySDR::Registry::listMakeFunctions(void)
 {
-    std::map<std::string, MakeFunction> functions;
-    for (std::map<std::string, FunctionsEntry>::iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    MakeFunctions functions;
+    for (FunctionTable::const_iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
     {
         functions[it->first] = it->second.make;
     }
     return functions;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

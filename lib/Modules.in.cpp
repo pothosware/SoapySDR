@@ -17,10 +17,27 @@
 /***********************************************************************
  * root installation path
  **********************************************************************/
+std::string getEnvImpl(const char *name)
+{
+    #ifdef _MSC_VER
+    const DWORD len = GetEnvironmentVariableA(name, 0, 0);
+    if (len == 0) return "";
+    char* buffer = new char[len];
+    GetEnvironmentVariableA(name, buffer, len);
+    std::string result(buffer);
+    delete [] buffer;
+    return result;
+    #else
+    const char *result = getenv(name);
+    if (result != NULL) return result;
+    #endif
+    return "";
+}
+
 std::string SoapySDR::getRootPath(void)
 {
-    const char *rootPathEnv = getenv("SOAPY_SDR_ROOT");
-    if (rootPathEnv != NULL) return rootPathEnv;
+    const std::string rootPathEnv = getEnvImpl("SOAPY_SDR_ROOT");
+    if (not rootPathEnv.empty()) return rootPathEnv;
     return "@CMAKE_INSTALL_PREFIX@";
 }
 
