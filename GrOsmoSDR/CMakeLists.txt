@@ -133,7 +133,7 @@ set(osmosdr_srcs
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/compat/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib)
-include_directories(${Boost_INCLUDES})
+include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(osmosdr SHARED ${osmosdr_srcs})
 target_link_libraries(osmosdr ${Boost_LIBRARIES})
@@ -195,13 +195,12 @@ function(GrOsmoSDRModule)
     @ONLY)
     list(APPEND OSMO_MODULE_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${OSMO_MODULE_TARGET}ModReg.cpp)
 
+    include(SoapySDRUtil)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
-    add_library(${OSMO_MODULE_TARGET} MODULE ${OSMO_MODULE_SOURCES})
-    target_link_libraries(${OSMO_MODULE_TARGET} osmosdr SoapySDR ${OSMO_MODULE_LIBRARIES} ${Boost_LIBRARIES})
-    set_target_properties(${OSMO_MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
-    install(
-        TARGETS ${OSMO_MODULE_TARGET}
-        DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules/
+    SOAPY_SDR_MODULE_UTIL(
+        TARGET ${OSMO_MODULE_TARGET}
+        SOURCES ${OSMO_MODULE_SOURCES}
+        LIBRARIES osmosdr ${OSMO_MODULE_LIBRARIES} ${Boost_LIBRARIES}
     )
 
 endfunction(GrOsmoSDRModule)

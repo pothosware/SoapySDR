@@ -19,18 +19,6 @@
 namespace SoapySDR
 {
 
-//! Indicates that read or write had a timeout
-static const int STREAM_FLAG_TIMEOUT = (1 << 0);
-
-//! Indicates a end of burst for transmit or receive
-static const int STREAM_FLAG_END_BURST = (1 << 1);
-
-//! Indicates that the time stamp is valid
-static const int STREAM_FLAG_HAS_TIME = (1 << 2);
-
-//! Indicates an overflow error condition
-static const int STREAM_FLAG_OVERFLOW = (1 << 3);
-
 /*!
  * Abstraction for an SDR tranceiver device - configuration and streaming.
  */

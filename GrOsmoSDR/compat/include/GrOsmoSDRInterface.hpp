@@ -90,11 +90,8 @@ public:
      ******************************************************************/
     size_t getNumChannels(const SoapySDR::Direction dir) const
     {
-        switch (dir)
-        {
-        case SoapySDR::TX: return _sink->get_num_channels();
-        case SoapySDR::RX: return _source->get_num_channels();
-        }
+        if (dir == SoapySDR::TX and _sink) return _sink->get_num_channels();
+        if (dir == SoapySDR::RX and _source) return _source->get_num_channels();
         return 0;
     }
 
