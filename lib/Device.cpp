@@ -63,14 +63,22 @@ bool SoapySDR::Device::getGainMode(const Direction, const size_t) const
     return false;
 }
 
+void SoapySDR::Device::setGain(const Direction, const size_t, const double)
+{
+    return;
+}
+
 void SoapySDR::Device::setGain(const Direction, const size_t, const std::string &, const double)
 {
     return;
 }
 
-void SoapySDR::Device::setGains(const Direction, const size_t, const NumericDict &)
+void SoapySDR::Device::setGains(const Direction dir, const size_t channel, const NumericDict &values)
 {
-    return;
+    for (NumericDict::const_iterator it = values.begin(); it != values.end(); ++it)
+    {
+        this->setGain(dir, channel, it->first, it->second);
+    }
 }
 
 double SoapySDR::Device::getGainValue(const Direction, const size_t, const std::string &) const
@@ -78,9 +86,15 @@ double SoapySDR::Device::getGainValue(const Direction, const size_t, const std::
     return 0.0;
 }
 
-SoapySDR::NumericDict SoapySDR::Device::getGainValues(const Direction, const size_t) const
+SoapySDR::NumericDict SoapySDR::Device::getGainValues(const Direction dir, const size_t channel) const
 {
-    return SoapySDR::NumericDict();
+    SoapySDR::NumericDict values;
+    std::vector<std::string> names = this->listGains(dir, channel);
+    for (size_t i = 0; i < names.size(); i++)
+    {
+        values[names[i]] = this->getGainValue(dir, channel, names[i]);
+    }
+    return values;
 }
 
 SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const

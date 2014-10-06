@@ -202,6 +202,16 @@ public:
     virtual bool getGainMode(const Direction dir, const size_t channel) const;
 
     /*!
+     * Set the overall amplification in a chain.
+     * The gain will be distributed automatically across available element.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of an amplification element
+     * \param value the new amplification value in dB
+     */
+    virtual void setGain(const Direction dir, const size_t channel, const double value);
+
+    /*!
      * Set the value of a amplification element in a chain.
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device

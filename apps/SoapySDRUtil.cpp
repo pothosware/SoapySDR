@@ -22,6 +22,18 @@ int main(int argc, char *argv[])
     }
     if (modules.empty()) std::cout << "No modules found!" << std::endl;
 
+    std::cout << "Loading modules... " << std::flush;
+    SoapySDR::Registry::loadModules();
+    std::cout << "done" << std::endl;
+
+    std::cout << "Available factories...";
+    std::map<std::string, SoapySDR::Registry::FindFunction> factories = SoapySDR::Registry::listFindFunctions();
+    for (std::map<std::string, SoapySDR::Registry::FindFunction>::iterator it = factories.begin(); it != factories.end(); ++it)
+    {
+        std::cout << it->first << ", ";
+    }
+    std::cout << std::endl;
+
     std::cout << std::endl;
     return EXIT_SUCCESS;
 }

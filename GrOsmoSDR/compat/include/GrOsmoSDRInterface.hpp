@@ -92,7 +92,7 @@ public:
     {
         if (dir == SoapySDR::TX and _sink) return _sink->get_num_channels();
         if (dir == SoapySDR::RX and _source) return _source->get_num_channels();
-        return 0;
+        return SoapySDR::Device::getNumChannels(dir);
     }
 
     /*******************************************************************
@@ -120,6 +120,103 @@ public:
         GrOsmoSDRStreamer *streamer = reinterpret_cast<GrOsmoSDRStreamer *>(handle);
         flags = 0;
         return streamer->write(buffs, numElems);
+    }
+
+    /*******************************************************************
+     * Antenna support
+     ******************************************************************/
+
+    std::vector<std::string> listAntennas(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_antennas(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_antennas(channel);
+        return SoapySDR::Device::listAntennas(dir, channel);
+    }
+
+    void setAntenna(const SoapySDR::Direction dir, const size_t channel, const std::string &name)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_antenna(name, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_antenna(name, channel);
+    }
+
+    std::string getAntenna(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_antenna(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_antenna(channel);
+        return SoapySDR::Device::getAntenna(dir, channel);
+    }
+
+    /*******************************************************************
+     * Frontend corrections support
+     ******************************************************************/
+
+    void setDCOffset(const SoapySDR::Direction dir, const size_t channel, const std::complex<double> &offset)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_dc_offset(offset, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_dc_offset(offset, channel);
+    }
+
+    void setIQBalance(const SoapySDR::Direction dir, const size_t channel, const std::complex<double> &balance)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_iq_balance(balance, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_iq_balance(balance, channel);
+    }
+
+    /*******************************************************************
+     * Gain support
+     ******************************************************************/
+
+    std::vector<std::string> listGains(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_gain_names(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_gain_names(channel);
+        return SoapySDR::Device::listGains(dir, channel);
+    }
+
+    void setGainMode(const SoapySDR::Direction dir, const size_t channel, const bool mode)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_gain_mode(mode, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_gain_mode(mode, channel);
+    }
+
+    bool getGainMode(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_gain_mode(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_gain_mode(channel);
+        return SoapySDR::Device::getGainMode(dir, channel);
+    }
+
+    void setGain(const SoapySDR::Direction dir, const size_t channel, const double value)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_gain(value, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_gain(value, channel);
+    }
+
+    void setGain(const SoapySDR::Direction dir, const size_t channel, const std::string &name, const double value)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_gain(value, name, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_gain(value, name, channel);
+    }
+
+    double getGainValue(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_gain(name, channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_gain(name, channel);
+        return SoapySDR::Device::getGainValue(dir, channel, name);
+    }
+
+    SoapySDR::RangeList getGainRange(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    {
+        osmosdr::gain_range_t ranges;
+        if (dir == SoapySDR::TX and _sink) ranges = _sink->get_gain_range(name);
+        if (dir == SoapySDR::RX and _source) ranges = _source->get_gain_range(name);
+
+        SoapySDR::RangeList out;
+        for (size_t i = 0; i < ranges.size(); i++)
+        {
+            out.push_back(SoapySDR::Range(ranges[i].start(), ranges[i].stop()));
+        }
+        return out;
     }
 
 private:
