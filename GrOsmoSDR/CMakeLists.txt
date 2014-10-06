@@ -191,10 +191,10 @@ function(GrOsmoSDRModule)
 
     set(TARGET ${OSMO_MODULE_TARGET})
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/compat/GrOsmoSDRModReg.in.cpp
-        ${CMAKE_CURRENT_BINARY_DIR}/${OSMO_MODULE_TARGET}ModReg.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/compat/GrOsmoSDRRegister.in.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/register_${OSMO_MODULE_TARGET}.cc
     @ONLY)
-    list(APPEND OSMO_MODULE_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${OSMO_MODULE_TARGET}ModReg.cpp)
+    list(APPEND OSMO_MODULE_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/register_${OSMO_MODULE_TARGET}.cc)
 
     include(SoapySDRUtil)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
@@ -206,26 +206,80 @@ function(GrOsmoSDRModule)
 
 endfunction(GrOsmoSDRModule)
 
-########################################################################
-# Setup BladeRF component
-########################################################################
-if(LIBBLADERF_FOUND)
-    include_directories(${LIBBLADERF_INCLUDE_DIRS})
+function(GR_INCLUDE_SUBDIRECTORY target)
+
+    unset(my_incs)
+    unset(my_libs)
+    string(TOUPPER "${target}" libname)
+    macro(add_if_exists name)
+        if (${name}_INCLUDE_DIRS)
+            list(APPEND my_incs ${${name}_INCLUDE_DIRS})
+        endif()
+        if (${name}_LIBRARIES)
+            list(APPEND my_libs ${${name}_LIBRARIES})
+        endif()
+    endmacro(add_if_exists)
+    add_if_exists(${libname})
+    add_if_exists(LIB${libname})
+    add_if_exists(LIB${libname}SDR)
+
+    message(STATUS "GrOsmoSDRModule(${target})")
+    message(STATUS "    includes ${my_incs}")
+    message(STATUS "    libraries ${my_libs}")
+    include_directories(${my_incs})
     GrOsmoSDRModule(
-        TARGET bladerf
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/bladerf
-        LIBRARIES ${LIBBLADERF_LIBRARIES}
+        TARGET ${target}
+        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/${target}
+        LIBRARIES ${my_libs}
     )
-endif()
+endfunction(GR_INCLUDE_SUBDIRECTORY)
+
+include(GrComponent)
+
+########################################################################
+# Setup RTL component
+########################################################################
+GR_REGISTER_COMPONENT("Osmocom RTLSDR" ENABLE_RTL LIBRTLSDR_FOUND)
+if(ENABLE_RTL)
+GR_INCLUDE_SUBDIRECTORY(rtl)
+endif(ENABLE_RTL)
+
+########################################################################
+# Setup MiriSDR component
+########################################################################
+GR_REGISTER_COMPONENT("Osmocom MiriSDR" ENABLE_MIRI LIBMIRISDR_FOUND)
+if(ENABLE_MIRI)
+GR_INCLUDE_SUBDIRECTORY(miri)
+endif(ENABLE_MIRI)
 
 ########################################################################
 # Setup HackRF component
 ########################################################################
-if(LIBHACKRF_FOUND)
-    include_directories(${LIBHACKRF_INCLUDE_DIRS})
-    GrOsmoSDRModule(
-        TARGET hackrf
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/hackrf
-        LIBRARIES ${LIBHACKRF_LIBRARIES}
-    )
-endif()
+GR_REGISTER_COMPONENT("HackRF Jawbreaker" ENABLE_HACKRF LIBHACKRF_FOUND)
+if(ENABLE_HACKRF)
+GR_INCLUDE_SUBDIRECTORY(hackrf)
+endif(ENABLE_HACKRF)
+
+########################################################################
+# Setup bladeRF component
+########################################################################
+GR_REGISTER_COMPONENT("nuand bladeRF" ENABLE_BLADERF LIBBLADERF_FOUND)
+if(ENABLE_BLADERF)
+GR_INCLUDE_SUBDIRECTORY(bladerf)
+endif(ENABLE_BLADERF)
+
+########################################################################
+# Setup RFSPACE component
+########################################################################
+GR_REGISTER_COMPONENT("RFSPACE Receivers" ENABLE_RFSPACE)
+if(ENABLE_RFSPACE)
+GR_INCLUDE_SUBDIRECTORY(rfspace)
+endif(ENABLE_RFSPACE)
+
+########################################################################
+# Setup AIRSPY component
+########################################################################
+GR_REGISTER_COMPONENT("AIRSPY Receiver" ENABLE_AIRSPY LIBAIRSPY_FOUND)
+if(ENABLE_AIRSPY)
+GR_INCLUDE_SUBDIRECTORY(airspy)
+endif(ENABLE_AIRSPY)

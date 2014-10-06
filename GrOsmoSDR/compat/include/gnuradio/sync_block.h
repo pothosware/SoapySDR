@@ -18,6 +18,14 @@ struct OSMOSDR_API sync_block
 
     virtual ~sync_block(void);
 
+    //! may only be called during constructor
+    void set_input_signature(gr::io_signature::sptr) {
+    }
+
+    //! may only be called during constructor
+    void set_output_signature(gr::io_signature::sptr) {
+    }
+
     void consume_each(int nitems)
     {
         //only care about one channel -- homogenous assumption
