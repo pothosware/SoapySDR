@@ -125,8 +125,9 @@ set(osmosdr_srcs
     #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/source_impl.cc
     #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/sink_impl.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/ranges.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/device.cc
+    #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/device.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/io_signature.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/sync_block.cc
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/compat/include)

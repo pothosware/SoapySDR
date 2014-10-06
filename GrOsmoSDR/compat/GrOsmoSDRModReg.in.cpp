@@ -54,20 +54,19 @@ static SoapySDR::Device *make__@TARGET@(const SoapySDR::Kwargs &args)
         params += it->first + "=" + it->second;
     }
 
-    //shared pointer to interfaces
-    boost::shared_ptr<source_iface> source;
-    boost::shared_ptr<sink_iface> sink;
+    //new device
+    GrOsmoSDRInterface *device = new GrOsmoSDRInterface();
 
     //call factories when they exist
     #if @HAS_SOURCE@
-    source = make_@TARGET@_source_c(params);
+    device->installSource(make_@TARGET@_source_c(params));
     #endif
     #if @HAS_SINK@
-    sink = make_@TARGET@_sink_c(params);
+    device->installSink(make_@TARGET@_sink_c(params));
     #endif
 
-    //return a new interface wrapper
-    return new GrOsmoSDRInterface(source, sink);
+    //done
+    return device;
 }
 
 static SoapySDR::Registry register__@TARGET@("@TARGET@", &find__@TARGET@, &make__@TARGET@);

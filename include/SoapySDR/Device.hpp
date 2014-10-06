@@ -105,7 +105,7 @@ public:
      * \param timeoutUs the timeout in microseconds
      * \return the number of elements read per buffer or error
      */
-    virtual int readStream(void *handle, const void **buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs = 100000);
+    virtual int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs = 100000);
 
     /*!
      * Write elements to a stream for transmission.
@@ -120,7 +120,7 @@ public:
      * \param timeoutUs the timeout in microseconds
      * \return the number of elements written per buffer or error
      */
-    virtual int writeStream(void *handle, const void **buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs = 100000);
+    virtual int writeStream(void *handle, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs = 100000);
 
     /*******************************************************************
      * Antenna API

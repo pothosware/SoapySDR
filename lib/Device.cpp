@@ -193,12 +193,12 @@ void SoapySDR::Device::closeStream(void *)
     return;
 }
 
-int SoapySDR::Device::readStream(void *, const void **, const size_t, int &, long long &, const long)
+int SoapySDR::Device::readStream(void *, void * const *, const size_t, int &, long long &, const long)
 {
     return -1;
 }
 
-int SoapySDR::Device::writeStream(void *, const void **, const size_t, int &, const long long, const long)
+int SoapySDR::Device::writeStream(void *, const void * const *, const size_t, int &, const long long, const long)
 {
     return -1;
 }

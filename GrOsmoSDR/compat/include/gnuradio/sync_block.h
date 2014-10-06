@@ -13,26 +13,30 @@ struct OSMOSDR_API sync_block
            gr::io_signature::sptr input_signature,
            gr::io_signature::sptr output_signature)
     {
-        
+        return;
     }
-    
+
+    virtual ~sync_block(void);
 
     void consume_each(int nitems)
     {
-        
+        //only care about one channel -- homogenous assumption
+        _consumed_total += nitems;
     }
 
     void consume(int which_input, int nitems)
     {
-        
+        //only care about one channel -- homogenous assumption
+        if (which_input == 0) _consumed_total += nitems;
     }
 
-    int general_work(int noutput_items,
-                     gr_vector_int &ninput_items,
-                     gr_vector_const_void_star &input_items,
-                     gr_vector_void_star &output_items)
-    {
-        
-    }
+    virtual int work( int noutput_items,
+                          gr_vector_const_void_star &input_items,
+                          gr_vector_void_star &output_items ) = 0;
+
+    virtual bool start(void){return true;}
+    virtual bool stop(void){return true;}
+
+    int _consumed_total;
 };
 }
