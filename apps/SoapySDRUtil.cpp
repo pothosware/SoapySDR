@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
     {
         std::cout << it->first << ", ";
     }
+    if (factories.empty()) std::cout << "No factories found!" << std::endl;
     std::cout << std::endl;
 
     std::cout << std::endl;
