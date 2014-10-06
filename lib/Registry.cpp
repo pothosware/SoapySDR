@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
-#include <map>
+#include <iostream>
 
 struct FunctionsEntry
 {
@@ -16,8 +16,16 @@ static std::map<std::string, FunctionsEntry> &getFunctionTable(void)
     return table;
 }
 
-SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make)
+SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi)
 {
+    if (abi != SOAPY_SDR_ABI_VERSION)
+    {
+        std::cerr << "SoapySDR::Registry(" << name << ") failed ABI check" << std::endl;
+        std::cerr << "  Library ABI Version: " << SOAPY_SDR_ABI_VERSION << std::endl;
+        std::cerr << "  Module ABI Version: " << abi << std::endl;
+        std::cerr << "  Rebuild module against installed library..." << std::endl;
+        return;
+    }
     FunctionsEntry entry;
     entry.find = find;
     entry.make = make;

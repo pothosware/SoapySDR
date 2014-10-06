@@ -3,6 +3,7 @@
 
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
+#include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
 
@@ -20,6 +21,7 @@ static std::map<SoapySDR::Device *, size_t> &getDeviceCounts(void)
 
 std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
 {
+    loadModules();
     std::vector<SoapySDR::Kwargs> results;
     std::map<std::string, Registry::FindFunction> findFunctions = Registry::listFindFunctions();
     for (std::map<std::string, Registry::FindFunction>::iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
@@ -48,6 +50,7 @@ std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
 {
+    loadModules();
     Kwargs args = args_;
     Device *device = NULL;
 

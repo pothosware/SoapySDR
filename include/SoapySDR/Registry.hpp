@@ -10,6 +10,7 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Version.hpp>
 #include <SoapySDR/Types.hpp>
 #include <vector>
 #include <string>
@@ -18,7 +19,7 @@
 namespace SoapySDR
 {
 
-//! forward declaration of sdr device
+//! forward declaration of device
 class Device;
 
 /*!
@@ -39,26 +40,9 @@ public:
      * \param name a unique name to identify the module
      * \param find the find function returns arg list
      * \param make the make function returns device sptr
+     * \param abi this value must be SOAPY_SDR_ABI_VERSION
      */
-    Registry(const std::string &name, const FindFunction &find, const MakeFunction &make);
-
-    //! Query the API version string
-    static std::string getAPIVersion(void);
-
-    //! Query the root installation path
-    static std::string getRootPath(void);
-
-    /*!
-     * List the paths to the modules available on this system.
-     */
-    static std::vector<std::string> listModules(void);
-
-    /*!
-     * Load the support modules installed on this system.
-     * This call will only actually perform the load once.
-     * Subsequent calls are a NOP.
-     */
-    static void loadModules(void);
+    Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi);
 
     /*!
      * List all loaded find functions.

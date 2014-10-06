@@ -69,4 +69,4 @@ static SoapySDR::Device *make__@TARGET@(const SoapySDR::Kwargs &args)
     return device;
 }
 
-static SoapySDR::Registry register__@TARGET@("@TARGET@", &find__@TARGET@, &make__@TARGET@);
+static SoapySDR::Registry register__@TARGET@("@TARGET@", &find__@TARGET@, &make__@TARGET@, SOAPY_SDR_ABI_VERSION);

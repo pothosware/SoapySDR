@@ -27,11 +27,12 @@
 class GrOsmoSDRStreamer
 {
 public:
-    GrOsmoSDRStreamer(boost::shared_ptr<gr::sync_block> block, const SoapySDR::Direction dir, const std::vector<size_t> &channels):
+    GrOsmoSDRStreamer(boost::shared_ptr<gr::sync_block> block, const size_t numChans):
         _block(block)
     {
-        if (dir == SoapySDR::TX) _input_items.resize(channels.size());
-        if (dir == SoapySDR::RX) _output_items.resize(channels.size());
+        //only one of these buffers gets used -- depends read vs write
+        _input_items.resize(numChans);
+        _output_items.resize(numChans);
         _block->start();
     }
 
@@ -98,9 +99,9 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    void *setupStream(const SoapySDR::Direction dir, const std::vector<size_t> &channels, const SoapySDR::Kwargs &)
+    void *setupStream(const SoapySDR::Direction dir, const std::vector<size_t> &, const SoapySDR::Kwargs &)
     {
-        return new GrOsmoSDRStreamer((dir == SoapySDR::TX)?_sinkBlock:_sourceBlock, dir, channels);
+        return new GrOsmoSDRStreamer((dir == SoapySDR::TX)?_sinkBlock:_sourceBlock, this->getNumChannels(dir));
     }
 
     void closeStream(void *handle)
