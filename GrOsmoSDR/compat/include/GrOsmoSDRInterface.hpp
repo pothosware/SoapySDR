@@ -207,10 +207,91 @@ public:
 
     SoapySDR::RangeList getGainRange(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
-        osmosdr::gain_range_t ranges;
-        if (dir == SoapySDR::TX and _sink) ranges = _sink->get_gain_range(name);
-        if (dir == SoapySDR::RX and _source) ranges = _source->get_gain_range(name);
+        if (dir == SoapySDR::TX and _sink) return this->toRangeList(_sink->get_gain_range(name, channel));
+        if (dir == SoapySDR::RX and _source) return this->toRangeList(_source->get_gain_range(name, channel));
+        return SoapySDR::Device::getGainRange(dir, channel, name);
+    }
 
+    SoapySDR::RangeList getGainRange(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return this->toRangeList(_sink->get_gain_range(channel));
+        if (dir == SoapySDR::RX and _source) return this->toRangeList(_source->get_gain_range(channel));
+        return SoapySDR::Device::getGainRange(dir, channel);
+    }
+
+    /*******************************************************************
+     * Frequency support
+     ******************************************************************/
+
+    void setFrequency(const SoapySDR::Direction dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_center_freq(frequency, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_center_freq(frequency, channel);
+    }
+
+    double getFrequency(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_center_freq(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_center_freq(channel);
+        return SoapySDR::Device::getFrequency(dir, channel);
+    }
+
+    SoapySDR::RangeList getFrequencyRange(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return this->toRangeList(_sink->get_freq_range(channel));
+        if (dir == SoapySDR::RX and _source) return this->toRangeList(_source->get_freq_range(channel));
+        return SoapySDR::Device::getFrequencyRange(dir, channel);
+    }
+
+    /*******************************************************************
+     * Sample Rate support
+     ******************************************************************/
+
+    void setSampleRate(const SoapySDR::Direction dir, const size_t, const double rate)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_sample_rate(rate);
+        if (dir == SoapySDR::RX and _source) _source->set_sample_rate(rate);
+    }
+
+    double getSampleRate(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_sample_rate();
+        if (dir == SoapySDR::RX and _source) return _source->get_sample_rate();
+        return SoapySDR::Device::getSampleRate(dir, channel);
+    }
+
+    SoapySDR::RangeList getSampleRateRange(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return this->toRangeList(_sink->get_sample_rates());
+        if (dir == SoapySDR::RX and _source) return this->toRangeList(_source->get_sample_rates());
+        return SoapySDR::Device::getSampleRateRange(dir, channel);
+    }
+
+    void setBandwidth(const SoapySDR::Direction dir, const size_t channel, const double bw)
+    {
+        if (dir == SoapySDR::TX and _sink) _sink->set_bandwidth(bw, channel);
+        if (dir == SoapySDR::RX and _source) _source->set_bandwidth(bw, channel);
+    }
+
+    double getBandwidth(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return _sink->get_bandwidth(channel);
+        if (dir == SoapySDR::RX and _source) return _source->get_bandwidth(channel);
+        return SoapySDR::Device::getBandwidth(dir, channel);
+    }
+
+    SoapySDR::RangeList getBandwidthRange(const SoapySDR::Direction dir, const size_t channel) const
+    {
+        if (dir == SoapySDR::TX and _sink) return this->toRangeList(_sink->get_bandwidth_range(channel));
+        if (dir == SoapySDR::RX and _source) return this->toRangeList(_source->get_bandwidth_range(channel));
+        return SoapySDR::Device::getBandwidthRange(dir, channel);
+    }
+
+private:
+
+    template <typename RangeType>
+    SoapySDR::RangeList toRangeList(const RangeType &ranges) const
+    {
         SoapySDR::RangeList out;
         for (size_t i = 0; i < ranges.size(); i++)
         {
@@ -219,7 +300,6 @@ public:
         return out;
     }
 
-private:
     boost::shared_ptr<source_iface> _source;
     boost::shared_ptr<sink_iface> _sink;
 

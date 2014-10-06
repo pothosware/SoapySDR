@@ -102,6 +102,11 @@ SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t
     return SoapySDR::RangeList();
 }
 
+SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t) const
+{
+    return SoapySDR::RangeList();
+}
+
 void SoapySDR::Device::setFrequency(const Direction, const size_t, const double, const Kwargs &)
 {
     return;

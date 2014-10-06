@@ -246,13 +246,21 @@ public:
     virtual NumericDict getGainValues(const Direction dir, const size_t channel) const;
 
     /*!
-     * Get the range of possible gain values.
+     * Get the range of possible gain values for a specific element.
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param name the name of an amplification element
      * \return a list of gain ranges in dB
      */
     virtual RangeList getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
+
+    /*!
+     * Get the overall range of possible gain values.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of gain ranges in dB
+     */
+    virtual RangeList getGainRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Frequency API
