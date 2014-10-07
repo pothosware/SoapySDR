@@ -118,14 +118,14 @@ SoapySDR::NumericDict SoapySDR::Device::getGainValues(const Direction dir, const
     return values;
 }
 
-SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const
 {
-    return SoapySDR::RangeList();
+    return SoapySDR::Range(0.0, 0.0);
 }
 
-SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
+    return SoapySDR::Range(0.0, 0.0);
 }
 
 void SoapySDR::Device::setFrequency(const Direction, const size_t, const double, const Kwargs &)
@@ -163,9 +163,9 @@ double SoapySDR::Device::getSampleRate(const Direction, const size_t) const
     return 0.0;
 }
 
-SoapySDR::RangeList SoapySDR::Device::getSampleRateRange(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listSampleRates(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
+    return std::vector<double>();
 }
 
 void SoapySDR::Device::setBandwidth(const Direction, const size_t, const double)
@@ -178,9 +178,9 @@ double SoapySDR::Device::getBandwidth(const Direction, const size_t) const
     return 0.0;
 }
 
-SoapySDR::RangeList SoapySDR::Device::getBandwidthRange(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listBandwidths(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
+    return std::vector<double>();
 }
 
 void SoapySDR::Device::setMasterClockRate(const double)

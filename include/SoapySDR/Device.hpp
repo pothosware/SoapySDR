@@ -279,7 +279,7 @@ public:
      * \param name the name of an amplification element
      * \return a list of gain ranges in dB
      */
-    virtual RangeList getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
+    virtual Range getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*!
      * Get the overall range of possible gain values.
@@ -287,7 +287,7 @@ public:
      * \param channel an available channel on the device
      * \return a list of gain ranges in dB
      */
-    virtual RangeList getGainRange(const Direction dir, const size_t channel) const;
+    virtual Range getGainRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Frequency API
@@ -365,7 +365,7 @@ public:
      * \param channel an available channel on the device
      * \return a list of possible rates in samples per second
      */
-    virtual RangeList getSampleRateRange(const Direction dir, const size_t channel) const;
+    virtual std::vector<double> listSampleRates(const Direction dir, const size_t channel) const;
 
     /*!
      * Set the baseband filter width of the chain.
@@ -389,7 +389,7 @@ public:
      * \param channel an available channel on the device
      * \return a list of possible bandwidths in Hz
      */
-    virtual RangeList getBandwidthRange(const Direction dir, const size_t channel) const;
+    virtual std::vector<double> listBandwidths(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Clocking API
