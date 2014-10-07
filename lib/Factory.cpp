@@ -6,10 +6,6 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 4503) // 'identifier' : decorated name length exceeded, name was truncated
-#endif
 
 typedef std::map<SoapySDR::Kwargs, SoapySDR::Device *> DeviceTable;
 
@@ -121,7 +117,3 @@ void SoapySDR::Device::unmake(Device *device)
         }
     }
 }
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif

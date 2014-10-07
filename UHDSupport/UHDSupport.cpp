@@ -41,6 +41,22 @@ static SoapySDR::RangeList metaRangeToRangeList(const uhd::meta_range_t &metaRan
     return out;
 }
 
+static SoapySDR::Range metaRangeToRange(const uhd::meta_range_t &metaRange)
+{
+    return SoapySDR::Range(metaRange.start(), metaRange.stop());
+}
+
+static std::vector<double> metaRangeToNumericList(const uhd::meta_range_t &metaRange)
+{
+    std::vector<double> out;
+    for (size_t i = 0; i < metaRange.size(); i++)
+    {
+        //in these cases start == stop
+        out.push_back(metaRange[i].start());
+    }
+    return out;
+}
+
 /***********************************************************************
  * Device interface
  **********************************************************************/
@@ -229,31 +245,31 @@ public:
         if (dir == SoapySDR::RX) _dev->set_rx_gain(value, name, channel);
     }
 
-    double getGainValue(const SoapySDR::Direction dir, const size_t channel) const
+    double getGain(const SoapySDR::Direction dir, const size_t channel) const
     {
         if (dir == SoapySDR::TX) return _dev->get_tx_gain(channel);
         if (dir == SoapySDR::RX) return _dev->get_rx_gain(channel);
-        return SoapySDR::Device::getGainValue(dir, channel);
+        return SoapySDR::Device::getGain(dir, channel);
     }
 
-    double getGainValue(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    double getGain(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
         if (dir == SoapySDR::TX) return _dev->get_tx_gain(name, channel);
         if (dir == SoapySDR::RX) return _dev->get_rx_gain(name, channel);
-        return SoapySDR::Device::getGainValue(dir, channel, name);
+        return SoapySDR::Device::getGain(dir, channel, name);
     }
 
-    SoapySDR::RangeList getGainRange(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    SoapySDR::Range getGainRange(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
-        if (dir == SoapySDR::TX) return metaRangeToRangeList(_dev->get_tx_gain_range(name, channel));
-        if (dir == SoapySDR::RX) return metaRangeToRangeList(_dev->get_rx_gain_range(name, channel));
+        if (dir == SoapySDR::TX) return metaRangeToRange(_dev->get_tx_gain_range(name, channel));
+        if (dir == SoapySDR::RX) return metaRangeToRange(_dev->get_rx_gain_range(name, channel));
         return SoapySDR::Device::getGainRange(dir, channel, name);
     }
 
-    SoapySDR::RangeList getGainRange(const SoapySDR::Direction dir, const size_t channel) const
+    SoapySDR::Range getGainRange(const SoapySDR::Direction dir, const size_t channel) const
     {
-        if (dir == SoapySDR::TX) return metaRangeToRangeList(_dev->get_tx_gain_range(channel));
-        if (dir == SoapySDR::RX) return metaRangeToRangeList(_dev->get_rx_gain_range(channel));
+        if (dir == SoapySDR::TX) return metaRangeToRange(_dev->get_tx_gain_range(channel));
+        if (dir == SoapySDR::RX) return metaRangeToRange(_dev->get_rx_gain_range(channel));
         return SoapySDR::Device::getGainRange(dir, channel);
     }
 
@@ -264,28 +280,23 @@ public:
     void setFrequency(const SoapySDR::Direction dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &args)
     {
         uhd::tune_request_t tr(frequency);
-        tr.args = kwargsToDict(args);
-        if (dir == SoapySDR::TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
-        if (dir == SoapySDR::RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
-    }
 
-    void setFrequency(const SoapySDR::Direction dir, const size_t channel, const SoapySDR::NumericDict &values, const SoapySDR::Kwargs &args)
-    {
-        uhd::tune_request_t tr(0.0);
-        tr.target_freq = values.at("target");
-
-        if (values.count("rf") != 0)
+        if (args.count("OFFSET") != 0)
         {
-            tr.rf_freq = values.at("rf");
+            tr = uhd::tune_request_t(frequency, boost::lexical_cast<double>(args.at("OFFSET")));
+        }
+        if (args.count("RF") != 0)
+        {
+            tr.rf_freq = boost::lexical_cast<double>(args.at("RF"));
             tr.rf_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
         }
-        if (values.count("bb") != 0)
+        if (args.count("BB") != 0)
         {
-            tr.dsp_freq = values.at("bb");
+            tr.dsp_freq = boost::lexical_cast<double>(args.at("BB"));
             tr.dsp_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
         }
-
         tr.args = kwargsToDict(args);
+
         if (dir == SoapySDR::TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
         if (dir == SoapySDR::RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
     }
@@ -299,15 +310,20 @@ public:
         return SoapySDR::Device::getFrequency(dir, channel);
     }
 
-    SoapySDR::NumericDict getFrequencyComponents(const SoapySDR::Direction dir, const size_t channel) const
+    double getFrequency(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
         const uhd::tune_result_t tr = _trCache.at(dir).at(channel);
-        SoapySDR::NumericDict result;
-        result["request_rf"] = tr.target_rf_freq;
-        result["result_rf"] = tr.actual_rf_freq;
-        result["request_bb"] = tr.target_dsp_freq;
-        result["result_bb"] = tr.actual_dsp_freq;
-        return result;
+        if (name == "RF") return tr.actual_rf_freq;
+        if (name == "BB") return tr.actual_dsp_freq;
+        return SoapySDR::Device::getFrequency(dir, channel, name);
+    }
+
+    std::vector<std::string> listFrequencies(const SoapySDR::Direction, const size_t) const
+    {
+        std::vector<std::string> comps;
+        comps.push_back("RF");
+        comps.push_back("BB");
+        return comps;
     }
 
     SoapySDR::RangeList getFrequencyRange(const SoapySDR::Direction dir, const size_t channel) const
@@ -334,11 +350,11 @@ public:
         return SoapySDR::Device::getSampleRate(dir, channel);
     }
 
-    SoapySDR::RangeList getSampleRateRange(const SoapySDR::Direction dir, const size_t channel) const
+    std::vector<double> listSampleRates(const SoapySDR::Direction dir, const size_t channel) const
     {
-        if (dir == SoapySDR::TX) return metaRangeToRangeList(_dev->get_tx_rates(channel));
-        if (dir == SoapySDR::RX) return metaRangeToRangeList(_dev->get_rx_rates(channel));
-        return SoapySDR::Device::getSampleRateRange(dir, channel);
+        if (dir == SoapySDR::TX) return metaRangeToNumericList(_dev->get_tx_rates(channel));
+        if (dir == SoapySDR::RX) return metaRangeToNumericList(_dev->get_rx_rates(channel));
+        return SoapySDR::Device::listSampleRates(dir, channel);
     }
 
     void setBandwidth(const SoapySDR::Direction dir, const size_t channel, const double bw)
@@ -354,11 +370,11 @@ public:
         return SoapySDR::Device::getBandwidth(dir, channel);
     }
 
-    SoapySDR::RangeList getBandwidthRange(const SoapySDR::Direction dir, const size_t channel) const
+    std::vector<double> listBandwidths(const SoapySDR::Direction dir, const size_t channel) const
     {
-        if (dir == SoapySDR::TX) return metaRangeToRangeList(_dev->get_tx_bandwidth_range(channel));
-        if (dir == SoapySDR::RX) return metaRangeToRangeList(_dev->get_rx_bandwidth_range(channel));
-        return SoapySDR::Device::getBandwidthRange(dir, channel);
+        if (dir == SoapySDR::TX) return metaRangeToNumericList(_dev->get_tx_bandwidth_range(channel));
+        if (dir == SoapySDR::RX) return metaRangeToNumericList(_dev->get_rx_bandwidth_range(channel));
+        return SoapySDR::Device::listBandwidths(dir, channel);
     }
 
     /*******************************************************************

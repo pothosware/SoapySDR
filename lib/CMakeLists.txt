@@ -5,6 +5,7 @@ list(APPEND SOAPY_SDR_SOURCES
     Device.cpp
     Factory.cpp
     Registry.cpp
+    Types.cpp
 )
 
 list(APPEND SOAPY_SDR_LIBRARIES

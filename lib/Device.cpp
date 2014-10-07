@@ -83,57 +83,33 @@ void SoapySDR::Device::setGain(const Direction, const size_t, const std::string 
     return;
 }
 
-void SoapySDR::Device::setGains(const Direction dir, const size_t channel, const NumericDict &values)
-{
-    for (NumericDict::const_iterator it = values.begin(); it != values.end(); ++it)
-    {
-        this->setGain(dir, channel, it->first, it->second);
-    }
-}
-
-double SoapySDR::Device::getGainValue(const Direction dir, const size_t channel) const
+double SoapySDR::Device::getGain(const Direction dir, const size_t channel) const
 {
     double gain = 0.0;
     std::vector<std::string> names = this->listGains(dir, channel);
     for (size_t i = 0; i < names.size(); i++)
     {
-        gain =+ this->getGainValue(dir, channel, names[i]);
+        gain =+ this->getGain(dir, channel, names[i]);
     }
     return gain;
 }
 
-double SoapySDR::Device::getGainValue(const Direction, const size_t, const std::string &) const
+double SoapySDR::Device::getGain(const Direction, const size_t, const std::string &) const
 {
     return 0.0;
 }
 
-SoapySDR::NumericDict SoapySDR::Device::getGainValues(const Direction dir, const size_t channel) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const
 {
-    SoapySDR::NumericDict values;
-    std::vector<std::string> names = this->listGains(dir, channel);
-    for (size_t i = 0; i < names.size(); i++)
-    {
-        values[names[i]] = this->getGainValue(dir, channel, names[i]);
-    }
-    return values;
+    return SoapySDR::Range(0.0, 0.0);
 }
 
-SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
-}
-
-SoapySDR::RangeList SoapySDR::Device::getGainRange(const Direction, const size_t) const
-{
-    return SoapySDR::RangeList();
+    return SoapySDR::Range(0.0, 0.0);
 }
 
 void SoapySDR::Device::setFrequency(const Direction, const size_t, const double, const Kwargs &)
-{
-    return;
-}
-
-void SoapySDR::Device::setFrequency(const Direction, const size_t, const NumericDict &, const Kwargs &)
 {
     return;
 }
@@ -143,9 +119,14 @@ double SoapySDR::Device::getFrequency(const Direction, const size_t) const
     return 0.0;
 }
 
-SoapySDR::NumericDict SoapySDR::Device::getFrequencyComponents(const Direction, const size_t) const
+double SoapySDR::Device::getFrequency(const Direction, const size_t, const std::string &) const
 {
-    return SoapySDR::NumericDict();
+    return 0.0;
+}
+
+std::vector<std::string> SoapySDR::Device::listFrequencies(const Direction, const size_t) const
+{
+    return std::vector<std::string>();
 }
 
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const Direction, const size_t) const
@@ -163,9 +144,9 @@ double SoapySDR::Device::getSampleRate(const Direction, const size_t) const
     return 0.0;
 }
 
-SoapySDR::RangeList SoapySDR::Device::getSampleRateRange(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listSampleRates(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
+    return std::vector<double>();
 }
 
 void SoapySDR::Device::setBandwidth(const Direction, const size_t, const double)
@@ -178,9 +159,9 @@ double SoapySDR::Device::getBandwidth(const Direction, const size_t) const
     return 0.0;
 }
 
-SoapySDR::RangeList SoapySDR::Device::getBandwidthRange(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listBandwidths(const Direction, const size_t) const
 {
-    return SoapySDR::RangeList();
+    return std::vector<double>();
 }
 
 void SoapySDR::Device::setMasterClockRate(const double)
