@@ -13,6 +13,11 @@ void SoapySDR::Device::setFrontendMapping(const Direction, const std::string &)
     return;
 }
 
+std::string SoapySDR::Device::getFrontendMapping(const Direction) const
+{
+    return "";
+}
+
 size_t SoapySDR::Device::getNumChannels(const Direction) const
 {
     return 0;
@@ -236,4 +241,19 @@ int SoapySDR::Device::readStream(void *, void * const *, const size_t, int &, lo
 int SoapySDR::Device::writeStream(void *, const void * const *, const size_t, int &, const long long, const long)
 {
     return -1;
+}
+
+long long SoapySDR::Device::getHardwareTime(const std::string &) const
+{
+    return 0;
+}
+
+void SoapySDR::Device::setHardwareTime(const long long, const std::string &)
+{
+    return;
+}
+
+void SoapySDR::Device::setCommandTime(const long long, const std::string &)
+{
+    return;
 }

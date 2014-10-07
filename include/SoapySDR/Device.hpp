@@ -61,9 +61,16 @@ public:
      * Set the frontend mapping of available DSP units to RF frontends.
      * This mapping controls channel mapping and channel availability.
      * \param dir the channel direction RX or TX
-     * \param mapping a vendor-specific markup string
+     * \param mapping a vendor-specific mapping string
      */
     virtual void setFrontendMapping(const Direction dir, const std::string &mapping);
+
+    /*!
+     * Get the mapping configuration string.
+     * \param dir the channel direction RX or TX
+     * \param the vendor-specific mapping string
+     */
+    virtual std::string getFrontendMapping(const Direction dir) const;
 
     /*!
      * Get a number of channels given the streaming direction
@@ -435,6 +442,35 @@ public:
      * \return the name of a time source
      */
     virtual std::string getTimeSource(void) const;
+
+    /*******************************************************************
+     * Time API
+     ******************************************************************/
+
+    /*!
+     * Read the time from the hardware clock on the device.
+     * The what argument can refer to a specific time counter.
+     * \param what optional argument
+     * \return the time in nanoseconds
+     */
+    virtual long long getHardwareTime(const std::string &what = "") const;
+
+    /*!
+     * Write the time to the hardware clock on the device.
+     * The what argument can refer to a specific time counter.
+     * \param timeNs time in nanoseconds
+     * \param what optional argument
+     */
+    virtual void setHardwareTime(const long long timeNs, const std::string &what = "");
+
+    /*!
+     * Set the time of subsequent configuration calls.
+     * The what argument can refer to a specific command queue.
+     * Implementations may use a time of 0 to clear.
+     * \param timeNs time in nanoseconds
+     * \param what optional argument
+     */
+    virtual void setCommandTime(const long long timeNs, const std::string &what = "");
 };
 
 };

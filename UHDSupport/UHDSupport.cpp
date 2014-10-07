@@ -62,6 +62,13 @@ public:
         if (dir == SoapySDR::RX) return _dev->set_rx_subdev_spec(mapping);
     }
 
+    std::string getFrontendMapping(const SoapySDR::Direction dir) const
+    {
+        if (dir == SoapySDR::TX) return _dev->get_tx_subdev_spec().to_string();
+        if (dir == SoapySDR::RX) return _dev->get_rx_subdev_spec().to_string();
+        return SoapySDR::Device::getFrontendMapping(dir);
+    }
+
     size_t getNumChannels(const SoapySDR::Direction dir) const
     {
         if (dir == SoapySDR::TX) return _dev->get_tx_num_channels();
@@ -396,6 +403,29 @@ public:
     std::string getTimeSource(void) const
     {
         return _dev->get_time_source(0);
+    }
+
+    /*******************************************************************
+     * Time support
+     ******************************************************************/
+
+    long long getHardwareTime(const std::string &what) const
+    {
+        if (what == "PPS") return _dev->get_time_last_pps().to_ticks(1e9);
+        return _dev->get_time_now().to_ticks(1e9);
+    }
+
+    void setHardwareTime(const long long timeNs, const std::string &what)
+    {
+        uhd::time_spec_t time = uhd::time_spec_t::from_ticks(timeNs, 1e9);
+        if (what == "PPS") return _dev->set_time_next_pps(time);
+        return _dev->set_time_now(time);
+    }
+
+    void setCommandTime(const long long timeNs, const std::string &)
+    {
+        if (timeNs == 0) _dev->clear_command_time();
+        else _dev->set_command_time(uhd::time_spec_t::from_ticks(timeNs, 1e9));
     }
 
 private:
