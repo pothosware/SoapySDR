@@ -57,6 +57,14 @@ public:
      ******************************************************************/
 
     /*!
+     * Set the frontend mapping of available DSP units to RF frontends.
+     * This mapping controls channel mapping and channel availability.
+     * \param dir the channel direction RX or TX
+     * \param mapping a vendor-specific markup string
+     */
+    virtual void setFrontendMapping(const Direction dir, const std::string &mapping);
+
+    /*!
      * Get a number of channels given the streaming direction
      */
     virtual size_t getNumChannels(const Direction dir) const;
@@ -227,6 +235,14 @@ public:
      * \param values a dictionary of element names to values
      */
     virtual void setGains(const Direction dir, const size_t channel, const NumericDict &values);
+
+    /*!
+     * Get the overall value of the gain elements in a chain.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return the value of the gain in dB
+     */
+    virtual double getGainValue(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the value of an individual amplification element in a chain.

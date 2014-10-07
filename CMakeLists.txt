@@ -41,5 +41,7 @@ add_subdirectory(apps)
 set(INCLUDED_FIND_SOAPY_SDR_CMAKE TRUE)
 set(SOAPY_SDR_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(SOAPY_SDR_LIBRARIES SoapySDR)
+include_directories(${SOAPY_SDR_INCLUDE_DIRS}) #local include precedence
 
-add_subdirectory(GrOsmoSDR)
+add_subdirectory(OsmoSupport)
+add_subdirectory(UHDSupport)

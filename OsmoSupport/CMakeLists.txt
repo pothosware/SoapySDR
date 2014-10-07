@@ -21,7 +21,7 @@
 # Project setup
 ########################################################################
 cmake_minimum_required(VERSION 2.6)
-project(GrOsmoSDR CXX C)
+project(SoapySDROsmoSupport CXX C)
 enable_testing()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake/Modules)
@@ -191,13 +191,13 @@ function(GrOsmoSDRModule)
 
     set(TARGET ${OSMO_MODULE_TARGET})
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/compat/GrOsmoSDRRegister.in.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/GrOsmoSDRRegister.in.cpp
         ${CMAKE_CURRENT_BINARY_DIR}/register_${OSMO_MODULE_TARGET}.cc
     @ONLY)
     list(APPEND OSMO_MODULE_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/register_${OSMO_MODULE_TARGET}.cc)
 
     include(SoapySDRUtil)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     SOAPY_SDR_MODULE_UTIL(
         TARGET ${OSMO_MODULE_TARGET}
         SOURCES ${OSMO_MODULE_SOURCES}

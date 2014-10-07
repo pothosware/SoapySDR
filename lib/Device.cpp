@@ -8,6 +8,11 @@ SoapySDR::Device::~Device(void)
     return;
 }
 
+void SoapySDR::Device::setFrontendMapping(const Direction, const std::string &)
+{
+    return;
+}
+
 size_t SoapySDR::Device::getNumChannels(const Direction) const
 {
     return 0;
@@ -79,6 +84,17 @@ void SoapySDR::Device::setGains(const Direction dir, const size_t channel, const
     {
         this->setGain(dir, channel, it->first, it->second);
     }
+}
+
+double SoapySDR::Device::getGainValue(const Direction dir, const size_t channel) const
+{
+    double gain = 0.0;
+    std::vector<std::string> names = this->listGains(dir, channel);
+    for (size_t i = 0; i < names.size(); i++)
+    {
+        gain =+ this->getGainValue(dir, channel, names[i]);
+    }
+    return gain;
 }
 
 double SoapySDR::Device::getGainValue(const Direction, const size_t, const std::string &) const
