@@ -280,28 +280,23 @@ public:
     void setFrequency(const SoapySDR::Direction dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &args)
     {
         uhd::tune_request_t tr(frequency);
-        tr.args = kwargsToDict(args);
-        if (dir == SoapySDR::TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
-        if (dir == SoapySDR::RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
-    }
 
-    void setFrequency(const SoapySDR::Direction dir, const size_t channel, const SoapySDR::NumericDict &values, const SoapySDR::Kwargs &args)
-    {
-        uhd::tune_request_t tr(0.0);
-        tr.target_freq = values.at("target");
-
-        if (values.count("rf") != 0)
+        if (args.count("OFFSET") != 0)
         {
-            tr.rf_freq = values.at("rf");
+            tr = uhd::tune_request_t(frequency, boost::lexical_cast<double>(args.at("OFFSET")));
+        }
+        if (args.count("RF") != 0)
+        {
+            tr.rf_freq = boost::lexical_cast<double>(args.at("RF"));
             tr.rf_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
         }
-        if (values.count("bb") != 0)
+        if (args.count("BB") != 0)
         {
-            tr.dsp_freq = values.at("bb");
+            tr.dsp_freq = boost::lexical_cast<double>(args.at("BB"));
             tr.dsp_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
         }
-
         tr.args = kwargsToDict(args);
+
         if (dir == SoapySDR::TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
         if (dir == SoapySDR::RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
     }
@@ -315,15 +310,20 @@ public:
         return SoapySDR::Device::getFrequency(dir, channel);
     }
 
-    SoapySDR::NumericDict getFrequencyComponents(const SoapySDR::Direction dir, const size_t channel) const
+    double getFrequency(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
         const uhd::tune_result_t tr = _trCache.at(dir).at(channel);
-        SoapySDR::NumericDict result;
-        result["request_rf"] = tr.target_rf_freq;
-        result["result_rf"] = tr.actual_rf_freq;
-        result["request_bb"] = tr.target_dsp_freq;
-        result["result_bb"] = tr.actual_dsp_freq;
-        return result;
+        if (name == "RF") return tr.actual_rf_freq;
+        if (name == "BB") return tr.actual_dsp_freq;
+        return SoapySDR::Device::getFrequency(dir, channel, name);
+    }
+
+    std::vector<std::string> listFrequencies(const SoapySDR::Direction, const size_t) const
+    {
+        std::vector<std::string> comps;
+        comps.push_back("RF");
+        comps.push_back("BB");
+        return comps;
     }
 
     SoapySDR::RangeList getFrequencyRange(const SoapySDR::Direction dir, const size_t channel) const

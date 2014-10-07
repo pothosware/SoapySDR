@@ -114,19 +114,19 @@ void SoapySDR::Device::setFrequency(const Direction, const size_t, const double,
     return;
 }
 
-void SoapySDR::Device::setFrequency(const Direction, const size_t, const NumericDict &, const Kwargs &)
-{
-    return;
-}
-
 double SoapySDR::Device::getFrequency(const Direction, const size_t) const
 {
     return 0.0;
 }
 
-SoapySDR::NumericDict SoapySDR::Device::getFrequencyComponents(const Direction, const size_t) const
+double SoapySDR::Device::getFrequency(const Direction, const size_t, const std::string &) const
 {
-    return SoapySDR::NumericDict();
+    return 0.0;
+}
+
+std::vector<std::string> SoapySDR::Device::listFrequencies(const Direction, const size_t) const
+{
+    return std::vector<std::string>();
 }
 
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const Direction, const size_t) const

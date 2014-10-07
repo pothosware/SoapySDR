@@ -23,9 +23,6 @@ enum Direction {TX, RX};
 //! Typedef for a dictionary of key-value string arguments
 typedef std::map<std::string, std::string> Kwargs;
 
-//! Typedef for a dictionary of string to numeric values
-typedef std::map<std::string, double> NumericDict;
-
 /*!
  * A simple min/max numeric range pair
  */

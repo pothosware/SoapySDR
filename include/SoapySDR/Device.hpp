@@ -279,25 +279,16 @@ public:
 
     /*!
      * Set the center frequency of the chain.
+     * Recommended keys to use in the args dictionary:
+     *  - "OFFSET" - offset for the RF frontend
+     *  - "RF" - frequency of the RF frontend
+     *  - "BB" - frequency of the baseband DSP
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param frequency the center frequency in Hz
      * \param args optional tuner arguments
      */
     virtual void setFrequency(const Direction dir, const size_t channel, const double frequency, const Kwargs &args = Kwargs());
-
-    /*!
-     * Set the center frequency of the chain with control over individual components.
-     * Recommended keys to use in the values dictionary:
-     *  - "target" - overall center frequency of the chain
-     *  - "rf" - frequency of the RF frontend
-     *  - "bb" - frequency of the baseband DSP
-     * \param dir the channel direction RX or TX
-     * \param channel an available channel on the device
-     * \param values a dictionary of component names to frequency values in Hz
-     * \param args optional tuner arguments
-     */
-    virtual void setFrequency(const Direction dir, const size_t channel, const NumericDict &values, const Kwargs &args = Kwargs());
 
     /*!
      * Get the center frequency of the chain.
@@ -308,12 +299,24 @@ public:
     virtual double getFrequency(const Direction dir, const size_t channel) const;
 
     /*!
-     * Get the frequencies of various elements in the chain.
+     * Get the frequency of a tunable element in the chain.
+     * Recommended names used to represent tunable components:
+     *  - "RF" - frequency of the RF frontend
+     *  - "BB" - frequency of the baseband DSP
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
+     * \param name the name of an frequency component
      * \return a dictionary of tunable elements to frequencies in Hz
      */
-    virtual NumericDict getFrequencyComponents(const Direction dir, const size_t channel) const;
+    virtual double getFrequency(const Direction dir, const size_t channel, const std::string &name) const;
+
+    /*!
+     * List available tunable elements in the chain.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel
+     * \return a list of tunable elements by name
+     */
+    virtual std::vector<std::string> listFrequencies(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the range of possible frequency values.
