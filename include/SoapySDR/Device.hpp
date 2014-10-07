@@ -293,6 +293,10 @@ public:
 
     /*!
      * Set the center frequency of the chain with control over individual components.
+     * Recommended keys to use in the values dictionary:
+     *  - "target" - overall center frequency of the chain
+     *  - "rf" - frequency of the RF frontend
+     *  - "bb" - frequency of the baseband DSP
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \param values a dictionary of component names to frequency values in Hz
