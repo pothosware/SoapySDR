@@ -5,6 +5,7 @@
 #include <SoapySDR/Registry.hpp>
 #include <uhd/device.hpp>
 #include <uhd/usrp/multi_usrp.hpp>
+#include <set>
 
 /***********************************************************************
  * Helpful type conversions
@@ -71,20 +72,91 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    void *setupStream(const SoapySDR::Direction dir, const std::vector<size_t> &, const SoapySDR::Kwargs &)
+    void *setupStream(const SoapySDR::Direction dir, const std::vector<size_t> &channels, const SoapySDR::Kwargs &args)
     {
+        //convert input to stream args
+        uhd::stream_args_t stream_args;
+        stream_args.channels = channels;
+        stream_args.args = kwargsToDict(args);
+        if (args.count("host") != 0) stream_args.cpu_format = args.at("host");
+        if (args.count("wire") != 0) stream_args.otw_format = args.at("wire");
+
+        //create streamers
+        if (dir == SoapySDR::TX)
+        {
+            uhd::tx_streamer::sptr stream = _dev->get_tx_stream(stream_args);
+            _activeStreams.insert(stream);
+            return stream.get();
+        }
+
+        if (dir == SoapySDR::RX)
+        {
+            uhd::rx_streamer::sptr stream = _dev->get_rx_stream(stream_args);
+            _activeStreams.insert(stream);
+            return stream.get();
+        }
+
+        return NULL;
     }
 
     void closeStream(void *handle)
     {
+        for (std::set<boost::shared_ptr<void> >::iterator it = _activeStreams.begin(); it != _activeStreams.end(); ++it)
+        {
+            if (handle == it->get())
+            {
+                _activeStreams.erase(it);
+                return;
+            }
+        }
     }
 
-    int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &, const long)
+    //maintain sptrs to active streams, removed by close
+    std::set<boost::shared_ptr<void> > _activeStreams;
+
+    int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs)
     {
+        uhd::rx_streamer *stream = reinterpret_cast<uhd::rx_streamer *>(handle);
+
+        //receive into buffers and metadata
+        uhd::rx_metadata_t md;
+        uhd::rx_streamer::buffs_type stream_buffs(buffs, stream->get_num_channels());
+        int ret = stream->recv(stream_buffs, numElems, md, timeoutUs/1e6, (flags & SoapySDR::STREAM_FLAG_ONE_PACKET) != 0);
+
+        //parse the metadata
+        flags = 0;
+        if (md.has_time_spec) flags |= SoapySDR::STREAM_FLAG_HAS_TIME;
+        if (md.end_of_burst) flags |= SoapySDR::STREAM_FLAG_END_BURST;
+        timeNs = md.time_spec.to_ticks(1e9);
+        switch (md.error_code)
+        {
+        case uhd::rx_metadata_t::ERROR_CODE_NONE: return ret;
+        case uhd::rx_metadata_t::ERROR_CODE_OVERFLOW: return SoapySDR::ERROR_CODE_OVERFLOW;
+        case uhd::rx_metadata_t::ERROR_CODE_TIMEOUT: return SoapySDR::ERROR_CODE_TIMEOUT;
+        case uhd::rx_metadata_t::ERROR_CODE_BAD_PACKET: return SoapySDR::ERROR_CODE_CORRUPTION;
+        case uhd::rx_metadata_t::ERROR_CODE_ALIGNMENT: return SoapySDR::ERROR_CODE_CORRUPTION;
+        case uhd::rx_metadata_t::ERROR_CODE_LATE_COMMAND: return SoapySDR::ERROR_CODE_STREAM_ERROR;
+        case uhd::rx_metadata_t::ERROR_CODE_BROKEN_CHAIN: return SoapySDR::ERROR_CODE_STREAM_ERROR;
+        }
+        return ret;
     }
 
-    int writeStream(void *handle, const void * const *buffs, const size_t numElems, int &flags, const long long, const long)
+    int writeStream(void *handle, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs)
     {
+        uhd::tx_streamer *stream = reinterpret_cast<uhd::tx_streamer *>(handle);
+
+        //load metadata
+        uhd::tx_metadata_t md;
+        md.has_time_spec = (flags & SoapySDR::STREAM_FLAG_HAS_TIME) != 0;
+        md.end_of_burst = (flags & SoapySDR::STREAM_FLAG_END_BURST) != 0;
+        md.time_spec = uhd::time_spec_t::from_ticks(timeNs, 1e9);
+
+        //send buffers and metadata
+        uhd::tx_streamer::buffs_type stream_buffs(buffs, stream->get_num_channels());
+        int ret = stream->send(stream_buffs, numElems, md, timeoutUs/1e6);
+
+        flags = 0;
+        return ret;
     }
 
     /*******************************************************************
@@ -285,6 +357,47 @@ public:
     /*******************************************************************
      * Clocking support
      ******************************************************************/
+
+    void setMasterClockRate(const double rate)
+    {
+        _dev->set_master_clock_rate(rate);
+    }
+
+    double setMasterClockRate(void) const
+    {
+        return _dev->get_master_clock_rate();
+    }
+
+    std::vector<std::string> listClockSources(void) const
+    {
+        return _dev->get_clock_sources(0);
+    }
+
+    void setClockSource(const std::string &source)
+    {
+        _dev->set_clock_source(source, 0);
+    }
+
+    std::string getClockSource(void) const
+    {
+        return _dev->get_clock_source(0);
+    }
+
+    std::vector<std::string> listTimeSources(void) const
+    {
+        return _dev->get_time_sources(0);
+    }
+
+    void setTimeSource(const std::string &source)
+    {
+        _dev->set_time_source(source, 0);
+    }
+
+    std::string getTimeSource(void) const
+    {
+        return _dev->get_time_source(0);
+    }
+
 private:
     uhd::usrp::multi_usrp::sptr _dev;
 };

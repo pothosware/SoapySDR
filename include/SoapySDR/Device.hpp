@@ -11,6 +11,7 @@
 #pragma once
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.hpp>
+#include <SoapySDR/Flags.hpp>
 #include <vector>
 #include <string>
 #include <complex>
@@ -75,6 +76,9 @@ public:
 
     /*!
      * Initialize a stream given a list of channels and stream arguments.
+     * Recommended keys to use in the args dictionary:
+     *  - "host" - format of samples passed into read/writStream()
+     *  - "wire" - format of the samples between device and host
      * \param dir the channel direction RX or TX
      * \param channels a list of channels for empty for automatic
      * \param args stream args or empty for defaults.
@@ -99,7 +103,7 @@ public:
      * \param flags optional flag indicators about the result
      * \param timeNs the buffer's timestamp in nanoseconds
      * \param timeoutUs the timeout in microseconds
-     * \return the number of elements read per buffer or error
+     * \return the number of elements read per buffer or error code
      */
     virtual int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs = 100000);
 

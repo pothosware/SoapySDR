@@ -1,5 +1,5 @@
 ///
-/// \file SoapySDR/StreamFlags.hpp
+/// \file SoapySDR/Flags.hpp
 ///
 /// Flags used with the streaming API.
 ///
@@ -13,13 +13,6 @@
 
 namespace SoapySDR
 {
-
-/*!
- * Indicate that read or write had a timeout.
- * This flag is set by the driver when read/write is
- * blocked for more than the specified timeout.
- */
-static const int STREAM_FLAG_TIMEOUT = (1 << 0);
 
 /*!
  * Indicate end of burst for transmit or receive.
@@ -36,18 +29,33 @@ static const int STREAM_FLAG_END_BURST = (1 << 1);
 static const int STREAM_FLAG_HAS_TIME = (1 << 2);
 
 /*!
- * Indicates an overflow error condition.
- * This is set by read when an overflow occurs.
- * For example, and internal buffer has filled.
- */
-static const int STREAM_FLAG_OVERFLOW = (1 << 3);
-
-/*!
  * Indicates transmit or receive only a single packet.
  * Applicable when the driver fragments samples into packets.
  * For write, the user sets this flag to only send a single packet.
  * For read, the user sets this flag to only receive a single packet.
  */
 static const int STREAM_FLAG_ONE_PACKET = (1 << 4);
+
+/*!
+ * Returned when read has a timeout.
+ */
+static const int ERROR_CODE_TIMEOUT = -1;
+
+/*!
+ * Returned for non-specific stream errors.
+ */
+static const int ERROR_CODE_STREAM_ERROR = -2;
+
+/*!
+ * Returned when read has data corruption.
+ * For example, the driver saw a malformed packet.
+ */
+static const int ERROR_CODE_CORRUPTION = -3;
+
+/*!
+ * Returned when read has an overflow condition.
+ * For example, and internal buffer has filled.
+ */
+static const int ERROR_CODE_OVERFLOW = -4;
 
 }
