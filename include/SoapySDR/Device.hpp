@@ -240,20 +240,12 @@ public:
     virtual void setGain(const Direction dir, const size_t channel, const std::string &name, const double value);
 
     /*!
-     * Set the value of multiple amplification elements in a chain.
-     * \param dir the channel direction RX or TX
-     * \param channel an available channel on the device
-     * \param values a dictionary of element names to values
-     */
-    virtual void setGains(const Direction dir, const size_t channel, const NumericDict &values);
-
-    /*!
      * Get the overall value of the gain elements in a chain.
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the value of the gain in dB
      */
-    virtual double getGainValue(const Direction dir, const size_t channel) const;
+    virtual double getGain(const Direction dir, const size_t channel) const;
 
     /*!
      * Get the value of an individual amplification element in a chain.
@@ -262,15 +254,7 @@ public:
      * \param name the name of an amplification element
      * \return the value of the gain in dB
      */
-    virtual double getGainValue(const Direction dir, const size_t channel, const std::string &name) const;
-
-    /*!
-     * Get the valus of all amplification elements in a chain.
-     * \param dir the channel direction RX or TX
-     * \param channel an available channel on the device
-     * \return a dictionary of element names to values
-     */
-    virtual NumericDict getGainValues(const Direction dir, const size_t channel) const;
+    virtual double getGain(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*!
      * Get the range of possible gain values for a specific element.

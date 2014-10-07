@@ -245,18 +245,18 @@ public:
         if (dir == SoapySDR::RX) _dev->set_rx_gain(value, name, channel);
     }
 
-    double getGainValue(const SoapySDR::Direction dir, const size_t channel) const
+    double getGain(const SoapySDR::Direction dir, const size_t channel) const
     {
         if (dir == SoapySDR::TX) return _dev->get_tx_gain(channel);
         if (dir == SoapySDR::RX) return _dev->get_rx_gain(channel);
-        return SoapySDR::Device::getGainValue(dir, channel);
+        return SoapySDR::Device::getGain(dir, channel);
     }
 
-    double getGainValue(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    double getGain(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
     {
         if (dir == SoapySDR::TX) return _dev->get_tx_gain(name, channel);
         if (dir == SoapySDR::RX) return _dev->get_rx_gain(name, channel);
-        return SoapySDR::Device::getGainValue(dir, channel, name);
+        return SoapySDR::Device::getGain(dir, channel, name);
     }
 
     SoapySDR::Range getGainRange(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
