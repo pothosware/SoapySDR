@@ -3,10 +3,6 @@
 
 #include <SoapySDR/Registry.hpp>
 #include <iostream>
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 4503) // 'identifier' : decorated name length exceeded, name was truncated
-#endif
 
 struct FunctionsEntry
 {
@@ -57,7 +53,3 @@ SoapySDR::MakeFunctions SoapySDR::Registry::listMakeFunctions(void)
     }
     return functions;
 }
-
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
