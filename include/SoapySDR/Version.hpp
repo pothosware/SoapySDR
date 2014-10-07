@@ -10,12 +10,8 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Version.h>
 #include <string>
-
-/*!
- * ABI Version Information - incremented when the ABI is changed.
- */
-#define SOAPY_SDR_ABI_VERSION "0.1-0"
 
 namespace SoapySDR
 {
