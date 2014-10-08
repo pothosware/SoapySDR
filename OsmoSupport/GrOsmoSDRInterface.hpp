@@ -100,24 +100,25 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    void *setupStream(const int dir, const std::vector<size_t> &, const SoapySDR::Kwargs &)
+    SoapySDR::Stream *setupStream(const int dir, const std::vector<size_t> &, const SoapySDR::Kwargs &)
     {
-        return new GrOsmoSDRStreamer((dir == SOAPY_SDR_TX)?_sinkBlock:_sourceBlock, this->getNumChannels(dir));
+        GrOsmoSDRStreamer *stream = new GrOsmoSDRStreamer((dir == SOAPY_SDR_TX)?_sinkBlock:_sourceBlock, this->getNumChannels(dir));
+        return reinterpret_cast<SoapySDR::Stream *>(stream);
     }
 
-    void closeStream(void *handle)
+    void closeStream(SoapySDR::Stream *handle)
     {
         delete reinterpret_cast<GrOsmoSDRStreamer *>(handle);
     }
 
-    int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &, const long)
+    int readStream(SoapySDR::Stream *handle, void * const *buffs, const size_t numElems, int &flags, long long &, const long)
     {
         GrOsmoSDRStreamer *streamer = reinterpret_cast<GrOsmoSDRStreamer *>(handle);
         flags = 0;
         return streamer->read(buffs, numElems);
     }
 
-    int writeStream(void *handle, const void * const *buffs, const size_t numElems, int &flags, const long long, const long)
+    int writeStream(SoapySDR::Stream *handle, const void * const *buffs, const size_t numElems, int &flags, const long long, const long)
     {
         GrOsmoSDRStreamer *streamer = reinterpret_cast<GrOsmoSDRStreamer *>(handle);
         flags = 0;

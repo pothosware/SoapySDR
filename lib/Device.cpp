@@ -204,22 +204,22 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-void *SoapySDR::Device::setupStream(const int, const std::vector<size_t> &, const Kwargs &)
+SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::vector<size_t> &, const Kwargs &)
 {
     return NULL;
 }
 
-void SoapySDR::Device::closeStream(void *)
+void SoapySDR::Device::closeStream(Stream *)
 {
     return;
 }
 
-int SoapySDR::Device::readStream(void *, void * const *, const size_t, int &, long long &, const long)
+int SoapySDR::Device::readStream(Stream *, void * const *, const size_t, int &, long long &, const long)
 {
     return -1;
 }
 
-int SoapySDR::Device::writeStream(void *, const void * const *, const size_t, int &, const long long, const long)
+int SoapySDR::Device::writeStream(Stream *, const void * const *, const size_t, int &, const long long, const long)
 {
     return -1;
 }

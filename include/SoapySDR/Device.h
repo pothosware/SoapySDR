@@ -17,8 +17,11 @@
 extern "C" {
 #endif
 
-//! Forward declaration of device
+//! Forward declaration of device handle
 struct SoapySDRDevice;
+
+//! Forward declaration of stream handle
+struct SoapySDRStream;
 
 /*!
  * Enumerate a list of available devices on the system.
@@ -80,8 +83,8 @@ SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device,
 /*!
  * Initialize a stream given a list of channels and stream arguments.
  * Recommended keys to use in the args dictionary:
- *  - "host" - format of samples passed into read/writStream()
- *  - "wire" - format of the samples between device and host
+ *  - "HOST" - format of samples passed into read/writStream()
+ *  - "WIRE" - format of the samples between device and host
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channels a list of channels for empty for automatic
@@ -89,14 +92,14 @@ SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device,
  * \param args stream args or empty for defaults.
  * \return an opaque pointer to a stream handle
  */
-SOAPY_SDR_API void *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args);
+SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args);
 
 /*!
  * Close an open stream created by setupStream
  * \param device a pointer to a device instance
- * \param handle the opaque pointer to a stream handle
+ * \param stream the opaque pointer to a stream handle
  */
-SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, void *handle);
+SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream);
 
 /*!
  * Read elements from a stream for reception.
@@ -104,7 +107,7 @@ SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, void *hand
  * where each pointer will be filled with data from a different channel.
  *
  * \param device a pointer to a device instance
- * \param handle the opaque pointer to a stream handle
+ * \param stream the opaque pointer to a stream handle
  * \param buffs an array of void* buffers num chans in size
  * \param numElems the number of elements in each buffer
  * \param [out] flags optional flag indicators about the result
@@ -112,7 +115,7 @@ SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, void *hand
  * \param timeoutUs the timeout in microseconds
  * \return the number of elements read per buffer or error code
  */
-SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, void *handle, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs);
+SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, SoapySDRStream *stream, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs);
 
 /*!
  * Write elements to a stream for transmission.
@@ -120,7 +123,7 @@ SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, void *handle
  * where each pointer will be filled with data for a different channel.
  *
  * \param device a pointer to a device instance
- * \param handle the opaque pointer to a stream handle
+ * \param stream the opaque pointer to a stream handle
  * \param buffs an array of void* buffers num chans in size
  * \param numElems the number of elements in each buffer
  * \param [in,out] flags optional input flags and output flags
@@ -128,7 +131,7 @@ SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, void *handle
  * \param timeoutUs the timeout in microseconds
  * \return the number of elements written per buffer or error
  */
-SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device, void *handle, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs);
+SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device, SoapySDRStream *stream, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs);
 
 /*******************************************************************
  * Antenna API

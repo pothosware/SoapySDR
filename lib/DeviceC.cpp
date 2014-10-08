@@ -77,24 +77,24 @@ size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int dir
 /*******************************************************************
  * Stream API
  ******************************************************************/
-void *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
+SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
-    return reinterpret_cast<SoapySDR::Device *>(device)->setupStream(direction, std::vector<size_t>(channels, channels+numChans), toKwargs(args));
+    return reinterpret_cast<SoapySDRStream *>(reinterpret_cast<SoapySDR::Device *>(device)->setupStream(direction, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
 }
 
-void SoapySDRDevice_closeStream(SoapySDRDevice *device, void *handle)
+void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
 {
-    return reinterpret_cast<SoapySDR::Device *>(device)->closeStream(handle);
+    return reinterpret_cast<SoapySDR::Device *>(device)->closeStream(reinterpret_cast<SoapySDR::Stream *>(stream));
 }
 
-int SoapySDRDevice_readStream(SoapySDRDevice *device, void *handle, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs)
+int SoapySDRDevice_readStream(SoapySDRDevice *device, SoapySDRStream *stream, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs)
 {
-    return reinterpret_cast<SoapySDR::Device *>(device)->readStream(handle, buffs, numElems, *flags, *timeNs, timeoutUs);
+    return reinterpret_cast<SoapySDR::Device *>(device)->readStream(reinterpret_cast<SoapySDR::Stream *>(stream), buffs, numElems, *flags, *timeNs, timeoutUs);
 }
 
-int SoapySDRDevice_writeStream(SoapySDRDevice *device, void *handle, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs)
+int SoapySDRDevice_writeStream(SoapySDRDevice *device, SoapySDRStream *stream, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs)
 {
-    return reinterpret_cast<SoapySDR::Device *>(device)->writeStream(handle, buffs, numElems, *flags, timeNs, timeoutUs);
+    return reinterpret_cast<SoapySDR::Device *>(device)->writeStream(reinterpret_cast<SoapySDR::Stream *>(stream), buffs, numElems, *flags, timeNs, timeoutUs);
 }
 
 /*******************************************************************
@@ -141,7 +141,6 @@ void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int directi
     *balanceI = ret.real();
     *balanceQ = ret.imag();
 }
-
 
 /*******************************************************************
  * Gain API

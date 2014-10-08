@@ -95,34 +95,25 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    void *setupStream(const int dir, const std::vector<size_t> &channels, const SoapySDR::Kwargs &args)
+    SoapySDR::Stream *setupStream(const int dir, const std::vector<size_t> &channels, const SoapySDR::Kwargs &args)
     {
         //convert input to stream args
         uhd::stream_args_t stream_args;
         stream_args.channels = channels;
         stream_args.args = kwargsToDict(args);
-        if (args.count("host") != 0) stream_args.cpu_format = args.at("host");
-        if (args.count("wire") != 0) stream_args.otw_format = args.at("wire");
+        if (args.count("HOST") != 0) stream_args.cpu_format = args.at("HOST");
+        if (args.count("WIRE") != 0) stream_args.otw_format = args.at("WIRE");
 
         //create streamers
-        if (dir == SOAPY_SDR_TX)
-        {
-            uhd::tx_streamer::sptr stream = _dev->get_tx_stream(stream_args);
-            _activeStreams.insert(stream);
-            return stream.get();
-        }
+        boost::shared_ptr<void> stream;
+        if (dir == SOAPY_SDR_TX) stream = _dev->get_tx_stream(stream_args);
+        if (dir == SOAPY_SDR_RX) stream = _dev->get_rx_stream(stream_args);
 
-        if (dir == SOAPY_SDR_RX)
-        {
-            uhd::rx_streamer::sptr stream = _dev->get_rx_stream(stream_args);
-            _activeStreams.insert(stream);
-            return stream.get();
-        }
-
-        return NULL;
+        if (stream) _activeStreams.insert(stream);
+        return reinterpret_cast<SoapySDR::Stream *>(stream.get());
     }
 
-    void closeStream(void *handle)
+    void closeStream(SoapySDR::Stream *handle)
     {
         for (std::set<boost::shared_ptr<void> >::iterator it = _activeStreams.begin(); it != _activeStreams.end(); ++it)
         {
@@ -137,7 +128,7 @@ public:
     //maintain sptrs to active streams, removed by close
     std::set<boost::shared_ptr<void> > _activeStreams;
 
-    int readStream(void *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs)
+    int readStream(SoapySDR::Stream *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs)
     {
         uhd::rx_streamer *stream = reinterpret_cast<uhd::rx_streamer *>(handle);
 
@@ -164,7 +155,7 @@ public:
         return ret;
     }
 
-    int writeStream(void *handle, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs)
+    int writeStream(SoapySDR::Stream *handle, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs)
     {
         uhd::tx_streamer *stream = reinterpret_cast<uhd::tx_streamer *>(handle);
 
