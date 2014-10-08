@@ -201,6 +201,7 @@ public:
      * List available amplification elements.
      * \param dir the channel direction RX or TX
      * \param channel an available channel
+     * \return a list of gain string names
      */
     virtual std::vector<std::string> listGains(const Direction dir, const size_t channel) const;
 
@@ -257,6 +258,14 @@ public:
     virtual double getGain(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*!
+     * Get the overall range of possible gain values.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of gain ranges in dB
+     */
+    virtual Range getGainRange(const Direction dir, const size_t channel) const;
+
+    /*!
      * Get the range of possible gain values for a specific element.
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
@@ -264,14 +273,6 @@ public:
      * \return a list of gain ranges in dB
      */
     virtual Range getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
-
-    /*!
-     * Get the overall range of possible gain values.
-     * \param dir the channel direction RX or TX
-     * \param channel an available channel on the device
-     * \return a list of gain ranges in dB
-     */
-    virtual Range getGainRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Frequency API

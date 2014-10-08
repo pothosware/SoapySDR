@@ -12,6 +12,7 @@
 #include <SoapySDR/Config.h>
 #include <SoapySDR/Types.h>
 #include <SoapySDR/Flags.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -129,6 +130,173 @@ SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, void *handle
  * \return the number of elements written per buffer or error
  */
 SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device, void *handle, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs);
+
+/*******************************************************************
+ * Antenna API
+ ******************************************************************/
+
+/*!
+ * Get a list of available antennas to select on a given chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of antenna names
+ * \return a list of available antenna names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listAntennas(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*!
+ * Set the selected antenna on a chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an available antenna
+ */
+SOAPY_SDR_API void SoapySDRDevice_setAntenna(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name);
+
+/*!
+ * Get the selected antenna on a chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the name of an available antenna
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*******************************************************************
+ * Frontend corrections API
+ ******************************************************************/
+
+/*!
+ * Set the frontend DC offset correction.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param offsetI the relative correction (1.0 max)
+ * \param offsetQ the relative correction (1.0 max)
+ */
+SOAPY_SDR_API void SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double offsetI, const double offsetQ);
+
+/*!
+ * Get the frontend DC offset correction.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] offsetI the relative correction (1.0 max)
+ * \param [out] offsetQ the relative correction (1.0 max)
+ */
+SOAPY_SDR_API void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, double *offsetI, double *offsetQ);
+
+/*!
+ * Set the frontend IQ balance correction.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param balanceI the relative correction (1.0 max)
+ * \param balanceQ the relative correction (1.0 max)
+ */
+SOAPY_SDR_API void SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double balanceI, const double balanceQ);
+
+/*!
+ * Get the frontend IQ balance correction.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] balanceI the relative correction (1.0 max)
+ * \param [out] balanceQ the relative correction (1.0 max)
+ */
+SOAPY_SDR_API void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, double *balanceI, double *balanceQ);
+
+/*******************************************************************
+ * Gain API
+ ******************************************************************/
+
+/*!
+ * List available amplification elements.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel
+ * \param [out] length the number of gain names
+ * \return a list of gain string names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listGains(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*!
+ * Set the automatic gain mode on the chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param mode true for automatic gain setting
+ */
+SOAPY_SDR_API void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const bool mode);
+
+ /*!
+ * Get the automatic gain mode on the chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true for automatic gain setting
+ */
+SOAPY_SDR_API bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Set the overall amplification in a chain.
+ * The gain will be distributed automatically across available element.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an amplification element
+ * \param value the new amplification value in dB
+ */
+SOAPY_SDR_API void SoapySDRDevice_setGain(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double value);
+
+/*!
+ * Set the value of a amplification element in a chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an amplification element
+ * \param value the new amplification value in dB
+ */
+SOAPY_SDR_API void SoapySDRDevice_setGainElement(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name, const double value);
+
+/*!
+ * Get the overall value of the gain elements in a chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the value of the gain in dB
+ */
+SOAPY_SDR_API double SoapySDRDevice_getGain(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Get the value of an individual amplification element in a chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an amplification element
+ * \return the value of the gain in dB
+ */
+SOAPY_SDR_API double SoapySDRDevice_getGainElement(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name);
+
+/*!
+ * Get the overall range of possible gain values.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return a list of gain ranges in dB
+ */
+SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainRange(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Get the range of possible gain values for a specific element.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an amplification element
+ * \return a list of gain ranges in dB
+ */
+SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name);
 
 #ifdef __cplusplus
 }
