@@ -49,3 +49,7 @@
 #endif // SOAPY_SDR_DLL
 
 #include <iso646.h>
+
+#ifndef _MSC_VER
+#include <stdbool.h>
+#endif
