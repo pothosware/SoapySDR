@@ -169,7 +169,7 @@ void SoapySDR::Device::setMasterClockRate(const double)
     return;
 }
 
-double SoapySDR::Device::setMasterClockRate(void) const
+double SoapySDR::Device::getMasterClockRate(void) const
 {
     return 0.0;
 }

@@ -10,6 +10,7 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Types.h>
 #include <vector>
 #include <string>
 #include <map>
@@ -18,7 +19,13 @@ namespace SoapySDR
 {
 
 //! Direction type: transmit or receive
-enum Direction {TX, RX};
+typedef SoapySDRDirection Direction;
+
+//! TX direction constant
+static const SoapySDRDirection TX = SOAPY_SDR_TX;
+
+//! RX direction constant
+static const SoapySDRDirection RX = SOAPY_SDR_RX;
 
 //! Typedef for a dictionary of key-value string arguments
 typedef std::map<std::string, std::string> Kwargs;

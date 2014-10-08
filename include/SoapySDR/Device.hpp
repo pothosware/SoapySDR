@@ -11,7 +11,7 @@
 #pragma once
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.hpp>
-#include <SoapySDR/Flags.hpp>
+#include <SoapySDR/Flags.h>
 #include <vector>
 #include <string>
 #include <complex>
@@ -33,7 +33,7 @@ public:
     /*!
      * Enumerate a list of available devices on the system.
      * \param args device construction key/value argument filters
-     * \return a list of arguments strings, each unique to a device
+     * \return a list of argument maps, each unique to a device
      */
     static std::vector<Kwargs> enumerate(const Kwargs &args);
 
@@ -42,7 +42,7 @@ public:
      * The device pointer will be stored in a table so subsequent calls
      * with the same arguments will produce the same device.
      * For every call to make, there should be a matched call to unmake.
-     * \param args device construction key/value argument markup
+     * \param args device construction key/value argument map
      * \return a pointer to a new Device object
      */
     static Device *make(const Kwargs &args);
@@ -201,6 +201,7 @@ public:
      * List available amplification elements.
      * \param dir the channel direction RX or TX
      * \param channel an available channel
+     * \return a list of gain string names
      */
     virtual std::vector<std::string> listGains(const Direction dir, const size_t channel) const;
 
@@ -257,6 +258,14 @@ public:
     virtual double getGain(const Direction dir, const size_t channel, const std::string &name) const;
 
     /*!
+     * Get the overall range of possible gain values.
+     * \param dir the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of gain ranges in dB
+     */
+    virtual Range getGainRange(const Direction dir, const size_t channel) const;
+
+    /*!
      * Get the range of possible gain values for a specific element.
      * \param dir the channel direction RX or TX
      * \param channel an available channel on the device
@@ -264,14 +273,6 @@ public:
      * \return a list of gain ranges in dB
      */
     virtual Range getGainRange(const Direction dir, const size_t channel, const std::string &name) const;
-
-    /*!
-     * Get the overall range of possible gain values.
-     * \param dir the channel direction RX or TX
-     * \param channel an available channel on the device
-     * \return a list of gain ranges in dB
-     */
-    virtual Range getGainRange(const Direction dir, const size_t channel) const;
 
     /*******************************************************************
      * Frequency API
@@ -392,7 +393,7 @@ public:
      * Get the master clock rate of the device.
      * \return the clock rate in Hz
      */
-    virtual double setMasterClockRate(void) const;
+    virtual double getMasterClockRate(void) const;
 
     /*!
      * Get the list of available clock sources.

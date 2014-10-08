@@ -26,6 +26,15 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp
 @ONLY)
 
+#C API support sources
+list(APPEND SOAPY_SDR_SOURCES
+    TypesC.cpp
+    ModulesC.cpp
+    VersionC.cpp
+    DeviceC.cpp
+    FactoryC.cpp
+)
+
 ########################################################################
 # Build the library
 ########################################################################
