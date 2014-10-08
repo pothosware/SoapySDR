@@ -20,16 +20,12 @@ SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *len
     const std::vector<SoapySDR::Kwargs> results = SoapySDR::Device::enumerate(inArgs);
 
     //convert results to out args
-    SoapySDRKwargs *outArgs = (SoapySDRKwargs *)malloc(sizeof(SoapySDRKwargs)*results.size());
+    SoapySDRKwargs *outArgs = (SoapySDRKwargs *)calloc(results.size(), sizeof(SoapySDRKwargs));
     for (size_t i = 0; i < results.size(); i++)
     {
-        outArgs[i].size = results[i].size();
-        outArgs[i].keys = (char **)malloc(sizeof(char *)*results[i].size());
-        outArgs[i].vals = (char **)malloc(sizeof(char *)*results[i].size());
         for (SoapySDR::Kwargs::const_iterator it = results[i].begin(); it != results[i].end(); ++it)
         {
-            outArgs[i].keys[i] = strdup(it->first.c_str());
-            outArgs[i].vals[i] = strdup(it->second.c_str());
+            SoapySDRKwargs_set(&outArgs[i], it->first.c_str(), it->second.c_str());
         }
     }
     *length = results.size();
