@@ -16,13 +16,6 @@
 extern "C" {
 #endif
 
-//! Direction type: transmit or receive
-typedef enum
-{
-    SOAPY_SDR_TX,
-    SOAPY_SDR_RX
-} SoapySDRDirection;
-
 //! Definition for a min/max numeric range
 typedef struct
 {

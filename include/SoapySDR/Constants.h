@@ -1,7 +1,7 @@
 ///
-/// \file SoapySDR/Flags.h
+/// \file SoapySDR/Constants.h
 ///
-/// Flags used with the streaming API.
+/// Constants used in the device API.
 ///
 /// \copyright
 /// Copyright (c) 2014-2014 Josh Blum
@@ -10,6 +10,16 @@
 
 #pragma once
 #include <SoapySDR/Config.h>
+
+/*!
+ * Constant to represent the transmit direction
+ */
+#define SOAPY_SDR_TX 0
+
+/*!
+ * Constant to represent the receive direction
+ */
+#define SOAPY_SDR_RX 1
 
 /*!
  * Indicate end of burst for transmit or receive.

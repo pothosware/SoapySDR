@@ -8,82 +8,82 @@ SoapySDR::Device::~Device(void)
     return;
 }
 
-void SoapySDR::Device::setFrontendMapping(const Direction, const std::string &)
+void SoapySDR::Device::setFrontendMapping(const int, const std::string &)
 {
     return;
 }
 
-std::string SoapySDR::Device::getFrontendMapping(const Direction) const
+std::string SoapySDR::Device::getFrontendMapping(const int) const
 {
     return "";
 }
 
-size_t SoapySDR::Device::getNumChannels(const Direction) const
+size_t SoapySDR::Device::getNumChannels(const int) const
 {
     return 0;
 }
 
-std::vector<std::string> SoapySDR::Device::listAntennas(const Direction, const size_t) const
+std::vector<std::string> SoapySDR::Device::listAntennas(const int, const size_t) const
 {
     return std::vector<std::string>();
 }
 
-void SoapySDR::Device::setAntenna(const Direction, const size_t, const std::string &)
+void SoapySDR::Device::setAntenna(const int, const size_t, const std::string &)
 {
     return;
 }
 
-std::string SoapySDR::Device::getAntenna(const Direction, const size_t) const
+std::string SoapySDR::Device::getAntenna(const int, const size_t) const
 {
     return "";
 }
 
-void SoapySDR::Device::setDCOffset(const Direction, const size_t, const std::complex<double> &)
+void SoapySDR::Device::setDCOffset(const int, const size_t, const std::complex<double> &)
 {
     return;
 }
 
-std::complex<double> SoapySDR::Device::getDCOffset(const Direction, const size_t) const
+std::complex<double> SoapySDR::Device::getDCOffset(const int, const size_t) const
 {
     return std::complex<double>();
 }
 
-void SoapySDR::Device::setIQBalance(const Direction, const size_t, const std::complex<double> &)
+void SoapySDR::Device::setIQBalance(const int, const size_t, const std::complex<double> &)
 {
     return;
 }
 
-std::complex<double> SoapySDR::Device::getIQBalance(const Direction, const size_t) const
+std::complex<double> SoapySDR::Device::getIQBalance(const int, const size_t) const
 {
     return std::complex<double>();
 }
 
-std::vector<std::string> SoapySDR::Device::listGains(const Direction, const size_t) const
+std::vector<std::string> SoapySDR::Device::listGains(const int, const size_t) const
 {
     return std::vector<std::string>();
 }
 
-void SoapySDR::Device::setGainMode(const Direction, const size_t, const bool)
+void SoapySDR::Device::setGainMode(const int, const size_t, const bool)
 {
     return;
 }
 
-bool SoapySDR::Device::getGainMode(const Direction, const size_t) const
+bool SoapySDR::Device::getGainMode(const int, const size_t) const
 {
     return false;
 }
 
-void SoapySDR::Device::setGain(const Direction, const size_t, const double)
+void SoapySDR::Device::setGain(const int, const size_t, const double)
 {
     return;
 }
 
-void SoapySDR::Device::setGain(const Direction, const size_t, const std::string &, const double)
+void SoapySDR::Device::setGain(const int, const size_t, const std::string &, const double)
 {
     return;
 }
 
-double SoapySDR::Device::getGain(const Direction dir, const size_t channel) const
+double SoapySDR::Device::getGain(const int dir, const size_t channel) const
 {
     double gain = 0.0;
     std::vector<std::string> names = this->listGains(dir, channel);
@@ -94,72 +94,72 @@ double SoapySDR::Device::getGain(const Direction dir, const size_t channel) cons
     return gain;
 }
 
-double SoapySDR::Device::getGain(const Direction, const size_t, const std::string &) const
+double SoapySDR::Device::getGain(const int, const size_t, const std::string &) const
 {
     return 0.0;
 }
 
-SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t, const std::string &) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const int, const size_t, const std::string &) const
 {
     return SoapySDR::Range(0.0, 0.0);
 }
 
-SoapySDR::Range SoapySDR::Device::getGainRange(const Direction, const size_t) const
+SoapySDR::Range SoapySDR::Device::getGainRange(const int, const size_t) const
 {
     return SoapySDR::Range(0.0, 0.0);
 }
 
-void SoapySDR::Device::setFrequency(const Direction, const size_t, const double, const Kwargs &)
+void SoapySDR::Device::setFrequency(const int, const size_t, const double, const Kwargs &)
 {
     return;
 }
 
-double SoapySDR::Device::getFrequency(const Direction, const size_t) const
+double SoapySDR::Device::getFrequency(const int, const size_t) const
 {
     return 0.0;
 }
 
-double SoapySDR::Device::getFrequency(const Direction, const size_t, const std::string &) const
+double SoapySDR::Device::getFrequency(const int, const size_t, const std::string &) const
 {
     return 0.0;
 }
 
-std::vector<std::string> SoapySDR::Device::listFrequencies(const Direction, const size_t) const
+std::vector<std::string> SoapySDR::Device::listFrequencies(const int, const size_t) const
 {
     return std::vector<std::string>();
 }
 
-SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const Direction, const size_t) const
+SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t) const
 {
     return SoapySDR::RangeList();
 }
 
-void SoapySDR::Device::setSampleRate(const Direction, const size_t, const double)
+void SoapySDR::Device::setSampleRate(const int, const size_t, const double)
 {
     return;
 }
 
-double SoapySDR::Device::getSampleRate(const Direction, const size_t) const
+double SoapySDR::Device::getSampleRate(const int, const size_t) const
 {
     return 0.0;
 }
 
-std::vector<double> SoapySDR::Device::listSampleRates(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listSampleRates(const int, const size_t) const
 {
     return std::vector<double>();
 }
 
-void SoapySDR::Device::setBandwidth(const Direction, const size_t, const double)
+void SoapySDR::Device::setBandwidth(const int, const size_t, const double)
 {
     return;
 }
 
-double SoapySDR::Device::getBandwidth(const Direction, const size_t) const
+double SoapySDR::Device::getBandwidth(const int, const size_t) const
 {
     return 0.0;
 }
 
-std::vector<double> SoapySDR::Device::listBandwidths(const Direction, const size_t) const
+std::vector<double> SoapySDR::Device::listBandwidths(const int, const size_t) const
 {
     return std::vector<double>();
 }
@@ -204,7 +204,7 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-void *SoapySDR::Device::setupStream(const Direction, const std::vector<size_t> &, const Kwargs &)
+void *SoapySDR::Device::setupStream(const int, const std::vector<size_t> &, const Kwargs &)
 {
     return NULL;
 }
