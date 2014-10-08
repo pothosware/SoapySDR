@@ -281,6 +281,7 @@ public:
     /*!
      * Set the center frequency of the chain.
      * Recommended keys to use in the args dictionary:
+     *  - "CORR" - freq error correction in PPM
      *  - "OFFSET" - offset for the RF frontend
      *  - "RF" - frequency of the RF frontend
      *  - "BB" - frequency of the baseband DSP
@@ -302,6 +303,7 @@ public:
     /*!
      * Get the frequency of a tunable element in the chain.
      * Recommended names used to represent tunable components:
+     *  - "CORR" - freq error correction in PPM
      *  - "RF" - frequency of the RF frontend
      *  - "BB" - frequency of the baseband DSP
      * \param dir the channel direction RX or TX

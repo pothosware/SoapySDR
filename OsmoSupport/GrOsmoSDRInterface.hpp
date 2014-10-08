@@ -23,6 +23,7 @@
 #include "sink_iface.h"
 #include "source_iface.h"
 #include <gnuradio/sync_block.h>
+#include <boost/lexical_cast.hpp>
 
 class GrOsmoSDRStreamer
 {
@@ -231,10 +232,16 @@ public:
      * Frequency support
      ******************************************************************/
 
-    void setFrequency(const SoapySDR::Direction dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &)
+    void setFrequency(const SoapySDR::Direction dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &args)
     {
         if (dir == SoapySDR::TX and _sink) _sink->set_center_freq(frequency, channel);
         if (dir == SoapySDR::RX and _source) _source->set_center_freq(frequency, channel);
+        if (args.count("CORR") != 0)
+        {
+            const double ppm = boost::lexical_cast<double>(args.at("CORR"));
+            if (dir == SoapySDR::TX and _sink) _sink->set_freq_corr(ppm, channel);
+            if (dir == SoapySDR::RX and _source) _source->set_freq_corr(ppm, channel);
+        }
     }
 
     double getFrequency(const SoapySDR::Direction dir, const size_t channel) const
@@ -242,6 +249,16 @@ public:
         if (dir == SoapySDR::TX and _sink) return _sink->get_center_freq(channel);
         if (dir == SoapySDR::RX and _source) return _source->get_center_freq(channel);
         return SoapySDR::Device::getFrequency(dir, channel);
+    }
+
+    double getFrequency(const SoapySDR::Direction dir, const size_t channel, const std::string &name) const
+    {
+        if (name == "CORR")
+        {
+            if (dir == SoapySDR::TX and _sink) return _sink->get_freq_corr(channel);
+            if (dir == SoapySDR::RX and _source) return _source->get_freq_corr(channel);
+        }
+        return SoapySDR::Device::getFrequency(dir, channel, name);
     }
 
     SoapySDR::RangeList getFrequencyRange(const SoapySDR::Direction dir, const size_t channel) const

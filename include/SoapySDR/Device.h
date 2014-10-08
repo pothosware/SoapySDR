@@ -304,6 +304,7 @@ SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDev
 /*!
  * Set the center frequency of the chain.
  * Recommended keys to use in the args dictionary:
+ *  - "CORR" - freq error correction in PPM
  *  - "OFFSET" - offset for the RF frontend
  *  - "RF" - frequency of the RF frontend
  *  - "BB" - frequency of the baseband DSP
@@ -327,6 +328,7 @@ SOAPY_SDR_API double SoapySDRDevice_getFrequency(const SoapySDRDevice *device, c
 /*!
  * Get the frequency of a tunable element in the chain.
  * Recommended names used to represent tunable components:
+ *  - "CORR" - freq error correction in PPM
  *  - "RF" - frequency of the RF frontend
  *  - "BB" - frequency of the baseband DSP
  * \param device a pointer to a device instance
