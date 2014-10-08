@@ -12,7 +12,6 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
-#include <SoapySDR/Modules.h>
 #include <vector>
 #include <string>
 

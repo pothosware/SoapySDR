@@ -33,7 +33,7 @@ public:
     /*!
      * Enumerate a list of available devices on the system.
      * \param args device construction key/value argument filters
-     * \return a list of arguments strings, each unique to a device
+     * \return a list of argument maps, each unique to a device
      */
     static std::vector<Kwargs> enumerate(const Kwargs &args);
 
@@ -42,7 +42,7 @@ public:
      * The device pointer will be stored in a table so subsequent calls
      * with the same arguments will produce the same device.
      * For every call to make, there should be a matched call to unmake.
-     * \param args device construction key/value argument markup
+     * \param args device construction key/value argument map
      * \return a pointer to a new Device object
      */
     static Device *make(const Kwargs &args);

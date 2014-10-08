@@ -12,7 +12,7 @@
 
 #pragma once
 #include <SoapySDR/Config.h>
-#include <SoapySDR/Types.h>
+#include <stddef.h> //size_t
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,9 +23,10 @@ SOAPY_SDR_API const char *SoapySDR_getRootPath(void);
 
 /*!
  * List the paths to the modules available on this system.
- * Free the result with SoapySDR_destroyStringList();
+ * The result is an array of strings owned by the caller.
+ * \param [out] length the number of elements in the result.
  */
-SOAPY_SDR_API SoapySDRStringList SoapySDR_listModules(void);
+SOAPY_SDR_API char **SoapySDR_listModules(size_t *length);
 
 /*!
  * Load a single module given its file system path.

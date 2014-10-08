@@ -1,7 +1,10 @@
 // Copyright (c) 2014-2014 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
+#include <SoapySDR/Modules.h>
 #include <SoapySDR/Modules.hpp>
+#include <stdlib.h>
+#include <string.h>
 
 extern "C" {
 
@@ -11,15 +14,16 @@ const char *SoapySDR_getRootPath(void)
     return root.c_str();
 }
 
-SoapySDRStringList SoapySDR_listModules(void)
+char **SoapySDR_listModules(size_t *length)
 {
     const std::vector<std::string> paths = SoapySDR::listModules();
-    SoapySDRStringList pathList = {0, NULL};
+    char **pathArray = (char **) malloc(sizeof(char *)*paths.size());
     for (size_t i = 0; i < paths.size(); i++)
     {
-        SoapySDRStringList_append(&pathList, paths[i].c_str());
+        pathArray[i] = strdup(paths[i].c_str());
     }
-    return pathList;
+    *length = paths.size();
+    return pathArray;
 }
 
 void SoapySDR_loadModule(const char *path)

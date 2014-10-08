@@ -31,6 +31,8 @@ list(APPEND SOAPY_SDR_SOURCES
     TypesC.cpp
     ModulesC.cpp
     VersionC.cpp
+    DeviceC.cpp
+    FactoryC.cpp
 )
 
 ########################################################################
