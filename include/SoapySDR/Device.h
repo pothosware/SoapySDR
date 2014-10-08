@@ -298,6 +298,203 @@ SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainRange(const SoapySDRDevice *de
  */
 SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name);
 
+/*******************************************************************
+ * Frequency API
+ ******************************************************************/
+
+/*!
+ * Set the center frequency of the chain.
+ * Recommended keys to use in the args dictionary:
+ *  - "OFFSET" - offset for the RF frontend
+ *  - "RF" - frequency of the RF frontend
+ *  - "BB" - frequency of the baseband DSP
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param frequency the center frequency in Hz
+ * \param args optional tuner arguments
+ */
+SOAPY_SDR_API void SoapySDRDevice_setFrequency(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double frequency, const SoapySDRKwargs *args);
+
+/*!
+ * Get the center frequency of the chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the center frequency in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getFrequency(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Get the frequency of a tunable element in the chain.
+ * Recommended names used to represent tunable components:
+ *  - "RF" - frequency of the RF frontend
+ *  - "BB" - frequency of the baseband DSP
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an frequency component
+ * \return a dictionary of tunable elements to frequencies in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getFrequencyComponent(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const char *name);
+
+/*!
+ * List available tunable elements in the chain.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel
+ * \param [out] length the number names
+ * \return a list of tunable elements by name
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listFrequencies(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*!
+ * Get the range of possible frequency values.
+ * \param device a pointer to a device instance
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of ranges
+ * \return a list of frequency ranges in Hz
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*******************************************************************
+ * Sample Rate API
+ ******************************************************************/
+
+/*!
+ * Set the baseband sample rate of the chain.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param rate the sample rate in samples per second
+ */
+SOAPY_SDR_API void SoapySDRDevice_setSampleRate(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double rate);
+
+/*!
+ * Get the baseband sample rate of the chain.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the sample rate in samples per second
+ */
+SOAPY_SDR_API double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Get the range of possible baseband sample rates.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of sample rates
+ * \return a list of possible rates in samples per second
+ */
+SOAPY_SDR_API double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*!
+ * Set the baseband filter width of the chain.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param bw the baseband filter width in Hz
+ */
+SOAPY_SDR_API void SoapySDRDevice_setBandwidth(SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, const double bw);
+
+/*!
+ * Get the baseband filter width of the chain.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the baseband filter width in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getBandwidth(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel);
+
+/*!
+ * Get the range of possible baseband filter widths.
+ * \param dir the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of bandwidths
+ * \return a list of possible bandwidths in Hz
+ */
+SOAPY_SDR_API double *SoapySDRDevice_listBandwidths(const SoapySDRDevice *device, const SoapySDRDirection dir, const size_t channel, size_t *length);
+
+/*******************************************************************
+ * Clocking API
+ ******************************************************************/
+
+/*!
+ * Set the master clock rate of the device.
+ * \param rate the clock rate in Hz
+ */
+SOAPY_SDR_API void SoapySDRDevice_setMasterClockRate(SoapySDRDevice *device, const double rate);
+
+/*!
+ * Get the master clock rate of the device.
+ * \return the clock rate in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *device);
+
+/*!
+ * Get the list of available clock sources.
+ * \param [out] length the number of sources
+ * \return a list of clock source names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listClockSources(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Set the clock source on the device
+ * \param source the name of a clock source
+ */
+SOAPY_SDR_API void SoapySDRDevice_setClockSource(SoapySDRDevice *device, const char *source);
+
+/*!
+ * Get the clock source of the device
+ * \return the name of a clock source
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device);
+
+/*!
+ * Get the list of available time sources.
+ * \param [out] length the number of sources
+ * \return a list of time source names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listTimeSources(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Set the time source on the device
+ * \param source the name of a time source
+ */
+SOAPY_SDR_API void SoapySDRDevice_setTimeSource(SoapySDRDevice *device, const char *source);
+
+/*!
+ * Get the time source of the device
+ * \return the name of a time source
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device);
+
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
+/*!
+ * Read the time from the hardware clock on the device.
+ * The what argument can refer to a specific time counter.
+ * \param what optional argument
+ * \return the time in nanoseconds
+ */
+SOAPY_SDR_API long long SoapySDRDevice_getHardwareTime(const SoapySDRDevice *device, const char *what);
+
+/*!
+ * Write the time to the hardware clock on the device.
+ * The what argument can refer to a specific time counter.
+ * \param timeNs time in nanoseconds
+ * \param what optional argument
+ */
+SOAPY_SDR_API void SoapySDRDevice_setHardwareTime(SoapySDRDevice *device, const long long timeNs, const char *what);
+
+/*!
+ * Set the time of subsequent configuration calls.
+ * The what argument can refer to a specific command queue.
+ * Implementations may use a time of 0 to clear.
+ * \param timeNs time in nanoseconds
+ * \param what optional argument
+ */
+SOAPY_SDR_API void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const long long timeNs, const char *what);
+
 #ifdef __cplusplus
 }
 #endif

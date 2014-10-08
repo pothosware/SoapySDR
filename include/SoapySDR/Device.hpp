@@ -393,7 +393,7 @@ public:
      * Get the master clock rate of the device.
      * \return the clock rate in Hz
      */
-    virtual double setMasterClockRate(void) const;
+    virtual double getMasterClockRate(void) const;
 
     /*!
      * Get the list of available clock sources.

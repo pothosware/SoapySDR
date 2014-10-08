@@ -386,7 +386,7 @@ public:
         _dev->set_master_clock_rate(rate);
     }
 
-    double setMasterClockRate(void) const
+    double getMasterClockRate(void) const
     {
         return _dev->get_master_clock_rate();
     }

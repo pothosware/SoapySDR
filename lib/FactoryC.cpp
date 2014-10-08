@@ -6,20 +6,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args);
+
 extern "C" {
 
 SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *length)
 {
-    //convert to map type
-    SoapySDR::Kwargs inArgs;
-    for (size_t i = 0; i < args->size; i++)
-    {
-        inArgs[args->keys[i]] = args->vals[i];
-    }
+    const std::vector<SoapySDR::Kwargs> results = SoapySDR::Device::enumerate(toKwargs(args));
 
-    const std::vector<SoapySDR::Kwargs> results = SoapySDR::Device::enumerate(inArgs);
-
-    //convert results to out args
+    //convert results to out args list
     SoapySDRKwargs *outArgs = (SoapySDRKwargs *)calloc(results.size(), sizeof(SoapySDRKwargs));
     for (size_t i = 0; i < results.size(); i++)
     {
@@ -34,14 +29,7 @@ SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *len
 
 SoapySDRDevice *SoapySDRDevice_make(const SoapySDRKwargs *args)
 {
-    //convert to map type
-    SoapySDR::Kwargs inArgs;
-    for (size_t i = 0; i < args->size; i++)
-    {
-        inArgs[args->keys[i]] = args->vals[i];
-    }
-
-    return (SoapySDRDevice *)SoapySDR::Device::make(inArgs);
+    return (SoapySDRDevice *)SoapySDR::Device::make(toKwargs(args));
 }
 
 void SoapySDRDevice_unmake(SoapySDRDevice *device)
