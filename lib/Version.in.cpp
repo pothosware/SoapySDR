@@ -12,17 +12,3 @@ std::string SoapySDR::getABIVersion(void)
 {
     return SOAPY_SDR_ABI_VERSION;
 }
-
-extern "C" {
-
-const char *SoapySDR_getAPIVersion(void)
-{
-    return "@SOAPY_SDR_VERSION@";
-}
-
-const char *SoapySDR_getABIVersion(void)
-{
-    return SOAPY_SDR_ABI_VERSION;
-}
-
-}

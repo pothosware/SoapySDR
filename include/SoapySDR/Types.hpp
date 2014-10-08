@@ -10,6 +10,7 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Types.h>
 #include <vector>
 #include <string>
 #include <map>

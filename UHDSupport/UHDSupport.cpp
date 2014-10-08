@@ -144,22 +144,22 @@ public:
         //receive into buffers and metadata
         uhd::rx_metadata_t md;
         uhd::rx_streamer::buffs_type stream_buffs(buffs, stream->get_num_channels());
-        int ret = stream->recv(stream_buffs, numElems, md, timeoutUs/1e6, (flags & SoapySDR::STREAM_FLAG_ONE_PACKET) != 0);
+        int ret = stream->recv(stream_buffs, numElems, md, timeoutUs/1e6, (flags & SOAPY_SDR_ONE_PACKET) != 0);
 
         //parse the metadata
         flags = 0;
-        if (md.has_time_spec) flags |= SoapySDR::STREAM_FLAG_HAS_TIME;
-        if (md.end_of_burst) flags |= SoapySDR::STREAM_FLAG_END_BURST;
+        if (md.has_time_spec) flags |= SOAPY_SDR_HAS_TIME;
+        if (md.end_of_burst) flags |= SOAPY_SDR_END_BURST;
         timeNs = md.time_spec.to_ticks(1e9);
         switch (md.error_code)
         {
         case uhd::rx_metadata_t::ERROR_CODE_NONE: return ret;
-        case uhd::rx_metadata_t::ERROR_CODE_OVERFLOW: return SoapySDR::ERROR_CODE_OVERFLOW;
-        case uhd::rx_metadata_t::ERROR_CODE_TIMEOUT: return SoapySDR::ERROR_CODE_TIMEOUT;
-        case uhd::rx_metadata_t::ERROR_CODE_BAD_PACKET: return SoapySDR::ERROR_CODE_CORRUPTION;
-        case uhd::rx_metadata_t::ERROR_CODE_ALIGNMENT: return SoapySDR::ERROR_CODE_CORRUPTION;
-        case uhd::rx_metadata_t::ERROR_CODE_LATE_COMMAND: return SoapySDR::ERROR_CODE_STREAM_ERROR;
-        case uhd::rx_metadata_t::ERROR_CODE_BROKEN_CHAIN: return SoapySDR::ERROR_CODE_STREAM_ERROR;
+        case uhd::rx_metadata_t::ERROR_CODE_OVERFLOW: return SOAPY_SDR_OVERFLOW;
+        case uhd::rx_metadata_t::ERROR_CODE_TIMEOUT: return SOAPY_SDR_TIMEOUT;
+        case uhd::rx_metadata_t::ERROR_CODE_BAD_PACKET: return SOAPY_SDR_CORRUPTION;
+        case uhd::rx_metadata_t::ERROR_CODE_ALIGNMENT: return SOAPY_SDR_CORRUPTION;
+        case uhd::rx_metadata_t::ERROR_CODE_LATE_COMMAND: return SOAPY_SDR_STREAM_ERROR;
+        case uhd::rx_metadata_t::ERROR_CODE_BROKEN_CHAIN: return SOAPY_SDR_STREAM_ERROR;
         }
         return ret;
     }
@@ -170,8 +170,8 @@ public:
 
         //load metadata
         uhd::tx_metadata_t md;
-        md.has_time_spec = (flags & SoapySDR::STREAM_FLAG_HAS_TIME) != 0;
-        md.end_of_burst = (flags & SoapySDR::STREAM_FLAG_END_BURST) != 0;
+        md.has_time_spec = (flags & SOAPY_SDR_HAS_TIME) != 0;
+        md.end_of_burst = (flags & SOAPY_SDR_END_BURST) != 0;
         md.time_spec = uhd::time_spec_t::from_ticks(timeNs, 1e9);
 
         //send buffers and metadata

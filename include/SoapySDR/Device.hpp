@@ -11,7 +11,7 @@
 #pragma once
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.hpp>
-#include <SoapySDR/Flags.hpp>
+#include <SoapySDR/Flags.h>
 #include <vector>
 #include <string>
 #include <complex>
