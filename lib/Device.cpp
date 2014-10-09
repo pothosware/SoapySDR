@@ -204,7 +204,7 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::vector<size_t> &, const Kwargs &)
+SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &)
 {
     return NULL;
 }

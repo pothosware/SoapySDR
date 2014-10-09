@@ -86,15 +86,36 @@ public:
 
     /*!
      * Initialize a stream given a list of channels and stream arguments.
+     *
+     * Format string markup guidelines:
+     *  - C means complex
+     *  - F means floating point
+     *  - U means signed integer
+     *  - S means unsigned integer
+     *  - number float/int size in bytes (complex is 2x this size)
+     *
+     * Example format strings:
+     *  - CF32 complex float32 (8 bytes per element)
+     *  - CS16 complex int16 (4 bytes per element)
+     *  - CS12 complex int12 (3 bytes per element)
+     *  - CS4 complex int4 (1 byte per element)
+     *  - S32 int32 (4 bytes per element)
+     *  - U8 uint8 (1 byte per element)
+     *
      * Recommended keys to use in the args dictionary:
-     *  - "HOST" - format of samples passed into read/writStream()
      *  - "WIRE" - format of the samples between device and host
+     *
      * \param direction the channel direction RX or TX
+     * \param format the desired buffer format in read/writeStream()
      * \param channels a list of channels for empty for automatic
-     * \param args stream args or empty for defaults.
+     * \param args stream args or empty for defaults
      * \return an opaque pointer to a stream handle
      */
-    virtual Stream *setupStream(const int direction, const std::vector<size_t> &channels = std::vector<size_t>(), const Kwargs &args = Kwargs());
+    virtual Stream *setupStream(
+        const int direction,
+        const std::string &format,
+        const std::vector<size_t> &channels = std::vector<size_t>(),
+        const Kwargs &args = Kwargs());
 
     /*!
      * Close an open stream created by setupStream
@@ -115,7 +136,13 @@ public:
      * \param timeoutUs the timeout in microseconds
      * \return the number of elements read per buffer or error code
      */
-    virtual int readStream(Stream *stream, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs = 100000);
+    virtual int readStream(
+        Stream *stream,
+        void * const *buffs,
+        const size_t numElems,
+        int &flags,
+        long long &timeNs,
+        const long timeoutUs = 100000);
 
     /*!
      * Write elements to a stream for transmission.
@@ -130,7 +157,13 @@ public:
      * \param timeoutUs the timeout in microseconds
      * \return the number of elements written per buffer or error
      */
-    virtual int writeStream(Stream *stream, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs = 100000);
+    virtual int writeStream(
+        Stream *stream,
+        const void * const *buffs,
+        const size_t numElems,
+        int &flags,
+        const long long timeNs,
+        const long timeoutUs = 100000);
 
     /*******************************************************************
      * Antenna API

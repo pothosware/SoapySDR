@@ -77,9 +77,21 @@ size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int dir
 /*******************************************************************
  * Stream API
  ******************************************************************/
-SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
+SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args, char **errorMsg)
 {
-    return reinterpret_cast<SoapySDRStream *>(reinterpret_cast<SoapySDR::Device *>(device)->setupStream(direction, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
+    try
+    {
+        return reinterpret_cast<SoapySDRStream *>(reinterpret_cast<SoapySDR::Device *>(device)->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
+    }
+    catch (const std::exception &ex)
+    {
+        *errorMsg = strdup(ex.what());
+    }
+    catch (...)
+    {
+        *errorMsg = strdup("unknown");
+    }
+    return NULL;
 }
 
 void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)

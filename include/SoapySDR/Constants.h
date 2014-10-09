@@ -64,4 +64,3 @@
  * For example, and internal buffer has filled.
  */
 #define SOAPY_SDR_OVERFLOW (-4)
-

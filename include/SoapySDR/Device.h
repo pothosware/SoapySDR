@@ -2,6 +2,10 @@
 /// \file SoapySDR/Device.h
 ///
 /// Interface definition for Soapy SDR devices.
+/// This is the C version of the Device interface.
+///
+/// General design rules about the API:
+/// The caller must free non-const array results.
 ///
 /// \copyright
 /// Copyright (c) 2014-2014 Josh Blum
@@ -82,17 +86,44 @@ SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device,
 
 /*!
  * Initialize a stream given a list of channels and stream arguments.
+ *
+ * Format string markup guidelines:
+ *  - C means complex
+ *  - F means floating point
+ *  - U means signed integer
+ *  - S means unsigned integer
+ *  - number float/int size in bytes (complex is 2x this size)
+ *
+ * Example format strings:
+ *  - CF32 complex float32 (8 bytes per element)
+ *  - CS16 complex int16 (4 bytes per element)
+ *  - CS12 complex int12 (3 bytes per element)
+ *  - CS4 complex int4 (1 byte per element)
+ *  - S32 int32 (4 bytes per element)
+ *  - U8 uint8 (1 byte per element)
+ *
  * Recommended keys to use in the args dictionary:
- *  - "HOST" - format of samples passed into read/writStream()
  *  - "WIRE" - format of the samples between device and host
+ *
+ * On failure setup will return NULL and set the error.
+ * The error message string must be freed by the caller.
+ *
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
+ * \param format the desired buffer format in read/writeStream()
  * \param channels a list of channels for empty for automatic
  * \param numChans the number of elements in the channels array
- * \param args stream args or empty for defaults.
+ * \param args stream args or empty for defaults
+ * \param errorMsg an error string set on failure
  * \return an opaque pointer to a stream handle
  */
-SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args);
+SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
+    const int direction,
+    const char *format,
+    const size_t *channels,
+    const size_t numChans,
+    const SoapySDRKwargs *args,
+    char **errorMsg);
 
 /*!
  * Close an open stream created by setupStream
@@ -115,7 +146,13 @@ SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRSt
  * \param timeoutUs the timeout in microseconds
  * \return the number of elements read per buffer or error code
  */
-SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, SoapySDRStream *stream, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs);
+SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    void * const *buffs,
+    const size_t numElems,
+    int *flags,
+    long long *timeNs,
+    const long timeoutUs);
 
 /*!
  * Write elements to a stream for transmission.
@@ -131,7 +168,13 @@ SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device, SoapySDRStre
  * \param timeoutUs the timeout in microseconds
  * \return the number of elements written per buffer or error
  */
-SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device, SoapySDRStream *stream, const void * const *buffs, const size_t numElems, int *flags, const long long timeNs, const long timeoutUs);
+SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const void * const *buffs,
+    const size_t numElems,
+    int *flags,
+    const long long timeNs,
+    const long timeoutUs);
 
 /*******************************************************************
  * Antenna API

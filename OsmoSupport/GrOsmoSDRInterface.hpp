@@ -24,6 +24,7 @@
 #include "source_iface.h"
 #include <gnuradio/sync_block.h>
 #include <boost/lexical_cast.hpp>
+#include <stdexcept>
 
 class GrOsmoSDRStreamer
 {
@@ -100,8 +101,9 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    SoapySDR::Stream *setupStream(const int dir, const std::vector<size_t> &, const SoapySDR::Kwargs &)
+    SoapySDR::Stream *setupStream(const int dir, std::string &format, const std::vector<size_t> &, const SoapySDR::Kwargs &)
     {
+        if (format != "CF32") throw std::runtime_error("GrOsmoSDRStreamer only supports format CF32");
         GrOsmoSDRStreamer *stream = new GrOsmoSDRStreamer((dir == SOAPY_SDR_TX)?_sinkBlock:_sourceBlock, this->getNumChannels(dir));
         return reinterpret_cast<SoapySDR::Stream *>(stream);
     }

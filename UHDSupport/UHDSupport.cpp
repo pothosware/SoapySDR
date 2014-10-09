@@ -5,6 +5,7 @@
 #include <SoapySDR/Registry.hpp>
 #include <uhd/device.hpp>
 #include <uhd/usrp/multi_usrp.hpp>
+#include <cctype>
 #include <set>
 
 /***********************************************************************
@@ -95,13 +96,22 @@ public:
     /*******************************************************************
      * Stream support
      ******************************************************************/
-    SoapySDR::Stream *setupStream(const int dir, const std::vector<size_t> &channels, const SoapySDR::Kwargs &args)
+    SoapySDR::Stream *setupStream(const int dir, const std::string &format, const std::vector<size_t> &channels, const SoapySDR::Kwargs &args)
     {
+        std::string hostFormat;
+        BOOST_FOREACH(const char ch, format)
+        {
+            if (ch == 'C') hostFormat += "c";
+            else if (ch == 'F') hostFormat = "f" + hostFormat;
+            else if (ch == 'S') hostFormat = "s" + hostFormat;
+            else if (std::isdigit(ch)) hostFormat += ch;
+            else throw std::runtime_error("SoapyUHDDevice::setupStream("+format+") unknown format");
+        }
+
         //convert input to stream args
-        uhd::stream_args_t stream_args;
+        uhd::stream_args_t stream_args(hostFormat);
         stream_args.channels = channels;
         stream_args.args = kwargsToDict(args);
-        if (args.count("HOST") != 0) stream_args.cpu_format = args.at("HOST");
         if (args.count("WIRE") != 0) stream_args.otw_format = args.at("WIRE");
 
         //create streamers
