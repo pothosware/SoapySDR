@@ -59,6 +59,15 @@ static std::vector<double> metaRangeToNumericList(const uhd::meta_range_t &metaR
 }
 
 /***********************************************************************
+ * Stream wrapper
+ **********************************************************************/
+struct SoapyUHDStream
+{
+    uhd::rx_streamer::sptr rx;
+    uhd::tx_streamer::sptr tx;
+};
+
+/***********************************************************************
  * Device interface
  **********************************************************************/
 class SoapyUHDDevice : public SoapySDR::Device
@@ -115,24 +124,18 @@ public:
         if (args.count("WIRE") != 0) stream_args.otw_format = args.at("WIRE");
 
         //create streamers
-        boost::shared_ptr<void> stream;
-        if (dir == SOAPY_SDR_TX) stream = _dev->get_tx_stream(stream_args);
-        if (dir == SOAPY_SDR_RX) stream = _dev->get_rx_stream(stream_args);
-
-        if (stream) _activeStreams.insert(stream);
-        return reinterpret_cast<SoapySDR::Stream *>(stream.get());
+        SoapyUHDStream *stream = new SoapyUHDStream();
+        if (dir == SOAPY_SDR_TX) stream->tx = _dev->get_tx_stream(stream_args);
+        if (dir == SOAPY_SDR_RX) stream->rx = _dev->get_rx_stream(stream_args);
+        if (stream->rx) stream->rx->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_START_CONTINUOUS);
+        return reinterpret_cast<SoapySDR::Stream *>(stream);
     }
 
     void closeStream(SoapySDR::Stream *handle)
     {
-        for (std::set<boost::shared_ptr<void> >::iterator it = _activeStreams.begin(); it != _activeStreams.end(); ++it)
-        {
-            if (handle == it->get())
-            {
-                _activeStreams.erase(it);
-                return;
-            }
-        }
+        SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
+        if (stream->rx) stream->rx->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
+        delete stream;
     }
 
     //maintain sptrs to active streams, removed by close
@@ -140,7 +143,7 @@ public:
 
     int readStream(SoapySDR::Stream *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs)
     {
-        uhd::rx_streamer *stream = reinterpret_cast<uhd::rx_streamer *>(handle);
+        uhd::rx_streamer::sptr &stream = reinterpret_cast<SoapyUHDStream *>(handle)->rx;
 
         //receive into buffers and metadata
         uhd::rx_metadata_t md;
@@ -167,7 +170,7 @@ public:
 
     int writeStream(SoapySDR::Stream *handle, const void * const *buffs, const size_t numElems, int &flags, const long long timeNs, const long timeoutUs)
     {
-        uhd::tx_streamer *stream = reinterpret_cast<uhd::tx_streamer *>(handle);
+        uhd::tx_streamer::sptr &stream = reinterpret_cast<SoapyUHDStream *>(handle)->tx;
 
         //load metadata
         uhd::tx_metadata_t md;
@@ -455,7 +458,7 @@ private:
 std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
 {
     //perform the discovery
-    const uhd::device_addrs_t addrs = uhd::device::find(kwargsToDict(args), uhd::device::USRP);
+    const uhd::device_addrs_t addrs = uhd::device::find(kwargsToDict(args));
 
     //convert addrs to results
     std::vector<SoapySDR::Kwargs> results;

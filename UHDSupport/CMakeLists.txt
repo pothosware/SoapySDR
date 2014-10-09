@@ -73,7 +73,7 @@ ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 find_package(UHD)
 
 if (NOT UHD_FOUND)
-    message(WARNING "UHD required to build -- ignoring: " ${CMAKE_PROJECT_NAME})
+    message(WARNING "UHD required to build -- ignoring UHD support")
     return()
 endif()
 

@@ -86,6 +86,7 @@ public:
 
     /*!
      * Initialize a stream given a list of channels and stream arguments.
+     * The implementation may change switches or power-up components.
      *
      * Format string markup guidelines:
      *  - C means complex
@@ -119,6 +120,7 @@ public:
 
     /*!
      * Close an open stream created by setupStream
+     * The implementation may change switches or power-down components.
      * \param stream the opaque pointer to a stream handle
      */
     virtual void closeStream(Stream *stream);
@@ -497,6 +499,7 @@ public:
      * \param what optional argument
      */
     virtual void setCommandTime(const long long timeNs, const std::string &what = "");
+
 };
 
 };

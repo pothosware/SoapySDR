@@ -113,7 +113,7 @@ set(Boost_ADDITIONAL_VERSIONS
 find_package(Boost COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 
 if(NOT Boost_FOUND)
-    message(WARNING "Boost required to build -- ignoring: " ${CMAKE_PROJECT_NAME})
+    message(WARNING "Boost required to build -- ignoring osmosdr support")
     return()
 endif()
 
