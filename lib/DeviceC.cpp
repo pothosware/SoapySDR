@@ -54,7 +54,35 @@ SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
     return out;
 }
 
+SoapySDRKwargs tokwargs(const SoapySDR::Kwargs &args)
+{
+    SoapySDRKwargs out;
+    for (SoapySDR::Kwargs::const_iterator it = args.begin(); it != args.end(); ++it)
+    {
+        SoapySDRKwargs_set(&out, it->first.c_str(), it->second.c_str());
+    }
+    return out;
+}
+
 extern "C" {
+
+/*******************************************************************
+ * Identification API
+ ******************************************************************/
+char *SoapySDRDevice_getDriverKey(const SoapySDRDevice *device)
+{
+    return strdup(reinterpret_cast<const SoapySDR::Device *>(device)->getDriverKey().c_str());
+}
+
+char *SoapySDRDevice_getHardwareKey(const SoapySDRDevice *device)
+{
+    return strdup(reinterpret_cast<const SoapySDR::Device *>(device)->getHardwareKey().c_str());
+}
+
+SoapySDRKwargs SoapySDRDevice_getHardwareInfo(const SoapySDRDevice *device)
+{
+    return tokwargs(reinterpret_cast<const SoapySDR::Device *>(device)->getHardwareInfo());
+}
 
 /*******************************************************************
  * Channels API
@@ -324,4 +352,87 @@ void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const long long timeN
     reinterpret_cast<SoapySDR::Device *>(device)->setCommandTime(timeNs, what);
 }
 
+/*******************************************************************
+ * Sensor API
+ ******************************************************************/
+char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length)
+{
+    
 }
+
+char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
+{
+    
+}
+
+/*******************************************************************
+ * Register API
+ ******************************************************************/
+void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value)
+{
+    
+}
+
+unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr)
+{
+    
+}
+
+/*******************************************************************
+ * GPIO API
+ ******************************************************************/
+char **SoapySDRDevice_listGPIOBanks(const SoapySDRDevice *device, size_t *length)
+{
+    
+}
+
+void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value)
+{
+    
+}
+
+unsigned SoapySDRDevice_readGPIO(const SoapySDRDevice *device, const char *bank)
+{
+    
+}
+
+/*******************************************************************
+ * I2C API
+ ******************************************************************/
+void SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr, const char *data, const size_t numBytes)
+{
+    
+}
+
+char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, const size_t numBytes)
+{
+    
+}
+
+/*******************************************************************
+ * SPI API
+ ******************************************************************/
+unsigned SoapySDRDevice_transactSPI(SoapySDRDevice *device, const int addr, const unsigned data, const size_t numBits)
+{
+    
+}
+
+/*******************************************************************
+ * UART API
+ ******************************************************************/
+char **SoapySDRDevice_listUARTs(const SoapySDRDevice *device, size_t *length)
+{
+    
+}
+
+void SoapySDRDevice_writeUART(SoapySDRDevice *device, const char *which, const char *data)
+{
+    
+}
+
+char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, const long timeoutUs)
+{
+    
+}
+
+} //extern "C"

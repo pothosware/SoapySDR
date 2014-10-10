@@ -7,6 +7,7 @@
 #include <string.h>
 
 SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args);
+SoapySDRKwargs tokwargs(const SoapySDR::Kwargs &args);
 
 extern "C" {
 
@@ -16,13 +17,7 @@ SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *len
 
     //convert results to out args list
     SoapySDRKwargs *outArgs = (SoapySDRKwargs *)calloc(results.size(), sizeof(SoapySDRKwargs));
-    for (size_t i = 0; i < results.size(); i++)
-    {
-        for (SoapySDR::Kwargs::const_iterator it = results[i].begin(); it != results[i].end(); ++it)
-        {
-            SoapySDRKwargs_set(&outArgs[i], it->first.c_str(), it->second.c_str());
-        }
-    }
+    for (size_t i = 0; i < results.size(); i++) outArgs[i] = tokwargs(results[i]);
     *length = results.size();
     return outArgs;
 }

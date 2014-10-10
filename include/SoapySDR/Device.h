@@ -52,6 +52,36 @@ SOAPY_SDR_API SoapySDRDevice *SoapySDRDevice_make(const SoapySDRKwargs *args);
 SOAPY_SDR_API void SoapySDRDevice_unmake(SoapySDRDevice *device);
 
 /*******************************************************************
+ * Identification API
+ ******************************************************************/
+
+/*!
+ * A key that uniquely identifies the device driver.
+ * This key identifies the underlying implementation.
+ * Serveral variants of a product may share a driver.
+ * \param device a pointer to a device instance
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getDriverKey(const SoapySDRDevice *device);
+
+/*!
+ * A key that uniquely identifies the hardware.
+ * This key should be meaningful to the user
+ * to optimize for the underlying hardware.
+ * \param device a pointer to a device instance
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getHardwareKey(const SoapySDRDevice *device);
+
+/*!
+ * Query a dictionary of available device information.
+ * This dictionary can any number of values like
+ * vendor name, product name, revisions, serials...
+ * This information can be displayed to the user
+ * to help identify the instantiated device.
+ * \param device a pointer to a device instance
+ */
+SOAPY_SDR_API SoapySDRKwargs SoapySDRDevice_getHardwareInfo(const SoapySDRDevice *device);
+
+/*******************************************************************
  * Channels API
  ******************************************************************/
 
@@ -411,6 +441,7 @@ SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevi
 
 /*!
  * Set the baseband sample rate of the chain.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \param rate the sample rate in samples per second
@@ -419,6 +450,7 @@ SOAPY_SDR_API void SoapySDRDevice_setSampleRate(SoapySDRDevice *device, const in
 
 /*!
  * Get the baseband sample rate of the chain.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \return the sample rate in samples per second
@@ -427,6 +459,7 @@ SOAPY_SDR_API double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, 
 
 /*!
  * Get the range of possible baseband sample rates.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \param [out] length the number of sample rates
@@ -436,6 +469,7 @@ SOAPY_SDR_API double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *devic
 
 /*!
  * Set the baseband filter width of the chain.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \param bw the baseband filter width in Hz
@@ -444,6 +478,7 @@ SOAPY_SDR_API void SoapySDRDevice_setBandwidth(SoapySDRDevice *device, const int
 
 /*!
  * Get the baseband filter width of the chain.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \return the baseband filter width in Hz
@@ -452,6 +487,7 @@ SOAPY_SDR_API double SoapySDRDevice_getBandwidth(const SoapySDRDevice *device, c
 
 /*!
  * Get the range of possible baseband filter widths.
+ * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \param [out] length the number of bandwidths
@@ -465,18 +501,21 @@ SOAPY_SDR_API double *SoapySDRDevice_listBandwidths(const SoapySDRDevice *device
 
 /*!
  * Set the master clock rate of the device.
+ * \param device a pointer to a device instance
  * \param rate the clock rate in Hz
  */
 SOAPY_SDR_API void SoapySDRDevice_setMasterClockRate(SoapySDRDevice *device, const double rate);
 
 /*!
  * Get the master clock rate of the device.
+ * \param device a pointer to a device instance
  * \return the clock rate in Hz
  */
 SOAPY_SDR_API double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *device);
 
 /*!
  * Get the list of available clock sources.
+ * \param device a pointer to a device instance
  * \param [out] length the number of sources
  * \return a list of clock source names
  */
@@ -484,18 +523,21 @@ SOAPY_SDR_API char **SoapySDRDevice_listClockSources(const SoapySDRDevice *devic
 
 /*!
  * Set the clock source on the device
+ * \param device a pointer to a device instance
  * \param source the name of a clock source
  */
 SOAPY_SDR_API void SoapySDRDevice_setClockSource(SoapySDRDevice *device, const char *source);
 
 /*!
  * Get the clock source of the device
+ * \param device a pointer to a device instance
  * \return the name of a clock source
  */
 SOAPY_SDR_API char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device);
 
 /*!
  * Get the list of available time sources.
+ * \param device a pointer to a device instance
  * \param [out] length the number of sources
  * \return a list of time source names
  */
@@ -503,12 +545,14 @@ SOAPY_SDR_API char **SoapySDRDevice_listTimeSources(const SoapySDRDevice *device
 
 /*!
  * Set the time source on the device
+ * \param device a pointer to a device instance
  * \param source the name of a time source
  */
 SOAPY_SDR_API void SoapySDRDevice_setTimeSource(SoapySDRDevice *device, const char *source);
 
 /*!
  * Get the time source of the device
+ * \param device a pointer to a device instance
  * \return the name of a time source
  */
 SOAPY_SDR_API char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device);
@@ -520,6 +564,7 @@ SOAPY_SDR_API char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device);
 /*!
  * Read the time from the hardware clock on the device.
  * The what argument can refer to a specific time counter.
+ * \param device a pointer to a device instance
  * \param what optional argument
  * \return the time in nanoseconds
  */
@@ -528,6 +573,7 @@ SOAPY_SDR_API long long SoapySDRDevice_getHardwareTime(const SoapySDRDevice *dev
 /*!
  * Write the time to the hardware clock on the device.
  * The what argument can refer to a specific time counter.
+ * \param device a pointer to a device instance
  * \param timeNs time in nanoseconds
  * \param what optional argument
  */
@@ -537,10 +583,163 @@ SOAPY_SDR_API void SoapySDRDevice_setHardwareTime(SoapySDRDevice *device, const 
  * Set the time of subsequent configuration calls.
  * The what argument can refer to a specific command queue.
  * Implementations may use a time of 0 to clear.
+ * \param device a pointer to a device instance
  * \param timeNs time in nanoseconds
  * \param what optional argument
  */
 SOAPY_SDR_API void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const long long timeNs, const char *what);
+
+/*******************************************************************
+ * Sensor API
+ ******************************************************************/
+
+/*!
+ * List the available readback sensors.
+ * A sensor can represent a reference lock, RSSI, temperature.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sensor names
+ * \return a list of available sensor string names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Readback a sensor given the name.
+ * The value returned is a string which can represent
+ * a boolean ("true"/"false"), an integer, or float.
+ * \param device a pointer to a device instance
+ * \param name the name of an available sensor
+ * \return the current value of the sensor
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name);
+
+/*******************************************************************
+ * Register API
+ ******************************************************************/
+
+/*!
+ * Write a register on the device.
+ * This can represent a register on a soft CPU, FPGA, IC;
+ * the interpretation is up the implementation to decide.
+ * \param device a pointer to a device instance
+ * \param addr the register address
+ * \param value the register value
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value);
+
+/*!
+ * Read a register on the device.
+ * \param device a pointer to a device instance
+ * \param addr the register address
+ * \return the register value
+ */
+SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr);
+
+/*******************************************************************
+ * GPIO API
+ ******************************************************************/
+
+/*!
+ * Get a list of available GPIO banks by name.
+ * \param [out] length the number of GPIO banks
+ * \param device a pointer to a device instance
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listGPIOBanks(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Write the value of a GPIO bank.
+ * \param device a pointer to a device instance
+ * \param bank the name of an available bank
+ * \param value an integer representing GPIO bits
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value);
+
+/*!
+ * Readback the value of a GPIO bank.
+ * \param device a pointer to a device instance
+ * \param bank the name of an available bank
+ * \return an integer representing GPIO bits
+ */
+SOAPY_SDR_API unsigned SoapySDRDevice_readGPIO(const SoapySDRDevice *device, const char *bank);
+
+/*******************************************************************
+ * I2C API
+ ******************************************************************/
+
+/*!
+ * Write to an available I2C slave.
+ * If the device contains multiple I2C masters,
+ * the address bits can encode which master.
+ * \param device a pointer to a device instance
+ * \param addr the address of the slave
+ * \param data an array of bytes write out
+ * \param numBytes the number of bytes to write
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr, const char *data, const size_t numBytes);
+
+/*!
+ * Read from an available I2C slave.
+ * If the device contains multiple I2C masters,
+ * the address bits can encode which master.
+ * \param device a pointer to a device instance
+ * \param addr the address of the slave
+ * \param numBytes the number of bytes to read
+ * \return an array of bytes read from the slave
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, const size_t numBytes);
+
+/*******************************************************************
+ * SPI API
+ ******************************************************************/
+
+/*!
+ * Perform a SPI transaction and return the result.
+ * Its up to the implementation to set the clock rate,
+ * and read edge, and the write edge of the SPI core.
+ * SPI slaves without a readback pin will return 0.
+ *
+ * If the device contains multiple SPI masters,
+ * the address bits can encode which master.
+ *
+ * \param device a pointer to a device instance
+ * \param addr an address of an available SPI slave
+ * \param data the SPI data, numBits-1 is first out
+ * \param numBits the number of bits to clock out
+ * \return the readback data, numBits-1 is first in
+ */
+SOAPY_SDR_API unsigned SoapySDRDevice_transactSPI(SoapySDRDevice *device, const int addr, const unsigned data, const size_t numBits);
+
+/*******************************************************************
+ * UART API
+ ******************************************************************/
+
+/*!
+ * Enumerate the available UART devices.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of UART names
+ * \return a list of names of available UARTs
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listUARTs(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Write data to a UART device.
+ * Its up to the implementation to set the baud rate,
+ * carriage return settings, flushing on newline.
+ * \param device a pointer to a device instance
+ * \param which the name of an available UART
+ * \param data a null terminated array of bytes
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeUART(SoapySDRDevice *device, const char *which, const char *data);
+
+/*!
+ * Read bytes from a UART until timeout or newline.
+ * Its up to the implementation to set the baud rate,
+ * carriage return settings, flushing on newline.
+ * \param device a pointer to a device instance
+ * \param which the name of an available UART
+ * \param timeoutUs a timeout in microseconds
+ * \return a null terminated array of bytes
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, const long timeoutUs);
 
 #ifdef __cplusplus
 }
