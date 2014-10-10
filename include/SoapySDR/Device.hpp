@@ -57,6 +57,33 @@ public:
     static void unmake(Device *device);
 
     /*******************************************************************
+     * Identification API
+     ******************************************************************/
+
+    /*!
+     * A key that uniquely identifies the device driver.
+     * This key identifies the underlying implementation.
+     * Serveral variants of a product may share a driver.
+     */
+    virtual std::string getDriverKey(void) const;
+
+    /*!
+     * A key that uniquely identifies the hardware.
+     * This key should be meaningful to the user
+     * to optimize for the underlying hardware.
+     */
+    virtual std::string getHardwareKey(void) const;
+
+    /*!
+     * Query a dictionary of available device information.
+     * This dictionary can any number of values like
+     * vendor name, product name, revisions, serials...
+     * This information can be displayed to the user
+     * to help identify the instantiated device.
+     */
+    virtual Kwargs getHardwareInfo(void) const;
+
+    /*******************************************************************
      * Channels API
      ******************************************************************/
 
@@ -499,6 +526,141 @@ public:
      * \param what optional argument
      */
     virtual void setCommandTime(const long long timeNs, const std::string &what = "");
+
+    /*******************************************************************
+     * Sensor API
+     ******************************************************************/
+
+    /*!
+     * List the available readback sensors.
+     * A sensor can represent a reference lock, RSSI, temperature.
+     * \return a list of available sensor string names
+     */
+    virtual std::vector<std::string> listSensors(void) const;
+
+    /*!
+     * Readback a sensor given the name.
+     * The value returned is a string which can represent
+     * a boolean ("true"/"false"), an integer, or float.
+     * \param name the name of an available sensor
+     * \return the current value of the sensor
+     */
+    virtual std::string readSensor(const std::string &name) const;
+
+    /*******************************************************************
+     * Register API
+     ******************************************************************/
+
+    /*!
+     * Write a register on the device.
+     * This can represent a register on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param addr the register address
+     * \param value the register value
+     */
+    virtual void writeRegister(const unsigned addr, const unsigned value);
+
+    /*!
+     * Read a register on the device.
+     * \param addr the register address
+     * \return the register value
+     */
+    virtual unsigned readRegister(const unsigned addr) const;
+
+    /*******************************************************************
+     * GPIO API
+     ******************************************************************/
+
+    /*!
+     * Get a list of available GPIO banks by name.
+     */
+    virtual std::vector<std::string> listGPIOBanks(void) const;
+
+    /*!
+     * Write the value of a GPIO bank.
+     * \param bank the name of an available bank
+     * \param value an integer representing GPIO bits
+     */
+    virtual void writeGPIO(const std::string &bank, const unsigned value);
+
+    /*!
+     * Readback the value of a GPIO bank.
+     * \param bank the name of an available bank
+     * \return an integer representing GPIO bits
+     */
+    virtual unsigned readGPIO(const std::string &bank) const;
+
+    /*******************************************************************
+     * I2C API
+     ******************************************************************/
+
+    /*!
+     * Write to an available I2C slave.
+     * If the device contains multiple I2C masters,
+     * the address bits can encode which master.
+     * \param addr the address of the slave
+     * \param data an array of bytes write out
+     */
+    virtual void writeI2C(const int addr, const std::string &data);
+
+    /*!
+     * Read from an available I2C slave.
+     * If the device contains multiple I2C masters,
+     * the address bits can encode which master.
+     * \param addr the address of the slave
+     * \param numBytes the number of bytes to read
+     * \return an array of bytes read from the slave
+     */
+    virtual std::string readI2C(const int addr, const size_t numBytes);
+
+    /*******************************************************************
+     * SPI API
+     ******************************************************************/
+
+    /*!
+     * Perform a SPI transaction and return the result.
+     * Its up to the implementation to set the clock rate,
+     * and read edge, and the write edge of the SPI core.
+     * SPI slaves without a readback pin will return 0.
+     *
+     * If the device contains multiple SPI masters,
+     * the address bits can encode which master.
+     *
+     * \param addr an address of an available SPI slave
+     * \param data the SPI data, numBits-1 is first out
+     * \param numBits the number of bits to clock out
+     * \return the readback data, numBits-1 is first in
+     */
+    virtual unsigned transactSPI(const int addr, const unsigned data, const size_t numBits);
+
+    /*******************************************************************
+     * UART API
+     ******************************************************************/
+
+    /*!
+     * Enumerate the available UART devices.
+     * \return a list of names of available UARTs
+     */
+    virtual std::vector<std::string> listUARTs(void) const;
+
+    /*!
+     * Write data to a UART device.
+     * Its up to the implementation to set the baud rate,
+     * carriage return settings, flushing on newline.
+     * \param which the name of an available UART
+     * \param data an array of bytes to write out
+     */
+    virtual void writeUART(const std::string &which, const std::string &data);
+
+    /*!
+     * Read bytes from a UART until timeout or newline.
+     * Its up to the implementation to set the baud rate,
+     * carriage return settings, flushing on newline.
+     * \param which the name of an available UART
+     * \param timeoutUs a timeout in microseconds
+     * \return an array of bytes read from the UART
+     */
+    virtual std::string readUART(const std::string &which, const long timeoutUs = 100000) const;
 
 };
 
