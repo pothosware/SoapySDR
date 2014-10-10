@@ -107,6 +107,14 @@ public:
      */
     virtual size_t getNumChannels(const int direction) const;
 
+    /*!
+     * Find out if the specified channel is full or half duplex.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true for full duplex, false for half duplex
+     */
+    virtual bool getFullDuplex(const int direction, const size_t channel) const;
+
     /*******************************************************************
      * Stream API
      ******************************************************************/

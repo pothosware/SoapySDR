@@ -107,6 +107,11 @@ size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int dir
     return device->getNumChannels(direction);
 }
 
+bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->getFullDuplex(direction, channel);
+}
+
 /*******************************************************************
  * Stream API
  ******************************************************************/

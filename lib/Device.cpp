@@ -44,6 +44,11 @@ size_t SoapySDR::Device::getNumChannels(const int) const
     return 0;
 }
 
+bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
+{
+    return true;
+}
+
 /*******************************************************************
  * Stream API
  ******************************************************************/
