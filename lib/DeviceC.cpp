@@ -59,7 +59,7 @@ SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
     return out;
 }
 
-SoapySDRKwargs tokwargs(const SoapySDR::Kwargs &args)
+SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
 {
     SoapySDRKwargs out;
     for (SoapySDR::Kwargs::const_iterator it = args.begin(); it != args.end(); ++it)
@@ -86,7 +86,7 @@ char *SoapySDRDevice_getHardwareKey(const SoapySDRDevice *device)
 
 SoapySDRKwargs SoapySDRDevice_getHardwareInfo(const SoapySDRDevice *device)
 {
-    return tokwargs(device->getHardwareInfo());
+    return toKwargs(device->getHardwareInfo());
 }
 
 /*******************************************************************

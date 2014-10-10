@@ -36,6 +36,15 @@ struct SoapySDRStream;
 SOAPY_SDR_API SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *length);
 
 /*!
+ * Enumerate a list of available devices on the system.
+ * Markup format for args: "keyA=valA, keyB=valB".
+ * \param args a markup string of key/value argument filters
+ * \param [out] length the number of elements in the result.
+ * \return a list of arguments strings, each unique to a device
+ */
+SOAPY_SDR_API SoapySDRKwargs *SoapySDRDevice_enumerateStrArgs(const char *args, size_t *length);
+
+/*!
  * Make a new Device object given device construction args.
  * The device pointer will be stored in a table so subsequent calls
  * with the same arguments will produce the same device.

@@ -6,6 +6,7 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
+#include <cctype>
 
 typedef std::map<SoapySDR::Kwargs, SoapySDR::Device *> DeviceTable;
 
@@ -30,13 +31,13 @@ std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
     const FindFunctions findFunctions = Registry::listFindFunctions();
     for (FindFunctions::const_iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
     {
-        if (args.count("module") != 0 and args.at("module") != it->first) continue;
+        if (args.count("driver") != 0 and args.at("driver") != it->first) continue;
         try
         {
             std::vector<SoapySDR::Kwargs> results0 = it->second(args);
             for (size_t i = 0; i < results0.size(); i++)
             {
-                results0[i]["module"] = it->first;
+                results0[i]["driver"] = it->first;
                 results.push_back(results0[i]);
             }
         }
@@ -50,6 +51,52 @@ std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
         }
     }
     return results;
+}
+
+static std::string trim(const std::string &s)
+{
+    std::string out = s;
+    while (not out.empty() and std::isspace(out[0])) out = out.substr(1);
+    while (not out.empty() and std::isspace(out[out.size()-1])) out = out.substr(0, out.size()-1);
+    return out;
+}
+
+static SoapySDR::Kwargs argsStrToKwargs(const std::string &args)
+{
+    SoapySDR::Kwargs kwargs;
+
+    bool inKey = true;
+    std::string key, val;
+    for (size_t i = 0; i < args.size(); i++)
+    {
+        const char ch = args[i];
+        if (inKey)
+        {
+            if (ch == '=') inKey = false;
+            else if (ch == ',') inKey = true;
+            else key += ch;
+        }
+        else
+        {
+            if (ch == ',') inKey = true;
+            else val += ch;
+        }
+        if ((inKey and not val.empty()) or ((i+1) == args.size()))
+        {
+            key = trim(key);
+            val = trim(val);
+            if (not key.empty()) kwargs[key] = val;
+            key = "";
+            val = "";
+        }
+    }
+
+    return kwargs;
+}
+
+std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const std::string &args)
+{
+    return enumerate(argsStrToKwargs(args));
 }
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
@@ -68,7 +115,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
     else
     {
         //no module specified, perform an enumeration and take first result
-        if (args.count("module") == 0)
+        if (args.count("driver") == 0)
         {
             std::vector<SoapySDR::Kwargs> results = Device::enumerate(args);
             if (not results.empty()) args = results.front();
@@ -78,7 +125,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
         MakeFunctions makeFunctions = Registry::listMakeFunctions();
         for (MakeFunctions::const_iterator it = makeFunctions.begin(); it != makeFunctions.end(); ++it)
         {
-            if (args.count("module") != 0 and args.at("module") != it->first) continue;
+            if (args.count("driver") != 0 and args.at("driver") != it->first) continue;
             device = it->second(args);
             break;
         }
