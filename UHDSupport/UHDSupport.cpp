@@ -5,6 +5,7 @@
 #include <SoapySDR/Registry.hpp>
 #include <uhd/device.hpp>
 #include <uhd/usrp/multi_usrp.hpp>
+#include <uhd/property_tree.hpp>
 #include <cctype>
 #include <set>
 
@@ -73,10 +74,50 @@ struct SoapyUHDStream
 class SoapyUHDDevice : public SoapySDR::Device
 {
 public:
-    SoapyUHDDevice(uhd::usrp::multi_usrp::sptr dev):
-        _dev(dev)
+    SoapyUHDDevice(uhd::usrp::multi_usrp::sptr dev, const std::string &type):
+        _dev(dev),
+        _type(type)
     {
         return;
+    }
+
+    /*******************************************************************
+     * Identification API
+     ******************************************************************/
+    std::string getDriverKey(void) const
+    {
+        return _type;
+    }
+
+    std::string getHardwareKey(void) const
+    {
+        return _dev->get_mboard_name();
+    }
+
+    SoapySDR::Kwargs getHardwareInfo(void) const
+    {
+        SoapySDR::Kwargs out;
+        for (size_t i = 0; i < this->getNumChannels(SOAPY_SDR_TX); i++)
+        {
+            const uhd::dict<std::string, std::string> info = _dev->get_usrp_tx_info(i);
+            BOOST_FOREACH (const std::string &key, info.keys())
+            {
+                if (key.size() > 3 and key.substr(0, 3) == "tx_")
+                    out[str(boost::format("tx%d_%s") % i % key.substr(3))] = info[key];
+                else out[key] = info[key];
+            }
+        }
+        for (size_t i = 0; i < this->getNumChannels(SOAPY_SDR_RX); i++)
+        {
+            const uhd::dict<std::string, std::string> info = _dev->get_usrp_rx_info(i);
+            BOOST_FOREACH (const std::string &key, info.keys())
+            {
+                if (key.size() > 3 and key.substr(0, 3) == "rx_")
+                    out[str(boost::format("rx%d_%s") % i % key.substr(3))] = info[key];
+                else out[key] = info[key];
+            }
+        }
+        return out;
     }
 
     /*******************************************************************
@@ -450,6 +491,7 @@ public:
 
 private:
     uhd::usrp::multi_usrp::sptr _dev;
+    const std::string _type;
 };
 
 /***********************************************************************
@@ -471,7 +513,7 @@ std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
 
 SoapySDR::Device *make_uhd(const SoapySDR::Kwargs &args)
 {
-    return new SoapyUHDDevice(uhd::usrp::multi_usrp::make(kwargsToDict(args)));
+    return new SoapyUHDDevice(uhd::usrp::multi_usrp::make(kwargsToDict(args)), args.at("type"));
 }
 
 static SoapySDR::Registry register__uhd("uhd", &find_uhd, &make_uhd, SOAPY_SDR_ABI_VERSION);

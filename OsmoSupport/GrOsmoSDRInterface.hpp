@@ -69,7 +69,8 @@ public:
     /*******************************************************************
      * Initialization
      ******************************************************************/
-    GrOsmoSDRInterface(void)
+    GrOsmoSDRInterface(const std::string &target):
+        _target(target)
     {
         return;
     }
@@ -86,6 +87,19 @@ public:
     {
         _sink = sink;
         _sinkBlock = sink;
+    }
+
+    /*******************************************************************
+     * Identification API
+     ******************************************************************/
+    std::string getDriverKey(void) const
+    {
+        return _target;
+    }
+
+    std::string getHardwareKey(void) const
+    {
+        return _target;
     }
 
     /*******************************************************************
@@ -345,6 +359,8 @@ private:
         }
         return out;
     }
+
+    const std::string _target;
 
     boost::shared_ptr<source_iface> _source;
     boost::shared_ptr<sink_iface> _sink;

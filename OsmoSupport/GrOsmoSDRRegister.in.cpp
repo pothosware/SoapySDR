@@ -55,7 +55,7 @@ static SoapySDR::Device *make__@TARGET@(const SoapySDR::Kwargs &args)
     }
 
     //new device
-    GrOsmoSDRInterface *device = new GrOsmoSDRInterface();
+    GrOsmoSDRInterface *device = new GrOsmoSDRInterface("@TARGET@");
 
     //call factories when they exist
     #if @HAS_SOURCE@
