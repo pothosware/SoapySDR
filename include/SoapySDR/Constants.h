@@ -64,3 +64,9 @@
  * For example, and internal buffer has filled.
  */
 #define SOAPY_SDR_OVERFLOW (-4)
+
+/*!
+ * Returned when a requested operation or flag setting
+ * is not supported by the underlying implementation.
+ */
+#define SOAPY_SDR_NOT_SUPPORTED (-5)

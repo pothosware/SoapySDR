@@ -153,6 +153,48 @@ public:
     virtual void closeStream(Stream *stream);
 
     /*!
+     * Activate a stream.
+     * Call activate to prepare a stream before using read/write().
+     * The implementation control switches or stimulate data flow.
+     *
+     * The timeNs is only valid when the flags have SOAPY_SDR_HAS_TIME.
+     * The numElems count can be used to request a finite burst size.
+     * The SOAPY_SDR_END_BURST flag can signal end on the finite burst.
+     * Not all implementations will support the full range of options.
+     * In this case, the implementation returns SOAPY_SDR_NOT_SUPPORTED.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param flags optional flag indicators about the stream
+     * \param timeNs optional activation time in nanoseconds
+     * \param numElems optional element count for burst control
+     * \return 0 for success or error code on failure
+     */
+    virtual int activateStream(
+        Stream *stream,
+        const int flags = 0,
+        const long long timeNs = 0,
+        const size_t numElems = 0);
+
+    /*!
+     * Deactivate a stream.
+     * Call deactivate when not using using read/write().
+     * The implementation control switches or halt data flow.
+     *
+     * The timeNs is only valid when the flags have SOAPY_SDR_HAS_TIME.
+     * Not all implementations will support the full range of options.
+     * In this case, the implementation returns SOAPY_SDR_NOT_SUPPORTED.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param flags optional flag indicators about the stream
+     * \param timeNs optional deactivation time in nanoseconds
+     * \return 0 for success or error code on failure
+     */
+    virtual int deactivateStream(
+        Stream *stream,
+        const int flags = 0,
+        const long long timeNs = 0);
+
+    /*!
      * Read elements from a stream for reception.
      * This is a multi-channel call, and buffs should be an array of void *,
      * where each pointer will be filled with data from a different channel.

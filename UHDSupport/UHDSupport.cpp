@@ -168,19 +168,47 @@ public:
         SoapyUHDStream *stream = new SoapyUHDStream();
         if (dir == SOAPY_SDR_TX) stream->tx = _dev->get_tx_stream(stream_args);
         if (dir == SOAPY_SDR_RX) stream->rx = _dev->get_rx_stream(stream_args);
-        if (stream->rx) stream->rx->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_START_CONTINUOUS);
         return reinterpret_cast<SoapySDR::Stream *>(stream);
     }
 
     void closeStream(SoapySDR::Stream *handle)
     {
         SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
-        if (stream->rx) stream->rx->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
         delete stream;
     }
 
-    //maintain sptrs to active streams, removed by close
-    std::set<boost::shared_ptr<void> > _activeStreams;
+    int activateStream(SoapySDR::Stream *handle, const int flags, const long long timeNs, const size_t numElems)
+    {
+        SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
+        if (not stream->rx) return SoapySDR::Device::activateStream(handle, flags, timeNs, numElems);
+
+        //determine stream mode
+        uhd::stream_cmd_t::stream_mode_t mode;
+        if (numElems == 0) mode = uhd::stream_cmd_t::STREAM_MODE_START_CONTINUOUS;
+        else if ((flags & SOAPY_SDR_END_BURST) != 0) mode = uhd::stream_cmd_t::STREAM_MODE_NUM_SAMPS_AND_DONE;
+        else mode = uhd::stream_cmd_t::STREAM_MODE_NUM_SAMPS_AND_MORE;
+
+        //fill in the command
+        uhd::stream_cmd_t cmd(mode);
+        cmd.stream_now = (flags & SOAPY_SDR_HAS_TIME) == 0;
+        cmd.time_spec = uhd::time_spec_t::from_ticks(timeNs, 1e9);
+        cmd.num_samps = numElems;
+
+        //issue command
+        stream->rx->issue_stream_cmd(cmd);
+        return 0;
+    }
+
+    int deactivateStream(SoapySDR::Stream *handle, const int flags, const long long timeNs)
+    {
+        SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
+        if (not stream->rx) return SoapySDR::Device::deactivateStream(handle, flags, timeNs);
+        if (flags != 0) return SOAPY_SDR_NOT_SUPPORTED;
+
+        //stop the stream
+        stream->rx->issue_stream_cmd(uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS);
+        return 0;
+    }
 
     int readStream(SoapySDR::Stream *handle, void * const *buffs, const size_t numElems, int &flags, long long &timeNs, const long timeoutUs)
     {

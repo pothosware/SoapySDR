@@ -35,10 +35,14 @@ public:
         //only one of these buffers gets used -- depends read vs write
         _input_items.resize(numChans);
         _output_items.resize(numChans);
+    }
+
+    void start(void)
+    {
         _block->start();
     }
 
-    ~GrOsmoSDRStreamer(void)
+    void stop(void)
     {
         _block->stop();
     }
@@ -125,6 +129,20 @@ public:
     void closeStream(SoapySDR::Stream *handle)
     {
         delete reinterpret_cast<GrOsmoSDRStreamer *>(handle);
+    }
+
+    int activateStream(SoapySDR::Stream *stream, const int flags, const long long, const size_t)
+    {
+        if (flags != 0) return SOAPY_SDR_NOT_SUPPORTED;
+        reinterpret_cast<GrOsmoSDRStreamer *>(stream)->start();
+        return 0;
+    }
+
+    int deactivateStream(SoapySDR::Stream *stream, const int flags, const long long)
+    {
+        if (flags != 0) return SOAPY_SDR_NOT_SUPPORTED;
+        reinterpret_cast<GrOsmoSDRStreamer *>(stream)->stop();
+        return 0;
     }
 
     int readStream(SoapySDR::Stream *handle, void * const *buffs, const size_t numElems, int &flags, long long &, const long)

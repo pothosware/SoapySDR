@@ -57,14 +57,24 @@ void SoapySDR::Device::closeStream(Stream *)
     return;
 }
 
+int SoapySDR::Device::activateStream(Stream *, const int flags, const long long, const size_t)
+{
+    return (flags == 0)? 0 : SOAPY_SDR_NOT_SUPPORTED;
+}
+
+int SoapySDR::Device::deactivateStream(Stream *, const int flags, const long long)
+{
+    return (flags == 0)? 0 : SOAPY_SDR_NOT_SUPPORTED;
+}
+
 int SoapySDR::Device::readStream(Stream *, void * const *, const size_t, int &, long long &, const long)
 {
-    return -1;
+    return SOAPY_SDR_NOT_SUPPORTED;
 }
 
 int SoapySDR::Device::writeStream(Stream *, const void * const *, const size_t, int &, const long long, const long)
 {
-    return -1;
+    return SOAPY_SDR_NOT_SUPPORTED;
 }
 
 /*******************************************************************

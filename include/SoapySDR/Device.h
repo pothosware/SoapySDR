@@ -163,6 +163,50 @@ SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
 SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream);
 
 /*!
+ * Activate a stream.
+ * Call activate to prepare a stream before using read/write().
+ * The implementation control switches or stimulate data flow.
+ *
+ * The timeNs is only valid when the flags have SOAPY_SDR_HAS_TIME.
+ * The numElems count can be used to request a finite burst size.
+ * The SOAPY_SDR_END_BURST flag can signal end on the finite burst.
+ * Not all implementations will support the full range of options.
+ * In this case, the implementation returns SOAPY_SDR_NOT_SUPPORTED.
+ *
+ * \param device a pointer to a device instance
+ * \param stream the opaque pointer to a stream handle
+ * \param flags optional flag indicators about the stream
+ * \param timeNs optional activation time in nanoseconds
+ * \param numElems optional element count for burst control
+ * \return 0 for success or error code on failure
+ */
+SOAPY_SDR_API int SoapySDRDevice_activateStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const int flags,
+    const long long timeNs,
+    const size_t numElems);
+
+/*!
+ * Deactivate a stream.
+ * Call deactivate when not using using read/write().
+ * The implementation control switches or halt data flow.
+ *
+ * The timeNs is only valid when the flags have SOAPY_SDR_HAS_TIME.
+ * Not all implementations will support the full range of options.
+ * In this case, the implementation returns SOAPY_SDR_NOT_SUPPORTED.
+ *
+ * \param device a pointer to a device instance
+ * \param stream the opaque pointer to a stream handle
+ * \param flags optional flag indicators about the stream
+ * \param timeNs optional deactivation time in nanoseconds
+ * \return 0 for success or error code on failure
+ */
+SOAPY_SDR_API int SoapySDRDevice_deactivateStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const int flags,
+    const long long timeNs);
+
+/*!
  * Read elements from a stream for reception.
  * This is a multi-channel call, and buffs should be an array of void *,
  * where each pointer will be filled with data from a different channel.

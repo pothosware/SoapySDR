@@ -132,6 +132,23 @@ void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
     return device->closeStream(reinterpret_cast<SoapySDR::Stream *>(stream));
 }
 
+int SoapySDRDevice_activateStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const int flags,
+    const long long timeNs,
+    const size_t numElems)
+{
+    return device->activateStream(reinterpret_cast<SoapySDR::Stream *>(stream), flags, timeNs, numElems);
+}
+
+int SoapySDRDevice_deactivateStream(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const int flags,
+    const long long timeNs)
+{
+    return device->deactivateStream(reinterpret_cast<SoapySDR::Stream *>(stream), flags, timeNs);
+}
+
 int SoapySDRDevice_readStream(SoapySDRDevice *device, SoapySDRStream *stream, void * const *buffs, const size_t numElems, int *flags, long long *timeNs, const long timeoutUs)
 {
     return device->readStream(reinterpret_cast<SoapySDR::Stream *>(stream), buffs, numElems, *flags, *timeNs, timeoutUs);
