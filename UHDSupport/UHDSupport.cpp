@@ -117,6 +117,11 @@ public:
                 else out[key] = info[key];
             }
         }
+
+        uhd::property_tree::sptr tree = _dev->get_device()->get_tree();
+        if (tree->exists("/mboards/0/fw_version")) out["fw_version"] = tree->access<std::string>("/mboards/0/fw_version").get();
+        if (tree->exists("/mboards/0/fpga_version")) out["fpga_version"] = tree->access<std::string>("/mboards/0/fpga_version").get();
+
         return out;
     }
 

@@ -56,7 +56,17 @@ public:
      * \param args device construction key/value argument map
      * \return a pointer to a new Device object
      */
-    static Device *make(const Kwargs &args);
+    static Device *make(const Kwargs &args = Kwargs());
+
+    /*!
+     * Make a new Device object given device construction args.
+     * The device pointer will be stored in a table so subsequent calls
+     * with the same arguments will produce the same device.
+     * For every call to make, there should be a matched call to unmake.
+     * \param args a markup string of key/value arguments
+     * \return a pointer to a new Device object
+     */
+    static Device *make(const std::string &args);
 
     /*!
      * Unmake or release a device object handle.

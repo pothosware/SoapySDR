@@ -33,6 +33,11 @@ SoapySDRDevice *SoapySDRDevice_make(const SoapySDRKwargs *args)
     return (SoapySDRDevice *)SoapySDR::Device::make(toKwargs(args));
 }
 
+SoapySDRDevice *SoapySDRDevice_makeStrArgs(const char *args)
+{
+    return (SoapySDRDevice *)SoapySDR::Device::make(args);
+}
+
 void SoapySDRDevice_unmake(SoapySDRDevice *device)
 {
     SoapySDR::Device::unmake((SoapySDR::Device *)device);

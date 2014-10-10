@@ -72,6 +72,34 @@ static void findDevices(void)
 }
 
 /***********************************************************************
+ * Make devices and print
+ **********************************************************************/
+static void makeDevices(void)
+{
+    std::string argStr;
+    if (optarg != NULL) argStr = optarg;
+
+    std::cout << "Make device " << argStr << std::endl;
+    try
+    {
+        SoapySDR::Device *device = SoapySDR::Device::make(argStr);
+        std::cout << "  driver=" << device->getDriverKey() << std::endl;
+        std::cout << "  hardware=" << device->getHardwareKey() << std::endl;
+        SoapySDR::Kwargs info = device->getHardwareInfo();
+        for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+        {
+            std::cout << "  " << it->first << "=" << it->second << std::endl;
+        }
+        SoapySDR::Device::unmake(device);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Error making device: " << ex.what() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+/***********************************************************************
  * Print help message
  **********************************************************************/
 int main(int argc, char *argv[])
@@ -87,6 +115,7 @@ int main(int argc, char *argv[])
     static struct option long_options[] = {
         {"help", no_argument, 0, 'h'},
         {"find", optional_argument, 0, 'f'},
+        {"make", optional_argument, 0, 'm'},
         {"info", optional_argument, 0, 'i'},
         {0, 0, 0,  0}
     };
@@ -99,6 +128,7 @@ int main(int argc, char *argv[])
         case 'h': printHelp(); return EXIT_SUCCESS;
         case 'i': printInfo(); return EXIT_SUCCESS;
         case 'f': findDevices(); return EXIT_SUCCESS;
+        case 'm': makeDevices(); return EXIT_SUCCESS;
         }
     }
 

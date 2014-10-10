@@ -114,8 +114,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
     //otherwise call into one of the factory functions
     else
     {
-        //no module specified, perform an enumeration and take first result
-        if (args.count("driver") == 0)
+        //the args must always come from an enumeration result
         {
             std::vector<SoapySDR::Kwargs> results = Device::enumerate(args);
             if (not results.empty()) args = results.front();
@@ -138,6 +137,12 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
     getDeviceCounts()[device]++;
 
     return device;
+}
+
+
+SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
+{
+    return make(argsStrToKwargs(args));
 }
 
 void SoapySDR::Device::unmake(Device *device)
