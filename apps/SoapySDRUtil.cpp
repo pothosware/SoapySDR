@@ -15,7 +15,12 @@
  **********************************************************************/
 static void printHelp(void)
 {
-    std::cout << "Usage SoapySDRUtil [--find[=\"driver=foo,type=bar\"]] [--help]" << std::endl;
+    std::cout << "Usage SoapySDRUtil [options]" << std::endl;
+    std::cout << "  Options summary:" << std::endl;
+    std::cout << "    --help \t\t\t\t Print this help message" << std::endl;
+    std::cout << "    --info \t\t\t\t Print module information" << std::endl;
+    std::cout << "    --find[=\"driver=foo,type=bar\"] \t Discover available devices" << std::endl;
+    std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
     std::cout << std::endl;
 }
 
