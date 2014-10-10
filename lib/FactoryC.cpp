@@ -3,8 +3,8 @@
 
 #include <SoapySDR/Device.h>
 #include <SoapySDR/Device.hpp>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args);
 SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args);

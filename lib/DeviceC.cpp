@@ -3,8 +3,9 @@
 
 #include <SoapySDR/Device.h>
 #include <SoapySDR/Device.hpp>
-#include <stdlib.h>
-#include <string.h>
+#include <algorithm>
+#include <cstdlib>
+#include <cstring>
 
 /*******************************************************************
  * Simple subclass definition for device
@@ -433,7 +434,10 @@ void SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr, const char 
 
 char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, const size_t numBytes)
 {
-    return strndup(device->readI2C(addr, numBytes).c_str(), numBytes);
+    const std::string bytes = device->readI2C(addr, numBytes).c_str();
+    char *buff = (char *)std::malloc(bytes.size());
+    std::copy(bytes.begin(), bytes.end(), buff);
+    return buff;
 }
 
 /*******************************************************************

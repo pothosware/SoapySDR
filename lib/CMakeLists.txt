@@ -36,6 +36,10 @@ list(APPEND SOAPY_SDR_SOURCES
     FactoryC.cpp
 )
 
+if (MSVC)
+    add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
+endif ()
+
 ########################################################################
 # Build the library
 ########################################################################

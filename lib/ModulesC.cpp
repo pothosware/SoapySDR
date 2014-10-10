@@ -3,8 +3,8 @@
 
 #include <SoapySDR/Modules.h>
 #include <SoapySDR/Modules.hpp>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 extern "C" {
 
