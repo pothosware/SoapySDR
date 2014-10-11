@@ -78,6 +78,20 @@ if (NOT UHD_FOUND)
 endif()
 
 ########################################################################
+# Look for device filter
+########################################################################
+message(STATUS "Checking uhd::device::register_device() API...")
+message(STATUS "  Reading ${UHD_INCLUDE_DIRS}/uhd/device.hpp...")
+file(READ ${UHD_INCLUDE_DIRS}/uhd/device.hpp device_hpp)
+string(FIND "${device_hpp}" "device_filter_t" has_device_filter)
+if ("${has_device_filter}" STREQUAL "-1")
+    message(STATUS "  has original API")
+else()
+    add_definitions(-DUHD_HAS_DEVICE_FILTER)
+    message(STATUS "  has filter API")
+endif()
+
+########################################################################
 # build module
 ########################################################################
 include_directories(${UHD_INCLUDE_DIRS})

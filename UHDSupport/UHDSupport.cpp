@@ -577,7 +577,11 @@ private:
 std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
 {
     //perform the discovery
+    #ifdef UHD_HAS_DEVICE_FILTER
+    const uhd::device_addrs_t addrs = uhd::device::find(kwargsToDict(args), uhd::device::USRP);
+    #else
     const uhd::device_addrs_t addrs = uhd::device::find(kwargsToDict(args));
+    #endif
 
     //convert addrs to results
     std::vector<SoapySDR::Kwargs> results;
