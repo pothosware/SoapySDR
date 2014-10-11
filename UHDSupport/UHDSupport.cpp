@@ -543,6 +543,8 @@ public:
                 names.push_back(str(boost::format("rx%d_%s") % i % name));
             }
         }
+
+        return names;
     }
 
     std::string readSensor(const std::string &name) const
