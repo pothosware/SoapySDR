@@ -284,6 +284,11 @@ std::string SoapySDR::Device::getTimeSource(void) const
 /*******************************************************************
  * Time API
  ******************************************************************/
+bool SoapySDR::Device::hasHardwareTime(const std::string &) const
+{
+    return false;
+}
+
 long long SoapySDR::Device::getHardwareTime(const std::string &) const
 {
     return 0;

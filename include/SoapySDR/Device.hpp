@@ -571,6 +571,13 @@ public:
      ******************************************************************/
 
     /*!
+     * Does this device have a hardware clock?
+     * \param what optional argument
+     * \return true if the hardware clock exists
+     */
+    virtual bool hasHardwareTime(const std::string &what = "") const;
+
+    /*!
      * Read the time from the hardware clock on the device.
      * The what argument can refer to a specific time counter.
      * \param what optional argument

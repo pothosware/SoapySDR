@@ -365,6 +365,11 @@ char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device)
 /*******************************************************************
  * Time API
  ******************************************************************/
+bool SoapySDRDevice_hasHardwareTime(const SoapySDRDevice *device, const char *what)
+{
+    return device->hasHardwareTime(what);
+}
+
 long long SoapySDRDevice_getHardwareTime(const SoapySDRDevice *device, const char *what)
 {
     return device->getHardwareTime(what);

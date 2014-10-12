@@ -634,6 +634,14 @@ SOAPY_SDR_API char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device);
  ******************************************************************/
 
 /*!
+ * Does this device have a hardware clock?
+ * \param device a pointer to a device instance
+ * \param what optional argument
+ * \return true if the hardware clock exists
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasHardwareTime(const SoapySDRDevice *device, const char *what);
+
+/*!
  * Read the time from the hardware clock on the device.
  * The what argument can refer to a specific time counter.
  * \param device a pointer to a device instance

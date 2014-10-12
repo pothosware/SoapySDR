@@ -502,6 +502,11 @@ public:
      * Time support
      ******************************************************************/
 
+    bool hasHardwareTime(const std::string &what) const
+    {
+        return (what == "PPS" or what.empty());
+    }
+
     long long getHardwareTime(const std::string &what) const
     {
         if (what == "PPS") return _dev->get_time_last_pps().to_ticks(1e9);
