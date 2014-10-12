@@ -1,13 +1,14 @@
-if(DEFINED INCLUDED_FIND_SOAPY_SDR_CMAKE)
+if(DEFINED INCLUDED_SOAPY_SDR_CONFIG_CMAKE)
     return()
 endif()
-set(INCLUDED_FIND_SOAPY_SDR_CMAKE TRUE)
+set(INCLUDED_SOAPY_SDR_CONFIG_CMAKE TRUE)
 
 ########################################################################
 ## Configure installation variables
 ########################################################################
-include(SoapySDRDefaults) #defines LIB_SUFFIX
-set(SOAPY_SDR_ROOT ${CMAKE_INSTALL_PREFIX}) #same as install prefix
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+include(SoapySDRUtil) #defines LIB_SUFFIX
+get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
 
 ########################################################################
 ## locate the library
@@ -20,7 +21,7 @@ find_library(
 if(NOT SOAPY_SDR_LIBRARY)
     message(FATAL_ERROR "cannot find SoapySDR library in ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}")
 endif()
-list(APPEND SOAPY_SDR_LIBRARIES ${SOAPY_SDR_LIBRARY})
+set(SoapySDR_LIBRARIES ${SOAPY_SDR_LIBRARY})
 
 ########################################################################
 ## locate the includes
@@ -30,7 +31,7 @@ find_path(
     PATHS ${SOAPY_SDR_ROOT}/include
     NO_DEFAULT_PATH
 )
-if(NOT SOAPY_SDR_LIBRARY)
+if(NOT SOAPY_SDR_INCLUDE_DIR)
     message(FATAL_ERROR "cannot find SoapySDR includes in ${SOAPY_SDR_ROOT}/include")
 endif()
-list(APPEND SOAPY_SDR_INCLUDE_DIRS ${SOAPY_SDR_INCLUDE_DIR})
+set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_INCLUDE_DIR})

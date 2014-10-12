@@ -9,11 +9,12 @@ list(APPEND SOAPY_SDR_SOURCES
     NullDevice.cpp
 )
 
+#dl libs used by dlopen in unix
 list(APPEND SOAPY_SDR_LIBRARIES
     ${CMAKE_DL_LIBS}
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp)
 configure_file(
@@ -36,6 +37,7 @@ list(APPEND SOAPY_SDR_SOURCES
     FactoryC.cpp
 )
 
+#disable MSVC warnings
 if (MSVC)
     add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
 endif ()

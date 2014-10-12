@@ -131,9 +131,9 @@ set(osmosdr_srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/sync_block.cc
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/compat/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib)
+include_directories(${PROJECT_SOURCE_DIR}/compat/include)
+include_directories(${PROJECT_SOURCE_DIR}/gr-osmosdr/include)
+include_directories(${PROJECT_SOURCE_DIR}/gr-osmosdr/lib)
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(osmosdr SHARED ${osmosdr_srcs})

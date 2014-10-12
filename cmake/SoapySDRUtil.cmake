@@ -1,19 +1,10 @@
-if(DEFINED INCLUDED_SOAPY_SDR_PROJECT_DEFAULTS_CMAKE)
+if(DEFINED INCLUDED_SOAPY_SDR_UTIL_CMAKE)
     return()
 endif()
-set(INCLUDED_SOAPY_SDR_PROJECT_DEFAULTS_CMAKE TRUE)
+set(INCLUDED_SOAPY_SDR_UTIL_CMAKE TRUE)
 
 ########################################################################
-# select the release build type by default to get optimization flags
-########################################################################
-if(NOT CMAKE_BUILD_TYPE)
-   set(CMAKE_BUILD_TYPE "Release")
-   message(STATUS "Build type not specified: defaulting to release.")
-endif(NOT CMAKE_BUILD_TYPE)
-set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
-
-########################################################################
-# Linux detection stuff
+# Automatic LIB_SUFFIX detection + configuration option
 ########################################################################
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(LINUX TRUE)
@@ -31,9 +22,6 @@ if(LINUX AND EXISTS "/etc/slackware-version")
     set(SLACKWARE TRUE)
 endif()
 
-########################################################################
-# Automatic LIB_SUFFIX detection + configuration option
-########################################################################
 if(NOT DEFINED LIB_SUFFIX AND (REDHAT OR SLACKWARE) AND CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
     SET(LIB_SUFFIX 64)
 endif()
@@ -55,3 +43,34 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options(-fvisibility=hidden)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
 endif()
+
+########################################################################
+## SOAPY_SDR_MODULE_UTIL - build and install modules for Soapy SDR
+##
+## This utility can handle the build and installation operations.
+##
+## Arguments:
+##
+## TARGET - the name of the module to build
+##
+## SOURCES - a list of c++ source files
+##
+## LIBRARIES - a list of libraries to link the module to
+## The module will automatically link to SoapySDR library.
+##
+########################################################################
+function(SOAPY_SDR_MODULE_UTIL)
+
+    include(CMakeParseArguments)
+    CMAKE_PARSE_ARGUMENTS(MODULE "" "TARGET" "SOURCES;LIBRARIES" ${ARGN})
+
+    include_directories(${SoapySDR_INCLUDE_DIRS})
+    add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
+    target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} ${SoapySDR_LIBRARIES})
+    set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
+    install(
+        TARGETS ${MODULE_TARGET}
+        DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules/
+    )
+
+endfunction(SOAPY_SDR_MODULE_UTIL)
