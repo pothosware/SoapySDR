@@ -286,6 +286,10 @@ public:
     /*******************************************************************
      * Frontend corrections support
      ******************************************************************/
+    void setDCOffsetMode(const int dir, const size_t channel, const bool automatic)
+    {
+        if (dir == SOAPY_SDR_RX) _dev->set_rx_dc_offset(automatic, channel);
+    }
 
     void setDCOffset(const int dir, const size_t channel, const std::complex<double> &offset)
     {

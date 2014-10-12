@@ -295,6 +295,22 @@ public:
      ******************************************************************/
 
     /*!
+     * Set the automatic DC offset corrections mode.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param automatic true for automatic offset correction
+     */
+    virtual void setDCOffsetMode(const int direction, const size_t channel, const bool automatic);
+
+    /*!
+     * Get the automatic DC offset corrections mode.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true for automatic offset correction
+     */
+    virtual bool getDCOffsetMode(const int direction, const size_t channel) const;
+
+    /*!
      * Set the frontend DC offset correction.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
@@ -342,9 +358,9 @@ public:
      * Set the automatic gain mode on the chain.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param mode true for automatic gain setting
+     * \param automatic true for automatic gain setting
      */
-    virtual void setGainMode(const int direction, const size_t channel, const bool mode);
+    virtual void setGainMode(const int direction, const size_t channel, const bool automatic);
 
      /*!
      * Get the automatic gain mode on the chain.

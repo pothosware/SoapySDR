@@ -186,9 +186,19 @@ char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, const int directio
 /*******************************************************************
  * Frontend corrections API
  ******************************************************************/
+void SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
+{
+    return device->setDCOffsetMode(direction, channel, automatic);
+}
+
+bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->getDCOffsetMode(direction, channel);
+}
+
 void SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const int direction, const size_t channel, const double offsetI, const double offsetQ)
 {
-    device->setDCOffset(direction, channel, std::complex<double>(offsetI, offsetQ));
+    return device->setDCOffset(direction, channel, std::complex<double>(offsetI, offsetQ));
 }
 
 void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int direction, const size_t channel, double *offsetI, double *offsetQ)
@@ -200,7 +210,7 @@ void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int directio
 
 void SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)
 {
-    device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
+    return device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
 }
 
 void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel, double *balanceI, double *balanceQ)
@@ -218,9 +228,9 @@ char **SoapySDRDevice_listGains(const SoapySDRDevice *device, const int directio
     return toStrArray(device->listGains(direction, channel), length);
 }
 
-void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool mode)
+void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
 {
-    device->setGainMode(direction, channel, mode);
+    return device->setGainMode(direction, channel, automatic);
 }
 
 bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -230,12 +240,12 @@ bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, const int directio
 
 void SoapySDRDevice_setGain(SoapySDRDevice *device, const int direction, const size_t channel, const double value)
 {
-    device->setGain(direction, channel, value);
+    return device->setGain(direction, channel, value);
 }
 
 void SoapySDRDevice_setGainElement(SoapySDRDevice *device, const int direction, const size_t channel, const char *name, const double value)
 {
-    device->setGain(direction, channel, name, value);
+    return device->setGain(direction, channel, name, value);
 }
 
 double SoapySDRDevice_getGain(const SoapySDRDevice *device, const int direction, const size_t channel)

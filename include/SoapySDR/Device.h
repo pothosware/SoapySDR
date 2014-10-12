@@ -315,6 +315,24 @@ SOAPY_SDR_API char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, cons
  ******************************************************************/
 
 /*!
+ * Set the automatic DC offset corrections mode.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param automatic true for automatic offset correction
+ */
+SOAPY_SDR_API void SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic);
+
+/*!
+ * Get the automatic DC offset corrections mode.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true for automatic offset correction
+ */
+SOAPY_SDR_API bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
  * Set the frontend DC offset correction.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
@@ -373,9 +391,9 @@ SOAPY_SDR_API char **SoapySDRDevice_listGains(const SoapySDRDevice *device, cons
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \param mode true for automatic gain setting
+ * \param automatic true for automatic gain setting
  */
-SOAPY_SDR_API void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool mode);
+SOAPY_SDR_API void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic);
 
  /*!
  * Get the automatic gain mode on the chain.

@@ -103,6 +103,17 @@ std::string SoapySDR::Device::getAntenna(const int, const size_t) const
 /*******************************************************************
  * Frontend corrections API
  ******************************************************************/
+
+void SoapySDR::Device::setDCOffsetMode(const int, const size_t, const bool)
+{
+    return;
+}
+
+bool SoapySDR::Device::getDCOffsetMode(const int, const size_t) const
+{
+    return false;
+}
+
 void SoapySDR::Device::setDCOffset(const int, const size_t, const std::complex<double> &)
 {
     return;
