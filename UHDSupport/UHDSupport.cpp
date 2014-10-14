@@ -7,6 +7,7 @@
 #include <uhd/usrp/multi_usrp.hpp>
 #include <uhd/property_tree.hpp>
 #include <cctype>
+#include <iostream>
 
 /***********************************************************************
  * Helpful type conversions
@@ -256,6 +257,8 @@ public:
         int ret = stream->send(stream_buffs, numElems, md, timeoutUs/1e6);
 
         flags = 0;
+        //consider a return of 0 to be a complete timeout
+        if (ret == 0) return SOAPY_SDR_TIMEOUT;
         return ret;
     }
 

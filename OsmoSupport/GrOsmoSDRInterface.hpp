@@ -50,7 +50,9 @@ public:
     int read(void * const *buffs, const size_t numElems)
     {
         _output_items.assign(buffs, buffs+_output_items.size());
-        return _block->work(numElems, _input_items, _output_items);
+        int ret = _block->work(numElems, _input_items, _output_items);
+        if (ret == 0) return SOAPY_SDR_TIMEOUT;
+        return ret;
     }
 
     int write(const void * const *buffs, const size_t numElems)
@@ -58,7 +60,8 @@ public:
         _block->_consumed_total = 0; //clear consumed
         _input_items.assign(buffs, buffs+_output_items.size());
         int ret = _block->work(numElems, _input_items, _output_items);
-        return (ret <= 0)? ret : _block->_consumed_total;
+        if (ret == 0) return SOAPY_SDR_TIMEOUT;
+        return (ret < 0)? ret : _block->_consumed_total;
     }
 
 private:
