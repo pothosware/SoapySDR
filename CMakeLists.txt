@@ -2,7 +2,7 @@
 # Project setup
 ########################################################################
 cmake_minimum_required(VERSION 2.8)
-project(SoapySDRLibrary)
+project(SoapySDR)
 enable_language(CXX)
 enable_testing()
 
@@ -31,7 +31,11 @@ include(SoapySDRUtil) #defines LIB_SUFFIX
 # Install cmake helper modules
 ########################################################################
 file(GLOB cmake_files "${PROJECT_SOURCE_DIR}/cmake/*.cmake")
-install(FILES ${cmake_files} DESTINATION share/cmake/SoapySDR)
+if (UNIX)
+    install(FILES ${cmake_files} DESTINATION share/cmake/${CMAKE_PROJECT_NAME})
+elseif (WIN32)
+    install(FILES ${cmake_files} DESTINATION cmake)
+endif ()
 
 ########################################################################
 # Install headers

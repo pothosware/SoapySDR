@@ -8,7 +8,12 @@ set(INCLUDED_SOAPY_SDR_CONFIG_CMAKE TRUE)
 ########################################################################
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 include(SoapySDRUtil) #defines LIB_SUFFIX
-get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+
+if (UNIX)
+    get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
+elseif (WIN32)
+    get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+endif ()
 
 ########################################################################
 ## locate the library
