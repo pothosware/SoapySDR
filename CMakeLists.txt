@@ -17,15 +17,13 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 ########################################################################
 # Allows in-tree module util
 ########################################################################
-set(SoapySDR_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
-set(SoapySDR_LIBRARIES SoapySDR)
+set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake)
+set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
-include(SoapySDRUtil) #defines LIB_SUFFIX
+find_package(SoapySDR CONFIG REQUIRED)
 
 ########################################################################
 # Install cmake helper modules

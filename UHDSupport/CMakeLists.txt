@@ -33,6 +33,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
+find_package(SoapySDR CONFIG REQUIRED)
+
 ########################################################################
 # Setup boost
 ########################################################################
