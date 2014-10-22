@@ -49,5 +49,39 @@ add_subdirectory(apps)
 ########################################################################
 # in-tree modules
 ########################################################################
-add_subdirectory(OsmoSupport)
-add_subdirectory(UHDSupport)
+if (NOT DEFINED GPLOK)
+    message(WARNING "Enabling GPL support modules by default")
+    set(GPLOK TRUE CACHE BOOL "GPL support modules ok?" FORCE)
+endif ()
+
+if (GPLOK)
+    if (NOT WIN32)
+        string(ASCII 27 Esc)
+        set(ColourReset "${Esc}[m")
+        set(ColourBold  "${Esc}[1m")
+        set(Yellow      "${Esc}[33m")
+    endif ()
+    message(STATUS
+"${ColourBold}${Yellow}\n"
+"\n"
+"#############################################\n"
+"## GPL vendor support modules are enabled.\n"
+"## Disable GPL modules with -DGPLOK=FALSE\n"
+"#############################################\n"
+"${ColourReset}")
+
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for OsmoSDR support...")
+    message(STATUS "#############################################")
+    message(STATUS "")
+    add_subdirectory(OsmoSupport)
+
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for UHD support...")
+    message(STATUS "#############################################")
+    message(STATUS "")
+    add_subdirectory(UHDSupport)
+
+endif ()
