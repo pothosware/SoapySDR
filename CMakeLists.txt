@@ -45,6 +45,7 @@ install(DIRECTORY include/SoapySDR DESTINATION include)
 ########################################################################
 add_subdirectory(lib)
 add_subdirectory(apps)
+add_subdirectory(docs)
 
 ########################################################################
 # in-tree modules
