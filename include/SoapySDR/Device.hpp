@@ -671,6 +671,25 @@ public:
     virtual unsigned readRegister(const unsigned addr) const;
 
     /*******************************************************************
+     * Settings API
+     ******************************************************************/
+
+    /*!
+     * Write an arbitrary setting on the device.
+     * The interpretation is up the implementation.
+     * \param key the setting identifier
+     * \param value the setting value
+     */
+    virtual void writeSetting(const std::string &key, const std::string &value);
+
+    /*!
+     * Read an arbitrary setting on the device.
+     * \param key the setting identifier
+     * \return the setting value
+     */
+    virtual std::string readSetting(const std::string &key) const;
+
+    /*******************************************************************
      * GPIO API
      ******************************************************************/
 

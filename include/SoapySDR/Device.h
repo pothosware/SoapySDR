@@ -745,6 +745,27 @@ SOAPY_SDR_API void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const un
 SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr);
 
 /*******************************************************************
+ * Settings API
+ ******************************************************************/
+
+/*!
+ * Write an arbitrary setting on the device.
+ * The interpretation is up the implementation.
+ * \param device a pointer to a device instance
+ * \param key the setting identifier
+ * \param value the setting value
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value);
+
+/*!
+ * Read an arbitrary setting on the device.
+ * \param device a pointer to a device instance
+ * \param key the setting identifier
+ * \return the setting value
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readSetting(const SoapySDRDevice *device, const char *key);
+
+/*******************************************************************
  * GPIO API
  ******************************************************************/
 

@@ -422,6 +422,19 @@ unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigne
 }
 
 /*******************************************************************
+ * Settings API
+ ******************************************************************/
+void SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value)
+{
+    return device->writeSetting(key, value);
+}
+
+char *SoapySDRDevice_readSetting(const SoapySDRDevice *device, const char *key)
+{
+    return strdup(device->readSetting(key).c_str());
+}
+
+/*******************************************************************
  * GPIO API
  ******************************************************************/
 char **SoapySDRDevice_listGPIOBanks(const SoapySDRDevice *device, size_t *length)

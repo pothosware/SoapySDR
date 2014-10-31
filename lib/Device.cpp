@@ -342,6 +342,19 @@ unsigned SoapySDR::Device::readRegister(const unsigned) const
 }
 
 /*******************************************************************
+ * Settings API
+ ******************************************************************/
+void SoapySDR::Device::writeSetting(const std::string &, const std::string &)
+{
+    return;
+}
+
+std::string SoapySDR::Device::readSetting(const std::string &) const
+{
+    return "";
+}
+
+/*******************************************************************
  * GPIO API
  ******************************************************************/
 std::vector<std::string> SoapySDR::Device::listGPIOBanks(void) const
