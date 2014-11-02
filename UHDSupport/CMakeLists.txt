@@ -63,7 +63,7 @@ set(Boost_ADDITIONAL_VERSIONS
 find_package(Boost COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 
 if(NOT Boost_FOUND)
-    message(WARNING "Boost required to build -- ignoring: " ${CMAKE_PROJECT_NAME})
+    message(WARNING "Boost required to build -- skipping UHD support")
     return()
 endif()
 
@@ -75,7 +75,7 @@ ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 find_package(UHD)
 
 if (NOT UHD_FOUND)
-    message(WARNING "UHD required to build -- ignoring UHD support")
+    message(WARNING "UHD required to build -- skipping UHD support")
     return()
 endif()
 
