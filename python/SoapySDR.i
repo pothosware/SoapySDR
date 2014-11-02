@@ -43,6 +43,31 @@
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
 %template(SoapySDRSizeList) std::vector<size_t>;
 
+%extend std::map<std::string, std::string>
+{
+    %insert("python")
+    %{
+        def __str__(self):
+            out = list()
+            for k, v in self.iteritems():
+                out.append("%s=%s"%(k, v))
+            return '{'+(', '.join(out))+'}'
+    %}
+};
+
+%extend SoapySDR::Range
+{
+    %insert("python")
+    %{
+        def __str__(self):
+            return "%s, %s"%(self.minimum(), self.maximum())
+    %}
+};
+
+////////////////////////////////////////////////////////////////////////
+// Stream result class
+// Helps us deal with stream calls that return by reference
+////////////////////////////////////////////////////////////////////////
 %inline %{
     struct StreamResult
     {
@@ -53,6 +78,15 @@
         long long timeNs;
     };
 %}
+
+%extend StreamResult
+{
+    %insert("python")
+    %{
+        def __str__(self):
+            return "ret=%s, flags=%s, timeNs=%s"%(self.ret, self.flags, self.timeNs)
+    %}
+};
 
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
@@ -80,6 +114,11 @@ class Device(Device):
     def __new__(cls, *args, **kwargs):
         with device_factory_lock:
             return cls.make(*args, **kwargs)
+
+def extractBuffPointer(buff):
+    if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
+    if hasattr(buff, '__long__'): return long(buff)
+    raise Exception("Unrecognized data format: " + str(type(buff)))
 %}
 
 %extend SoapySDR::Device
@@ -111,12 +150,15 @@ class Device(Device):
             with device_factory_lock:
                 Device.unmake(self)
 
+        def __str__(self):
+            return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
+
         def readStream(self, stream, buffs, numElems, flags = 0, timeoutUs = 100000):
-            buffs = map(lambda x: x.__array_interface__['data'][0])
-            return self.readStream__(stream, buffs, numElems, flags, timeoutUs)
+            ptrs = map(extractBuffPointer, buffs)
+            return self.readStream__(stream, ptrs, numElems, flags, timeoutUs)
 
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
-            buffs = map(lambda x: x.__array_interface__['data'][0])
-            return self.writeStream__(stream, buffs, numElems, flags, timeNs, timeoutUs)
+            ptrs = map(extractBuffPointer, buffs)
+            return self.writeStream__(stream, ptrs, numElems, flags, timeNs, timeoutUs)
     %}
 };
