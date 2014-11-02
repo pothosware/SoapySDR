@@ -16,6 +16,7 @@ if (NOT SWIG_FOUND)
     message(WARNING "Python bindings require SWIG, skipping...")
     return()
 endif ()
+message(STATUS "SWIG_VERSION: ${SWIG_VERSION}")
 
 include(UseSWIG)
 
@@ -57,21 +58,22 @@ SWIG_LINK_LIBRARIES(SoapySDR ${SoapySDR_LIBRARIES} ${PYTHON_LIBRARIES})
 # Determine install directory
 ########################################################################
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(prefix='${CMAKE_INSTALL_PREFIX}'))"
+    COMMAND ${PYTHON_EXECUTABLE} -c
+    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
     OUTPUT_STRIP_TRAILING_WHITESPACE
-    OUTPUT_VARIABLE PYTHON_MODULE_DIR
+    OUTPUT_VARIABLE PYTHON_LIBRARY_DIR
 )
-message(STATUS "PYTHON_MODULE_DIR: ${PYTHON_MODULE_DIR}")
+message(STATUS "PYTHON_LIBRARY_DIR: \${prefix}/${PYTHON_LIBRARY_DIR}")
 
 ########################################################################
 # Install Module
 ########################################################################
 install(
     TARGETS ${SWIG_MODULE_SoapySDR_REAL_NAME}
-    DESTINATION ${PYTHON_MODULE_DIR}
+    DESTINATION ${PYTHON_LIBRARY_DIR}
 )
 
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.py
-    DESTINATION ${PYTHON_MODULE_DIR}
+    DESTINATION ${PYTHON_LIBRARY_DIR}
 )
