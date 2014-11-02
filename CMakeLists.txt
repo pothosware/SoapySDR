@@ -46,6 +46,16 @@ install(DIRECTORY include/SoapySDR DESTINATION include)
 add_subdirectory(lib)
 add_subdirectory(apps)
 add_subdirectory(docs)
+
+########################################################################
+# Python support (optional)
+########################################################################
+message(STATUS "")
+message(STATUS "#############################################")
+message(STATUS "## Begin configuration for Python support...")
+message(STATUS "#############################################")
+message(STATUS "")
+message(STATUS "Enabling optional Python bindings if possible...")
 add_subdirectory(python)
 
 ########################################################################
