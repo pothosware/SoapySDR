@@ -43,6 +43,17 @@
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
 %template(SoapySDRSizeList) std::vector<size_t>;
 
+%inline %{
+    struct StreamResult
+    {
+        StreamResult(void):
+            ret(0), flags(0), timeNs(0){}
+        int ret;
+        int flags;
+        long long timeNs;
+    };
+%}
+
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
 ////////////////////////////////////////////////////////////////////////
@@ -56,14 +67,10 @@
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>
 
+//global factory lock support
 %pythoncode %{
-
 import threading
-
 device_factory_lock = threading.Lock()
-
-import numpy
-
 %}
 
 //make device a constructable class
@@ -75,44 +82,41 @@ class Device(Device):
             return cls.make(*args, **kwargs)
 %}
 
-//call unmake from custom deleter
 %extend SoapySDR::Device
 {
-
-    std::pair<int, int> readStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long timeoutUs)
+    StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
-        long long timeNs = 0;
-        int fio = flags;
+        StreamResult sr;
+        sr.flags = flags;
         std::vector<void *> ptrs(buffs.size());
         for (size_t i = 0; i < buffs.size(); i++) ptrs[i] = (void *)buffs[i];
-        int ret = self->readStream(stream, (&ptrs[0]), numElems, fio, timeNs, timeoutUs);
-        return std::make_pair(ret, fio);
+        sr.ret = self->readStream(stream, (&ptrs[0]), numElems, sr.flags, sr.timeNs, timeoutUs);
+        return sr;
     }
 
-    std::pair<int, int> writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
+    StreamResult writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
     {
-        int fio = flags;
+        StreamResult sr;
+        sr.flags = flags;
         std::vector<const void *> ptrs(buffs.size());
         for (size_t i = 0; i < buffs.size(); i++) ptrs[i] = (const void *)buffs[i];
-        int ret = self->writeStream(stream, (&ptrs[0]), numElems, fio, timeNs, timeoutUs);
-        return std::make_pair(ret, fio);
+        sr.ret = self->writeStream(stream, (&ptrs[0]), numElems, sr.flags, timeNs, timeoutUs);
+        return sr;
     }
 
     %insert("python")
     %{
+        #call unmake from custom deleter
         def __del__(self):
             with device_factory_lock:
                 Device.unmake(self)
 
-        def readStream(self, stream, buffs, flags, timeoutUs = 100000):
-            numElems = len(buffs[0])
+        def readStream(self, stream, buffs, numElems, flags = 0, timeoutUs = 100000):
             buffs = map(lambda x: x.__array_interface__['data'][0])
             return self.readStream__(stream, buffs, numElems, flags, timeoutUs)
 
-        def writeStream(self, stream, buffs, flags, timeNs, timeoutUs = 100000):
-            numElems = len(buffs[0])
+        def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
             buffs = map(lambda x: x.__array_interface__['data'][0])
             return self.writeStream__(stream, buffs, numElems, flags, timeNs, timeoutUs)
-
     %}
 };
