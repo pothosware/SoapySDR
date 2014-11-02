@@ -55,6 +55,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
 endif()
 
+if(MSVC)
+    add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
+endif()
+
 ########################################################################
 # In-tree settings
 ########################################################################
