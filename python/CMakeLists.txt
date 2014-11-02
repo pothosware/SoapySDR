@@ -2,7 +2,7 @@
 # Project setup
 ########################################################################
 cmake_minimum_required(VERSION 2.8)
-project(SoapySDR CXX)
+project(SoapySDRPython CXX)
 enable_testing()
 
 find_package(SoapySDR CONFIG REQUIRED)
