@@ -41,6 +41,7 @@
 %template(SoapySDRKwargsList) std::vector<SoapySDR::Kwargs>;
 %template(SoapySDRStringList) std::vector<std::string>;
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
+%template(SoapySDRSizeList) std::vector<size_t>;
 
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
@@ -55,19 +56,63 @@
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>
 
+%pythoncode %{
+
+import threading
+
+device_factory_lock = threading.Lock()
+
+import numpy
+
+%}
+
 //make device a constructable class
 %insert("python")
 %{
 class Device(Device):
     def __new__(cls, *args, **kwargs):
-        return cls.make(*args, **kwargs)
+        with device_factory_lock:
+            return cls.make(*args, **kwargs)
 %}
 
 //call unmake from custom deleter
 %extend SoapySDR::Device
 {
-    void __del__(void)
+
+    std::pair<int, int> readStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
-        SoapySDR::Device::unmake(self);
+        long long timeNs = 0;
+        int fio = flags;
+        std::vector<void *> ptrs(buffs.size());
+        for (size_t i = 0; i < buffs.size(); i++) ptrs[i] = (void *)buffs[i];
+        int ret = self->readStream(stream, (&ptrs[0]), numElems, fio, timeNs, timeoutUs);
+        return std::make_pair(ret, fio);
     }
+
+    std::pair<int, int> writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
+    {
+        int fio = flags;
+        std::vector<const void *> ptrs(buffs.size());
+        for (size_t i = 0; i < buffs.size(); i++) ptrs[i] = (const void *)buffs[i];
+        int ret = self->writeStream(stream, (&ptrs[0]), numElems, fio, timeNs, timeoutUs);
+        return std::make_pair(ret, fio);
+    }
+
+    %insert("python")
+    %{
+        def __del__(self):
+            with device_factory_lock:
+                Device.unmake(self)
+
+        def readStream(self, stream, buffs, flags, timeoutUs = 100000):
+            numElems = len(buffs[0])
+            buffs = map(lambda x: x.__array_interface__['data'][0])
+            return self.readStream__(stream, buffs, numElems, flags, timeoutUs)
+
+        def writeStream(self, stream, buffs, flags, timeNs, timeoutUs = 100000):
+            numElems = len(buffs[0])
+            buffs = map(lambda x: x.__array_interface__['data'][0])
+            return self.writeStream__(stream, buffs, numElems, flags, timeNs, timeoutUs)
+
+    %}
 };
