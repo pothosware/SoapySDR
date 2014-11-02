@@ -105,6 +105,11 @@
 %pythoncode %{
 import threading
 device_factory_lock = threading.Lock()
+
+__all__ = list()
+for key in globals().keys():
+    if key.startswith('SOAPY_SDR_'):
+        __all__.append(key)
 %}
 
 //make device a constructable class
