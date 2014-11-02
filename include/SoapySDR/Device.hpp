@@ -271,7 +271,7 @@ public:
         const void * const *buffs,
         const size_t numElems,
         int &flags,
-        const long long timeNs,
+        const long long timeNs = 0,
         const long timeoutUs = 100000);
 
     /*******************************************************************
