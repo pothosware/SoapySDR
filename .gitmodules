@@ -1,0 +1,4 @@
+[submodule "OsmoSupport/gr-osmosdr"]
+	path = OsmoSupport/gr-osmosdr
+	url = git://git.osmocom.org/gr-osmosdr
+	branch = master
