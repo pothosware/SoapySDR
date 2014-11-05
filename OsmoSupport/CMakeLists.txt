@@ -24,6 +24,14 @@ cmake_minimum_required(VERSION 2.6)
 project(SoapySDROsmoSupport CXX C)
 enable_testing()
 
+if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake)
+    message(WARNING "Missing gr-osmosdr submodule!\n"
+        "Please run the following commands:\n"
+        "git submodule init\n"
+        "git submodule update\n")
+    return()
+endif ()
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake/Modules)
 
 #select the release build type by default to get optimization flags
