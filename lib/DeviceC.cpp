@@ -8,6 +8,15 @@
 #include <cstring>
 
 /*******************************************************************
+ * Helper macros for catching and returning error messages
+ ******************************************************************/
+#define __SOAPY_SDR_C_TRY try {
+#define __SOAPY_SDR_C_CATCH } \
+    catch (const std::exception &ex) { return strdup(ex.what()); } \
+    catch (...) { return strdup("unknown"); } \
+    return NULL;
+
+/*******************************************************************
  * Simple subclass definition for device
  ******************************************************************/
 struct SoapySDRDevice : SoapySDR::Device {};
@@ -93,9 +102,11 @@ SoapySDRKwargs SoapySDRDevice_getHardwareInfo(const SoapySDRDevice *device)
 /*******************************************************************
  * Channels API
  ******************************************************************/
-void SoapySDRDevice_setFrontendMapping(SoapySDRDevice *device, const int direction, const char *mapping)
+char *SoapySDRDevice_setFrontendMapping(SoapySDRDevice *device, const int direction, const char *mapping)
 {
+    __SOAPY_SDR_C_TRY
     device->setFrontendMapping(direction, mapping);
+    __SOAPY_SDR_C_CATCH
 }
 
 char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int direction)
@@ -116,21 +127,11 @@ bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direct
 /*******************************************************************
  * Stream API
  ******************************************************************/
-SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args, char **errorMsg)
+char *SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
-    try
-    {
-        return reinterpret_cast<SoapySDRStream *>(device->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
-    }
-    catch (const std::exception &ex)
-    {
-        *errorMsg = strdup(ex.what());
-    }
-    catch (...)
-    {
-        *errorMsg = strdup("unknown");
-    }
-    return NULL;
+    __SOAPY_SDR_C_TRY
+    *stream = reinterpret_cast<SoapySDRStream *>(device->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
+    __SOAPY_SDR_C_CATCH
 }
 
 void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
@@ -173,9 +174,11 @@ char **SoapySDRDevice_listAntennas(const SoapySDRDevice *device, const int direc
     return toStrArray(device->listAntennas(direction, channel), length);
 }
 
-void SoapySDRDevice_setAntenna(SoapySDRDevice *device, const int direction, const size_t channel, const char *name)
+char *SoapySDRDevice_setAntenna(SoapySDRDevice *device, const int direction, const size_t channel, const char *name)
 {
+    __SOAPY_SDR_C_TRY
     device->setAntenna(direction, channel, name);
+    __SOAPY_SDR_C_CATCH
 }
 
 char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -186,9 +189,11 @@ char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, const int directio
 /*******************************************************************
  * Frontend corrections API
  ******************************************************************/
-void SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
+char *SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
 {
-    return device->setDCOffsetMode(direction, channel, automatic);
+    __SOAPY_SDR_C_TRY
+    device->setDCOffsetMode(direction, channel, automatic);
+    __SOAPY_SDR_C_CATCH
 }
 
 bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -196,9 +201,11 @@ bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int dire
     return device->getDCOffsetMode(direction, channel);
 }
 
-void SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const int direction, const size_t channel, const double offsetI, const double offsetQ)
+char *SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const int direction, const size_t channel, const double offsetI, const double offsetQ)
 {
-    return device->setDCOffset(direction, channel, std::complex<double>(offsetI, offsetQ));
+    __SOAPY_SDR_C_TRY
+    device->setDCOffset(direction, channel, std::complex<double>(offsetI, offsetQ));
+    __SOAPY_SDR_C_CATCH
 }
 
 void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int direction, const size_t channel, double *offsetI, double *offsetQ)
@@ -208,9 +215,11 @@ void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int directio
     *offsetQ = ret.imag();
 }
 
-void SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)
+char *SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)
 {
-    return device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
+    __SOAPY_SDR_C_TRY
+    device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
+    __SOAPY_SDR_C_CATCH
 }
 
 void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel, double *balanceI, double *balanceQ)
@@ -228,9 +237,11 @@ char **SoapySDRDevice_listGains(const SoapySDRDevice *device, const int directio
     return toStrArray(device->listGains(direction, channel), length);
 }
 
-void SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
+char *SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
 {
-    return device->setGainMode(direction, channel, automatic);
+    __SOAPY_SDR_C_TRY
+    device->setGainMode(direction, channel, automatic);
+    __SOAPY_SDR_C_CATCH
 }
 
 bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -238,14 +249,18 @@ bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, const int directio
     return device->getGainMode(direction, channel);
 }
 
-void SoapySDRDevice_setGain(SoapySDRDevice *device, const int direction, const size_t channel, const double value)
+char *SoapySDRDevice_setGain(SoapySDRDevice *device, const int direction, const size_t channel, const double value)
 {
-    return device->setGain(direction, channel, value);
+    __SOAPY_SDR_C_TRY
+    device->setGain(direction, channel, value);
+    __SOAPY_SDR_C_CATCH
 }
 
-void SoapySDRDevice_setGainElement(SoapySDRDevice *device, const int direction, const size_t channel, const char *name, const double value)
+char *SoapySDRDevice_setGainElement(SoapySDRDevice *device, const int direction, const size_t channel, const char *name, const double value)
 {
-    return device->setGain(direction, channel, name, value);
+    __SOAPY_SDR_C_TRY
+    device->setGain(direction, channel, name, value);
+    __SOAPY_SDR_C_CATCH
 }
 
 double SoapySDRDevice_getGain(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -271,9 +286,11 @@ SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDevice *device, c
 /*******************************************************************
  * Frequency API
  ******************************************************************/
-void SoapySDRDevice_setFrequency(SoapySDRDevice *device, const int direction, const size_t channel, const double frequency, const SoapySDRKwargs *args)
+char *SoapySDRDevice_setFrequency(SoapySDRDevice *device, const int direction, const size_t channel, const double frequency, const SoapySDRKwargs *args)
 {
-    return device->setFrequency(direction, channel, frequency, toKwargs(args));
+    __SOAPY_SDR_C_TRY
+    device->setFrequency(direction, channel, frequency, toKwargs(args));
+    __SOAPY_SDR_C_CATCH
 }
 
 double SoapySDRDevice_getFrequency(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -299,9 +316,11 @@ SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevice *device, co
 /*******************************************************************
  * Sample Rate API
  ******************************************************************/
-void SoapySDRDevice_setSampleRate(SoapySDRDevice *device, const int direction, const size_t channel, const double rate)
+char *SoapySDRDevice_setSampleRate(SoapySDRDevice *device, const int direction, const size_t channel, const double rate)
 {
-    return device->setSampleRate(direction, channel, rate);
+    __SOAPY_SDR_C_TRY
+    device->setSampleRate(direction, channel, rate);
+    __SOAPY_SDR_C_CATCH
 }
 
 double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -314,9 +333,11 @@ double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const int d
     return toNumericList(device->listSampleRates(direction, channel), length);
 }
 
-void SoapySDRDevice_setBandwidth(SoapySDRDevice *device, const int direction, const size_t channel, const double bw)
+char *SoapySDRDevice_setBandwidth(SoapySDRDevice *device, const int direction, const size_t channel, const double bw)
 {
-    return device->setBandwidth(direction, channel, bw);
+    __SOAPY_SDR_C_TRY
+    device->setBandwidth(direction, channel, bw);
+    __SOAPY_SDR_C_CATCH
 }
 
 double SoapySDRDevice_getBandwidth(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -332,9 +353,11 @@ double *SoapySDRDevice_listBandwidths(const SoapySDRDevice *device, const int di
 /*******************************************************************
  * Clocking API
  ******************************************************************/
-void SoapySDRDevice_setMasterClockRate(SoapySDRDevice *device, const double rate)
+char *SoapySDRDevice_setMasterClockRate(SoapySDRDevice *device, const double rate)
 {
-    return device->setMasterClockRate(rate);
+    __SOAPY_SDR_C_TRY
+    device->setMasterClockRate(rate);
+    __SOAPY_SDR_C_CATCH
 }
 
 double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *device)
@@ -347,9 +370,11 @@ char **SoapySDRDevice_listClockSources(const SoapySDRDevice *device, size_t *len
     return toStrArray(device->listClockSources(), length);
 }
 
-void SoapySDRDevice_setClockSource(SoapySDRDevice *device, const char *source)
+char *SoapySDRDevice_setClockSource(SoapySDRDevice *device, const char *source)
 {
+    __SOAPY_SDR_C_TRY
     device->setClockSource(source);
+    __SOAPY_SDR_C_CATCH
 }
 
 char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device)
@@ -362,9 +387,11 @@ char **SoapySDRDevice_listTimeSources(const SoapySDRDevice *device, size_t *leng
     return toStrArray(device->listTimeSources(), length);
 }
 
-void SoapySDRDevice_setTimeSource(SoapySDRDevice *device, const char *source)
+char *SoapySDRDevice_setTimeSource(SoapySDRDevice *device, const char *source)
 {
+    __SOAPY_SDR_C_TRY
     device->setTimeSource(source);
+    __SOAPY_SDR_C_CATCH
 }
 
 char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device)
