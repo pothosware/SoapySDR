@@ -93,18 +93,6 @@ if (GPLOK)
 "#############################################\n"
 "${ColourReset}")
 
-    message(STATUS "")
-    message(STATUS "#############################################")
-    message(STATUS "## Begin configuration for OsmoSDR support...")
-    message(STATUS "#############################################")
-    message(STATUS "")
     add_subdirectory(OsmoSupport)
-
-    message(STATUS "")
-    message(STATUS "#############################################")
-    message(STATUS "## Begin configuration for UHD support...")
-    message(STATUS "#############################################")
-    message(STATUS "")
-    add_subdirectory(UHDSupport)
 
 endif ()

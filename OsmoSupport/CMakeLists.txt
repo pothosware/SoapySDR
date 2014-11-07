@@ -24,7 +24,9 @@ cmake_minimum_required(VERSION 2.6)
 project(SoapySDROsmoSupport CXX C)
 enable_testing()
 
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake)
+set(GR_OSMOSDR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr)
+
+if (NOT EXISTS ${GR_OSMOSDR_SOURCE_DIR}/cmake)
     message(WARNING "Missing gr-osmosdr submodule!\n"
         "Please run the following commands:\n"
         "git submodule init\n"
@@ -32,7 +34,7 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake)
     return()
 endif ()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/cmake/Modules)
+list(APPEND CMAKE_MODULE_PATH ${GR_OSMOSDR_SOURCE_DIR}/cmake/Modules)
 
 #select the release build type by default to get optimization flags
 if(NOT CMAKE_BUILD_TYPE)
@@ -133,24 +135,24 @@ ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 # osmosdr library
 ########################################################################
 set(osmosdr_srcs
-    #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/source_impl.cc
-    #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/sink_impl.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/ranges.cc
-    #${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/device.cc
+    #${GR_OSMOSDR_SOURCE_DIR}/lib/source_impl.cc
+    #${GR_OSMOSDR_SOURCE_DIR}/lib/sink_impl.cc
+    ${GR_OSMOSDR_SOURCE_DIR}/lib/ranges.cc
+    #${GR_OSMOSDR_SOURCE_DIR}/lib/device.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/io_signature.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/compat/lib/sync_block.cc
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/compat/include)
-include_directories(${PROJECT_SOURCE_DIR}/gr-osmosdr/include)
-include_directories(${PROJECT_SOURCE_DIR}/gr-osmosdr/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/compat/include)
+include_directories(${GR_OSMOSDR_SOURCE_DIR}/include)
+include_directories(${GR_OSMOSDR_SOURCE_DIR}/lib)
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_library(osmosdr SHARED ${osmosdr_srcs})
-target_link_libraries(osmosdr ${Boost_LIBRARIES})
-set_target_properties(osmosdr PROPERTIES DEFINE_SYMBOL "gnuradio_osmosdr_EXPORTS")
+add_library(SoapyOsmoSDR SHARED ${osmosdr_srcs})
+target_link_libraries(SoapyOsmoSDR ${Boost_LIBRARIES})
+set_target_properties(SoapyOsmoSDR PROPERTIES DEFINE_SYMBOL "gnuradio_osmosdr_EXPORTS")
 
-install(TARGETS osmosdr
+install(TARGETS SoapyOsmoSDR
     LIBRARY DESTINATION lib${LIB_SUFFIX} # .so file
     ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
     RUNTIME DESTINATION bin              # .dll file
@@ -174,6 +176,9 @@ function(GrOsmoSDRModule)
 
     include(CMakeParseArguments)
     CMAKE_PARSE_ARGUMENTS(OSMO_MODULE "" "TARGET" "SOURCES;SOURCE_DIR;LIBRARIES" ${ARGN})
+
+    list(APPEND OSMO_MODULE_LIBRARIES SoapyOsmoSDR)
+    list(APPEND OSMO_MODULE_LIBRARIES ${Boost_LIBRARIES})
 
     if (OSMO_MODULE_SOURCE_DIR)
         include_directories(${OSMO_MODULE_SOURCE_DIR})
@@ -211,7 +216,7 @@ function(GrOsmoSDRModule)
     SOAPY_SDR_MODULE_UTIL(
         TARGET ${OSMO_MODULE_TARGET}
         SOURCES ${OSMO_MODULE_SOURCES}
-        LIBRARIES osmosdr ${OSMO_MODULE_LIBRARIES} ${Boost_LIBRARIES}
+        LIBRARIES ${OSMO_MODULE_LIBRARIES}
     )
 
 endfunction(GrOsmoSDRModule)
@@ -239,7 +244,7 @@ function(GR_INCLUDE_SUBDIRECTORY target)
     include_directories(${my_incs})
     GrOsmoSDRModule(
         TARGET ${target}
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/gr-osmosdr/lib/${target}
+        SOURCE_DIR ${GR_OSMOSDR_SOURCE_DIR}/lib/${target}
         LIBRARIES ${my_libs}
     )
 endfunction(GR_INCLUDE_SUBDIRECTORY)
@@ -293,3 +298,33 @@ GR_REGISTER_COMPONENT("AIRSPY Receiver" ENABLE_AIRSPY LIBAIRSPY_FOUND)
 if(ENABLE_AIRSPY)
 GR_INCLUDE_SUBDIRECTORY(airspy)
 endif(ENABLE_AIRSPY)
+
+########################################################################
+# Setup UHD component
+########################################################################
+GR_REGISTER_COMPONENT("UHD Devices" ENABLE_UHD UHD_FOUND)
+if(ENABLE_UHD)
+    message(STATUS "Checking uhd::device::register_device() API...")
+    message(STATUS "  Reading ${UHD_INCLUDE_DIRS}/uhd/device.hpp...")
+    file(READ ${UHD_INCLUDE_DIRS}/uhd/device.hpp device_hpp)
+    string(FIND "${device_hpp}" "device_filter_t" has_device_filter)
+    if ("${has_device_filter}" STREQUAL "-1")
+        message(STATUS "  has original API")
+    else()
+        add_definitions(-DUHD_HAS_DEVICE_FILTER)
+        message(STATUS "  has filter API")
+    endif()
+
+    include_directories(${UHD_INCLUDE_DIRS})
+    SOAPY_SDR_MODULE_UTIL(
+        TARGET uhd
+        SOURCES UHDSupport.cpp
+        LIBRARIES ${UHD_LIBRARIES}
+    )
+endif(ENABLE_UHD)
+
+########################################################################
+# Print Summary
+########################################################################
+GR_PRINT_COMPONENT_SUMMARY()
+MESSAGE(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
