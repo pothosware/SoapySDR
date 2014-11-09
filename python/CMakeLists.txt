@@ -39,6 +39,14 @@ if (NOT PYTHONLIBS_FOUND)
     return()
 endif ()
 
+#on windows, we require a pythonxx_d.lib in debug mode
+#require that the PYTHON_DEBUG_LIBRARY flag is set
+#or the build assumes that the debug library DNE
+if(WIN32 AND NOT PYTHON_DEBUG_LIBRARY AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    message(WARNING "Debug build: missing Python debug library...")
+    return()
+endif()
+
 message(STATUS "PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "PYTHON_LIBRARIES ${PYTHON_LIBRARIES}")
 
