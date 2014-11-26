@@ -3,13 +3,16 @@
 
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
+#include <SoapySDR/Logger.hpp>
 
 class NullDevice : public SoapySDR::Device
 {
 public:
     NullDevice(void)
     {
-        return;
+        SoapySDR::logf(SOAPY_SDR_ERROR, "This is a test %s log message - %d", "error", 0);
+        SoapySDR::logf(SOAPY_SDR_WARNING, "This is a test %s log message - %d", "warning", 1);
+        SoapySDR::logf(SOAPY_SDR_INFO, "This is a test %s log message - %d", "information", 2);
     }
 
     std::string getDriverKey(void) const

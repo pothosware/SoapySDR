@@ -13,6 +13,7 @@
 #pragma once
 #include <SoapySDR/Logger.h>
 #include <string>
+#include <cstdarg>
 
 namespace SoapySDR
 {
@@ -20,11 +21,32 @@ namespace SoapySDR
 typedef SoapySDRLogLevel LogLevel;
 
 /*!
- * Log a message to the registered logger.
+ * Send a message to the registered logger.
  * \param logLevel a possible logging level
  * \param message a logger message string
  */
 SOAPY_SDR_API void log(const LogLevel logLevel, const std::string &message);
+
+/*!
+ * Send a message to the registered logger.
+ * \param logLevel a possible logging level
+ * \param format a printf style format string
+ * \param argList an argument list for the formatter
+ */
+SOAPY_SDR_API void vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList);
+
+/*!
+ * Send a message to the registered logger.
+ * \param logLevel a possible logging level
+ * \param format a printf style format string
+ */
+static inline void logf(const SoapySDRLogLevel logLevel, const char *format, ...)
+{
+    va_list argList;
+    va_start(argList, format);
+    SoapySDR::vlogf(logLevel, format, argList);
+    va_end(argList);
+}
 
 /*!
  * Typedef for the registered log handler function.

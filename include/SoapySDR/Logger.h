@@ -12,6 +12,7 @@
 
 #pragma once
 #include <SoapySDR/Config.h>
+#include <stdarg.h>
 
 typedef enum
 {
@@ -30,11 +31,32 @@ extern "C" {
 #endif
 
 /*!
- * Log a message to the registered logger.
+ * Send a message to the registered logger.
  * \param logLevel a possible logging level
  * \param message a logger message string
  */
 SOAPY_SDR_API void SoapySDR_log(const SoapySDRLogLevel logLevel, const char *message);
+
+/*!
+ * Send a message to the registered logger.
+ * \param logLevel a possible logging level
+ * \param format a printf style format string
+ * \param argList an argument list for the formatter
+ */
+SOAPY_SDR_API void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList);
+
+/*!
+ * Send a message to the registered logger.
+ * \param logLevel a possible logging level
+ * \param format a printf style format string
+ */
+static inline void SoapySDR_logf(const SoapySDRLogLevel logLevel, const char *format, ...)
+{
+    va_list argList;
+    va_start(argList, format);
+    SoapySDR_vlogf(logLevel, format, argList);
+    va_end(argList);
+}
 
 /*!
  * Typedef for the registered log handler function.

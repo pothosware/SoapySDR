@@ -3,6 +3,17 @@
 
 #include <SoapySDR/Logger.h>
 #include <cstdio>
+#include <cstdlib>
+
+#ifdef _MSC_VER
+int vasprintf(char **strp, const char *fmt, va_list ap)
+{
+    int r = _vscprintf(fmt, ap);
+    if (r < 0) return r;
+    *strp = (char *)malloc(r+1);
+    return vsprintf_s(*strp, r+1, fmt, ap);
+}
+#endif
 
 void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
 {
@@ -26,6 +37,14 @@ extern "C" {
 void SoapySDR_log(const SoapySDRLogLevel logLevel, const char *message)
 {
     return registeredLogHandler(logLevel, message);
+}
+
+void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList)
+{
+    char *message;
+    vasprintf(&message, format, argList);
+    SoapySDR_log(logLevel, message);
+    free(message);
 }
 
 void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
