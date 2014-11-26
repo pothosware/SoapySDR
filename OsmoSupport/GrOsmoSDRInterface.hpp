@@ -352,6 +352,72 @@ public:
         return SoapySDR::Device::listBandwidths(dir, channel);
     }
 
+    /*******************************************************************
+     * Clocking support
+     ******************************************************************/
+
+    void setMasterClockRate(const double rate)
+    {
+        _source->set_clock_rate(rate);
+    }
+
+    double getMasterClockRate(void) const
+    {
+        return _source->get_clock_rate();
+    }
+
+    std::vector<std::string> listClockSources(void) const
+    {
+        return _source->get_clock_sources(0);
+    }
+
+    void setClockSource(const std::string &source)
+    {
+        _source->set_clock_source(source, 0);
+    }
+
+    std::string getClockSource(void) const
+    {
+        return _source->get_clock_source(0);
+    }
+
+    std::vector<std::string> listTimeSources(void) const
+    {
+        return _source->get_time_sources(0);
+    }
+
+    void setTimeSource(const std::string &source)
+    {
+        _source->set_time_source(source, 0);
+    }
+
+    std::string getTimeSource(void) const
+    {
+        return _source->get_time_source(0);
+    }
+
+    /*******************************************************************
+     * Time support
+     ******************************************************************/
+
+    bool hasHardwareTime(const std::string &what) const
+    {
+        return (what == "PPS" or what.empty());
+    }
+
+    long long getHardwareTime(const std::string &what) const
+    {
+        if (what == "PPS") return _source->get_time_last_pps().to_ticks(1e9);
+        return _source->get_time_now().to_ticks(1e9);
+    }
+
+    void setHardwareTime(const long long timeNs, const std::string &what)
+    {
+        osmosdr::time_spec_t time = osmosdr::time_spec_t::from_ticks(timeNs, 1e9);
+        if (what == "PPS") return _source->set_time_next_pps(time);
+        return _source->set_time_now(time);
+    }
+
 private:
 
     template <typename RangeType>
