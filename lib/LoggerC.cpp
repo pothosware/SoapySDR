@@ -28,7 +28,7 @@ void SoapySDR_log(const SoapySDRLogLevel logLevel, const char *message)
     return registeredLogHandler(logLevel, message);
 }
 
-void SoapySDR_registerLogHandler(SoapySDRLogHandler handler)
+void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
 {
     registeredLogHandler = handler;
 }

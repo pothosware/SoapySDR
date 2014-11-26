@@ -35,6 +35,6 @@ typedef SoapySDRLogHandler LogHandler;
  * Register a new system log handler.
  * Platforms should call this to replace the default stdio handler.
  */
-SOAPY_SDR_API void registerLogHandler(LogHandler handler);
+SOAPY_SDR_API void registerLogHandler(const LogHandler &handler);
 
 }

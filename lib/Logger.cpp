@@ -8,7 +8,7 @@ void SoapySDR::log(const LogLevel logLevel, const std::string &message)
     return SoapySDR_log(logLevel, message.c_str());
 }
 
-void SoapySDR::registerLogHandler(LogHandler handler)
+void SoapySDR::registerLogHandler(const LogHandler &handler)
 {
     return SoapySDR_registerLogHandler(handler);
 }
