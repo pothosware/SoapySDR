@@ -3,7 +3,9 @@
 
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
+#include <SoapySDR/Logger.hpp>
 #include <uhd/device.hpp>
+#include <uhd/utils/msg.hpp>
 #include <uhd/usrp/multi_usrp.hpp>
 #include <uhd/property_tree.hpp>
 #include <cctype>
@@ -612,3 +614,29 @@ SoapySDR::Device *make_uhd(const SoapySDR::Kwargs &args)
 }
 
 static SoapySDR::Registry register__uhd("uhd", &find_uhd, &make_uhd, SOAPY_SDR_ABI_VERSION);
+
+/***********************************************************************
+ * Register into logger
+ **********************************************************************/
+struct UHDLogHandler
+{
+    UHDLogHandler(void)
+    {
+        uhd::msg::register_handler(&UHDLogHandler::handler);
+    }
+
+    static void handler(uhd::msg::type_t t, const std::string &s)
+    {
+        if (s.empty()) return;
+        if (s[s.size()-1] == '\n') return handler(t, s.substr(0, s.size()-1));
+        switch (t)
+        {
+        case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
+        case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
+        case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
+        case uhd::msg::fastpath: std::cerr << s << std::flush; break;
+        }
+    }
+};
+
+static UHDLogHandler handlerInstance;
