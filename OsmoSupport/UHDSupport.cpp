@@ -627,6 +627,8 @@ struct UHDLogHandler
 
     static void handler(uhd::msg::type_t t, const std::string &s)
     {
+        if (s.empty()) return;
+        if (s[s.size()-1] == '\n') return handler(t, s.substr(0, s.size()-1));
         switch (t)
         {
         case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
