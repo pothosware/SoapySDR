@@ -402,7 +402,7 @@ public:
 
     bool hasHardwareTime(const std::string &what) const
     {
-        return (what == "PPS" or what.empty());
+        return false;//(what == "PPS" or what.empty());
     }
 
     long long getHardwareTime(const std::string &what) const
