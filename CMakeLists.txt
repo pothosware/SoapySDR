@@ -6,7 +6,7 @@ project(SoapySDR)
 enable_language(CXX)
 enable_testing()
 
-set(SOAPY_SDR_VERSION "0.1.0")
+set(SOAPY_SDR_VERSION "0.2.0")
 
 ########################################################################
 # select the release build type by default to get optimization flags
