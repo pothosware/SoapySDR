@@ -4,7 +4,7 @@
 /// Constants used in the device API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -34,6 +34,13 @@
  * For read, the driver sets has time when timeNs is provided.
  */
 #define SOAPY_SDR_HAS_TIME (1 << 2)
+
+/*!
+ * Indicates that stream terminated prematurely.
+ * This is the flag version of an overflow error
+ * that indicates an overflow with the end samples.
+ */
+#define SOAPY_SDR_END_ABRUPT (1 << 3)
 
 /*!
  * Indicates transmit or receive only a single packet.
@@ -70,3 +77,15 @@
  * is not supported by the underlying implementation.
  */
 #define SOAPY_SDR_NOT_SUPPORTED (-5)
+
+/*!
+ * Returned when a the device encountered a stream time
+ * which was expired (late) or too early to process.
+ */
+#define SOAPY_SDR_TIME_ERROR (-6)
+
+/*!
+ * Returned when write caused an underflow condition.
+ * For example, a continuous stream was interrupted.
+ */
+#define SOAPY_SDR_UNDERFLOW (-7)
