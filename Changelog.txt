@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.2.0 (pending)
+==========================
+
+- Added additional error codes and status flags
+
 Release 0.1.0 (2015-01-31)
 ==========================
 
