@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -272,6 +272,25 @@ public:
         const size_t numElems,
         int &flags,
         const long long timeNs = 0,
+        const long timeoutUs = 100000);
+
+    /*!
+     * Readback status information about a stream.
+     * This call is typically used on a transmit stream
+     * to report time errors, underflows, and burst completion.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param chanMask to which channels this status applies
+     * \param flags optional input flags and output flags
+     * \param timeNs the buffer's timestamp in nanoseconds
+     * \param timeoutUs the timeout in microseconds
+     * \return 0 for success or error code like timeout
+     */
+    virtual int readStreamStatus(
+        Stream *stream,
+        size_t &chanMask,
+        int &flags,
+        long long &timeNs,
         const long timeoutUs = 100000);
 
     /*******************************************************************

@@ -4,7 +4,7 @@
 /// Utility functions to query version information.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.1-3"
+#define SOAPY_SDR_ABI_VERSION "0.2-0"
 
 #ifdef __cplusplus
 extern "C" {

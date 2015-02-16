@@ -82,6 +82,11 @@ int SoapySDR::Device::writeStream(Stream *, const void * const *, const size_t, 
     return SOAPY_SDR_NOT_SUPPORTED;
 }
 
+int SoapySDR::Device::readStreamStatus(Stream *, size_t &, int &, long long &, const long)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
 /*******************************************************************
  * Antenna API
  ******************************************************************/

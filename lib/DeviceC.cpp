@@ -166,6 +166,11 @@ int SoapySDRDevice_writeStream(SoapySDRDevice *device, SoapySDRStream *stream, c
     return device->writeStream(reinterpret_cast<SoapySDR::Stream *>(stream), buffs, numElems, *flags, timeNs, timeoutUs);
 }
 
+int SoapySDRDevice_readStreamStatus(SoapySDRDevice *device, SoapySDRStream *stream, size_t *chanMask, int *flags, long long *timeNs, const long timeoutUs)
+{
+    return device->readStreamStatus(reinterpret_cast<SoapySDR::Stream *>(stream), *chanMask, *flags, *timeNs, timeoutUs);
+}
+
 /*******************************************************************
  * Antenna API
  ******************************************************************/
