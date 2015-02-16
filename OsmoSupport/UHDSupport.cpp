@@ -526,6 +526,7 @@ public:
     {
         uhd::time_spec_t time = uhd::time_spec_t::from_ticks(timeNs, 1e9);
         if (what == "PPS") return _dev->set_time_next_pps(time);
+        if (what == "UNKNOWN_PPS") return _dev->set_time_unknown_pps(time);
         return _dev->set_time_now(time);
     }
 
