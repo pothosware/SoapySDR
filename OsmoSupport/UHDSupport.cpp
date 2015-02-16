@@ -264,6 +264,32 @@ public:
         return ret;
     }
 
+    int readStreamStatus(SoapySDR::Stream *handle, size_t &chanMask, int &flags, long long &timeNs, const long timeoutUs)
+    {
+        if (reinterpret_cast<SoapyUHDStream *>(handle)->rx) return SOAPY_SDR_NOT_SUPPORTED;
+        uhd::tx_streamer::sptr &stream = reinterpret_cast<SoapyUHDStream *>(handle)->tx;
+
+        uhd::async_metadata_t md;
+        if (not stream->recv_async_msg(md, timeoutUs/1e6)) return SOAPY_SDR_TIMEOUT;
+
+        chanMask = (1 << md.channel);
+        flags = 0;
+        if (md.has_time_spec) flags |= SOAPY_SDR_HAS_TIME;
+        timeNs = md.time_spec.to_ticks(1e9);
+
+        switch (md.event_code)
+        {
+        case uhd::async_metadata_t::EVENT_CODE_BURST_ACK: flags |= SOAPY_SDR_END_BURST; break;
+        case uhd::async_metadata_t::EVENT_CODE_UNDERFLOW: return SOAPY_SDR_UNDERFLOW;
+        case uhd::async_metadata_t::EVENT_CODE_SEQ_ERROR: return SOAPY_SDR_CORRUPTION;
+        case uhd::async_metadata_t::EVENT_CODE_TIME_ERROR: return SOAPY_SDR_TIME_ERROR;
+        case uhd::async_metadata_t::EVENT_CODE_UNDERFLOW_IN_PACKET: return SOAPY_SDR_UNDERFLOW;
+        case uhd::async_metadata_t::EVENT_CODE_SEQ_ERROR_IN_BURST: return SOAPY_SDR_CORRUPTION;
+        case uhd::async_metadata_t::EVENT_CODE_USER_PAYLOAD: break;
+        }
+        return 0;
+    }
+
     /*******************************************************************
      * Antenna support
      ******************************************************************/
