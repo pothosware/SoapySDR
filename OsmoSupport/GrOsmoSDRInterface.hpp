@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Free Software Foundation, Inc.
+ * Copyright 2014-2015 Free Software Foundation, Inc.
  *
  * This file is part of GrOsmoSDR support modules
  *
@@ -24,6 +24,7 @@
 #include <boost/shared_ptr.hpp>
 #include "sink_iface.h"
 #include "source_iface.h"
+#include "osmosdr/source.h"
 #include <gnuradio/sync_block.h>
 #include <boost/lexical_cast.hpp>
 #include <stdexcept>
@@ -191,6 +192,13 @@ public:
     /*******************************************************************
      * Frontend corrections support
      ******************************************************************/
+
+    void setDCOffsetMode(const int dir, const size_t channel, const bool automatic)
+    {
+        if (dir == SOAPY_SDR_RX and _source) return _source->set_dc_offset_mode(
+            automatic?osmosdr::source::DCOffsetAutomatic:osmosdr::source::DCOffsetManual, channel);
+        return SoapySDR::Device::setDCOffsetMode(dir, channel, automatic);
+    }
 
     void setDCOffset(const int dir, const size_t channel, const std::complex<double> &offset)
     {
