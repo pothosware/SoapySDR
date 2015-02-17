@@ -4,6 +4,7 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Logger.hpp>
+#include <uhd/version.hpp>
 #include <uhd/device.hpp>
 #include <uhd/utils/msg.hpp>
 #include <uhd/usrp/multi_usrp.hpp>
@@ -637,6 +638,13 @@ std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
 
 SoapySDR::Device *make_uhd(const SoapySDR::Kwargs &args)
 {
+    if(std::string(UHD_VERSION_ABI_STRING) != uhd::get_abi_string()) throw std::runtime_error(str(boost::format(
+        "SoapySDR detected ABI compatibility mismatch with UHD library.\n"
+        "SoapySDR UHD support was build against ABI: %s,\n"
+        "but UHD library reports ABI: %s\n"
+        "Suggestion: install an ABI compatible version of UHD,\n"
+        "or rebuild SoapySDR UHD support against this ABI version.\n"
+    ) % UHD_VERSION_ABI_STRING % uhd::get_abi_string()));
     return new SoapyUHDDevice(uhd::usrp::multi_usrp::make(kwargsToDict(args)), args.at("type"));
 }
 
