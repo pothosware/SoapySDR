@@ -379,6 +379,7 @@ public:
 
     /*!
      * List available amplification elements.
+     * Elements should be in order RF to baseband.
      * \param direction the channel direction RX or TX
      * \param channel an available channel
      * \return a list of gain string names
@@ -495,6 +496,7 @@ public:
 
     /*!
      * List available tunable elements in the chain.
+     * Elements should be in order RF to baseband.
      * \param direction the channel direction RX or TX
      * \param channel an available channel
      * \return a list of tunable elements by name

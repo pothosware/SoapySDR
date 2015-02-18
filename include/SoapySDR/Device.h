@@ -416,6 +416,7 @@ SOAPY_SDR_API void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, con
 
 /*!
  * List available amplification elements.
+ * Elements should be in order RF to baseband.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel
@@ -549,6 +550,7 @@ SOAPY_SDR_API double SoapySDRDevice_getFrequencyComponent(const SoapySDRDevice *
 
 /*!
  * List available tunable elements in the chain.
+ * Elements should be in order RF to baseband.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel
