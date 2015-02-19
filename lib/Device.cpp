@@ -159,11 +159,11 @@ bool SoapySDR::Device::getGainMode(const int, const size_t) const
 
 void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
 {
-    //algorithm to distribute overall gain (TX gets RF first, RX gets BB first)
+    //algorithm to distribute overall gain (TX gets BB first, RX gets RF first)
     std::vector<std::string> names = this->listGains(dir, channel);
     if (dir == SOAPY_SDR_TX)
     {
-        for (size_t i = 0; i < names.size(); i++)
+        for (int i = names.size()-1; i >= 0; i--)
         {
             const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
@@ -173,7 +173,7 @@ void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
     }
     if (dir == SOAPY_SDR_RX)
     {
-        for (int i = names.size()-1; i >= 0; i--)
+        for (size_t i = 0; i < names.size(); i++)
         {
             const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
