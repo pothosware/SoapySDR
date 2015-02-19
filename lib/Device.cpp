@@ -173,7 +173,7 @@ void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
     }
     if (dir == SOAPY_SDR_RX)
     {
-        for (int i = names.size()-1; i >= 0; i++)
+        for (int i = names.size()-1; i >= 0; i--)
         {
             const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
