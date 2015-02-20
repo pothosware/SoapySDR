@@ -343,7 +343,9 @@ public:
      * \param stream the opaque pointer to a stream handle
      * \param handle the opaque handle from the acquire() call
      */
-    virtual void releaseReadBuffer(Stream *stream, const size_t handle);
+    virtual void releaseReadBuffer(
+        Stream *stream,
+        const size_t handle);
 
     /*!
      * Acquire direct buffers from a transmit stream.
@@ -368,7 +370,7 @@ public:
     virtual int acquireWriteBuffer(
         Stream *stream,
         size_t &handle,
-        const void * const *buffs,
+        void **buffs,
         const long timeoutUs = 100000);
 
     /*!
