@@ -294,6 +294,106 @@ public:
         const long timeoutUs = 100000);
 
     /*******************************************************************
+     * Direct buffer access API
+     ******************************************************************/
+
+    /*!
+     * How many direct access buffers can the stream provide?
+     * This is the number of times the user can call acquire()
+     * on a stream without making subsequent calls to release().
+     * A return value of 0 means that direct access is not supported.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \return the number of direct access buffers or 0
+     */
+    virtual size_t getNumDirectAccessBuffers(Stream *stream);
+
+    /*!
+     * Acquire direct buffers from a receive stream.
+     * This call is part of the direct buffer access API.
+     *
+     * The buffs array will be filled with a stream pointer for each channel.
+     * Each pointer can be read up to the number of return value elements.
+     *
+     * The handle will be set by the implementation so that the caller
+     * may later release access to the buffers with releaseReadBuffer().
+     * The value and use of handle is up to the implementation.
+     * For example, handle could be a pointer, or a buffer offset.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param handle an opaque value used in the release() call
+     * \param buffs an array of void* buffers num chans in size
+     * \param flags optional flag indicators about the result
+     * \param timeNs the buffer's timestamp in nanoseconds
+     * \param timeoutUs the timeout in microseconds
+     * \return the number of elements read per buffer or error code
+     */
+    virtual int acquireReadBuffer(
+        Stream *stream,
+        size_t &handle,
+        const void **buffs,
+        int &flags,
+        long long &timeNs,
+        const long timeoutUs = 100000);
+
+    /*!
+     * Release an acquired buffer back to the receive stream.
+     * This call is part of the direct buffer access API.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param handle the opaque handle from the acquire() call
+     */
+    virtual void releaseReadBuffer(Stream *stream, const size_t handle);
+
+    /*!
+     * Acquire direct buffers from a transmit stream.
+     * This call is part of the direct buffer access API.
+     *
+     * The buffs array will be filled with a stream pointer for each channel.
+     * Each pointer can be written up to the number of return value elements.
+     *
+     * The handle will be set by the implementation so that the caller
+     * may later release access to the buffers with releaseWriteBuffer().
+     * The value and use of handle is up to the implementation.
+     * For example, handle could be a pointer, or a buffer offset.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param handle an opaque value used in the release() call
+     * \param buffs an array of void* buffers num chans in size
+     * \param flags optional input flags and output flags
+     * \param timeNs the buffer's timestamp in nanoseconds
+     * \param timeoutUs the timeout in microseconds
+     * \return the number of available elements per buffer or error
+     */
+    virtual int acquireWriteBuffer(
+        Stream *stream,
+        size_t &handle,
+        const void * const *buffs,
+        const long timeoutUs = 100000);
+
+    /*!
+     * Release an acquired buffer back to the transmit stream.
+     * This call is part of the direct buffer access API.
+     *
+     * Stream meta-data is provided as part of the release call,
+     * and not the acquire call so that the caller may acquire
+     * buffers without committing to the contents of the meta-data,
+     * which can be determined by the user as the buffers are filled.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param handle the opaque handle from the acquire() call
+     * \param numElems the number of elements written to each buffer
+     * \param flags optional input flags and output flags
+     * \param timeNs the buffer's timestamp in nanoseconds
+     */
+    virtual void releaseWriteBuffer(
+        Stream *stream,
+        const size_t handle,
+        const size_t numElems,
+        int &flags,
+        const long long timeNs = 0);
+
+    /*******************************************************************
      * Antenna API
      ******************************************************************/
 
