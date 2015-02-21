@@ -94,6 +94,34 @@ int SoapySDR::Device::readStreamStatus(Stream *, size_t &, int &, long long &, c
 }
 
 /*******************************************************************
+ * Direct buffer access API
+ ******************************************************************/
+size_t SoapySDR::Device::getNumDirectAccessBuffers(Stream *)
+{
+    return 0;
+}
+
+int SoapySDR::Device::acquireReadBuffer(Stream *, size_t &, const void **, int &, long long &, const long)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
+void SoapySDR::Device::releaseReadBuffer(Stream *, const size_t)
+{
+    return;
+}
+
+int SoapySDR::Device::acquireWriteBuffer(Stream *, size_t &, void **, const long)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
+void SoapySDR::Device::releaseWriteBuffer(Stream *, const size_t, const size_t, int &, const long long)
+{
+    return;
+}
+
+/*******************************************************************
  * Antenna API
  ******************************************************************/
 std::vector<std::string> SoapySDR::Device::listAntennas(const int, const size_t) const
