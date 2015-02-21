@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -60,6 +60,12 @@ SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, 
 void SoapySDR::Device::closeStream(Stream *)
 {
     return;
+}
+
+size_t SoapySDR::Device::getStreamMTU(Stream *) const
+{
+    //provide a non-zero default when the implementation does not overload the MTU
+    return 1024;
 }
 
 int SoapySDR::Device::activateStream(Stream *, const int flags, const long long, const size_t)

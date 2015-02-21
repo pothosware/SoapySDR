@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.h>
@@ -137,6 +137,11 @@ char *SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream
 void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
 {
     return device->closeStream(reinterpret_cast<SoapySDR::Stream *>(stream));
+}
+
+size_t SoapySDRDevice_getStreamMTU(const SoapySDRDevice *device, SoapySDRStream *stream)
+{
+    return device->getStreamMTU(reinterpret_cast<SoapySDR::Stream *>(stream));
 }
 
 int SoapySDRDevice_activateStream(SoapySDRDevice *device,

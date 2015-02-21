@@ -205,6 +205,18 @@ SOAPY_SDR_API char *SoapySDRDevice_setupStream(SoapySDRDevice *device,
 SOAPY_SDR_API void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream);
 
 /*!
+ * Get the stream's maximum transmission unit (MTU) in number of elements.
+ * The MTU specifies the maximum payload transfer in a stream operation.
+ * This value can be used as a stream buffer allocation size that can
+ * best optimize throughput given the underlying stream implementation.
+ *
+ * \param device a pointer to a device instance
+ * \param stream the opaque pointer to a stream handle
+ * \return the MTU in number of stream elements (never zero)
+ */
+SOAPY_SDR_API size_t SoapySDRDevice_getStreamMTU(const SoapySDRDevice *device, SoapySDRStream *stream);
+
+/*!
  * Activate a stream.
  * Call activate to prepare a stream before using read/write().
  * The implementation control switches or stimulate data flow.

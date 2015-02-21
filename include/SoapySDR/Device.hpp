@@ -191,6 +191,17 @@ public:
     virtual void closeStream(Stream *stream);
 
     /*!
+     * Get the stream's maximum transmission unit (MTU) in number of elements.
+     * The MTU specifies the maximum payload transfer in a stream operation.
+     * This value can be used as a stream buffer allocation size that can
+     * best optimize throughput given the underlying stream implementation.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \return the MTU in number of stream elements (never zero)
+     */
+    virtual size_t getStreamMTU(Stream *stream) const;
+
+    /*!
      * Activate a stream.
      * Call activate to prepare a stream before using read/write().
      * The implementation control switches or stimulate data flow.
