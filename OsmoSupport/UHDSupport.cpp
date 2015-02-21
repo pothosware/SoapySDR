@@ -185,6 +185,14 @@ public:
         delete stream;
     }
 
+    size_t getStreamMTU(SoapySDR::Stream *handle) const
+    {
+        SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
+        if (stream->rx) return stream->rx->get_max_num_samps();
+        if (stream->tx) return stream->tx->get_max_num_samps();
+        return SoapySDR::Device::getStreamMTU(handle);
+    }
+
     int activateStream(SoapySDR::Stream *handle, const int flags, const long long timeNs, const size_t numElems)
     {
         SoapyUHDStream *stream = reinterpret_cast<SoapyUHDStream *>(handle);
