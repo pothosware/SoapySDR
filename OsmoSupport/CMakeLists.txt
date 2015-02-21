@@ -227,7 +227,7 @@ install(TARGETS SoapyOsmoSDR
 ########################################################################
 # Find build dependencies
 ########################################################################
-find_package(UHD)
+INCLUDE(FindPkgConfig)
 find_package(LibOsmoSDR)
 find_package(LibRTLSDR)
 find_package(LibMiriSDR)
@@ -364,30 +364,6 @@ GR_REGISTER_COMPONENT("AIRSPY Receiver" ENABLE_AIRSPY LIBAIRSPY_FOUND)
 if(ENABLE_AIRSPY)
 GR_INCLUDE_SUBDIRECTORY(airspy)
 endif(ENABLE_AIRSPY)
-
-########################################################################
-# Setup UHD component
-########################################################################
-GR_REGISTER_COMPONENT("UHD Devices" ENABLE_UHD UHD_FOUND)
-if(ENABLE_UHD)
-    message(STATUS "Checking uhd::device::register_device() API...")
-    message(STATUS "  Reading ${UHD_INCLUDE_DIRS}/uhd/device.hpp...")
-    file(READ ${UHD_INCLUDE_DIRS}/uhd/device.hpp device_hpp)
-    string(FIND "${device_hpp}" "device_filter_t" has_device_filter)
-    if ("${has_device_filter}" STREQUAL "-1")
-        message(STATUS "  has original API")
-    else()
-        add_definitions(-DUHD_HAS_DEVICE_FILTER)
-        message(STATUS "  has filter API")
-    endif()
-
-    include_directories(${UHD_INCLUDE_DIRS})
-    SOAPY_SDR_MODULE_UTIL(
-        TARGET uhd
-        SOURCES UHDSupport.cpp
-        LIBRARIES ${UHD_LIBRARIES}
-    )
-endif(ENABLE_UHD)
 
 ########################################################################
 # Print Summary

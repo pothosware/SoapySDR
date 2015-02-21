@@ -94,5 +94,6 @@ if (GPLOK)
 "${ColourReset}")
 
     add_subdirectory(OsmoSupport)
+    add_subdirectory(UHDSupport)
 
 endif ()
