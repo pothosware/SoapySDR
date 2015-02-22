@@ -239,6 +239,7 @@ public:
         flags = 0;
         if (md.has_time_spec) flags |= SOAPY_SDR_HAS_TIME;
         if (md.end_of_burst) flags |= SOAPY_SDR_END_BURST;
+        if (md.more_fragments) flags |= SOAPY_SDR_MORE_FRAGMENTS;
         timeNs = md.time_spec.to_ticks(1e9);
         switch (md.error_code)
         {
