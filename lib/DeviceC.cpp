@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.h>
@@ -139,6 +139,11 @@ void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
     return device->closeStream(reinterpret_cast<SoapySDR::Stream *>(stream));
 }
 
+size_t SoapySDRDevice_getStreamMTU(const SoapySDRDevice *device, SoapySDRStream *stream)
+{
+    return device->getStreamMTU(reinterpret_cast<SoapySDR::Stream *>(stream));
+}
+
 int SoapySDRDevice_activateStream(SoapySDRDevice *device,
     SoapySDRStream *stream,
     const int flags,
@@ -169,6 +174,52 @@ int SoapySDRDevice_writeStream(SoapySDRDevice *device, SoapySDRStream *stream, c
 int SoapySDRDevice_readStreamStatus(SoapySDRDevice *device, SoapySDRStream *stream, size_t *chanMask, int *flags, long long *timeNs, const long timeoutUs)
 {
     return device->readStreamStatus(reinterpret_cast<SoapySDR::Stream *>(stream), *chanMask, *flags, *timeNs, timeoutUs);
+}
+
+
+/*******************************************************************
+ * Direct buffer access API
+ ******************************************************************/
+size_t SoapySDRDevice_getNumDirectAccessBuffers(SoapySDRDevice *device, SoapySDRStream *stream)
+{
+    return device->getNumDirectAccessBuffers(reinterpret_cast<SoapySDR::Stream *>(stream));
+}
+
+int SoapySDRDevice_acquireReadBuffer(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    size_t *handle,
+    const void **buffs,
+    int *flags,
+    long long *timeNs,
+    const long timeoutUs)
+{
+    return device->acquireReadBuffer(reinterpret_cast<SoapySDR::Stream *>(stream), *handle, buffs, *flags, *timeNs, timeoutUs);
+}
+
+void SoapySDRDevice_releaseReadBuffer(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const size_t handle)
+{
+    return device->releaseReadBuffer(reinterpret_cast<SoapySDR::Stream *>(stream), handle);
+}
+
+int SoapySDRDevice_acquireWriteBuffer(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    size_t *handle,
+    void **buffs,
+    const long timeoutUs)
+{
+    return device->acquireWriteBuffer(reinterpret_cast<SoapySDR::Stream *>(stream), *handle, buffs, timeoutUs);
+}
+
+void SoapySDRDevice_releaseWriteBuffer(SoapySDRDevice *device,
+    SoapySDRStream *stream,
+    const size_t handle,
+    const size_t numElems,
+    int *flags,
+    const long long timeNs)
+{
+    return device->releaseWriteBuffer(reinterpret_cast<SoapySDR::Stream *>(stream), handle, numElems, *flags, timeNs);
 }
 
 /*******************************************************************

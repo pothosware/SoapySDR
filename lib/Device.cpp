@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -62,6 +62,12 @@ void SoapySDR::Device::closeStream(Stream *)
     return;
 }
 
+size_t SoapySDR::Device::getStreamMTU(Stream *) const
+{
+    //provide a non-zero default when the implementation does not overload the MTU
+    return 1024;
+}
+
 int SoapySDR::Device::activateStream(Stream *, const int flags, const long long, const size_t)
 {
     return (flags == 0)? 0 : SOAPY_SDR_NOT_SUPPORTED;
@@ -85,6 +91,34 @@ int SoapySDR::Device::writeStream(Stream *, const void * const *, const size_t, 
 int SoapySDR::Device::readStreamStatus(Stream *, size_t &, int &, long long &, const long)
 {
     return SOAPY_SDR_NOT_SUPPORTED;
+}
+
+/*******************************************************************
+ * Direct buffer access API
+ ******************************************************************/
+size_t SoapySDR::Device::getNumDirectAccessBuffers(Stream *)
+{
+    return 0;
+}
+
+int SoapySDR::Device::acquireReadBuffer(Stream *, size_t &, const void **, int &, long long &, const long)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
+void SoapySDR::Device::releaseReadBuffer(Stream *, const size_t)
+{
+    return;
+}
+
+int SoapySDR::Device::acquireWriteBuffer(Stream *, size_t &, void **, const long)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
+void SoapySDR::Device::releaseWriteBuffer(Stream *, const size_t, const size_t, int &, const long long)
+{
+    return;
 }
 
 /*******************************************************************
