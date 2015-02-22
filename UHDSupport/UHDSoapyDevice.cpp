@@ -6,12 +6,15 @@
 #include <uhd/property_tree.hpp>
 #include <uhd/device.hpp>
 #include <uhd/convert.hpp>
+#include <uhd/usrp/mboard_eeprom.hpp>
+#include <uhd/usrp/subdev_spec.hpp>
 
 #include <SoapySDR/Device.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/bind.hpp>
 
 /***********************************************************************
  * Soapy Logger handle forward to UHD
@@ -35,6 +38,31 @@ public:
     uhd::tx_streamer::sptr get_tx_stream(const uhd::stream_args_t &args);
     bool recv_async_msg(uhd::async_metadata_t &, double);
 
+    void set_cmd_time(const uhd::time_spec_t &time)
+    {
+        _device->setCommandTime(time.to_ticks(1e9));
+    }
+
+    uhd::time_spec_t get_hardware_time(const std::string &what)
+    {
+        return uhd::time_spec_t::from_ticks(_device->getHardwareTime(what), 1e9);
+    }
+
+    void set_hardware_time(const std::string &what, const uhd::time_spec_t &time)
+    {
+        _device->setHardwareTime(time.to_ticks(1e9), what);
+    }
+
+    uhd::usrp::subdev_spec_t get_frontend_mapping(const int dir)
+    {
+        return uhd::usrp::subdev_spec_t(_device->getFrontendMapping(dir));
+    }
+
+    void set_frontend_mapping(const int dir, const uhd::usrp::subdev_spec_t &spec)
+    {
+        _device->setFrontendMapping(dir, spec.to_string());
+    }
+
 private:
     SoapySDR::Device *_device;
 };
@@ -54,6 +82,53 @@ UHDSoapyDevice::UHDSoapyDevice(const uhd::device_addr_t &args)
         boost::mutex::scoped_lock l(suMutexMaker());
         _device = SoapySDR::Device::make(dictToKwargs(args));
     }
+
+    //setup property tree
+    _tree = uhd::property_tree::make();
+    const uhd::fs_path mb_path = "/mboards/0";
+    _tree->create<std::string>("/name").set(_device->getDriverKey());
+    _tree->create<std::string>(mb_path / "name").set(_device->getHardwareKey());
+
+    //mb eeprom filled with hardware info
+    uhd::usrp::mboard_eeprom_t mb_eeprom;
+    const uhd::device_addr_t hardware_info(kwargsToDict(_device->getHardwareInfo()));
+    BOOST_FOREACH(const std::string &key, hardware_info.keys()) mb_eeprom[key] = hardware_info[key];
+    _tree->create<uhd::usrp::mboard_eeprom_t>(mb_path / "eeprom").set(mb_eeprom);
+
+    //the frontend mapping
+    _tree->access<uhd::usrp::subdev_spec_t>(mb_path / "rx_subdev_spec")
+        .publish(boost::bind(&UHDSoapyDevice::get_frontend_mapping, this, SOAPY_SDR_RX))
+        .subscribe(boost::bind(&UHDSoapyDevice::set_frontend_mapping, this, SOAPY_SDR_RX, _1));
+    _tree->access<uhd::usrp::subdev_spec_t>(mb_path / "tx_subdev_spec")
+        .publish(boost::bind(&UHDSoapyDevice::get_frontend_mapping, this, SOAPY_SDR_TX))
+        .subscribe(boost::bind(&UHDSoapyDevice::set_frontend_mapping, this, SOAPY_SDR_TX, _1));
+
+    //timed command support
+    _tree->create<uhd::time_spec_t>(mb_path / "time" / "cmd")
+        .subscribe(boost::bind(&UHDSoapyDevice::set_cmd_time, this, _1));
+    _tree->create<double>(mb_path / "tick_rate")
+        .publish(boost::bind(&SoapySDR::Device::getMasterClockRate, _device))
+        .subscribe(boost::bind(&SoapySDR::Device::setMasterClockRate, _device, _1));
+
+    //hardware time support
+    _tree->create<uhd::time_spec_t>(mb_path / "time" / "now")
+        .publish(boost::bind(&UHDSoapyDevice::get_hardware_time, this, ""))
+        .subscribe(boost::bind(&UHDSoapyDevice::set_hardware_time, this, "", _1));
+    _tree->create<uhd::time_spec_t>(mb_path / "time" / "pps")
+        .publish(boost::bind(&UHDSoapyDevice::get_hardware_time, this, "PPS"))
+        .subscribe(boost::bind(&UHDSoapyDevice::set_hardware_time, this, "PPS", _1));
+
+    //clock and time sources
+    _tree->create<std::vector<std::string> >(mb_path / "clock_source"/ "options")
+        .publish(boost::bind(&SoapySDR::Device::listClockSources, _device));
+    _tree->create<std::string>(mb_path / "clock_source" / "value")
+        .publish(boost::bind(&SoapySDR::Device::getClockSource, _device))
+        .subscribe(boost::bind(&SoapySDR::Device::setClockSource, _device, _1));
+    _tree->create<std::vector<std::string> >(mb_path / "time_source"/ "options")
+        .publish(boost::bind(&SoapySDR::Device::listTimeSources, _device));
+    _tree->create<std::string>(mb_path / "time_source" / "value")
+        .publish(boost::bind(&SoapySDR::Device::getTimeSource, _device))
+        .subscribe(boost::bind(&SoapySDR::Device::setTimeSource, _device, _1));
 }
 
 UHDSoapyDevice::~UHDSoapyDevice(void)
