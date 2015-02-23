@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -73,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -122,14 +122,28 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8a64e7fef972e9c24bbc2f1b4811a38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3af55b3e429765b8e057b2b8c2af009b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a3af55b3e429765b8e057b2b8c2af009b">closeStream</a> (Stream *stream)</td></tr>
 <tr class="separator:a3af55b3e429765b8e057b2b8c2af009b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49c03a51884b121b8eb5afca0c9c400f"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a49c03a51884b121b8eb5afca0c9c400f">getStreamMTU</a> (Stream *stream) const </td></tr>
+<tr class="separator:a49c03a51884b121b8eb5afca0c9c400f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af778f46410037507038479670492eb01"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#af778f46410037507038479670492eb01">activateStream</a> (Stream *stream, const int flags=0, const long long timeNs=0, const size_t numElems=0)</td></tr>
 <tr class="separator:af778f46410037507038479670492eb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e5df11bb3d71e1e584fffb96fc3035f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a6e5df11bb3d71e1e584fffb96fc3035f">deactivateStream</a> (Stream *stream, const int flags=0, const long long timeNs=0)</td></tr>
 <tr class="separator:a6e5df11bb3d71e1e584fffb96fc3035f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a872010f1eb64e259981cf31f2e726027"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a872010f1eb64e259981cf31f2e726027">readStream</a> (Stream *stream, void *const *buffs, const size_t numElems, int &amp;flags, long long &amp;timeNs, const long timeoutUs=100000)</td></tr>
 <tr class="separator:a872010f1eb64e259981cf31f2e726027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a932999171b526b810c7b33fc3172fd5b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a932999171b526b810c7b33fc3172fd5b">writeStream</a> (Stream *stream, const void *const *buffs, const size_t numElems, int &amp;flags, const long long timeNs, const long timeoutUs=100000)</td></tr>
-<tr class="separator:a932999171b526b810c7b33fc3172fd5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff08c2bfc323cd8d6d56b5f5d4432a97"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#aff08c2bfc323cd8d6d56b5f5d4432a97">writeStream</a> (Stream *stream, const void *const *buffs, const size_t numElems, int &amp;flags, const long long timeNs=0, const long timeoutUs=100000)</td></tr>
+<tr class="separator:aff08c2bfc323cd8d6d56b5f5d4432a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6683daba918938769afb2bfbb40e38af"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a6683daba918938769afb2bfbb40e38af">readStreamStatus</a> (Stream *stream, size_t &amp;chanMask, int &amp;flags, long long &amp;timeNs, const long timeoutUs=100000)</td></tr>
+<tr class="separator:a6683daba918938769afb2bfbb40e38af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac726e6103fca904ddad6519f4de1d742"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ac726e6103fca904ddad6519f4de1d742">getNumDirectAccessBuffers</a> (Stream *stream)</td></tr>
+<tr class="separator:ac726e6103fca904ddad6519f4de1d742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa804508bf81dd9db982d884c87b79ada"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#aa804508bf81dd9db982d884c87b79ada">acquireReadBuffer</a> (Stream *stream, size_t &amp;handle, const void **buffs, int &amp;flags, long long &amp;timeNs, const long timeoutUs=100000)</td></tr>
+<tr class="separator:aa804508bf81dd9db982d884c87b79ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ff731c8d6a56e48ac2cf3564172ce3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ab6ff731c8d6a56e48ac2cf3564172ce3">releaseReadBuffer</a> (Stream *stream, const size_t handle)</td></tr>
+<tr class="separator:ab6ff731c8d6a56e48ac2cf3564172ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26ebff684fedee466cc5fae867f8091"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#af26ebff684fedee466cc5fae867f8091">acquireWriteBuffer</a> (Stream *stream, size_t &amp;handle, void **buffs, const long timeoutUs=100000)</td></tr>
+<tr class="separator:af26ebff684fedee466cc5fae867f8091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ccccc6e135a399cbc4793897786664a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a2ccccc6e135a399cbc4793897786664a">releaseWriteBuffer</a> (Stream *stream, const size_t handle, const size_t numElems, int &amp;flags, const long long timeNs=0)</td></tr>
+<tr class="separator:a2ccccc6e135a399cbc4793897786664a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af911926c23c5222b5d5ce3108bcf2f2b"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#af911926c23c5222b5d5ce3108bcf2f2b">listAntennas</a> (const int direction, const size_t channel) const </td></tr>
 <tr class="separator:af911926c23c5222b5d5ce3108bcf2f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30247730320855d7a348617e60916770"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a30247730320855d7a348617e60916770">setAntenna</a> (const int direction, const size_t channel, const std::string &amp;name)</td></tr>
@@ -220,6 +234,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6e2197da76406a7ca40cac44b52ec836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc2efbb1c1b248a17320eb1e538112e8"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8">readRegister</a> (const unsigned addr) const </td></tr>
 <tr class="separator:adc2efbb1c1b248a17320eb1e538112e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a8e4f0b6253aabb31f0cdbd2e98f40114">writeSetting</a> (const std::string &amp;key, const std::string &amp;value)</td></tr>
+<tr class="separator:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a993563ec4b3f426e3b54e7e44ca2c620"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620">readSetting</a> (const std::string &amp;key) const </td></tr>
+<tr class="separator:a993563ec4b3f426e3b54e7e44ca2c620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4f0485d8ae3ece1bf6147d36463e41"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a0a4f0485d8ae3ece1bf6147d36463e41">listGPIOBanks</a> (void) const </td></tr>
 <tr class="separator:a0a4f0485d8ae3ece1bf6147d36463e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab71d1b3880f6614fb61a65286903f8d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ab71d1b3880f6614fb61a65286903f8d2">writeGPIO</a> (const std::string &amp;bank, const unsigned value)</td></tr>
@@ -282,6 +300,140 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aa804508bf81dd9db982d884c87b79ada"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int SoapySDR::Device::acquireReadBuffer </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void **&#160;</td>
+          <td class="paramname"><em>buffs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>timeNs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long&#160;</td>
+          <td class="paramname"><em>timeoutUs</em> = <code>100000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Acquire direct buffers from a receive stream. This call is part of the direct buffer access API.</p>
+<p>The buffs array will be filled with a stream pointer for each channel. Each pointer can be read up to the number of return value elements.</p>
+<p>The handle will be set by the implementation so that the caller may later release access to the buffers with <a class="el" href="classSoapySDR_1_1Device.html#ab6ff731c8d6a56e48ac2cf3564172ce3">releaseReadBuffer()</a>. The value and use of handle is up to the implementation. For example, handle could be a pointer, or a buffer offset.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+    <tr><td class="paramname">handle</td><td>an opaque value used in the release() call </td></tr>
+    <tr><td class="paramname">buffs</td><td>an array of void* buffers num chans in size </td></tr>
+    <tr><td class="paramname">flags</td><td>optional flag indicators about the result </td></tr>
+    <tr><td class="paramname">timeNs</td><td>the buffer's timestamp in nanoseconds </td></tr>
+    <tr><td class="paramname">timeoutUs</td><td>the timeout in microseconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of elements read per buffer or error code </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af26ebff684fedee466cc5fae867f8091"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int SoapySDR::Device::acquireWriteBuffer </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>buffs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long&#160;</td>
+          <td class="paramname"><em>timeoutUs</em> = <code>100000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Acquire direct buffers from a transmit stream. This call is part of the direct buffer access API.</p>
+<p>The buffs array will be filled with a stream pointer for each channel. Each pointer can be written up to the number of return value elements.</p>
+<p>The handle will be set by the implementation so that the caller may later release access to the buffers with <a class="el" href="classSoapySDR_1_1Device.html#a2ccccc6e135a399cbc4793897786664a">releaseWriteBuffer()</a>. The value and use of handle is up to the implementation. For example, handle could be a pointer, or a buffer offset.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+    <tr><td class="paramname">handle</td><td>an opaque value used in the release() call </td></tr>
+    <tr><td class="paramname">buffs</td><td>an array of void* buffers num chans in size </td></tr>
+    <tr><td class="paramname">flags</td><td>optional input flags and output flags </td></tr>
+    <tr><td class="paramname">timeNs</td><td>the buffer's timestamp in nanoseconds </td></tr>
+    <tr><td class="paramname">timeoutUs</td><td>the timeout in microseconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of available elements per buffer or error </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="af778f46410037507038479670492eb01"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1330,6 +1482,38 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ac726e6103fca904ddad6519f4de1d742"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t SoapySDR::Device::getNumDirectAccessBuffers </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>How many direct access buffers can the stream provide? This is the number of times the user can call acquire() on a stream without making subsequent calls to release(). A return value of 0 means that direct access is not supported.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of direct access buffers or 0 </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ae467ff8003678fbaedab8ef023a156a9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1370,6 +1554,38 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the sample rate in samples per second </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a49c03a51884b121b8eb5afca0c9c400f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t SoapySDR::Device::getStreamMTU </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get the stream's maximum transmission unit (MTU) in number of elements. The MTU specifies the maximum payload transfer in a stream operation. This value can be used as a stream buffer allocation size that can best optimize throughput given the underlying stream implementation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the MTU in number of stream elements (never zero) </dd></dl>
 
 </div>
 </div>
@@ -1574,7 +1790,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>List available tunable elements in the chain. </p>
+<p>List available tunable elements in the chain. Elements should be in order RF to baseband. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
@@ -1617,7 +1833,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>List available amplification elements. </p>
+<p>List available amplification elements. Elements should be in order RF to baseband. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
@@ -1980,6 +2196,38 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a993563ec4b3f426e3b54e7e44ca2c620"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string SoapySDR::Device::readSetting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read an arbitrary setting on the device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the setting value </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a872010f1eb64e259981cf31f2e726027"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2051,6 +2299,70 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6683daba918938769afb2bfbb40e38af"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int SoapySDR::Device::readStreamStatus </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>chanMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>timeNs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long&#160;</td>
+          <td class="paramname"><em>timeoutUs</em> = <code>100000</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Readback status information about a stream. This call is typically used on a transmit stream to report time errors, underflows, and burst completion.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+    <tr><td class="paramname">chanMask</td><td>to which channels this status applies </td></tr>
+    <tr><td class="paramname">flags</td><td>optional input flags and output flags </td></tr>
+    <tr><td class="paramname">timeNs</td><td>the buffer's timestamp in nanoseconds </td></tr>
+    <tr><td class="paramname">timeoutUs</td><td>the timeout in microseconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 for success or error code like timeout </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a1c8992dbada612925191dda406dc4f11"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2091,6 +2403,112 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an array of bytes read from the UART </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6ff731c8d6a56e48ac2cf3564172ce3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::releaseReadBuffer </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Release an acquired buffer back to the receive stream. This call is part of the direct buffer access API.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+    <tr><td class="paramname">handle</td><td>the opaque handle from the acquire() call </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a2ccccc6e135a399cbc4793897786664a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::releaseWriteBuffer </td>
+          <td>(</td>
+          <td class="paramtype">Stream *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>numElems</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const long long&#160;</td>
+          <td class="paramname"><em>timeNs</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Release an acquired buffer back to the transmit stream. This call is part of the direct buffer access API.</p>
+<p>Stream meta-data is provided as part of the release call, and not the acquire call so that the caller may acquire buffers without committing to the contents of the meta-data, which can be determined by the user as the buffers are filled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the opaque pointer to a stream handle </td></tr>
+    <tr><td class="paramname">handle</td><td>the opaque handle from the acquire() call </td></tr>
+    <tr><td class="paramname">numElems</td><td>the number of elements written to each buffer </td></tr>
+    <tr><td class="paramname">flags</td><td>optional input flags and output flags </td></tr>
+    <tr><td class="paramname">timeNs</td><td>the buffer's timestamp in nanoseconds </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3111,7 +3529,49 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a932999171b526b810c7b33fc3172fd5b"></a>
+<a class="anchor" id="a8e4f0b6253aabb31f0cdbd2e98f40114"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::writeSetting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write an arbitrary setting on the device. The interpretation is up the implementation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+    <tr><td class="paramname">value</td><td>the setting value </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aff08c2bfc323cd8d6d56b5f5d4432a97"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3146,7 +3606,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const long long&#160;</td>
-          <td class="paramname"><em>timeNs</em>, </td>
+          <td class="paramname"><em>timeNs</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3230,7 +3690,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 22 2014 15:31:00 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 22 2015 12:18:19 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

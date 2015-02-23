@@ -14,5 +14,7 @@ var searchData=
   ['listtimesources',['listTimeSources',['../classSoapySDR_1_1Device.html#abe477e853f8bfed6dac4cdf0aabf9215',1,'SoapySDR::Device']]],
   ['listuarts',['listUARTs',['../classSoapySDR_1_1Device.html#a15bff65156aa6826ae61f17e953cf5f9',1,'SoapySDR::Device']]],
   ['loadmodule',['loadModule',['../namespaceSoapySDR.html#a9e1d118d5d1e5b471683eb05e14a1f1a',1,'SoapySDR']]],
-  ['loadmodules',['loadModules',['../namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e',1,'SoapySDR']]]
+  ['loadmodules',['loadModules',['../namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e',1,'SoapySDR']]],
+  ['log',['log',['../namespaceSoapySDR.html#acc85246abb7c67379bf2824ba144aa0d',1,'SoapySDR']]],
+  ['logf',['logf',['../namespaceSoapySDR.html#af5721633a187da4346589b0816b05125',1,'SoapySDR']]]
 ];

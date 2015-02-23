@@ -21,7 +21,9 @@ var searchData=
   ['getiqbalance',['getIQBalance',['../classSoapySDR_1_1Device.html#a12a177db320d18560ae188e9841ca792',1,'SoapySDR::Device']]],
   ['getmasterclockrate',['getMasterClockRate',['../classSoapySDR_1_1Device.html#aac696eacf77aecd7750b179fbf76f31b',1,'SoapySDR::Device']]],
   ['getnumchannels',['getNumChannels',['../classSoapySDR_1_1Device.html#ad9b1457772212674458521419f76a911',1,'SoapySDR::Device']]],
+  ['getnumdirectaccessbuffers',['getNumDirectAccessBuffers',['../classSoapySDR_1_1Device.html#ac726e6103fca904ddad6519f4de1d742',1,'SoapySDR::Device']]],
   ['getrootpath',['getRootPath',['../namespaceSoapySDR.html#a37a1da663087d48150012087b442c954',1,'SoapySDR']]],
   ['getsamplerate',['getSampleRate',['../classSoapySDR_1_1Device.html#ae467ff8003678fbaedab8ef023a156a9',1,'SoapySDR::Device']]],
+  ['getstreammtu',['getStreamMTU',['../classSoapySDR_1_1Device.html#a49c03a51884b121b8eb5afca0c9c400f',1,'SoapySDR::Device']]],
   ['gettimesource',['getTimeSource',['../classSoapySDR_1_1Device.html#a191d9fc18ed8de5fef24675cc8637f52',1,'SoapySDR::Device']]]
 ];

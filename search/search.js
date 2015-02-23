@@ -10,11 +10,13 @@ var indexSectionsWithContent =
   0: "acdefghklmrstuvw~",
   1: "drs",
   2: "s",
-  3: "cdmrtv",
-  4: "acdeghlmrstuw~",
+  3: "cdlmrtv",
+  4: "acdeghlmrstuvw~",
   5: "kmsv",
-  6: "fkmr",
-  7: "s"
+  6: "fklmrs",
+  7: "s",
+  8: "s",
+  9: "s"
 };
 
 var indexSectionNames =
@@ -26,7 +28,9 @@ var indexSectionNames =
   4: "functions",
   5: "variables",
   6: "typedefs",
-  7: "defines"
+  7: "enums",
+  8: "enumvalues",
+  9: "defines"
 };
 
 function convertToId(search)

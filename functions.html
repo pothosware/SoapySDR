@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -101,7 +101,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -114,6 +114,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>acquireReadBuffer()
+: <a class="el" href="classSoapySDR_1_1Device.html#aa804508bf81dd9db982d884c87b79ada">SoapySDR::Device</a>
+</li>
+<li>acquireWriteBuffer()
+: <a class="el" href="classSoapySDR_1_1Device.html#af26ebff684fedee466cc5fae867f8091">SoapySDR::Device</a>
+</li>
 <li>activateStream()
 : <a class="el" href="classSoapySDR_1_1Device.html#af778f46410037507038479670492eb01">SoapySDR::Device</a>
 </li>
@@ -199,8 +205,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getNumChannels()
 : <a class="el" href="classSoapySDR_1_1Device.html#ad9b1457772212674458521419f76a911">SoapySDR::Device</a>
 </li>
+<li>getNumDirectAccessBuffers()
+: <a class="el" href="classSoapySDR_1_1Device.html#ac726e6103fca904ddad6519f4de1d742">SoapySDR::Device</a>
+</li>
 <li>getSampleRate()
 : <a class="el" href="classSoapySDR_1_1Device.html#ae467ff8003678fbaedab8ef023a156a9">SoapySDR::Device</a>
+</li>
+<li>getStreamMTU()
+: <a class="el" href="classSoapySDR_1_1Device.html#a49c03a51884b121b8eb5afca0c9c400f">SoapySDR::Device</a>
 </li>
 <li>getTimeSource()
 : <a class="el" href="classSoapySDR_1_1Device.html#a191d9fc18ed8de5fef24675cc8637f52">SoapySDR::Device</a>
@@ -293,14 +305,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>readSensor()
 : <a class="el" href="classSoapySDR_1_1Device.html#ae4921e6aa61671ef88b8cecf8e6406e1">SoapySDR::Device</a>
 </li>
+<li>readSetting()
+: <a class="el" href="classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620">SoapySDR::Device</a>
+</li>
 <li>readStream()
 : <a class="el" href="classSoapySDR_1_1Device.html#a872010f1eb64e259981cf31f2e726027">SoapySDR::Device</a>
+</li>
+<li>readStreamStatus()
+: <a class="el" href="classSoapySDR_1_1Device.html#a6683daba918938769afb2bfbb40e38af">SoapySDR::Device</a>
 </li>
 <li>readUART()
 : <a class="el" href="classSoapySDR_1_1Device.html#a1c8992dbada612925191dda406dc4f11">SoapySDR::Device</a>
 </li>
 <li>Registry()
 : <a class="el" href="classSoapySDR_1_1Registry.html#adbe7f91b97f0e0575dc81348480eeaae">SoapySDR::Registry</a>
+</li>
+<li>releaseReadBuffer()
+: <a class="el" href="classSoapySDR_1_1Device.html#ab6ff731c8d6a56e48ac2cf3564172ce3">SoapySDR::Device</a>
+</li>
+<li>releaseWriteBuffer()
+: <a class="el" href="classSoapySDR_1_1Device.html#a2ccccc6e135a399cbc4793897786664a">SoapySDR::Device</a>
 </li>
 </ul>
 
@@ -391,8 +415,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>writeRegister()
 : <a class="el" href="classSoapySDR_1_1Device.html#a6e2197da76406a7ca40cac44b52ec836">SoapySDR::Device</a>
 </li>
+<li>writeSetting()
+: <a class="el" href="classSoapySDR_1_1Device.html#a8e4f0b6253aabb31f0cdbd2e98f40114">SoapySDR::Device</a>
+</li>
 <li>writeStream()
-: <a class="el" href="classSoapySDR_1_1Device.html#a932999171b526b810c7b33fc3172fd5b">SoapySDR::Device</a>
+: <a class="el" href="classSoapySDR_1_1Device.html#aff08c2bfc323cd8d6d56b5f5d4432a97">SoapySDR::Device</a>
 </li>
 <li>writeUART()
 : <a class="el" href="classSoapySDR_1_1Device.html#a55eccdf8a75f62cc3ea6668353ea2fd6">SoapySDR::Device</a>
@@ -408,7 +435,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Oct 22 2014 15:31:00 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 22 2015 12:18:19 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
