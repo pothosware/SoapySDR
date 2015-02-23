@@ -22,8 +22,8 @@ set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 ########################################################################
 set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
-include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 find_package(SoapySDR CONFIG REQUIRED)
+include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 
 ########################################################################
 # Install cmake helper modules

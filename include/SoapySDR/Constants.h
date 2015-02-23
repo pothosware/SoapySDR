@@ -51,6 +51,14 @@
 #define SOAPY_SDR_ONE_PACKET (1 << 4)
 
 /*!
+ * Indicate that this read call and the next results in a fragment.
+ * Used when the implementation has an underlying packet interface.
+ * The caller can use this indicator and the SOAPY_SDR_ONE_PACKET flag
+ * on subsequent read stream calls to re-align with packet boundaries.
+ */
+#define SOAPY_SDR_MORE_FRAGMENTS (1 << 5)
+
+/*!
  * Returned when read has a timeout.
  */
 #define SOAPY_SDR_TIMEOUT (-1)
