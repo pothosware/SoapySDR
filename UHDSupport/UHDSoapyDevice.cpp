@@ -7,6 +7,7 @@
 #include <uhd/device.hpp>
 #include <uhd/convert.hpp>
 #include <uhd/usrp/mboard_eeprom.hpp>
+#include <uhd/usrp/dboard_eeprom.hpp>
 #include <uhd/usrp/subdev_spec.hpp>
 
 #include <SoapySDR/Device.hpp>
@@ -55,13 +56,23 @@ public:
 
     uhd::usrp::subdev_spec_t get_frontend_mapping(const int dir)
     {
-        return uhd::usrp::subdev_spec_t(_device->getFrontendMapping(dir));
+        //return uhd::usrp::subdev_spec_t(_device->getFrontendMapping(dir));
+        uhd::usrp::subdev_spec_t spec;
+        for (size_t ch = 0; ch < _device->getNumChannels(dir); ch++)
+        {
+            const std::string chName(boost::lexical_cast<std::string>(ch));
+            spec.push_back(uhd::usrp::subdev_spec_pair_t(chName, chName));
+        }
+        return spec;
     }
 
     void set_frontend_mapping(const int dir, const uhd::usrp::subdev_spec_t &spec)
     {
-        _device->setFrontendMapping(dir, spec.to_string());
+        //_device->setFrontendMapping(dir, spec.to_string());
     }
+
+    void setupChannelHooks(const int dir);
+    void setupChannelHooks(const int dir, const size_t chan, const std::string &dirName, const std::string &chName);
 
 private:
     SoapySDR::Device *_device;
@@ -129,12 +140,80 @@ UHDSoapyDevice::UHDSoapyDevice(const uhd::device_addr_t &args)
     _tree->create<std::string>(mb_path / "time_source" / "value")
         .publish(boost::bind(&SoapySDR::Device::getTimeSource, _device))
         .subscribe(boost::bind(&SoapySDR::Device::setTimeSource, _device, _1));
+
+    //setup channel and frontend hooks
+    this->setupChannelHooks(SOAPY_SDR_RX);
+    this->setupChannelHooks(SOAPY_SDR_TX);
 }
 
 UHDSoapyDevice::~UHDSoapyDevice(void)
 {
     boost::mutex::scoped_lock l(suMutexMaker());
     SoapySDR::Device::unmake(_device);
+}
+
+void UHDSoapyDevice::setupChannelHooks(const int dir)
+{
+    for (size_t ch = 0; ch < _device->getNumChannels(dir); ch++)
+    {
+        const std::string dirName((dir==SOAPY_SDR_RX)?"rx":"tx");
+        const std::string chName(boost::lexical_cast<std::string>(ch));
+        this->setupChannelHooks(dir, ch, dirName, chName);
+    }
+}
+
+void UHDSoapyDevice::setupChannelHooks(const int dir, const size_t chan, const std::string &dirName, const std::string &chName)
+{
+    const uhd::fs_path mb_path = "/mboards/0";
+    const uhd::fs_path rf_fe_path = mb_path / "dboards" / chName / (dirName+"_frontends") / chName;
+    const uhd::fs_path dsp_path = mb_path / (dirName+"_dsps") / chName;
+
+    _tree->create<std::string>(rf_fe_path / "name").set("Soapy");
+
+    //samp rate
+    _tree->create<uhd::meta_range_t>(dsp_path / "rate" / "range");
+    _tree->create<double>(dsp_path / "rate" / "value");
+
+    //dsp freq
+    _tree->create<double>(dsp_path / "freq" / "value");
+    _tree->create<uhd::meta_range_t>(dsp_path / "freq" / "range");
+
+    //dummy sensors
+    _tree->create<int>(rf_fe_path / "sensors");
+
+    //dummy eeprom values
+    if (dir == SOAPY_SDR_RX)
+    {
+        _tree->create<uhd::usrp::dboard_eeprom_t>(mb_path / "dboards" / chName / "rx_eeprom")
+            .set(uhd::usrp::dboard_eeprom_t());
+    }
+    else
+    {
+        _tree->create<uhd::usrp::dboard_eeprom_t>(mb_path / "dboards" / chName / "tx_eeprom")
+            .set(uhd::usrp::dboard_eeprom_t());
+        _tree->create<uhd::usrp::dboard_eeprom_t>(mb_path / "dboards" / chName / "gdb_eeprom")
+            .set(uhd::usrp::dboard_eeprom_t());
+    }
+
+    //gains
+    BOOST_FOREACH(const std::string &name, _device->listGains(dir, chan))
+    {
+        _tree->create<uhd::meta_range_t>(rf_fe_path / "gains" / name / "range");
+        _tree->create<double>(rf_fe_path / "gains" / name / "value");
+    }
+
+    //freq
+    _tree->create<double>(rf_fe_path / "freq" / "value");
+    _tree->create<uhd::meta_range_t>(rf_fe_path / "freq" / "range");
+    _tree->create<bool>(rf_fe_path / "use_lo_offset").set(false);
+
+    //ant
+    _tree->create<std::vector<std::string> >(rf_fe_path / "antenna" / "options");
+    _tree->create<std::string>(rf_fe_path / "antenna" / "value");
+
+    //bw
+    _tree->create<double>(rf_fe_path / "bandwidth" / "value");
+    _tree->create<uhd::meta_range_t>(rf_fe_path / "bandwidth" / "range");
 }
 
 /***********************************************************************
@@ -231,6 +310,9 @@ public:
             }
             if (ret < 0) break;
             total += ret;
+
+            //more fragments always over written by last recv
+            md.more_fragments = (flags & SOAPY_SDR_MORE_FRAGMENTS) != 0;
 
             //apply time if this is the first recv
             if (total == size_t(ret) and ((flags & SOAPY_SDR_HAS_TIME) != 0))
