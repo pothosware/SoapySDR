@@ -273,10 +273,32 @@ void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double fre
     //distribute freq into RF then baseband components
     for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
     {
-        if (comp_i == 0) freq += offset; //add offset for RF element
-        this->setFrequency(dir, chan, comps[comp_i], freq, args);
-        freq -= this->getFrequency(dir, chan, comps[comp_i]);
-        if (comp_i == 0) freq -= offset; //then remove to compensate
+        const std::string &name = comps[comp_i];
+
+        //add offset for RF element (first element)
+        if (comp_i == 0) freq += offset;
+
+        if (args.count(name) != 0 and args.at(name) == "IGNORE")
+        {
+            //do nothing, dont change component
+        }
+        else if (args.count(name) != 0)
+        {
+            //specific frequency for component specified
+            const double f(std::atof(args.at(name).c_str()));
+            this->setFrequency(dir, chan, name, f, args);
+        }
+        else
+        {
+            //otherwise use the remainder frequency
+            this->setFrequency(dir, chan, name, freq, args);
+        }
+
+        //adjust overall freq for the remainder
+        freq -= this->getFrequency(dir, chan, name);
+
+        //then remove to compensate
+        if (comp_i == 0) freq -= offset;
     }
 }
 
