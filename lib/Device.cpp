@@ -266,6 +266,11 @@ void SoapySDR::Device::setFrequency(const int, const size_t, const double, const
     return;
 }
 
+void SoapySDR::Device::setFrequency(const int, const size_t, const std::string &, const double, const Kwargs &)
+{
+    return;
+}
+
 double SoapySDR::Device::getFrequency(const int, const size_t) const
 {
     return 0.0;
@@ -282,6 +287,11 @@ std::vector<std::string> SoapySDR::Device::listFrequencies(const int, const size
 }
 
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t) const
+{
+    return SoapySDR::RangeList();
+}
+
+SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t, const std::string &) const
 {
     return SoapySDR::RangeList();
 }
