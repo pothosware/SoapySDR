@@ -349,6 +349,13 @@ char *SoapySDRDevice_setFrequency(SoapySDRDevice *device, const int direction, c
     __SOAPY_SDR_C_CATCH
 }
 
+char *SoapySDRDevice_setFrequencyComponent(SoapySDRDevice *device, const int direction, const size_t channel, const char *name, const double frequency, const SoapySDRKwargs *args)
+{
+    __SOAPY_SDR_C_TRY
+    device->setFrequency(direction, channel, name, frequency, toKwargs(args));
+    __SOAPY_SDR_C_CATCH
+}
+
 double SoapySDRDevice_getFrequency(const SoapySDRDevice *device, const int direction, const size_t channel)
 {
     return device->getFrequency(direction, channel);
@@ -367,6 +374,11 @@ char **SoapySDRDevice_listFrequencies(const SoapySDRDevice *device, const int di
 SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
     return toRangeList(device->getFrequencyRange(direction, channel), length);
+}
+
+SoapySDRRange *SoapySDRDevice_getFrequencyRangeComponent(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name, size_t *length)
+{
+    return toRangeList(device->getFrequencyRange(direction, channel, name), length);
 }
 
 /*******************************************************************

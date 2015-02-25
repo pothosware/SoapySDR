@@ -574,11 +574,26 @@ public:
 
     /*!
      * Set the center frequency of the chain.
-     * Recommended keys to use in the args dictionary:
-     *  - "CORR" - freq error correction in PPM
-     *  - "OFFSET" - offset for the RF frontend
-     *  - "RF" - frequency of the RF frontend
-     *  - "BB" - frequency of the baseband DSP
+     *  - For RX, this specifies the down-conversion frequency.
+     *  - For TX, this specifies the up-conversion frequency.
+     *
+     * The default implementation of setFrequency() will tune the "RF"
+     * component as close as possible to the requested center frequency.
+     * Tuning inaccuracies will be compensated for with the "BB" component.
+     *
+     * The args can be used to augment the tuning algorithm.
+     *  - Use "OFFSET" to specify an "RF" tuning offset,
+     *    usually with the intention of moving the LO out of the passband.
+     *    The offset will be compensated for using the "BB" component.
+     *  - Use the name of a component for the key and a frequency in Hz
+     *    as the value (any format) to enforce a specific frequency.
+     *    The other components will be tuned with compensation
+     *    to achieve the specified overall frequency.
+     *  - Use the name of a component for the key and the value "IGNORE"
+     *    so that the tuning algorithm will avoid altering the component.
+     *  - Vendor specific implementations can also use the same args to augment
+     *    tuning in other ways such as specifying fractional vs integer N tuning.
+     *
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \param frequency the center frequency in Hz
@@ -587,7 +602,27 @@ public:
     virtual void setFrequency(const int direction, const size_t channel, const double frequency, const Kwargs &args = Kwargs());
 
     /*!
-     * Get the center frequency of the chain.
+     * Tune the center frequency of the specified element.
+     *  - For RX, this specifies the down-conversion frequency.
+     *  - For TX, this specifies the up-conversion frequency.
+     *
+     * Recommended names used to represent tunable components:
+     *  - "CORR" - freq error correction in PPM
+     *  - "RF" - frequency of the RF frontend
+     *  - "BB" - frequency of the baseband DSP
+     *
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of a tunable element
+     * \param frequency the center frequency in Hz
+     * \param args optional tuner arguments
+     */
+    virtual void setFrequency(const int direction, const size_t channel, const std::string &name, const double frequency, const Kwargs &args = Kwargs());
+
+    /*!
+     * Get the overall center frequency of the chain.
+     *  - For RX, this specifies the down-conversion frequency.
+     *  - For TX, this specifies the up-conversion frequency.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return the center frequency in Hz
@@ -596,14 +631,10 @@ public:
 
     /*!
      * Get the frequency of a tunable element in the chain.
-     * Recommended names used to represent tunable components:
-     *  - "CORR" - freq error correction in PPM
-     *  - "RF" - frequency of the RF frontend
-     *  - "BB" - frequency of the baseband DSP
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an frequency component
-     * \return a dictionary of tunable elements to frequencies in Hz
+     * \param name the name of a tunable element
+     * \return the tunable element's frequency in Hz
      */
     virtual double getFrequency(const int direction, const size_t channel, const std::string &name) const;
 
@@ -617,12 +648,21 @@ public:
     virtual std::vector<std::string> listFrequencies(const int direction, const size_t channel) const;
 
     /*!
-     * Get the range of possible frequency values.
+     * Get the range of overall frequency values.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of frequency ranges in Hz
      */
     virtual RangeList getFrequencyRange(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the range of tunable values for the specified element.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of a tunable element
+     * \return a list of frequency ranges in Hz
+     */
+    virtual RangeList getFrequencyRange(const int direction, const size_t channel, const std::string &name) const;
 
     /*******************************************************************
      * Sample Rate API
