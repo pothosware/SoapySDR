@@ -112,6 +112,9 @@ target_link_libraries(Soapy
     ${UHD_LIBRARIES}
     ${SoapySDR_LIBRARIES}
     ${Boost_LIBRARIES})
+install(TARGETS Soapy
+    DESTINATION lib${LIB_SUFFIX}/uhd/modules
+)
 
 ########################################################################
 # Print Summary

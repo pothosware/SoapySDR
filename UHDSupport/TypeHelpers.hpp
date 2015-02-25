@@ -43,9 +43,29 @@ static inline SoapySDR::RangeList metaRangeToRangeList(const uhd::meta_range_t &
     return out;
 }
 
+static inline uhd::meta_range_t rangeListToMetaRange(const SoapySDR::RangeList &ranges)
+{
+    uhd::meta_range_t out;
+    for (size_t i = 0; i < ranges.size(); i++)
+    {
+        out.push_back(uhd::range_t(ranges[i].minimum(), ranges[i].maximum()));
+    }
+    return out;
+}
+
 static inline SoapySDR::Range metaRangeToRange(const uhd::meta_range_t &metaRange)
 {
     return SoapySDR::Range(metaRange.start(), metaRange.stop());
+}
+
+uhd::meta_range_t numberListToMetaRange(const std::vector<double> &nums)
+{
+    uhd::meta_range_t out;
+    for (size_t i = 0; i < nums.size(); i++)
+    {
+        out.push_back(uhd::range_t(nums[i]));
+    }
+    return out;
 }
 
 static inline std::vector<double> metaRangeToNumericList(const uhd::meta_range_t &metaRange)
@@ -57,4 +77,9 @@ static inline std::vector<double> metaRangeToNumericList(const uhd::meta_range_t
         out.push_back(metaRange[i].start());
     }
     return out;
+}
+
+static inline uhd::meta_range_t rangeToMetaRange(const SoapySDR::Range &range)
+{
+    return uhd::meta_range_t(range.minimum(), range.maximum());
 }
