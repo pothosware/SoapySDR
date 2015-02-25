@@ -630,6 +630,22 @@ private:
 };
 
 /***********************************************************************
+ * Register into logger
+ **********************************************************************/
+static void SoapyUHDLogger(uhd::msg::type_t t, const std::string &s)
+{
+    if (s.empty()) return;
+    if (s[s.size()-1] == '\n') return SoapyUHDLogger(t, s.substr(0, s.size()-1));
+    switch (t)
+    {
+    case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
+    case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
+    case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
+    case uhd::msg::fastpath: std::cerr << s << std::flush; break;
+    }
+}
+
+/***********************************************************************
  * Registration
  **********************************************************************/
 std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args_)
@@ -666,33 +682,8 @@ SoapySDR::Device *make_uhd(const SoapySDR::Kwargs &args)
         "Suggestion: install an ABI compatible version of UHD,\n"
         "or rebuild SoapySDR UHD support against this ABI version.\n"
     ) % UHD_VERSION_ABI_STRING % uhd::get_abi_string()));
+    uhd::msg::register_handler(&SoapyUHDLogger);
     return new SoapyUHDDevice(uhd::usrp::multi_usrp::make(kwargsToDict(args)), args.at("type"));
 }
 
 static SoapySDR::Registry register__uhd("uhd", &find_uhd, &make_uhd, SOAPY_SDR_ABI_VERSION);
-
-/***********************************************************************
- * Register into logger
- **********************************************************************/
-struct UHDLogHandler
-{
-    UHDLogHandler(void)
-    {
-        uhd::msg::register_handler(&UHDLogHandler::handler);
-    }
-
-    static void handler(uhd::msg::type_t t, const std::string &s)
-    {
-        if (s.empty()) return;
-        if (s[s.size()-1] == '\n') return handler(t, s.substr(0, s.size()-1));
-        switch (t)
-        {
-        case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
-        case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
-        case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
-        case uhd::msg::fastpath: std::cerr << s << std::flush; break;
-        }
-    }
-};
-
-static UHDLogHandler handlerInstance;

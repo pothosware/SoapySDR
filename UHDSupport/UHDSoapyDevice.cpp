@@ -6,6 +6,7 @@
 #include <uhd/property_tree.hpp>
 #include <uhd/device.hpp>
 #include <uhd/convert.hpp>
+#include <uhd/utils/msg.hpp>
 #include <uhd/types/sensors.hpp>
 #include <uhd/types/ranges.hpp>
 #include <uhd/usrp/mboard_eeprom.hpp>
@@ -13,20 +14,13 @@
 #include <uhd/usrp/subdev_spec.hpp>
 
 #include <SoapySDR/Device.hpp>
+#include <SoapySDR/Logger.hpp>
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/bind.hpp>
 #include <boost/algorithm/string.hpp>
-
-/***********************************************************************
- * Soapy Logger handle forward to UHD
- **********************************************************************/
- 
- //TODO
- 
- //ALSO TODO the UHDLogHandler shouldnt autoload
 
 /***********************************************************************
  * Custom UHD Device to support Soapy
@@ -69,8 +63,10 @@ public:
         return spec;
     }
 
-    void set_frontend_mapping(const int dir, const uhd::usrp::subdev_spec_t &spec)
+    void set_frontend_mapping(const int, const uhd::usrp::subdev_spec_t &)
     {
+        //there is no translation from spec to frontend map
+        //however, frontend map can be set by device args
         //_device->setFrontendMapping(dir, spec.to_string());
     }
 
@@ -142,6 +138,10 @@ UHDSoapyDevice::UHDSoapyDevice(const uhd::device_addr_t &args)
         boost::mutex::scoped_lock l(suMutexMaker());
         _device = SoapySDR::Device::make(dictToKwargs(args));
     }
+
+    //optional frontend map args
+    if (args.has_key("rx_map")) _device->setFrontendMapping(SOAPY_SDR_RX, args.get("rx_map"));
+    if (args.has_key("tx_map")) _device->setFrontendMapping(SOAPY_SDR_TX, args.get("tx_map"));
 
     //setup property tree
     _tree = uhd::property_tree::make();
@@ -643,10 +643,29 @@ bool UHDSoapyDevice::recv_async_msg(uhd::async_metadata_t &, double)
 }
 
 /***********************************************************************
+ * Soapy Logger handle forward to UHD
+ **********************************************************************/
+static void UHDSoapyLogger(const SoapySDR::LogLevel logLevel, const char *message)
+{
+    switch(logLevel)
+    {
+    case SOAPY_SDR_FATAL:
+    case SOAPY_SDR_CRITICAL:
+    case SOAPY_SDR_ERROR: UHD_MSG(error) << message << std::endl; break;
+    case SOAPY_SDR_WARNING: UHD_MSG(warning) << message << std::endl; break;
+    case SOAPY_SDR_NOTICE:
+    case SOAPY_SDR_INFO:
+    case SOAPY_SDR_DEBUG:
+    case SOAPY_SDR_TRACE: UHD_MSG(status) << message << std::endl; break;
+    }
+}
+
+/***********************************************************************
  * Registration
  **********************************************************************/
 static uhd::device::sptr makeUHDSoapyDevice(const uhd::device_addr_t &device_addr)
 {
+    SoapySDR::registerLogHandler(&UHDSoapyLogger);
     return uhd::device::sptr(new UHDSoapyDevice(device_addr));
 }
 
