@@ -630,11 +630,26 @@ SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDev
 
 /*!
  * Set the center frequency of the chain.
- * Recommended keys to use in the args dictionary:
- *  - "CORR" - freq error correction in PPM
- *  - "OFFSET" - offset for the RF frontend
- *  - "RF" - frequency of the RF frontend
- *  - "BB" - frequency of the baseband DSP
+ *  - For RX, this specifies the down-conversion frequency.
+ *  - For TX, this specifies the up-conversion frequency.
+ *
+ * The default implementation of setFrequency() will tune the "RF"
+ * component as close as possible to the requested center frequency.
+ * Tuning inaccuracies will be compensated for with the "BB" component.
+ *
+ * The args can be used to augment the tuning algorithm.
+ *  - Use "OFFSET" to specify an "RF" tuning offset,
+ *    usually with the intention of moving the LO out of the passband.
+ *    The offset will be compensated for using the "BB" component.
+ *  - Use the name of a component for the key and a frequency in Hz
+ *    as the value (any format) to enforce a specific frequency.
+ *    The other components will be tuned with compensation
+ *    to achieve the specified overall frequency.
+ *  - Use the name of a component for the key and the value "IGNORE"
+ *    so that the tuning algorithm will avoid altering the component.
+ *  - Vendor specific implementations can also use the same args to augment
+ *    tuning in other ways such as specifying fractional vs integer N tuning.
+ *
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
@@ -645,7 +660,29 @@ SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDev
 SOAPY_SDR_API char *SoapySDRDevice_setFrequency(SoapySDRDevice *device, const int direction, const size_t channel, const double frequency, const SoapySDRKwargs *args);
 
 /*!
- * Get the center frequency of the chain.
+ * Tune the center frequency of the specified element.
+ *  - For RX, this specifies the down-conversion frequency.
+ *  - For TX, this specifies the up-conversion frequency.
+ *
+ * Recommended names used to represent tunable components:
+ *  - "CORR" - freq error correction in PPM
+ *  - "RF" - frequency of the RF frontend
+ *  - "BB" - frequency of the baseband DSP
+ *
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of a tunable element
+ * \param frequency the center frequency in Hz
+ * \param args optional tuner arguments
+ * \return an error message or NULL for success
+ */
+SOAPY_SDR_API char *SoapySDRDevice_setFrequencyComponent(SoapySDRDevice *device, const int direction, const size_t channel, const char *name, const double frequency, const SoapySDRKwargs *args);
+
+/*!
+ * Get the overall center frequency of the chain.
+ *  - For RX, this specifies the down-conversion frequency.
+ *  - For TX, this specifies the up-conversion frequency.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
@@ -655,15 +692,11 @@ SOAPY_SDR_API double SoapySDRDevice_getFrequency(const SoapySDRDevice *device, c
 
 /*!
  * Get the frequency of a tunable element in the chain.
- * Recommended names used to represent tunable components:
- *  - "CORR" - freq error correction in PPM
- *  - "RF" - frequency of the RF frontend
- *  - "BB" - frequency of the baseband DSP
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \param name the name of an frequency component
- * \return a dictionary of tunable elements to frequencies in Hz
+ * \param name the name of a tunable element
+ * \return the tunable element's frequency in Hz
  */
 SOAPY_SDR_API double SoapySDRDevice_getFrequencyComponent(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
 
@@ -679,7 +712,7 @@ SOAPY_SDR_API double SoapySDRDevice_getFrequencyComponent(const SoapySDRDevice *
 SOAPY_SDR_API char **SoapySDRDevice_listFrequencies(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
 /*!
- * Get the range of possible frequency values.
+ * Get the range of overall frequency values.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
@@ -687,6 +720,17 @@ SOAPY_SDR_API char **SoapySDRDevice_listFrequencies(const SoapySDRDevice *device
  * \return a list of frequency ranges in Hz
  */
 SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Get the range of tunable values for the specified element.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of a tunable element
+ * \param [out] length the number of ranges
+ * \return a list of frequency ranges in Hz
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRangeComponent(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name, size_t *length);
 
 /*******************************************************************
  * Sample Rate API

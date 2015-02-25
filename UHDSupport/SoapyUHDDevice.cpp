@@ -360,15 +360,51 @@ public:
         }
         if (args.count("RF") != 0)
         {
-            tr.rf_freq = boost::lexical_cast<double>(args.at("RF"));
-            tr.rf_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+            try
+            {
+                tr.rf_freq = boost::lexical_cast<double>(args.at("RF"));
+                tr.rf_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+            }
+            catch (...)
+            {
+                tr.rf_freq_policy = uhd::tune_request_t::POLICY_NONE;
+            }
         }
         if (args.count("BB") != 0)
         {
-            tr.dsp_freq = boost::lexical_cast<double>(args.at("BB"));
-            tr.dsp_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+            try
+            {
+                tr.dsp_freq = boost::lexical_cast<double>(args.at("BB"));
+                tr.dsp_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+            }
+            catch (...)
+            {
+                tr.dsp_freq_policy = uhd::tune_request_t::POLICY_NONE;
+            }
         }
         tr.args = kwargsToDict(args);
+
+        if (dir == SOAPY_SDR_TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
+        if (dir == SOAPY_SDR_RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
+    }
+
+    void setFrequency(const int dir, const size_t channel, const std::string &name, const double frequency, const SoapySDR::Kwargs &args)
+    {
+        //use tune request to get individual elements -- could use property tree here
+        uhd::tune_request_t tr(frequency);
+        tr.rf_freq_policy = uhd::tune_request_t::POLICY_NONE;
+        tr.dsp_freq_policy = uhd::tune_request_t::POLICY_NONE;
+        tr.args = kwargsToDict(args);
+        if (name == "RF")
+        {
+            tr.rf_freq = frequency;
+            tr.rf_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+        }
+        if (name == "BB")
+        {
+            tr.dsp_freq = frequency;
+            tr.dsp_freq_policy = uhd::tune_request_t::POLICY_MANUAL;
+        }
 
         if (dir == SOAPY_SDR_TX) _trCache[dir][channel] = _dev->set_tx_freq(tr, channel);
         if (dir == SOAPY_SDR_RX) _trCache[dir][channel] = _dev->set_rx_freq(tr, channel);
@@ -404,6 +440,24 @@ public:
         if (dir == SOAPY_SDR_TX) return metaRangeToRangeList(_dev->get_tx_freq_range(channel));
         if (dir == SOAPY_SDR_RX) return metaRangeToRangeList(_dev->get_rx_freq_range(channel));
         return SoapySDR::Device::getFrequencyRange(dir, channel);
+    }
+
+    SoapySDR::RangeList getFrequencyRange(const int dir, const size_t channel, const std::string &name) const
+    {
+        if (name == "RF")
+        {
+            //use overall range - could use property tree, but close enough
+            if (dir == SOAPY_SDR_TX) return metaRangeToRangeList(_dev->get_tx_freq_range(channel));
+            if (dir == SOAPY_SDR_RX) return metaRangeToRangeList(_dev->get_rx_freq_range(channel));
+        }
+        if (name == "BB")
+        {
+            //read the range from the property tree
+            uhd::property_tree::sptr tree = _dev->get_device()->get_tree();
+            const std::string path = str(boost::format("/mboards/0/%s_dsps/%u/freq/range") % ((dir == SOAPY_SDR_TX)?"tx":"rx") % channel);
+            return metaRangeToRangeList(tree->access<uhd::meta_range_t>(path).get());
+        }
+        return SoapySDR::Device::getFrequencyRange(dir, channel, name);
     }
 
     /*******************************************************************
