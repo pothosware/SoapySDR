@@ -347,7 +347,18 @@ static SoapySDR::Stream *make_stream(SoapySDR::Device *d, const int direction, c
         kwargs["WIRE"] = args.otw_format;
     }
 
-    return d->setupStream(direction, args.cpu_format, chans, kwargs);
+    //the format string
+    std::string hostFormat;
+    BOOST_FOREACH(const char ch, args.cpu_format)
+    {
+        if (ch == 'c') hostFormat = "C" + hostFormat;
+        else if (ch == 'f') hostFormat += "F";
+        else if (ch == 's') hostFormat += "S";
+        else if (std::isdigit(ch)) hostFormat += ch;
+        else throw std::runtime_error("UHDSoapyDevice::setupStream("+args.cpu_format+") unknown format");
+    }
+
+    return d->setupStream(direction, hostFormat, chans, kwargs);
 }
 
 class UHDSoapyRxStream : public uhd::rx_streamer
@@ -428,9 +439,9 @@ public:
             md.more_fragments = (flags & SOAPY_SDR_MORE_FRAGMENTS) != 0;
 
             //apply time if this is the first recv
-            if (total == size_t(ret) and ((flags & SOAPY_SDR_HAS_TIME) != 0))
+            if (total == size_t(ret))
             {
-                md.has_time_spec = true;
+                md.has_time_spec = (flags & SOAPY_SDR_HAS_TIME) != 0;
                 md.time_spec = uhd::time_spec_t::from_ticks(timeNs, 1e9);
             }
 
@@ -536,12 +547,13 @@ public:
 
     size_t send(
         const buffs_type &buffs,
-        const size_t nsamps_per_buff,
+        size_t nsamps_per_buff,
         const uhd::tx_metadata_t &md,
         const double timeout = 0.1
     )
     {
         size_t total = 0;
+        if (nsamps_per_buff == 0) nsamps_per_buff = 1;
         const long long timeNs(md.time_spec.to_ticks(1e9));
 
         while (total < nsamps_per_buff)
