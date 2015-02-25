@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
+#include <cstdlib>
 
 SoapySDR::Device::~Device(void)
 {
@@ -261,9 +262,22 @@ SoapySDR::Range SoapySDR::Device::getGainRange(const int dir, const size_t chann
 /*******************************************************************
  * Frequency API
  ******************************************************************/
-void SoapySDR::Device::setFrequency(const int, const size_t, const double, const Kwargs &)
+void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double freq, const Kwargs &args)
 {
-    return;
+    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    if (comps.empty()) return;
+
+    //optional offset, use on RF element when specified
+    const double offset = (args.count("OFFSET") != 0)?std::atof(args.at("OFFSET").c_str()):0.0;
+
+    //distribute freq into RF then baseband components
+    for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
+    {
+        if (comp_i == 0) freq += offset; //add offset for RF element
+        this->setFrequency(dir, chan, comps[comp_i], freq, args);
+        freq -= this->getFrequency(dir, chan, comps[comp_i]);
+        if (comp_i == 0) freq -= offset; //then remove to compensate
+    }
 }
 
 void SoapySDR::Device::setFrequency(const int, const size_t, const std::string &, const double, const Kwargs &)
@@ -286,9 +300,40 @@ std::vector<std::string> SoapySDR::Device::listFrequencies(const int, const size
     return std::vector<std::string>();
 }
 
-SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t) const
+SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const size_t chan) const
 {
-    return SoapySDR::RangeList();
+    //get a list of tunable components
+    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    if (comps.empty()) return SoapySDR::RangeList();
+
+    //get the range list for the RF component
+    SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.front());
+
+    //use bandwidth setting to clip the range
+    const double bw = this->getBandwidth(dir, chan);
+
+    //add to the range list given subsequent components
+    for (size_t comp_i = 1; comp_i < comps.size(); comp_i++)
+    {
+        SoapySDR::RangeList subRange = this->getFrequencyRange(dir, chan, comps[comp_i]);
+        if (subRange.empty()) continue;
+
+        double subRangeLow = subRange.front().minimum();
+        if (bw > 0.0) subRangeLow = std::max(-bw/2, subRangeLow);
+
+        double subRangeHigh = subRange.back().maximum();
+        if (bw > 0.0) subRangeHigh = std::min(bw/2, subRangeHigh);
+
+        for (size_t range_i = 0; range_i < ranges.size(); range_i++)
+        {
+            SoapySDR::Range &range = ranges[range_i];
+            range = SoapySDR::Range(
+                range.minimum() + subRangeLow,
+                range.maximum() + subRangeHigh);
+        }
+    }
+
+    return ranges;
 }
 
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t, const std::string &) const
