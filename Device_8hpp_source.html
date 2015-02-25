@@ -271,125 +271,129 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;<span class="comment">     * Frequency API</span></div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="comment">     ******************************************************************/</span></div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> frequency, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;args = <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>());</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listFrequencies(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a> getFrequencyRange(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;<span class="comment">     * Sample Rate API</span></div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setSampleRate(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> rate);</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getSampleRate(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;double&gt; listSampleRates(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setBandwidth(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> bw);</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getBandwidth(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> frequency, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;args = <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>());</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> std::string &amp;name, <span class="keyword">const</span> <span class="keywordtype">double</span> frequency, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;args = <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>());</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getFrequency(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listFrequencies(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a> getFrequencyRange(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a> getFrequencyRange(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="comment">     * Sample Rate API</span></div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="comment">     ******************************************************************/</span></div>
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;double&gt; listBandwidths(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setSampleRate(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> rate);</div>
 <div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;</div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="comment">     * Clocking API</span></div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setMasterClockRate(<span class="keyword">const</span> <span class="keywordtype">double</span> rate);</div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;</div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getMasterClockRate(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getSampleRate(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;double&gt; listSampleRates(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listClockSources(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setClockSource(<span class="keyword">const</span> std::string &amp;source);</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    <span class="keyword">virtual</span> std::string getClockSource(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listTimeSources(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setBandwidth(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keyword">const</span> <span class="keywordtype">double</span> bw);</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getBandwidth(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;double&gt; listBandwidths(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;</div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setTimeSource(<span class="keyword">const</span> std::string &amp;source);</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    <span class="keyword">virtual</span> std::string getTimeSource(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;<span class="comment">     * Time API</span></div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;<span class="comment">     * Clocking API</span></div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setMasterClockRate(<span class="keyword">const</span> <span class="keywordtype">double</span> rate);</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> getMasterClockRate(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;</div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> hasHardwareTime(<span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;</div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> getHardwareTime(<span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;</div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setHardwareTime(<span class="keyword">const</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> timeNs, <span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;</div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setCommandTime(<span class="keyword">const</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> timeNs, <span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="comment">     * Sensor API</span></div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listClockSources(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setClockSource(<span class="keyword">const</span> std::string &amp;source);</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    <span class="keyword">virtual</span> std::string getClockSource(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listTimeSources(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setTimeSource(<span class="keyword">const</span> std::string &amp;source);</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keyword">virtual</span> std::string getTimeSource(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listSensors(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;</div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    <span class="keyword">virtual</span> std::string readSensor(<span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;</div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="comment">     * Register API</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;</div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeRegister(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> addr, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> value);</div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> readRegister(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> addr) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="comment">     * Time API</span></div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> hasHardwareTime(<span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> getHardwareTime(<span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setHardwareTime(<span class="keyword">const</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> timeNs, <span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setCommandTime(<span class="keyword">const</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> timeNs, <span class="keyword">const</span> std::string &amp;what = <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="comment">     * Settings API</span></div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="comment">     * Sensor API</span></div>
 <div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="comment">     ******************************************************************/</span></div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeSetting(<span class="keyword">const</span> std::string &amp;key, <span class="keyword">const</span> std::string &amp;value);</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="keyword">virtual</span> std::string readSetting(<span class="keyword">const</span> std::string &amp;key) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">     * GPIO API</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;</div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listGPIOBanks(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeGPIO(<span class="keyword">const</span> std::string &amp;bank, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> value);</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;</div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> readGPIO(<span class="keyword">const</span> std::string &amp;bank) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="comment">     * I2C API</span></div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeI2C(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> std::string &amp;data);</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="keyword">virtual</span> std::string readI2C(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> <span class="keywordtype">size_t</span> numBytes);</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="comment">     * SPI API</span></div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> transactSPI(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> data, <span class="keyword">const</span> <span class="keywordtype">size_t</span> numBits);</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;</div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    <span class="comment">/*******************************************************************</span></div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;<span class="comment">     * UART API</span></div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;<span class="comment">     ******************************************************************/</span></div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listUARTs(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listSensors(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    <span class="keyword">virtual</span> std::string readSensor(<span class="keyword">const</span> std::string &amp;name) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">     * Register API</span></div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeRegister(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> addr, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> value);</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> readRegister(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> addr) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="comment">     * Settings API</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeSetting(<span class="keyword">const</span> std::string &amp;key, <span class="keyword">const</span> std::string &amp;value);</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <span class="keyword">virtual</span> std::string readSetting(<span class="keyword">const</span> std::string &amp;key) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;<span class="comment">     * GPIO API</span></div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listGPIOBanks(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeGPIO(<span class="keyword">const</span> std::string &amp;bank, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> value);</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> readGPIO(<span class="keyword">const</span> std::string &amp;bank) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;<span class="comment">     * I2C API</span></div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeI2C(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> std::string &amp;data);</div>
 <div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;</div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeUART(<span class="keyword">const</span> std::string &amp;which, <span class="keyword">const</span> std::string &amp;data);</div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;</div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    <span class="keyword">virtual</span> std::string readUART(<span class="keyword">const</span> std::string &amp;which, <span class="keyword">const</span> <span class="keywordtype">long</span> timeoutUs = 100000) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;</div>
-<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;};</div>
-<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;</div>
-<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;};</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    <span class="keyword">virtual</span> std::string readI2C(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> <span class="keywordtype">size_t</span> numBytes);</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;<span class="comment">     * SPI API</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">unsigned</span> transactSPI(<span class="keyword">const</span> <span class="keywordtype">int</span> addr, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> data, <span class="keyword">const</span> <span class="keywordtype">size_t</span> numBits);</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;</div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;    <span class="comment">/*******************************************************************</span></div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;<span class="comment">     * UART API</span></div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;<span class="comment">     ******************************************************************/</span></div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;</div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; listUARTs(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeUART(<span class="keyword">const</span> std::string &amp;which, <span class="keyword">const</span> std::string &amp;data);</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    <span class="keyword">virtual</span> std::string readUART(<span class="keyword">const</span> std::string &amp;which, <span class="keyword">const</span> <span class="keywordtype">long</span> timeoutUs = 100000) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;</div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;};</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;};</div>
 <div class="ttc" id="classSoapySDR_1_1Range_html"><div class="ttname"><a href="classSoapySDR_1_1Range.html">SoapySDR::Range</a></div><div class="ttdef"><b>Definition:</b> Types.hpp:27</div></div>
 <div class="ttc" id="Config_8hpp_html"><div class="ttname"><a href="Config_8hpp.html">Config.hpp</a></div></div>
 <div class="ttc" id="namespaceSoapySDR_html_ac7c038598fa1a11acee1b0194f9dad62"><div class="ttname"><a href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">SoapySDR::Kwargs</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; Kwargs</div><div class="ttdoc">Typedef for a dictionary of key-value string arguments. </div><div class="ttdef"><b>Definition:</b> Types.hpp:22</div></div>
@@ -401,7 +405,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 22 2015 12:18:19 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 24 2015 20:21:33 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
