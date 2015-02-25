@@ -282,25 +282,40 @@ public:
 
     void setFrequency(const int dir, const size_t channel, const double frequency, const SoapySDR::Kwargs &args)
     {
-        if (dir == SOAPY_SDR_TX and _sink) _sink->set_center_freq(frequency, channel);
-        if (dir == SOAPY_SDR_RX and _source) _source->set_center_freq(frequency, channel);
+        this->setFrequency(dir, channel, "RF", frequency, args);
         if (args.count("CORR") != 0)
         {
             const double ppm = boost::lexical_cast<double>(args.at("CORR"));
-            if (dir == SOAPY_SDR_TX and _sink) _sink->set_freq_corr(ppm, channel);
-            if (dir == SOAPY_SDR_RX and _source) _source->set_freq_corr(ppm, channel);
+            this->setFrequency(dir, channel, "CORR", ppm, args);
+        }
+    }
+
+    void setFrequency(const int dir, const size_t channel, const std::string &name, const double frequency, const SoapySDR::Kwargs &)
+    {
+        if (name == "RF")
+        {
+            if (dir == SOAPY_SDR_TX and _sink) _sink->set_center_freq(frequency, channel);
+            if (dir == SOAPY_SDR_RX and _source) _source->set_center_freq(frequency, channel);
+        }
+        if (name == "CORR")
+        {
+            if (dir == SOAPY_SDR_TX and _sink) _sink->set_freq_corr(frequency, channel);
+            if (dir == SOAPY_SDR_RX and _source) _source->set_freq_corr(frequency, channel);
         }
     }
 
     double getFrequency(const int dir, const size_t channel) const
     {
-        if (dir == SOAPY_SDR_TX and _sink) return _sink->get_center_freq(channel);
-        if (dir == SOAPY_SDR_RX and _source) return _source->get_center_freq(channel);
-        return SoapySDR::Device::getFrequency(dir, channel);
+        return this->getFrequency(dir, channel, "RF");
     }
 
     double getFrequency(const int dir, const size_t channel, const std::string &name) const
     {
+        if (name == "RF")
+        {
+            if (dir == SOAPY_SDR_TX and _sink) return _sink->get_center_freq(channel);
+            if (dir == SOAPY_SDR_RX and _source) return _source->get_center_freq(channel);
+        }
         if (name == "CORR")
         {
             if (dir == SOAPY_SDR_TX and _sink) return _sink->get_freq_corr(channel);
@@ -311,9 +326,25 @@ public:
 
     SoapySDR::RangeList getFrequencyRange(const int dir, const size_t channel) const
     {
-        if (dir == SOAPY_SDR_TX and _sink) return this->toRangeList(_sink->get_freq_range(channel));
-        if (dir == SOAPY_SDR_RX and _source) return this->toRangeList(_source->get_freq_range(channel));
-        return SoapySDR::Device::getFrequencyRange(dir, channel);
+        return this->getFrequencyRange(dir, channel, "RF");
+    }
+
+    SoapySDR::RangeList getFrequencyRange(const int dir, const size_t channel, const std::string &name) const
+    {
+        if (name == "RF")
+        {
+            if (dir == SOAPY_SDR_TX and _sink) return this->toRangeList(_sink->get_freq_range(channel));
+            if (dir == SOAPY_SDR_RX and _source) return this->toRangeList(_source->get_freq_range(channel));
+        }
+        return SoapySDR::Device::getFrequencyRange(dir, channel, name);
+    }
+
+    std::vector<std::string> listFrequencies(const int, const size_t) const
+    {
+        std::vector<std::string> elems;
+        elems.push_back("RF");
+        elems.push_back("CORR");
+        return elems;
     }
 
     /*******************************************************************
