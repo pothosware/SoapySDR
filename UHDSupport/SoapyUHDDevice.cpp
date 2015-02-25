@@ -1,6 +1,7 @@
 // Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
+#include "TypeHelpers.hpp"
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Logger.hpp>
@@ -11,56 +12,6 @@
 #include <uhd/property_tree.hpp>
 #include <cctype>
 #include <iostream>
-
-/***********************************************************************
- * Helpful type conversions
- **********************************************************************/
-static SoapySDR::Kwargs dictToKwargs(const uhd::device_addr_t &addr)
-{
-    SoapySDR::Kwargs kwargs;
-    const std::vector<std::string> keys = addr.keys();
-    for (size_t i = 0; i < keys.size(); i++)
-    {
-        kwargs[keys[i]] = addr[keys[i]];
-    }
-    return kwargs;
-}
-
-static uhd::device_addr_t kwargsToDict(const SoapySDR::Kwargs &kwargs)
-{
-    uhd::device_addr_t addr;
-    for (SoapySDR::Kwargs::const_iterator it = kwargs.begin(); it != kwargs.end(); ++it)
-    {
-        addr[it->first] = it->second;
-    }
-    return addr;
-}
-
-static SoapySDR::RangeList metaRangeToRangeList(const uhd::meta_range_t &metaRange)
-{
-    SoapySDR::RangeList out;
-    for (size_t i = 0; i < metaRange.size(); i++)
-    {
-        out.push_back(SoapySDR::Range(metaRange[i].start(), metaRange[i].stop()));
-    }
-    return out;
-}
-
-static SoapySDR::Range metaRangeToRange(const uhd::meta_range_t &metaRange)
-{
-    return SoapySDR::Range(metaRange.start(), metaRange.stop());
-}
-
-static std::vector<double> metaRangeToNumericList(const uhd::meta_range_t &metaRange)
-{
-    std::vector<double> out;
-    for (size_t i = 0; i < metaRange.size(); i++)
-    {
-        //in these cases start == stop
-        out.push_back(metaRange[i].start());
-    }
-    return out;
-}
 
 /***********************************************************************
  * Stream wrapper
@@ -679,10 +630,31 @@ private:
 };
 
 /***********************************************************************
+ * Register into logger
+ **********************************************************************/
+static void SoapyUHDLogger(uhd::msg::type_t t, const std::string &s)
+{
+    if (s.empty()) return;
+    if (s[s.size()-1] == '\n') return SoapyUHDLogger(t, s.substr(0, s.size()-1));
+    switch (t)
+    {
+    case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
+    case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
+    case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
+    case uhd::msg::fastpath: std::cerr << s << std::flush; break;
+    }
+}
+
+/***********************************************************************
  * Registration
  **********************************************************************/
-std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
+std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args_)
 {
+    //prevent going into the the UHDSoapyDevice
+    SoapySDR::Kwargs args(args_);
+    if (args.count(SOAPY_UHD_NO_DEEPER) != 0) return std::vector<SoapySDR::Kwargs>();
+    args[SOAPY_UHD_NO_DEEPER] = "";
+
     //perform the discovery
     #ifdef UHD_HAS_DEVICE_FILTER
     const uhd::device_addrs_t addrs = uhd::device::find(kwargsToDict(args), uhd::device::USRP);
@@ -694,7 +666,9 @@ std::vector<SoapySDR::Kwargs> find_uhd(const SoapySDR::Kwargs &args)
     std::vector<SoapySDR::Kwargs> results;
     for (size_t i = 0; i < addrs.size(); i++)
     {
-        results.push_back(dictToKwargs(addrs[i]));
+        SoapySDR::Kwargs result(dictToKwargs(addrs[i]));
+        result.erase(SOAPY_UHD_NO_DEEPER);
+        results.push_back(result);
     }
     return results;
 }
@@ -708,33 +682,8 @@ SoapySDR::Device *make_uhd(const SoapySDR::Kwargs &args)
         "Suggestion: install an ABI compatible version of UHD,\n"
         "or rebuild SoapySDR UHD support against this ABI version.\n"
     ) % UHD_VERSION_ABI_STRING % uhd::get_abi_string()));
+    uhd::msg::register_handler(&SoapyUHDLogger);
     return new SoapyUHDDevice(uhd::usrp::multi_usrp::make(kwargsToDict(args)), args.at("type"));
 }
 
 static SoapySDR::Registry register__uhd("uhd", &find_uhd, &make_uhd, SOAPY_SDR_ABI_VERSION);
-
-/***********************************************************************
- * Register into logger
- **********************************************************************/
-struct UHDLogHandler
-{
-    UHDLogHandler(void)
-    {
-        uhd::msg::register_handler(&UHDLogHandler::handler);
-    }
-
-    static void handler(uhd::msg::type_t t, const std::string &s)
-    {
-        if (s.empty()) return;
-        if (s[s.size()-1] == '\n') return handler(t, s.substr(0, s.size()-1));
-        switch (t)
-        {
-        case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
-        case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
-        case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
-        case uhd::msg::fastpath: std::cerr << s << std::flush; break;
-        }
-    }
-};
-
-static UHDLogHandler handlerInstance;
