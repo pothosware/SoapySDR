@@ -20,6 +20,7 @@
 #include <boost/format.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/bind.hpp>
+#include <boost/weak_ptr.hpp>
 #include <boost/algorithm/string.hpp>
 
 /***********************************************************************
@@ -116,11 +117,21 @@ public:
         return uhd::sensor_value_t(name, value, "");
     }
 
+    void old_issue_stream_cmd(const size_t chan, const uhd::stream_cmd_t &cmd)
+    {
+        uhd::rx_streamer::sptr stream = _rx_streamers[chan].lock();
+        if (stream) stream->issue_stream_cmd(cmd);
+    }
+
     void setupChannelHooks(const int dir);
     void setupChannelHooks(const int dir, const size_t chan, const std::string &dirName, const std::string &chName);
 
 private:
     SoapySDR::Device *_device;
+
+    //stash streamers to implement old-style issue stream cmd and async message
+    std::map<size_t, boost::weak_ptr<uhd::rx_streamer> > _rx_streamers;
+    std::map<size_t, boost::weak_ptr<uhd::tx_streamer> > _tx_streamers;
 };
 
 /***********************************************************************
@@ -252,6 +263,13 @@ void UHDSoapyDevice::setupChannelHooks(const int dir, const size_t chan, const s
         .subscribe(boost::bind(&UHDSoapyDevice::set_frequency, this, dir, chan, bbCompName, _1));
     _tree->create<uhd::meta_range_t>(dsp_path / "freq" / "range")
         .publish(boost::bind(&UHDSoapyDevice::get_freq_range, this, dir, chan, bbCompName));
+
+    //old style stream cmd
+    if (dir == SOAPY_SDR_RX)
+    {
+        _tree->create<uhd::stream_cmd_t>(dsp_path / "stream_cmd")
+            .subscribe(boost::bind(&UHDSoapyDevice::old_issue_stream_cmd, this, chan, _1));
+    }
 
     //frontend sensors
     _tree->create<int>(rf_fe_path / "sensors"); //ensure this path exists
@@ -510,7 +528,10 @@ private:
 
 uhd::rx_streamer::sptr UHDSoapyDevice::get_rx_stream(const uhd::stream_args_t &args)
 {
-    return uhd::rx_streamer::sptr(new UHDSoapyRxStream(_device, args));
+    uhd::rx_streamer::sptr stream(new UHDSoapyRxStream(_device, args));
+    BOOST_FOREACH(const size_t ch, args.channels) _rx_streamers[ch] = stream;
+    if (args.channels.empty()) _rx_streamers[0] = stream;
+    return stream;
 }
 
 /***********************************************************************
@@ -633,13 +654,17 @@ private:
 
 uhd::tx_streamer::sptr UHDSoapyDevice::get_tx_stream(const uhd::stream_args_t &args)
 {
-    return uhd::tx_streamer::sptr(new UHDSoapyTxStream(_device, args));
+    uhd::tx_streamer::sptr stream(new UHDSoapyTxStream(_device, args));
+    BOOST_FOREACH(const size_t ch, args.channels) _tx_streamers[ch] = stream;
+    if (args.channels.empty()) _tx_streamers[0] = stream;
+    return stream;
 }
 
-bool UHDSoapyDevice::recv_async_msg(uhd::async_metadata_t &, double)
+bool UHDSoapyDevice::recv_async_msg(uhd::async_metadata_t &md, double timeout)
 {
-    //deprecated anyhow, dont want to implement
-    return false;
+    uhd::tx_streamer::sptr stream = _tx_streamers[0].lock();
+    if (not stream) return false;
+    return stream->recv_async_msg(md, timeout);
 }
 
 /***********************************************************************
