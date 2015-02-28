@@ -39,6 +39,15 @@ endif()
 set(LIB_SUFFIX ${LIB_SUFFIX} CACHE STRING "lib directory suffix")
 
 ########################################################################
+# Provide add_compile_options() when not available
+########################################################################
+if(CMAKE_VERSION VERSION_LESS "2.8.12")
+    function(add_compile_options)
+        add_definitions(${ARGN})
+    endfunction(add_compile_options)
+endif()
+
+########################################################################
 # Helpful compiler flags
 ########################################################################
 if(CMAKE_COMPILER_IS_GNUCXX)

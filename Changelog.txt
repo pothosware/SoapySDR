@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.1.1 (pending)
+==========================
+
+- patch for missing add_compile_options in older CMake
+
 Release 0.1.0 (2015-01-31)
 ==========================
 
