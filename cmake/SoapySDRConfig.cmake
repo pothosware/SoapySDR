@@ -29,11 +29,15 @@ if(LINUX AND EXISTS "/etc/redhat-release")
     set(REDHAT TRUE)
 endif()
 
+if(LINUX AND EXISTS "/etc/SuSE-release")
+    set(SUSE TRUE)
+endif()
+
 if(LINUX AND EXISTS "/etc/slackware-version")
     set(SLACKWARE TRUE)
 endif()
 
-if(NOT DEFINED LIB_SUFFIX AND (REDHAT OR SLACKWARE) AND CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
+if(NOT DEFINED LIB_SUFFIX AND (REDHAT OR SUSE OR SLACKWARE) AND CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
     SET(LIB_SUFFIX 64)
 endif()
 set(LIB_SUFFIX ${LIB_SUFFIX} CACHE STRING "lib directory suffix")
