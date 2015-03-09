@@ -6,7 +6,7 @@
 /// The default log handler prints to the stdout and stderr.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -24,6 +24,7 @@ typedef enum
     SOAPY_SDR_INFO     = 6, //!< An informational message, usually denoting the successful completion of an operation.
     SOAPY_SDR_DEBUG    = 7, //!< A debugging message.
     SOAPY_SDR_TRACE    = 8, //!< A tracing message. This is the lowest priority.
+    SOAPY_SDR_SSI      = 9, //!< Streaming status indicators such as "U" (underflow) and "O" (overflow).
 } SoapySDRLogLevel;
 
 #ifdef __cplusplus

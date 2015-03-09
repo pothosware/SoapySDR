@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Logger.h>
@@ -45,6 +45,7 @@ void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
     case SOAPY_SDR_INFO:     fprintf(stdout, "[INFO] %s\n", message); break;
     case SOAPY_SDR_DEBUG:    fprintf(stdout, "[DEBUG] %s\n", message); break;
     case SOAPY_SDR_TRACE:    fprintf(stdout, "[TRACE] %s\n", message); break;
+    case SOAPY_SDR_SSI:      fputs(message, stderr); fflush(stderr); break;
     }
 }
 

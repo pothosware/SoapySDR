@@ -682,6 +682,7 @@ static void UHDSoapyLogger(const SoapySDR::LogLevel logLevel, const char *messag
     case SOAPY_SDR_INFO:
     case SOAPY_SDR_DEBUG:
     case SOAPY_SDR_TRACE: UHD_MSG(status) << message << std::endl; break;
+    case SOAPY_SDR_SSI: UHD_MSG(fastpath) << message << std::flush; break;
     }
 }
 

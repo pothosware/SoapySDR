@@ -641,7 +641,7 @@ static void SoapyUHDLogger(uhd::msg::type_t t, const std::string &s)
     case uhd::msg::status: SoapySDR::log(SOAPY_SDR_INFO, s); break;
     case uhd::msg::warning: SoapySDR::log(SOAPY_SDR_WARNING, s); break;
     case uhd::msg::error: SoapySDR::log(SOAPY_SDR_ERROR, s); break;
-    case uhd::msg::fastpath: std::cerr << s << std::flush; break;
+    case uhd::msg::fastpath: SoapySDR::log(SOAPY_SDR_SSI, s); break;
     }
 }
 
