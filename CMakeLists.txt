@@ -6,7 +6,24 @@ project(SoapySDR)
 enable_language(CXX)
 enable_testing()
 
-set(SOAPY_SDR_VERSION "0.2.0")
+########################################################################
+# gather version information
+# packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
+########################################################################
+set(SOAPY_SDR_LIBVER "0.2.0")
+
+if (NOT SOAPY_SDR_EXTVER)
+    include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
+    get_git_head_revision(GITREFSPEC GITHASH)
+    if (GITHASH)
+        string(SUBSTRING "${GITHASH}" 0 8 GITHASH)
+        set(SOAPY_SDR_EXTVER "g${GITHASH}")
+    else (GITHASH)
+        set(SOAPY_SDR_EXTVER "unknown")
+    endif (GITHASH)
+endif()
+
+set(SOAPY_SDR_VERSION "${SOAPY_SDR_LIBVER}-${SOAPY_SDR_EXTVER}")
 
 ########################################################################
 # select the release build type by default to get optimization flags
@@ -28,7 +45,14 @@ include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 ########################################################################
 # Install cmake helper modules
 ########################################################################
-file(GLOB cmake_files "${PROJECT_SOURCE_DIR}/cmake/*.cmake")
+configure_file(
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfigVersion.in.cmake
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
+@ONLY)
+set(cmake_files
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfig.cmake
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRUtil.cmake
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
 if (UNIX)
     install(FILES ${cmake_files} DESTINATION share/cmake/${CMAKE_PROJECT_NAME})
 elseif (WIN32)
@@ -97,3 +121,11 @@ if (GPLOK)
     add_subdirectory(UHDSupport)
 
 endif ()
+
+########################################################################
+# summary
+########################################################################
+message(STATUS "######################################################")
+message(STATUS "## SoapySDR v${SOAPY_SDR_VERSION}")
+message(STATUS "######################################################")
+message(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")

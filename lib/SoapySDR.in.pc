@@ -6,7 +6,7 @@ includedir=${prefix}/include
 Name: Soapy SDR
 Description: Vendor and platform neutral SDR interface library.
 URL: https://github.com/pothosware/SoapySDR/wiki
-Version: @SOAPY_SDR_VERSION@
+Version: @SOAPY_SDR_LIBVER@
 Requires:
 Requires.private:
 Conflicts:
