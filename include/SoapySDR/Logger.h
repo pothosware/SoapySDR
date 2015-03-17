@@ -27,6 +27,9 @@ typedef enum
     SOAPY_SDR_SSI      = 9, //!< Streaming status indicators such as "U" (underflow) and "O" (overflow).
 } SoapySDRLogLevel;
 
+//! Compile-time detection macro for SSI feature
+#define SOAPY_SDR_SSI SOAPY_SDR_SSI
+
 #ifdef __cplusplus
 extern "C" {
 #endif
