@@ -78,7 +78,6 @@ message(STATUS "")
 message(STATUS "#############################################")
 message(STATUS "## Begin configuration for Python support...")
 message(STATUS "#############################################")
-message(STATUS "")
 message(STATUS "Enabling optional Python bindings if possible...")
 add_subdirectory(python)
 
@@ -117,7 +116,16 @@ if (GPLOK)
 "#############################################\n"
 "${ColourReset}")
 
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for Osmo support...")
+    message(STATUS "#############################################")
     add_subdirectory(OsmoSupport)
+
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for UHD support...")
+    message(STATUS "#############################################")
     add_subdirectory(UHDSupport)
 
 endif ()
@@ -125,6 +133,7 @@ endif ()
 ########################################################################
 # summary
 ########################################################################
+message(STATUS "")
 message(STATUS "######################################################")
 message(STATUS "## SoapySDR v${SOAPY_SDR_VERSION}")
 message(STATUS "######################################################")

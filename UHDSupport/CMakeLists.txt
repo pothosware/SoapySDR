@@ -57,6 +57,17 @@ else()
     message(STATUS "  has filter API")
 endif()
 
+message(STATUS "Checking uhd::usrp::multi_usrp::set_rx_agc() API...")
+message(STATUS "  Reading ${UHD_INCLUDE_DIRS}/uhd/usrp/multi_usrp.hpp...")
+file(READ ${UHD_INCLUDE_DIRS}/uhd/usrp/multi_usrp.hpp multi_usrp_hpp)
+string(FIND "${multi_usrp_hpp}" "set_rx_agc" has_set_rx_agc)
+if ("${has_set_rx_agc}" STREQUAL "-1")
+    message(STATUS "  missing set_rx_agc() API")
+else()
+    add_definitions(-DUHD_HAS_SET_RX_AGC)
+    message(STATUS "  has set_rx_agc() API")
+endif()
+
 ########################################################################
 # Setup boost
 ########################################################################

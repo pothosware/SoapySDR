@@ -306,6 +306,14 @@ public:
         return SoapySDR::Device::listGains(dir, channel);
     }
 
+    void setGainMode(const int dir, const size_t channel, const bool automatic)
+    {
+        #ifdef UHD_HAS_SET_RX_AGC
+        if (dir == SOAPY_SDR_RX) return _dev->set_rx_agc(automatic, channel);
+        #endif
+        return SoapySDR::Device::setGainMode(dir, channel, automatic);
+    }
+
     void setGain(const int dir, const size_t channel, const double value)
     {
         if (dir == SOAPY_SDR_TX) _dev->set_tx_gain(value, channel);

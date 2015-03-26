@@ -322,6 +322,11 @@ void UHDSoapyDevice::setupChannelHooks(const int dir, const size_t chan, const s
             .subscribe(boost::bind(&SoapySDR::Device::setGain, _device, dir, chan, name, _1));
     }
 
+    //agc
+    _tree->create<bool>(rf_fe_path / "gain" / "agc" / "enable")
+        .publish(boost::bind(&SoapySDR::Device::getGainMode, _device, dir, chan))
+        .subscribe(boost::bind(&SoapySDR::Device::setGainMode, _device, dir, chan, _1));
+
     //freq
     _tree->create<double>(rf_fe_path / "freq" / "value")
         .publish(boost::bind(&SoapySDR::Device::getFrequency, _device, dir, chan, rfCompName))
