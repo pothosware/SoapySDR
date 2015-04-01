@@ -3,6 +3,7 @@
 
 #include <SoapySDR/Device.hpp>
 #include <cstdlib>
+#include <algorithm> //min/max
 
 SoapySDR::Device::~Device(void)
 {
