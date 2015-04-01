@@ -70,6 +70,8 @@ endif()
 
 if(MSVC)
     add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
+
+    add_definitions(-DNOMINMAX) #enables std::min and std::max
 endif()
 
 ########################################################################
