@@ -131,6 +131,9 @@ endif()
 
 ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)
 
+message(STATUS "Boost include directories: ${Boost_INCLUDE_DIRS}")
+message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+
 ########################################################################
 # Setup defines for high resolution timing
 ########################################################################
