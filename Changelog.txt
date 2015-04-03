@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.1.1 (pending)
 ==========================
 
+- Fix path issues for listModules() implementation under MSVC
 - Support openSuSE for automatic LIB_SUFFIX detection logic
 - patch for missing add_compile_options in older CMake
 

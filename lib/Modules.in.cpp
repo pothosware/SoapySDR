@@ -50,7 +50,8 @@ std::vector<std::string> SoapySDR::listModules(void)
 
 #ifdef _MSC_VER
 
-    const std::string pattern = SoapySDR::getRootPath() + "\\lib@LIB_SUFFIX@\\SoapySDR\\modules\\*.*";
+    const std::string libdir = SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/";
+    const std::string pattern = libdir + "*.*";
 
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
@@ -63,7 +64,7 @@ std::vector<std::string> SoapySDR::listModules(void)
             // , delete '!' read other 2 default folder . and ..
             if(! (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ) 
             {
-                modulePaths.push_back(fd.cFileName);
+                modulePaths.push_back(libdir + fd.cFileName);
             }
         }while(::FindNextFile(hFind, &fd)); 
         ::FindClose(hFind); 
@@ -95,10 +96,10 @@ void SoapySDR::loadModule(const std::string &path)
 {
 #ifdef _MSC_VER
     HMODULE handle = LoadLibrary(path.c_str());
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed" << std::endl;
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed: " << GetLastError() << std::endl;
 #else
     void *handle = dlopen(path.c_str(), RTLD_LAZY);
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed" << std::endl;
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed: " << dlerror() << std::endl;
 #endif
 }
 
