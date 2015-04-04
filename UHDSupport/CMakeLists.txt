@@ -118,7 +118,7 @@ message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 # Build a Soapy module to support UHD devices
 ########################################################################
 SOAPY_SDR_MODULE_UTIL(
-    TARGET uhd
+    TARGET uhdModule
     SOURCES SoapyUHDDevice.cpp
     LIBRARIES
         ${UHD_LIBRARIES}

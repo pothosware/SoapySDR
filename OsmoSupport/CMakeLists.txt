@@ -283,7 +283,7 @@ function(GrOsmoSDRModule)
     include(SoapySDRUtil)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
     SOAPY_SDR_MODULE_UTIL(
-        TARGET ${OSMO_MODULE_TARGET}
+        TARGET ${OSMO_MODULE_TARGET}Module
         SOURCES ${OSMO_MODULE_SOURCES}
         LIBRARIES ${OSMO_MODULE_LIBRARIES}
     )
