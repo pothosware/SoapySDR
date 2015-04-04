@@ -42,6 +42,13 @@ if (NOT UHD_FOUND)
     return()
 endif()
 
+if (NOT UHD_ROOT)
+    get_filename_component(UHD_ROOT "${UHD_INCLUDE_DIRS}/.." ABSOLUTE)
+endif()
+message(STATUS "UHD root directory: ${UHD_ROOT}")
+message(STATUS "UHD include directories: ${UHD_INCLUDE_DIRS}")
+message(STATUS "UHD libraries: ${UHD_LIBRARIES}")
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${SoapySDR_INCLUDE_DIRS})
 include_directories(${UHD_INCLUDE_DIRS})
@@ -127,7 +134,7 @@ target_link_libraries(Soapy
     ${SoapySDR_LIBRARIES}
     ${Boost_LIBRARIES})
 install(TARGETS Soapy
-    DESTINATION lib${LIB_SUFFIX}/uhd/modules
+    DESTINATION ${UHD_ROOT}/lib${LIB_SUFFIX}/uhd/modules
 )
 
 ########################################################################
