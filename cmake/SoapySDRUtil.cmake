@@ -29,7 +29,7 @@ function(SOAPY_SDR_MODULE_UTIL)
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
     install(
         TARGETS ${MODULE_TARGET}
-        DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules/
+        DESTINATION ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}/SoapySDR/modules/
     )
 
 endfunction(SOAPY_SDR_MODULE_UTIL)
