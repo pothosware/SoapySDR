@@ -13,11 +13,15 @@ before_install:
  - echo "yes" | sudo add-apt-repository ppa:kalakris/cmake
  - sudo apt-get update -qq
 install:
- - sudo apt-get install -qq cmake libpython-dev python-numpy swig
+ - sudo apt-get install -qq cmake python-dev python-numpy swig
 script:
  - mkdir build
  - cd build
  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
  - make
  - sudo make install
+ - export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+ - export PATH=${INSTALL_PREFIX}/bin:${PATH}
+ - SoapySDRUtil --info
+ - SoapySDRUtil --make="driver=null"
 
