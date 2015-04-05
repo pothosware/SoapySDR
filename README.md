@@ -1,5 +1,9 @@
 # Soapy SDR - vendor and platform neutral SDR support library.
 
+##Build Status
+
+- Travis: [![Travis Build Status](https://travis-ci.org/pothosware/SoapySDR.svg?branch=master)](https://travis-ci.org/pothosware/SoapySDR)
+
 ##Documentation
 
 * https://github.com/pothosware/SoapySDR/wiki
