@@ -1,5 +1,10 @@
 ########################################################################
 ## AppVeyor config for SoapySDR
+##
+## * build only on a 64-bit environment
+## * the matrix builds Release and Debug
+## * swig bindings only build for Release (no python debug libs)
+## * minimal testing for command line util
 ########################################################################
 
 version: '{build}'
@@ -35,11 +40,12 @@ build_script:
   - cmake --build . --config %CONFIGURATION%
   - cmake --build . --config %CONFIGURATION% --target install
 
-# set the PATH for the install
+# setup environment paths
 before_test:
   - set PATH=%INSTALL_PREFIX%/bin;%PATH%
+  - set PYTHONPATH=%INSTALL_PREFIX%/Lib/site-packages;%PYTHONPATH%
 
-# execute the command line utility
+# basic test for command line utility
 test_script:
   - SoapySDRUtil --info
   - SoapySDRUtil --make="driver=null"
