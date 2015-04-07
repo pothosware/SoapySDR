@@ -27,7 +27,7 @@ branches:
 build_script:
   - mkdir build
   - cd build
-  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE -DCMAKE_INSTALL_PREFIX=%INSTALL_PREFIX% -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" -DCMAKE_BUILD_TYPE=%CONFIGURATION%
   - cmake --build . --config %CONFIGURATION%
   - cmake --build . --config %CONFIGURATION% --target install
 
