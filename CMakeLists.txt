@@ -116,17 +116,21 @@ if (GPLOK)
 "#############################################\n"
 "${ColourReset}")
 
+    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyOsmo/CMakeLists.txt)
     message(STATUS "")
     message(STATUS "#############################################")
     message(STATUS "## Begin configuration for Osmo support...")
     message(STATUS "#############################################")
-    add_subdirectory(OsmoSupport)
+    add_subdirectory(SoapyOsmo)
+    endif()
 
+    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyUHD/CMakeLists.txt)
     message(STATUS "")
     message(STATUS "#############################################")
     message(STATUS "## Begin configuration for UHD support...")
     message(STATUS "#############################################")
-    add_subdirectory(UHDSupport)
+    add_subdirectory(SoapyUHD)
+    endif()
 
 endif ()
 

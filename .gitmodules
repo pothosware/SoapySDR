@@ -1,0 +1,8 @@
+[submodule "SoapyOsmo"]
+	path = SoapyOsmo
+	url = https://github.com/pothosware/SoapyOsmo.git
+	branch = master
+[submodule "SoapyUHD"]
+	path = SoapyUHD
+	url = https://github.com/pothosware/SoapyUHD.git
+	branch = master
