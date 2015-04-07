@@ -1,3 +1,12 @@
+########################################################################
+## Travis CI config for SoapySDR
+##
+## * matrix tests compilers and build types
+## * python bindings built and installed
+## * minimal testing for command line util
+## * minimal testing for python bindings
+########################################################################
+
 language: cpp
 env:
   global:
@@ -17,7 +26,7 @@ install:
 script:
  - mkdir build
  - cd build
- - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+ - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DGPLOK=OFF
  - make
  - sudo make install
  # basic test for command line utility
