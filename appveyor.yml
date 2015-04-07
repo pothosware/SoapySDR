@@ -23,6 +23,12 @@ branches:
   only:
     - master
 
+# dependencies for python bindings
+install:
+  - choco install python3
+  - choco install numpy
+  - choco install swig
+
 # configure and build
 build_script:
   - mkdir build
