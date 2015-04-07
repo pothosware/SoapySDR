@@ -12,7 +12,7 @@ configuration:
 
 environment:
   global:
-    - INSTALL_PREFIX: C:/Program Files/SoapySDR
+    INSTALL_PREFIX: C:/Program Files/SoapySDR
 
 # Operating system (build VM template)
 os: Windows Server 2012 R2
