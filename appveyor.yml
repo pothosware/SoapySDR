@@ -6,7 +6,13 @@ version: '{build}'
 
 platform: x64
 
-configuration: Release
+configuration:
+  - Debug
+  - Release
+
+environment:
+  global:
+    - INSTALL_PREFIX: C:/Program Files/SoapySDR
 
 # Operating system (build VM template)
 os: Windows Server 2012 R2
@@ -21,6 +27,15 @@ branches:
 build_script:
   - mkdir build
   - cd build
-  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE
-  - cmake --build . --config Release
-  - cmake --build . --config Release --target install
+  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE -DCMAKE_INSTALL_PREFIX=%INSTALL_PREFIX% -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cmake --build . --config %CONFIGURATION%
+  - cmake --build . --config %CONFIGURATION% --target install
+
+# set the PATH for the install
+before_test:
+  - set PATH=%INSTALL_PREFIX%/bin;%PATH%
+
+# execute the command line utility
+test_script:
+  - SoapySDRUtil --info
+  - SoapySDRUtil --make="driver=null"
