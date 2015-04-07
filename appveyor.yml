@@ -1,0 +1,28 @@
+########################################################################
+## AppVeyor config for SoapySDR
+########################################################################
+
+version: '{build}'
+
+platform: x64
+
+configuration: Release
+
+# Operating system (build VM template)
+os: Windows Server 2012 R2
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# configure project
+before_build:
+  - mkdir build
+  - cd build
+  - cmake -G "Visual Studio 12 Win64" ..
+
+# direct MSBuild here
+build:
+  project: INSTALL.vcxproj
