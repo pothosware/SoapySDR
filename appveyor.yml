@@ -17,12 +17,10 @@ branches:
   only:
     - master
 
-# configure project
-before_build:
+# configure and build
+build_script:
   - mkdir build
   - cd build
-  - cmake -G "Visual Studio 12 Win64" ..
-
-# direct MSBuild here
-build:
-  project: INSTALL.vcxproj
+  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE
+  - cmake --build . --config Release
+  - cmake --build . --config Release --target install
