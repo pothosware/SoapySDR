@@ -8,6 +8,7 @@
 ########################################################################
 
 language: cpp
+compiler: gcc
 
 env:
   global:
@@ -15,10 +16,6 @@ env:
   matrix:
     - BUILD_TYPE=Debug
     - BUILD_TYPE=Release
-
-compiler:
-  - gcc
-  - clang
 
 # whitelist
 branches:
