@@ -308,9 +308,19 @@ void SoapySDR::Device::setFrequency(const int, const size_t, const std::string &
     return;
 }
 
-double SoapySDR::Device::getFrequency(const int, const size_t) const
+double SoapySDR::Device::getFrequency(const int dir, const size_t chan) const
 {
-    return 0.0;
+    double freq = 0.0;
+
+    //overall frequency is the sum of components
+    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
+    {
+        const std::string &name = comps[comp_i];
+        freq += this->getFrequency(dir, chan, name);
+    }
+
+    return freq;
 }
 
 double SoapySDR::Device::getFrequency(const int, const size_t, const std::string &) const
