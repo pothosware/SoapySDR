@@ -74,12 +74,15 @@ add_subdirectory(docs)
 ########################################################################
 # Python support (optional)
 ########################################################################
+option(ENABLE_PYTHON "enable python bindings" ON)
+if (ENABLE_PYTHON)
 message(STATUS "")
 message(STATUS "#############################################")
 message(STATUS "## Begin configuration for Python support...")
 message(STATUS "#############################################")
 message(STATUS "Enabling optional Python bindings if possible...")
 add_subdirectory(python)
+endif (ENABLE_PYTHON)
 
 ########################################################################
 # uninstall target
@@ -95,10 +98,7 @@ add_custom_target(uninstall
 ########################################################################
 # in-tree modules
 ########################################################################
-if (NOT DEFINED GPLOK)
-    message(WARNING "Enabling GPL support modules by default")
-    set(GPLOK TRUE CACHE BOOL "GPL support modules ok?" FORCE)
-endif ()
+option(GPLOK "GPL support modules ok?" ON)
 
 if (GPLOK)
     if (NOT WIN32)
