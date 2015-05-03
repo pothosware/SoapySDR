@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
+#include <sstream>
 #include <iostream>
 
 #ifdef _MSC_VER
@@ -44,14 +45,12 @@ std::string SoapySDR::getRootPath(void)
 /***********************************************************************
  * list modules API call
  **********************************************************************/
-std::vector<std::string> SoapySDR::listModules(void)
+static std::vector<std::string> searchModulePath(const std::string &path)
 {
+    const std::string pattern = path + "*.*";
     std::vector<std::string> modulePaths;
 
 #ifdef _MSC_VER
-
-    const std::string libdir = SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/";
-    const std::string pattern = libdir + "*.*";
 
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
@@ -64,7 +63,7 @@ std::vector<std::string> SoapySDR::listModules(void)
             // , delete '!' read other 2 default folder . and ..
             if(! (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ) 
             {
-                modulePaths.push_back(libdir + fd.cFileName);
+                modulePaths.push_back(path + fd.cFileName);
             }
         }while(::FindNextFile(hFind, &fd)); 
         ::FindClose(hFind); 
@@ -72,7 +71,6 @@ std::vector<std::string> SoapySDR::listModules(void)
 
 #else
 
-    const std::string pattern = SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/*.*";
     glob_t globResults;
 
     const int ret = glob(pattern.c_str(), 0/*no flags*/, NULL, &globResults);
@@ -87,6 +85,39 @@ std::vector<std::string> SoapySDR::listModules(void)
 #endif
 
     return modulePaths;
+}
+
+std::vector<std::string> SoapySDR::listModules(void)
+{
+    //the default search path
+    std::vector<std::string> searchPaths;
+    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules");
+
+    //separator for search paths
+    #ifdef _MSC_VER
+    static const char sep = ';';
+    #else
+    static const char sep = ':';
+    #endif
+
+    //check the environment's search path
+    std::stringstream pluginPaths(getEnvImpl("SOAPY_SDR_PLUGIN_PATH"));
+    std::string pluginPath;
+    while (std::getline(pluginPaths, pluginPath, sep))
+    {
+        if (pluginPath.empty()) continue;
+        searchPaths.push_back(pluginPath);
+    }
+
+    //traverse the search paths
+    std::vector<std::string> modules;
+    for (size_t i = 0; i < searchPaths.size(); i++)
+    {
+        const std::string &path = searchPaths.at(i) + "/"; //requires trailing slash
+        const std::vector<std::string> subModules = searchModulePath(path);
+        modules.insert(modules.end(), subModules.begin(), subModules.end());
+    }
+    return modules;
 }
 
 /***********************************************************************
