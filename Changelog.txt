@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.0 (pending)
 ==========================
 
+- Support /usr/local module installs when root is /usr
 - Support SOAPY_SDR_PLUGIN_PATH environment variable
 - Added logger support for stream status indicator
 - Frequency component API and tune distribution algorithm

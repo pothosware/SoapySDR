@@ -17,6 +17,10 @@ set(INCLUDED_SOAPY_SDR_UTIL_CMAKE TRUE)
 ## LIBRARIES - a list of libraries to link the module to
 ## The module will automatically link to SoapySDR library.
 ##
+## PREFIX - custom install prefix or unspecified for automatic
+## The automatic prefix defaults to the SoapySDR install root,
+## or CMAKE_INSTALL_PREFIX when the SoapySDR install root is /usr.
+##
 ########################################################################
 function(SOAPY_SDR_MODULE_UTIL)
 
@@ -27,9 +31,18 @@ function(SOAPY_SDR_MODULE_UTIL)
     add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
     target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} ${SoapySDR_LIBRARIES})
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
+
+    #determine user-specified or automatic install prefix
+    if (MODULE_PREFIX)
+    elseif ("${SOAPY_SDR_ROOT}" STREQUAL "/usr")
+        set(MODULE_PREFIX ${CMAKE_INSTALL_PREFIX})
+    else()
+        set(MODULE_PREFIX ${SOAPY_SDR_ROOT})
+    endif()
+
     install(
         TARGETS ${MODULE_TARGET}
-        DESTINATION ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}/SoapySDR/modules/
+        DESTINATION ${MODULE_PREFIX}/lib${LIB_SUFFIX}/SoapySDR/modules/
     )
 
 endfunction(SOAPY_SDR_MODULE_UTIL)

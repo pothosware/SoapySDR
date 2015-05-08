@@ -93,6 +93,12 @@ std::vector<std::string> SoapySDR::listModules(void)
     std::vector<std::string> searchPaths;
     searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules");
 
+    //support /usr/local module installs when the install prefix is /usr
+    if (SoapySDR::getRootPath() == "/usr")
+    {
+        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules");
+    }
+
     //separator for search paths
     #ifdef _MSC_VER
     static const char sep = ';';
