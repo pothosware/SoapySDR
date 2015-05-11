@@ -1,5 +1,5 @@
-soapysdr (0.2-1) unstable; urgency=low
+soapysdr (0.1.0+1SNAPSHOT-gitdescribe~unstable) unstable; urgency=low
 
-  * Initial release (see Changelog.txt)
+  * Pending release (master branch)
 
- -- Josh Blum <josh@pothosware.com>  Sun, 03 May 2015 00:07:49 -0700
+ -- Josh Blum <josh@pothosware.com>  Sun, 10 May 2015 17:29:35 -0700
