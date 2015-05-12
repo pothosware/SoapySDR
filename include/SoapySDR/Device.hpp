@@ -320,6 +320,21 @@ public:
     virtual size_t getNumDirectAccessBuffers(Stream *stream);
 
     /*!
+     * Get the buffer addresses for a scatter/gather table entry.
+     * When the underlying DMA implementation uses scatter/gather
+     * then this call provides the user addresses for that table.
+     *
+     * Example: The caller may query the DMA memory addresses once
+     * after stream creation to pre-allocate a re-usable ring-buffer.
+     *
+     * \param stream the opaque pointer to a stream handle
+     * \param handle an index value between 0 and num direct buffers - 1
+     * \param buffs an array of void* buffers num chans in size
+     * \return 0 for success or error code when not supported
+     */
+    virtual int getDirectAccessBufferAddrs(Stream *stream, const size_t handle, void **buffs);
+
+    /*!
      * Acquire direct buffers from a receive stream.
      * This call is part of the direct buffer access API.
      *
@@ -328,11 +343,11 @@ public:
      *
      * The handle will be set by the implementation so that the caller
      * may later release access to the buffers with releaseReadBuffer().
-     * The value and use of handle is up to the implementation.
-     * For example, handle could be a pointer, or a buffer offset.
+     * Handle represents an index into the internal scatter/gather table
+     * such that handle is between 0 and num direct buffers - 1.
      *
      * \param stream the opaque pointer to a stream handle
-     * \param handle an opaque value used in the release() call
+     * \param handle an index value used in the release() call
      * \param buffs an array of void* buffers num chans in size
      * \param flags optional flag indicators about the result
      * \param timeNs the buffer's timestamp in nanoseconds
@@ -367,11 +382,11 @@ public:
      *
      * The handle will be set by the implementation so that the caller
      * may later release access to the buffers with releaseWriteBuffer().
-     * The value and use of handle is up to the implementation.
-     * For example, handle could be a pointer, or a buffer offset.
+     * Handle represents an index into the internal scatter/gather table
+     * such that handle is between 0 and num direct buffers - 1.
      *
      * \param stream the opaque pointer to a stream handle
-     * \param handle an opaque value used in the release() call
+     * \param handle an index value used in the release() call
      * \param buffs an array of void* buffers num chans in size
      * \param flags optional input flags and output flags
      * \param timeNs the buffer's timestamp in nanoseconds

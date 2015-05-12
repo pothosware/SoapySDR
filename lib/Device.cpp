@@ -103,6 +103,11 @@ size_t SoapySDR::Device::getNumDirectAccessBuffers(Stream *)
     return 0;
 }
 
+int SoapySDR::Device::getDirectAccessBufferAddrs(Stream *, const size_t, void **)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
+}
+
 int SoapySDR::Device::acquireReadBuffer(Stream *, size_t &, const void **, int &, long long &, const long)
 {
     return SOAPY_SDR_NOT_SUPPORTED;
