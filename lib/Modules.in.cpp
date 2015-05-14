@@ -78,6 +78,7 @@ static std::vector<std::string> searchModulePath(const std::string &path)
     {
         modulePaths.push_back(globResults.gl_pathv[i]);
     }
+    else if (ret == GLOB_NOMATCH) {/* acceptable error condition, do not print error */}
     else std::cerr << "SoapySDR::listModules() glob(" << pattern << ") error " << ret << std::endl;
 
     globfree(&globResults);
@@ -97,6 +98,10 @@ std::vector<std::string> SoapySDR::listModules(void)
     if (SoapySDR::getRootPath() == "/usr")
     {
         searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules");
+        //when using a multi-arch directory, support single-arch path as well
+        static const std::string libsuffix("@LIB_SUFFIX@");
+        if (not libsuffix.empty() and libsuffix.at(0) == '/')
+            searchPaths.push_back("/usr/local/lib/SoapySDR/modules");
     }
 
     //separator for search paths
