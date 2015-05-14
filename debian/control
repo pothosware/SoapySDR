@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Josh Blum <josh@pothosware.com>
 Build-Depends:
     debhelper (>= 9.0.0),
-    cmake,
+    cmake (>= 2.8.8),
     swig2.0,
     python-dev
 Standards-Version: 3.9.5
@@ -15,10 +15,9 @@ Vcs-Browser: https://github.com/pothosware/SoapySDR
 Package: libsoapysdr0
 Section: libs
 Architecture: any
-Depends:
-    libstdc++6,
-    ${shlibs:Depends},
-    ${misc:Depends}
+Pre-Depends: multiarch-support, ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
 Description: Soapy SDR - shared library
  Vendor and platform neutral SDR support library.
 
@@ -31,14 +30,15 @@ Depends:
 Description: Soapy SDR - development files
  Vendor and platform neutral SDR support library.
 
-Package: libsoapysdr
+Package: soapysdr
 Section: libs
 Architecture: any
 Recommends: soapyosmo, soapyuhd
 Depends:
     libsoapysdr0 (= ${binary:Version}),
+    ${shlibs:Depends},
     ${misc:Depends}
-Description: Soapy SDR - meta package
+Description: Soapy SDR - runtime application
  Vendor and platform neutral SDR support library.
 
 Package: python-soapysdr

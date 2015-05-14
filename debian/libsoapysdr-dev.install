@@ -1,4 +1,4 @@
 usr/include/
 usr/share/cmake/
-usr/lib/pkgconfig/SoapySDR.pc
-usr/lib/libSoapySDR.so
+usr/lib/*/pkgconfig/
+usr/lib/*/libSoapySDR.so

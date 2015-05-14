@@ -1,2 +1,1 @@
-usr/lib/libSoapySDR.so.*
-usr/bin/SoapySDRUtil
+usr/lib/*/libSoapySDR.so.*
