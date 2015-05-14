@@ -15,9 +15,9 @@ Vcs-Browser: https://github.com/pothosware/SoapySDR
 Package: libsoapysdr0
 Section: libs
 Architecture: any
+Multi-Arch: same
 Pre-Depends: multiarch-support, ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Multi-Arch: same
 Description: Soapy SDR - shared library
  Vendor and platform neutral SDR support library.
 

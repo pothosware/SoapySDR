@@ -4,6 +4,10 @@
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 export DEB_HOST_MULTIARCH
 
+# Set extra build info for the library version
+EXTRA_INFO = snapshot
+#EXTRA_INFO = release
+
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
@@ -15,4 +19,4 @@ export DH_OPTIONS
 	dh $@ --buildsystem=cmake
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DGPLOK=OFF -DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)"
+	dh_auto_configure -- -DGPLOK=OFF -DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)" -DSOAPY_SDR_EXTVER=$(EXTRA_INFO)
