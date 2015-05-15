@@ -1,12 +1,12 @@
 Source: soapysdr
-Section: libs
+Section: comm
 Priority: optional
 Maintainer: Josh Blum <josh@pothosware.com>
 Build-Depends:
     debhelper (>= 9.0.0),
     cmake (>= 2.8.8),
     swig2.0,
-    python-dev
+    libpython-dev
 Standards-Version: 3.9.5
 Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
@@ -31,9 +31,8 @@ Description: Soapy SDR - development files
  Vendor and platform neutral SDR support library.
 
 Package: soapysdr
-Section: libs
+Section: comm
 Architecture: any
-Recommends: soapyosmo, soapyuhd
 Depends:
     libsoapysdr0 (= ${binary:Version}),
     ${shlibs:Depends},
@@ -46,7 +45,6 @@ Section: python
 Architecture: any
 Depends:
     libsoapysdr0 (= ${binary:Version}),
-    python,
     ${shlibs:Depends},
     ${misc:Depends}
 Description: Soapy SDR - python bindings
