@@ -46,7 +46,9 @@ Section: python
 Architecture: any
 Depends:
     libsoapysdr0 (= ${binary:Version}),
+    python,
     ${shlibs:Depends},
     ${misc:Depends}
+Recommends: python-numpy
 Description: Soapy SDR - python bindings
  Vendor and platform neutral SDR support library.
