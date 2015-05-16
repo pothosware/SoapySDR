@@ -6,6 +6,7 @@ Build-Depends:
     debhelper (>= 9.0.0),
     cmake (>= 2.8.8),
     swig2.0,
+    python,
     libpython-dev
 Standards-Version: 3.9.5
 Homepage: https://github.com/pothosware/SoapySDR/wiki
