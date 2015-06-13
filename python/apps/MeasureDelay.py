@@ -111,9 +111,13 @@ def measure_delay(
         samps = samps/max(samps) #norm ampl to peak
         #print samps[:100]
         return samps
-    normalize(txPulse).tofile("/home/jblum/src/tx.dat")
+
     txPulseNorm = normalize(txPulse)
     rxBuffsNorm = normalize(rxBuffs)
+
+    #dump debug samples
+    if dumpDir is not None: txPulseNorm.tofile(os.path.join(dumpDir, 'tx.dat'))
+    if dumpDir is not None: rxBuffsNorm.tofile(os.path.join(dumpDir, 'rx.dat'))
 
     #look for the for peak index for time offsets
     rxArgmaxIndex = np.argmax(rxBuffsNorm)
@@ -129,10 +133,6 @@ def measure_delay(
     rxPeakTime = rxTime0 + long((rxArgmaxIndex/rate)*1e9)
     timeDelta = rxPeakTime - txPeakTime
     print('>>> Time delta %f us'%(timeDelta/1e3))
-
-    #dump debug samples
-    if dumpDir is not None: txPulseNorm.tofile(os.path.join(dumpDir, 'tx.dat'))
-    if dumpDir is not None: rxBuffsNorm.tofile(os.path.join(dumpDir, 'rx.dat'))
 
     #cleanup streams
     print("Cleanup streams")
