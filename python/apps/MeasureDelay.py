@@ -116,8 +116,11 @@ def measure_delay(
     rxBuffsNorm = normalize(rxBuffs)
 
     #dump debug samples
-    if dumpDir is not None: txPulseNorm.tofile(os.path.join(dumpDir, 'tx.dat'))
-    if dumpDir is not None: rxBuffsNorm.tofile(os.path.join(dumpDir, 'rx.dat'))
+    if dumpDir is not None:
+        txPulseNorm.tofile(os.path.join(dumpDir, 'txNorm.dat'))
+        rxBuffsNorm.tofile(os.path.join(dumpDir, 'rxNorm.dat'))
+        np.real(rxBuffs).tofile(os.path.join(dumpDir, 'rxRawI.dat'))
+        np.imag(rxBuffs).tofile(os.path.join(dumpDir, 'rxRawQ.dat'))
 
     #look for the for peak index for time offsets
     rxArgmaxIndex = np.argmax(rxBuffsNorm)
