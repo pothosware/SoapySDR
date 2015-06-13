@@ -1,0 +1,4 @@
+usr/include/
+usr/share/cmake/
+usr/lib/*/pkgconfig/
+usr/lib/*/libSoapySDR.so

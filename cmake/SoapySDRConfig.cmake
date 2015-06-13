@@ -70,12 +70,15 @@ endif()
 
 if(MSVC)
     add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
+
+    add_definitions(-DNOMINMAX) #enables std::min and std::max
 endif()
 
 ########################################################################
 # In-tree settings
 ########################################################################
 if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
+    set(SOAPY_SDR_ROOT ${CMAKE_INSTALL_PREFIX})
     set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_IN_TREE_SOURCE_DIR}/include)
     set(SoapySDR_LIBRARIES SoapySDR)
     return()
@@ -96,6 +99,7 @@ endif ()
 find_library(
     SOAPY_SDR_LIBRARY SoapySDR SoapySDRd
     PATHS ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}
+    PATH_SUFFIXES ${CMAKE_LIBRARY_ARCHITECTURE}
     NO_DEFAULT_PATH
 )
 if(NOT SOAPY_SDR_LIBRARY)

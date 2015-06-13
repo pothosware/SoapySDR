@@ -1,0 +1,51 @@
+########################################################################
+## AppVeyor config for SoapySDR
+##
+## * build only on a 64-bit environment
+## * the matrix builds Release and Debug
+## * swig bindings only build for Release (no python debug libs)
+## * minimal testing for command line util
+########################################################################
+
+version: '{build}'
+
+platform: x64
+
+configuration:
+  - Debug
+  - Release
+
+environment:
+  global:
+    INSTALL_PREFIX: C:/Program Files/SoapySDR
+
+# Operating system (build VM template)
+os: Windows Server 2012 R2
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+# dependencies for python bindings
+install:
+  - choco install swig
+
+# configure and build
+build_script:
+  - mkdir build
+  - cd build
+  - cmake ../ -G "Visual Studio 12 Win64" -DGPLOK=FALSE -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%" -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cmake --build . --config %CONFIGURATION%
+  - cmake --build . --config %CONFIGURATION% --target install
+
+# setup environment paths
+before_test:
+  - set PATH=%INSTALL_PREFIX%/bin;%PATH%
+  - set PYTHONPATH=%INSTALL_PREFIX%/Lib/site-packages;%PYTHONPATH%
+
+# basic test for command line utility
+test_script:
+  - SoapySDRUtil --info
+  - SoapySDRUtil --make="driver=null"

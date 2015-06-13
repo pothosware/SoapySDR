@@ -51,7 +51,7 @@ add_library(SoapySDR SHARED ${SOAPY_SDR_SOURCES})
 if (SOAPY_SDR_LIBRARIES)
     target_link_libraries(SoapySDR ${SOAPY_SDR_LIBRARIES})
 endif()
-set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_VERSION})
+set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
 set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
 
 ########################################################################

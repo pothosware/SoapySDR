@@ -3,6 +3,7 @@
 
 #include <SoapySDR/Device.hpp>
 #include <cstdlib>
+#include <algorithm> //min/max
 
 SoapySDR::Device::~Device(void)
 {
@@ -100,6 +101,11 @@ int SoapySDR::Device::readStreamStatus(Stream *, size_t &, int &, long long &, c
 size_t SoapySDR::Device::getNumDirectAccessBuffers(Stream *)
 {
     return 0;
+}
+
+int SoapySDR::Device::getDirectAccessBufferAddrs(Stream *, const size_t, void **)
+{
+    return SOAPY_SDR_NOT_SUPPORTED;
 }
 
 int SoapySDR::Device::acquireReadBuffer(Stream *, size_t &, const void **, int &, long long &, const long)
@@ -307,9 +313,19 @@ void SoapySDR::Device::setFrequency(const int, const size_t, const std::string &
     return;
 }
 
-double SoapySDR::Device::getFrequency(const int, const size_t) const
+double SoapySDR::Device::getFrequency(const int dir, const size_t chan) const
 {
-    return 0.0;
+    double freq = 0.0;
+
+    //overall frequency is the sum of components
+    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
+    {
+        const std::string &name = comps[comp_i];
+        freq += this->getFrequency(dir, chan, name);
+    }
+
+    return freq;
 }
 
 double SoapySDR::Device::getFrequency(const int, const size_t, const std::string &) const

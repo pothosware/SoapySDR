@@ -26,6 +26,7 @@ include(UseSWIG)
 include(FindPythonInterp)
 if (NOT PYTHONINTERP_FOUND)
     message(WARNING "Python bindings require python exe, skipping...")
+    return()
 endif ()
 message(STATUS "PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
 

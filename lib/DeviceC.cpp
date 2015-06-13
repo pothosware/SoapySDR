@@ -185,6 +185,11 @@ size_t SoapySDRDevice_getNumDirectAccessBuffers(SoapySDRDevice *device, SoapySDR
     return device->getNumDirectAccessBuffers(reinterpret_cast<SoapySDR::Stream *>(stream));
 }
 
+int SoapySDRDevice_getDirectAccessBufferAddrs(SoapySDRDevice *device, SoapySDRStream *stream, const size_t handle, void **buffs)
+{
+    return device->getDirectAccessBufferAddrs(reinterpret_cast<SoapySDR::Stream *>(stream), handle, buffs);
+}
+
 int SoapySDRDevice_acquireReadBuffer(SoapySDRDevice *device,
     SoapySDRStream *stream,
     size_t *handle,

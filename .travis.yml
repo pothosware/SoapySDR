@@ -1,0 +1,52 @@
+########################################################################
+## Travis CI config for SoapySDR
+##
+## * matrix tests compilers and build types
+## * python bindings built and installed
+## * minimal testing for command line util
+## * minimal testing for python bindings
+########################################################################
+
+language: cpp
+compiler: gcc
+
+env:
+  global:
+    - INSTALL_PREFIX=/usr/local
+  matrix:
+    - BUILD_TYPE=Debug
+    - BUILD_TYPE=Release
+
+# whitelist
+branches:
+  only:
+    - master
+
+before_install:
+  # install a newer cmake since at this time Travis only has version 2.8.7
+  - echo "yes" | sudo add-apt-repository ppa:kalakris/cmake
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -qq cmake python-dev python-numpy swig
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DGPLOK=OFF
+  - make
+  - sudo make install
+
+  # setup environment paths
+  - export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+  - export PATH=${INSTALL_PREFIX}/bin:${PATH}
+  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python2.7/dist-packages:${PYTHONPATH}
+
+  # basic test for command line utility
+  - SoapySDRUtil --info
+  - SoapySDRUtil --make="driver=null"
+
+  # basic test for python bindings
+  - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+  - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+

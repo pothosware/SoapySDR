@@ -1,12 +1,29 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 project(SoapySDR)
 enable_language(CXX)
 enable_testing()
 
-set(SOAPY_SDR_VERSION "0.2.0")
+########################################################################
+# gather version information
+# packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
+########################################################################
+set(SOAPY_SDR_LIBVER "0.2.0")
+
+if (NOT SOAPY_SDR_EXTVER)
+    include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
+    get_git_head_revision(GITREFSPEC GITHASH)
+    if (GITHASH)
+        string(SUBSTRING "${GITHASH}" 0 8 GITHASH)
+        set(SOAPY_SDR_EXTVER "g${GITHASH}")
+    else (GITHASH)
+        set(SOAPY_SDR_EXTVER "unknown")
+    endif (GITHASH)
+endif()
+
+set(SOAPY_SDR_VERSION "${SOAPY_SDR_LIBVER}-${SOAPY_SDR_EXTVER}")
 
 ########################################################################
 # select the release build type by default to get optimization flags
@@ -28,7 +45,14 @@ include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 ########################################################################
 # Install cmake helper modules
 ########################################################################
-file(GLOB cmake_files "${PROJECT_SOURCE_DIR}/cmake/*.cmake")
+configure_file(
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfigVersion.in.cmake
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
+@ONLY)
+set(cmake_files
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfig.cmake
+    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRUtil.cmake
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
 if (UNIX)
     install(FILES ${cmake_files} DESTINATION share/cmake/${CMAKE_PROJECT_NAME})
 elseif (WIN32)
@@ -51,13 +75,15 @@ add_subdirectory(docs)
 ########################################################################
 # Python support (optional)
 ########################################################################
+option(ENABLE_PYTHON "enable python bindings" ON)
+if (ENABLE_PYTHON)
 message(STATUS "")
 message(STATUS "#############################################")
 message(STATUS "## Begin configuration for Python support...")
 message(STATUS "#############################################")
-message(STATUS "")
 message(STATUS "Enabling optional Python bindings if possible...")
 add_subdirectory(python)
+endif (ENABLE_PYTHON)
 
 ########################################################################
 # uninstall target
@@ -73,10 +99,7 @@ add_custom_target(uninstall
 ########################################################################
 # in-tree modules
 ########################################################################
-if (NOT DEFINED GPLOK)
-    message(WARNING "Enabling GPL support modules by default")
-    set(GPLOK TRUE CACHE BOOL "GPL support modules ok?" FORCE)
-endif ()
+option(GPLOK "GPL support modules ok?" ON)
 
 if (GPLOK)
     if (NOT WIN32)
@@ -94,7 +117,29 @@ if (GPLOK)
 "#############################################\n"
 "${ColourReset}")
 
-    add_subdirectory(OsmoSupport)
-    add_subdirectory(UHDSupport)
+    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyOsmo/CMakeLists.txt)
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for Osmo support...")
+    message(STATUS "#############################################")
+    add_subdirectory(SoapyOsmo)
+    endif()
+
+    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyUHD/CMakeLists.txt)
+    message(STATUS "")
+    message(STATUS "#############################################")
+    message(STATUS "## Begin configuration for UHD support...")
+    message(STATUS "#############################################")
+    add_subdirectory(SoapyUHD)
+    endif()
 
 endif ()
+
+########################################################################
+# summary
+########################################################################
+message(STATUS "")
+message(STATUS "######################################################")
+message(STATUS "## SoapySDR v${SOAPY_SDR_VERSION}")
+message(STATUS "######################################################")
+message(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")

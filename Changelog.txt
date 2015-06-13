@@ -3,6 +3,8 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.0 (pending)
 ==========================
 
+- Support /usr/local module installs when root is /usr
+- Support SOAPY_SDR_PLUGIN_PATH environment variable
 - Added logger support for stream status indicator
 - Frequency component API and tune distribution algorithm
 - Added direct buffer access API for read and write streams
@@ -13,6 +15,7 @@ Release 0.2.0 (pending)
 Release 0.1.1 (pending)
 ==========================
 
+- Fix path issues for listModules() implementation under MSVC
 - Support openSuSE for automatic LIB_SUFFIX detection logic
 - patch for missing add_compile_options in older CMake
 

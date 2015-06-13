@@ -1,10 +1,11 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
+#include <sstream>
 #include <iostream>
 
 #ifdef _MSC_VER
@@ -44,13 +45,12 @@ std::string SoapySDR::getRootPath(void)
 /***********************************************************************
  * list modules API call
  **********************************************************************/
-std::vector<std::string> SoapySDR::listModules(void)
+static std::vector<std::string> searchModulePath(const std::string &path)
 {
+    const std::string pattern = path + "*.*";
     std::vector<std::string> modulePaths;
 
 #ifdef _MSC_VER
-
-    const std::string pattern = SoapySDR::getRootPath() + "\\lib@LIB_SUFFIX@\\SoapySDR\\modules\\*.*";
 
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
@@ -63,7 +63,7 @@ std::vector<std::string> SoapySDR::listModules(void)
             // , delete '!' read other 2 default folder . and ..
             if(! (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ) 
             {
-                modulePaths.push_back(fd.cFileName);
+                modulePaths.push_back(path + fd.cFileName);
             }
         }while(::FindNextFile(hFind, &fd)); 
         ::FindClose(hFind); 
@@ -71,7 +71,6 @@ std::vector<std::string> SoapySDR::listModules(void)
 
 #else
 
-    const std::string pattern = SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules/*.*";
     glob_t globResults;
 
     const int ret = glob(pattern.c_str(), 0/*no flags*/, NULL, &globResults);
@@ -79,6 +78,7 @@ std::vector<std::string> SoapySDR::listModules(void)
     {
         modulePaths.push_back(globResults.gl_pathv[i]);
     }
+    else if (ret == GLOB_NOMATCH) {/* acceptable error condition, do not print error */}
     else std::cerr << "SoapySDR::listModules() glob(" << pattern << ") error " << ret << std::endl;
 
     globfree(&globResults);
@@ -88,6 +88,49 @@ std::vector<std::string> SoapySDR::listModules(void)
     return modulePaths;
 }
 
+std::vector<std::string> SoapySDR::listModules(void)
+{
+    //the default search path
+    std::vector<std::string> searchPaths;
+    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules");
+
+    //support /usr/local module installs when the install prefix is /usr
+    if (SoapySDR::getRootPath() == "/usr")
+    {
+        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules");
+        //when using a multi-arch directory, support single-arch path as well
+        static const std::string libsuffix("@LIB_SUFFIX@");
+        if (not libsuffix.empty() and libsuffix.at(0) == '/')
+            searchPaths.push_back("/usr/local/lib/SoapySDR/modules");
+    }
+
+    //separator for search paths
+    #ifdef _MSC_VER
+    static const char sep = ';';
+    #else
+    static const char sep = ':';
+    #endif
+
+    //check the environment's search path
+    std::stringstream pluginPaths(getEnvImpl("SOAPY_SDR_PLUGIN_PATH"));
+    std::string pluginPath;
+    while (std::getline(pluginPaths, pluginPath, sep))
+    {
+        if (pluginPath.empty()) continue;
+        searchPaths.push_back(pluginPath);
+    }
+
+    //traverse the search paths
+    std::vector<std::string> modules;
+    for (size_t i = 0; i < searchPaths.size(); i++)
+    {
+        const std::string &path = searchPaths.at(i) + "/"; //requires trailing slash
+        const std::vector<std::string> subModules = searchModulePath(path);
+        modules.insert(modules.end(), subModules.begin(), subModules.end());
+    }
+    return modules;
+}
+
 /***********************************************************************
  * load module API call
  **********************************************************************/
@@ -95,10 +138,10 @@ void SoapySDR::loadModule(const std::string &path)
 {
 #ifdef _MSC_VER
     HMODULE handle = LoadLibrary(path.c_str());
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed" << std::endl;
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed: " << GetLastError() << std::endl;
 #else
     void *handle = dlopen(path.c_str(), RTLD_LAZY);
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed" << std::endl;
+    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed: " << dlerror() << std::endl;
 #endif
 }
 
