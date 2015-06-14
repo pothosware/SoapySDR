@@ -37,6 +37,7 @@ list(APPEND SOAPY_SDR_SOURCES
     DeviceC.cpp
     FactoryC.cpp
     LoggerC.cpp
+    TimeC.cpp
 )
 
 #disable MSVC warnings

@@ -4,15 +4,17 @@
 #include <SoapySDR/Time.hpp>
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 
 static bool loopbackTimeToTicks(const long long timeNs, const double rate)
 {
     const long long ticks = SoapySDR::timeNsToTicks(timeNs, rate);
     const long long outTime = SoapySDR::ticksToTimeNs(ticks, rate);
     //we expect error because timeNs specifies a sub-tick
-    if (std::abs(timeNs - outTime) < rate) return true;
+    if (std::abs(timeNs - outTime)/1e9 < rate) return true;
     printf("FAIL: loopbackTimeToTicks(%lld, %f)\n", timeNs, rate);
     printf("    ticks = %lld, outTime = %lld\n", ticks, outTime);
+    printf("    error = %f secs\n", std::abs(timeNs - outTime)/1e9);
     return false;
 }
 
@@ -20,9 +22,10 @@ static bool loopbackTicksToTime(const long long ticks, const double rate)
 {
     const long long timeNs = SoapySDR::ticksToTimeNs(ticks, rate);
     const long long outTicks = SoapySDR::timeNsToTicks(timeNs, rate);
-    if (ticks == outTicks) return true;
+    if (std::abs(ticks - outTicks) == 0) return true;
     printf("FAIL: loopbackTicksToTime(%lld, %f)\n", ticks, rate);
     printf("    timeNs = %lld, outTicks = %lld\n", timeNs, outTicks);
+    printf("    error = %d ticks\n", int(std::abs(ticks - outTicks)));
     return false;
 }
 
@@ -81,7 +84,6 @@ int main(void)
         if (not loopbackTicksToTime(-ticks, 100e6/3)) return EXIT_FAILURE;
     }
     printf("OK\n");
-
 
     printf("DONE!\n");
     return EXIT_SUCCESS;
