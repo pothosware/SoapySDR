@@ -37,12 +37,30 @@ list(APPEND SOAPY_SDR_SOURCES
     DeviceC.cpp
     FactoryC.cpp
     LoggerC.cpp
+    Time.c
 )
 
 #disable MSVC warnings
 if (MSVC)
     add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
 endif ()
+
+########################################################################
+# Soft-float support library
+########################################################################
+set(SOFT_FPU_SOURCE_DIR ${PROJECT_SOURCE_DIR}/fpu)
+include_directories(${SOFT_FPU_SOURCE_DIR})
+
+include(CheckTypeSize)
+CHECK_TYPE_SIZE("long double" SIZE_OF_LONG_DOUBLE BUILTIN_TYPES_ONLY)
+message(STATUS "SIZE_OF_LONG_DOUBLE: ${SIZE_OF_LONG_DOUBLE}")
+
+if (SIZE_OF_LONG_DOUBLE EQUAL 16)
+    list(APPEND SOAPY_SDR_SOURCES ${SOFT_FPU_SOURCE_DIR}/softfloat-native.c)
+else()
+    list(APPEND SOAPY_SDR_SOURCES ${SOFT_FPU_SOURCE_DIR}/softfloat.c)
+    add_definitions(-DCONFIG_SOFTFLOAT)
+endif()
 
 ########################################################################
 # Build the library

@@ -3,7 +3,7 @@
 ########################################################################
 cmake_minimum_required(VERSION 2.8.8)
 project(SoapySDR)
-enable_language(CXX)
+enable_language(CXX C)
 enable_testing()
 
 ########################################################################
