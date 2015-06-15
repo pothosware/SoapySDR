@@ -5,8 +5,8 @@ DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 export DEB_HOST_MULTIARCH
 
 # Set extra build info for the library version
-EXTRA_INFO = snapshot
-#EXTRA_INFO = release
+#EXTRA_INFO = snapshot
+EXTRA_INFO = release
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1

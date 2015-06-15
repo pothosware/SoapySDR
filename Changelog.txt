@@ -1,6 +1,9 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.2.0 (pending)
+Release 0.2.1 (pending)
+==========================
+
+Release 0.2.0 (2015-06-15)
 ==========================
 
 - Support /usr/local module installs when root is /usr
@@ -12,7 +15,7 @@ Release 0.2.0 (pending)
 - Added read stream status Device API call
 - Added additional error codes and status flags
 
-Release 0.1.1 (pending)
+Release 0.1.1 (2015-06-14)
 ==========================
 
 - Fix path issues for listModules() implementation under MSVC
