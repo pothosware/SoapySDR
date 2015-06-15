@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.2.0 (pending)
+Release 0.2.0 (2015-06-15)
 ==========================
 
 - Support /usr/local module installs when root is /usr
