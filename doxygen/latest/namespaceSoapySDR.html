@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.2.0-gb9db8a4b</span>
+   &#160;<span id="projectnumber">0.2.1-gc259c673</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -148,6 +148,10 @@ Functions</h2></td></tr>
 <tr class="separator:a9e1d118d5d1e5b471683eb05e14a1f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d653dc7342deb5332689168ade8e86e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">loadModules</a> (void)</td></tr>
 <tr class="separator:a2d653dc7342deb5332689168ade8e86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38159df503d35fd23521643da952eb86"><td class="memItemLeft" align="right" valign="top">static long long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a38159df503d35fd23521643da952eb86">ticksToTimeNs</a> (const long long ticks, const double rate)</td></tr>
+<tr class="separator:a38159df503d35fd23521643da952eb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6d6987f643cb0605063d6f5d0fe6e5"><td class="memItemLeft" align="right" valign="top">static long long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#add6d6987f643cb0605063d6f5d0fe6e5">timeNsToTicks</a> (const long long timeNs, const double rate)</td></tr>
+<tr class="separator:add6d6987f643cb0605063d6f5d0fe6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75bf4af8d1d795099f1c4229648df4ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a75bf4af8d1d795099f1c4229648df4ae">getAPIVersion</a> (void)</td></tr>
 <tr class="memdesc:a75bf4af8d1d795099f1c4229648df4ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the API version string.  <a href="#a75bf4af8d1d795099f1c4229648df4ae">More...</a><br/></td></tr>
 <tr class="separator:a75bf4af8d1d795099f1c4229648df4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -467,6 +471,92 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a38159df503d35fd23521643da952eb86"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static long long SoapySDR::ticksToTimeNs </td>
+          <td>(</td>
+          <td class="paramtype">const long long&#160;</td>
+          <td class="paramname"><em>ticks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>rate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a tick count into a time in nanoseconds using the tick rate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ticks</td><td>a integer tick count </td></tr>
+    <tr><td class="paramname">rate</td><td>the ticks per second </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the time in nanoseconds </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="add6d6987f643cb0605063d6f5d0fe6e5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static long long SoapySDR::timeNsToTicks </td>
+          <td>(</td>
+          <td class="paramtype">const long long&#160;</td>
+          <td class="paramname"><em>timeNs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>rate</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a time in nanoseconds into a tick count using the tick rate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeNs</td><td>time in nanoseconds </td></tr>
+    <tr><td class="paramname">rate</td><td>the ticks per second </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the integer tick count </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a0b1e9d955ef43207dbc00b74aed83a40"></a>
 <div class="memitem">
 <div class="memproto">
@@ -511,7 +601,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 15 2015 01:01:39 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 15 2015 02:08:23 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

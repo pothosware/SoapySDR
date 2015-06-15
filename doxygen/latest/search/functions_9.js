@@ -25,6 +25,8 @@ var searchData=
   ['soapysdr_5flog',['SoapySDR_log',['../Logger_8h.html#a2fc7bfd354e6625cb3fa2316f13d39c0',1,'Logger.h']]],
   ['soapysdr_5flogf',['SoapySDR_logf',['../Logger_8h.html#a11d7220d73c527ba984f2368bcaf96f7',1,'Logger.h']]],
   ['soapysdr_5fregisterloghandler',['SoapySDR_registerLogHandler',['../Logger_8h.html#ad4ed0ed16e3133ea6150067336bb83a0',1,'Logger.h']]],
+  ['soapysdr_5ftickstotimens',['SoapySDR_ticksToTimeNs',['../Time_8h.html#ad20dedc7c91c8a8ff4b56bde1125822b',1,'Time.h']]],
+  ['soapysdr_5ftimenstoticks',['SoapySDR_timeNsToTicks',['../Time_8h.html#a445ffe39ac4e4677ea20820e97e049ba',1,'Time.h']]],
   ['soapysdr_5fvlogf',['SoapySDR_vlogf',['../Logger_8h.html#a95536e86eb2330c6fede2c54028bd943',1,'Logger.h']]],
   ['soapysdrdevice_5facquirereadbuffer',['SoapySDRDevice_acquireReadBuffer',['../Device_8h.html#ac8c8fe0866e7a387ea61318792bf24fd',1,'Device.h']]],
   ['soapysdrdevice_5facquirewritebuffer',['SoapySDRDevice_acquireWriteBuffer',['../Device_8h.html#ab2f29a55b66c2b75c98545d2b2b79d79',1,'Device.h']]],
