@@ -3,6 +3,8 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.1 (pending)
 ==========================
 
+- Added Time.h/Time.hpp time conversion API calls
+
 Release 0.2.0 (2015-06-15)
 ==========================
 
