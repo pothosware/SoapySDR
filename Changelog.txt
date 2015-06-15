@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.1.1 (pending)
+Release 0.1.1 (2015-06-14)
 ==========================
 
 - Fix path issues for listModules() implementation under MSVC
