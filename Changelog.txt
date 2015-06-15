@@ -12,7 +12,7 @@ Release 0.2.0 (pending)
 - Added read stream status Device API call
 - Added additional error codes and status flags
 
-Release 0.1.1 (pending)
+Release 0.1.1 (2015-06-14)
 ==========================
 
 - Fix path issues for listModules() implementation under MSVC
