@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="./main.css" />
+        <script type="text/javascript" src="./jquery.min.js"></script>
+        <script type="text/javascript" src="./jquery.corner.js"></script>
+        <script type="text/javascript">
+             $(document).ready(function(){
+                $("#banner").corner("20px");
+                $("#page").corner("20px");
+            });
+        </script>
+    </head>
+    <body>
+        <div id="banner" >
+            <img src="./wide_logo_pothosware.png" width='800px' />
+        </div>
+        <div id="page">
+            <div class="tabBody" >
+                <h2>Doxygen generated documentation for the Soapy SDR library</h2>
+                <p>
+                    The following documentation is generated from the Soapy SDR library header files.
+                    We periodically update the latest documentation from the master branch.
+                    The rest of the documentation is generated from versioned release tags.
+                </p>
+                <h3>Latest documentation - master branch</h3>
+                <p>
+                    <ul>
+                        <li><a href="./latest/">Latest</a></li>
+                    </ul>
+                </p>
+                <h3>Release documentation - from git tags</h3>
+                <p>
+                    <ul>
+                        <li><a href="./0.1.1/">v0.1.1</a></li>
+                        <li><a href="./0.1.0/">v0.1.0</a></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

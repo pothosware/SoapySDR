@@ -1,0 +1,166 @@
+*{
+margin:0px;
+padding:0px;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+font-size:11pt;
+color:black;
+background-color:white;
+}
+
+/***********************************************************************
+ * banner
+ **********************************************************************/
+#banner{
+position:relative;
+width:900px;
+padding-top:10px;
+padding-bottom:10px;
+left:0;
+right:0;
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+background:#E0E0E0;
+}
+
+/***********************************************************************
+ * tabs
+ **********************************************************************/
+#tab-container
+{
+padding:20px;
+width:900px;
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+}
+
+.etabs { margin: 0; padding: 0; }
+.tab { display: inline-block; zoom:1; *display:inline; background: #eee; border: solid 1px #999; border-bottom: none; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; }
+.tab a { font-size: 14px; line-height: 2em; display: block; padding: 0 10px; outline: none; }
+.tab a:visited, .tab a:link {color:#236B8E;text-decoration: none; }
+.tab a:hover { text-decoration: underline; color:#4985D6; }
+.tab.active { background: #F8F8F8; padding-top: 6px; position: relative; top: 1px; border-color: #666; }
+.tab a.active { font-weight: bold; color:#236B8E; }
+.tab-container .panel-container { background: #fff; border: solid #666 1px; padding: 10px; -moz-border-radius: 0 4px 4px 4px; -webkit-border-radius: 0 4px 4px 4px; }
+
+.tabBody
+{
+padding:10px;
+}
+
+/***********************************************************************
+ * bottom nav bar
+ **********************************************************************/
+#bottomNav
+{
+padding:20px;
+font-size:10pt;
+color:#787878;
+}
+
+#bottomNav hr
+{
+margin-bottom:20px;
+color:#cccccc;
+}
+
+#bottomNav a
+{
+padding-left:50px;
+padding-right:50px;
+}
+
+#bottomNav a:link, #bottomNav a:visited{
+color:#236B8E;
+background-color:inherit;
+text-decoration:none;
+}
+
+#bottomNav a:hover{
+color:#4985D6;
+background-color:inherit;
+text-decoration:none;
+}
+
+/***********************************************************************
+ * page style
+ **********************************************************************/
+#page
+{
+width:900px;
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+background:#F8F8F8;
+}
+
+/***********************************************************************
+ * tab body
+ **********************************************************************/
+.tabBody h1{
+font-size:140%;
+text-align:center;
+padding-bottom:10px;
+margin:10px;
+color:#444;
+background-color:inherit;
+border-bottom:1px solid #cccccc;
+}
+
+.tabBody h2{
+font-size:120%;
+text-align:left;
+padding:20px 0px 10px 10px;
+color:#444;
+background-color:inherit;
+text-decoration:underline;
+}
+
+.tabBody h3{
+font-size:110%;
+text-align:left;
+padding:15px 0px 5px 10px;
+color:#444;
+background-color:inherit;
+}
+
+.tabBody h4{
+font-size:105%;
+text-align:left;
+padding:5px 0px 3px 0px;
+text-decoration:underline;
+}
+
+.tabBody p{
+font-size:110%;
+text-indent:20px;
+padding:5px 0px 5px 10px;
+text-align:left;
+width:800px;
+}
+
+.tabBody ul
+{
+padding-left:50px;
+}
+
+.tabBody li
+{
+text-align:left;
+}
+
+.tabBody a:link, .tabBody a:visited{
+color:#236B8E;
+background-color:inherit;
+text-decoration:none;
+}
+
+.tabBody a:hover{
+color:#4985D6;
+background-color:inherit;
+text-decoration:none;
+}
