@@ -51,4 +51,4 @@ test_script:
   - SoapySDRUtil --make="driver=null"
 
   # run the unit tests
-  - cmake --build . --config %CONFIGURATION% --target test
+  - ctest
