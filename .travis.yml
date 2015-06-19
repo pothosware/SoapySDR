@@ -50,3 +50,6 @@ script:
   - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
   - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
+  # run unit tests
+  - make test
+
