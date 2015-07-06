@@ -120,6 +120,12 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
             if (not results.empty()) args = results.front();
         }
 
+        //load the enumeration args with missing keys from the make argument
+        for (Kwargs::const_iterator it = args_.begin(); it != args_.end(); ++it)
+        {
+            if (args.count(it->first) == 0) args[it->first] = it->second;
+        }
+
         //loop through make functions and call on module match
         MakeFunctions makeFunctions = Registry::listMakeFunctions();
         for (MakeFunctions::const_iterator it = makeFunctions.begin(); it != makeFunctions.end(); ++it)

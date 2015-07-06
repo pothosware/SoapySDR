@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.1 (pending)
 ==========================
 
+- Fixed Device::make() factory argument forwarding
 - Added Time.h/Time.hpp time conversion API calls
 - Implement SoapySDRConfigVersion.cmake version check
 
