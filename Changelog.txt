@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.2.1 (pending)
+Release 0.2.1 (2015-07-09)
 ==========================
 
 - Fixed Device::make() factory argument forwarding
