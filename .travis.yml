@@ -22,11 +22,6 @@ branches:
   only:
     - master
 
-before_install:
-  # install a newer cmake since at this time Travis only has version 2.8.7
-  - echo "yes" | sudo add-apt-repository ppa:kalakris/cmake
-  - sudo apt-get update -qq
-
 install:
   - sudo apt-get install -qq cmake python-dev python-numpy swig
 
