@@ -1,7 +1,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.7)
 project(SoapySDR)
 enable_language(CXX)
 enable_testing()
@@ -10,7 +10,7 @@ enable_testing()
 # gather version information
 # packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
 ########################################################################
-set(SOAPY_SDR_LIBVER "0.2.1")
+set(SOAPY_SDR_LIBVER "0.2.2")
 
 if (NOT SOAPY_SDR_EXTVER)
     include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
@@ -39,7 +39,7 @@ set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 ########################################################################
 set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
-find_package(SoapySDR CONFIG REQUIRED)
+find_package(SoapySDR NO_MODULE REQUIRED)
 include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 
 ########################################################################

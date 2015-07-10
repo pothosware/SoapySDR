@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 project(SoapySDRPython CXX)
 enable_testing()
 
-find_package(SoapySDR CONFIG REQUIRED)
+find_package(SoapySDR NO_MODULE REQUIRED)
 
 ########################################################################
 # Find SWIG
