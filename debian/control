@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Josh Blum <josh@pothosware.com>
 Build-Depends:
     debhelper (>= 9.0.0),
-    cmake (>= 2.8.8),
+    cmake (>= 2.8.7),
     swig2.0,
     python,
     libpython-dev
