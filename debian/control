@@ -7,7 +7,7 @@ Build-Depends:
     cmake (>= 2.8.7),
     swig2.0,
     python,
-    libpython-dev
+    python-dev
 Standards-Version: 3.9.5
 Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
