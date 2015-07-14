@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.2 (pending)
 ==========================
 
+- Fixed vector<double> in python swig bindings
 - Support CMake 2.8.7 builds (ubuntu 12.04 lts)
 
 Release 0.2.1 (2015-07-09)

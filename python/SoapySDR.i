@@ -45,6 +45,7 @@
 %template(SoapySDRStringList) std::vector<std::string>;
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
 %template(SoapySDRSizeList) std::vector<size_t>;
+%template(SoapySDRDoubleList) std::vector<double>;
 
 %extend std::map<std::string, std::string>
 {
