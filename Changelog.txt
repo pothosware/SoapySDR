@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.2.2 (pending)
+Release 0.2.2 (2015-08-15)
 ==========================
 
 - Fixed vector<double> in python swig bindings
