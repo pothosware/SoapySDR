@@ -97,45 +97,6 @@ add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
 ########################################################################
-# in-tree modules
-########################################################################
-option(GPLOK "GPL support modules ok?" ON)
-
-if (GPLOK)
-    if (NOT WIN32)
-        string(ASCII 27 Esc)
-        set(ColourReset "${Esc}[m")
-        set(ColourBold  "${Esc}[1m")
-        set(Yellow      "${Esc}[33m")
-    endif ()
-    message(STATUS
-"${ColourBold}${Yellow}\n"
-"\n"
-"#############################################\n"
-"## GPL vendor support modules are enabled.\n"
-"## Disable GPL modules with -DGPLOK=FALSE\n"
-"#############################################\n"
-"${ColourReset}")
-
-    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyOsmo/CMakeLists.txt)
-    message(STATUS "")
-    message(STATUS "#############################################")
-    message(STATUS "## Begin configuration for Osmo support...")
-    message(STATUS "#############################################")
-    add_subdirectory(SoapyOsmo)
-    endif()
-
-    if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/SoapyUHD/CMakeLists.txt)
-    message(STATUS "")
-    message(STATUS "#############################################")
-    message(STATUS "## Begin configuration for UHD support...")
-    message(STATUS "#############################################")
-    add_subdirectory(SoapyUHD)
-    endif()
-
-endif ()
-
-########################################################################
 # summary
 ########################################################################
 message(STATUS "")

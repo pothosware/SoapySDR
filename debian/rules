@@ -19,6 +19,5 @@ export DH_OPTIONS
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		-DGPLOK=OFF \
 		-DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)" \
 		-DSOAPY_SDR_EXTVER="$(DEB_VERSION_EXTVER)"
