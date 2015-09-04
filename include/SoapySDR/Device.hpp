@@ -891,9 +891,16 @@ public:
      * Write the value of a GPIO bank.
      * \param bank the name of an available bank
      * \param value an integer representing GPIO bits
+     */
+    virtual void writeGPIO(const std::string &bank, const unsigned value);
+
+    /*!
+     * Write the value of a GPIO bank with modification mask.
+     * \param bank the name of an available bank
+     * \param value an integer representing GPIO bits
      * \param mask a modification mask where 1 = modify
      */
-    virtual void writeGPIO(const std::string &bank, const unsigned value, const unsigned mask = ~0);
+    virtual void writeGPIO(const std::string &bank, const unsigned value, const unsigned mask);
 
     /*!
      * Readback the value of a GPIO bank.
@@ -907,9 +914,17 @@ public:
      * 1 bits represent outputs, 0 bits represent inputs.
      * \param bank the name of an available bank
      * \param dir an integer representing data direction bits
+     */
+    virtual void writeGPIODir(const std::string &bank, const unsigned dir);
+
+    /*!
+     * Write the data direction of a GPIO bank with modification mask.
+     * 1 bits represent outputs, 0 bits represent inputs.
+     * \param bank the name of an available bank
+     * \param dir an integer representing data direction bits
      * \param mask a modification mask where 1 = modify
      */
-    virtual void writeGPIODir(const std::string &bank, const unsigned dir, const unsigned mask = ~0);
+    virtual void writeGPIODir(const std::string &bank, const unsigned dir, const unsigned mask);
 
     /*!
      * Read the data direction of a GPIO bank.

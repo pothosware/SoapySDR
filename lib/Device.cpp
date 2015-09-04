@@ -525,9 +525,17 @@ std::vector<std::string> SoapySDR::Device::listGPIOBanks(void) const
     return std::vector<std::string>();
 }
 
-void SoapySDR::Device::writeGPIO(const std::string &, const unsigned, const unsigned)
+void SoapySDR::Device::writeGPIO(const std::string &, const unsigned)
 {
     return;
+}
+
+void SoapySDR::Device::writeGPIO(const std::string &bank, const unsigned value, const unsigned mask)
+{
+    //read, modify, write
+    unsigned readback = this->readGPIO(bank);
+    unsigned newValue = value | (readback & (~mask));
+    this->writeGPIO(bank, newValue);
 }
 
 unsigned SoapySDR::Device::readGPIO(const std::string &) const
@@ -535,9 +543,17 @@ unsigned SoapySDR::Device::readGPIO(const std::string &) const
     return 0;
 }
 
-void SoapySDR::Device::writeGPIODir(const std::string &, const unsigned, const unsigned)
+void SoapySDR::Device::writeGPIODir(const std::string &, const unsigned)
 {
     return;
+}
+
+void SoapySDR::Device::writeGPIODir(const std::string &bank, const unsigned dir, const unsigned mask)
+{
+    //read, modify, write
+    unsigned readback = this->readGPIODir(bank);
+    unsigned newValue = dir | (readback & (~mask));
+    this->writeGPIODir(bank, newValue);
 }
 
 unsigned SoapySDR::Device::readGPIODir(const std::string &) const
