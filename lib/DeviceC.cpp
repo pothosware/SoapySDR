@@ -542,14 +542,19 @@ char **SoapySDRDevice_listGPIOBanks(const SoapySDRDevice *device, size_t *length
     return toStrArray(device->listGPIOBanks(), length);
 }
 
-void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value)
+void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value, const unsigned mask)
 {
-    return device->writeGPIO(bank, value);
+    return device->writeGPIO(bank, value, mask);
 }
 
 unsigned SoapySDRDevice_readGPIO(const SoapySDRDevice *device, const char *bank)
 {
     return device->readGPIO(bank);
+}
+
+void SoapySDRDevice_writeGPIODir(SoapySDRDevice *device, const char *bank, const unsigned dir, const unsigned mask)
+{
+    return device->writeGPIODir(bank, dir, mask);
 }
 
 /*******************************************************************

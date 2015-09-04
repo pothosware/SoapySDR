@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.2-3"
+#define SOAPY_SDR_ABI_VERSION "0.3-0"
 
 #ifdef __cplusplus
 extern "C" {

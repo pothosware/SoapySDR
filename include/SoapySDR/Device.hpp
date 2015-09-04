@@ -891,8 +891,9 @@ public:
      * Write the value of a GPIO bank.
      * \param bank the name of an available bank
      * \param value an integer representing GPIO bits
+     * \param mask a modification mask where 1 = modify
      */
-    virtual void writeGPIO(const std::string &bank, const unsigned value);
+    virtual void writeGPIO(const std::string &bank, const unsigned value, const unsigned mask = ~0);
 
     /*!
      * Readback the value of a GPIO bank.
@@ -900,6 +901,15 @@ public:
      * \return an integer representing GPIO bits
      */
     virtual unsigned readGPIO(const std::string &bank) const;
+
+    /*!
+     * Write the data direction of a GPIO bank.
+     * 1 bits represent outputs, 0 bits represent inputs.
+     * \param bank the name of an available bank
+     * \param dir an integer representing data direction bits
+     * \param mask a modification mask where 1 = modify
+     */
+    virtual void writeGPIODir(const std::string &bank, const unsigned dir, const unsigned mask = ~0);
 
     /*******************************************************************
      * I2C API

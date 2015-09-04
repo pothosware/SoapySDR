@@ -997,8 +997,9 @@ SOAPY_SDR_API char **SoapySDRDevice_listGPIOBanks(const SoapySDRDevice *device, 
  * \param device a pointer to a device instance
  * \param bank the name of an available bank
  * \param value an integer representing GPIO bits
+ * \param mask a modification mask where 1 = modify
  */
-SOAPY_SDR_API void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value);
+SOAPY_SDR_API void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *bank, const unsigned value, const unsigned mask);
 
 /*!
  * Readback the value of a GPIO bank.
@@ -1007,6 +1008,16 @@ SOAPY_SDR_API void SoapySDRDevice_writeGPIO(SoapySDRDevice *device, const char *
  * \return an integer representing GPIO bits
  */
 SOAPY_SDR_API unsigned SoapySDRDevice_readGPIO(const SoapySDRDevice *device, const char *bank);
+
+/*!
+ * Write the data direction of a GPIO bank.
+ * 1 bits represent outputs, 0 bits represent inputs.
+ * \param device a pointer to a device instance
+ * \param bank the name of an available bank
+ * \param dir an integer representing data direction bits
+ * \param mask a modification mask where 1 = modify
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeGPIODir(SoapySDRDevice *device, const char *bank, const unsigned dir, const unsigned mask);
 
 /*******************************************************************
  * I2C API

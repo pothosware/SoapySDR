@@ -525,7 +525,7 @@ std::vector<std::string> SoapySDR::Device::listGPIOBanks(void) const
     return std::vector<std::string>();
 }
 
-void SoapySDR::Device::writeGPIO(const std::string &, const unsigned)
+void SoapySDR::Device::writeGPIO(const std::string &, const unsigned, const unsigned)
 {
     return;
 }
@@ -533,6 +533,11 @@ void SoapySDR::Device::writeGPIO(const std::string &, const unsigned)
 unsigned SoapySDR::Device::readGPIO(const std::string &) const
 {
     return 0;
+}
+
+void SoapySDR::Device::writeGPIODir(const std::string &, const unsigned, const unsigned)
+{
+    return;
 }
 
 /*******************************************************************
