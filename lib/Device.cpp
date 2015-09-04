@@ -540,6 +540,12 @@ void SoapySDR::Device::writeGPIODir(const std::string &, const unsigned, const u
     return;
 }
 
+unsigned SoapySDR::Device::readGPIODir(const std::string &) const
+{
+    return 0;
+}
+
+
 /*******************************************************************
  * I2C API
  ******************************************************************/

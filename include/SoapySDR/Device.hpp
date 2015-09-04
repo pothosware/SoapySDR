@@ -911,6 +911,14 @@ public:
      */
     virtual void writeGPIODir(const std::string &bank, const unsigned dir, const unsigned mask = ~0);
 
+    /*!
+     * Read the data direction of a GPIO bank.
+     * 1 bits represent outputs, 0 bits represent inputs.
+     * \param bank the name of an available bank
+     * \return an integer representing data direction bits
+     */
+    virtual unsigned readGPIODir(const std::string &bank) const;
+
     /*******************************************************************
      * I2C API
      ******************************************************************/

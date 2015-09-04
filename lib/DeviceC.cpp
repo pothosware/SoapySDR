@@ -557,6 +557,11 @@ void SoapySDRDevice_writeGPIODir(SoapySDRDevice *device, const char *bank, const
     return device->writeGPIODir(bank, dir, mask);
 }
 
+unsigned SoapySDRDevice_readGPIODir(const SoapySDRDevice *device, const char *bank)
+{
+    return device->readGPIODir(bank);
+}
+
 /*******************************************************************
  * I2C API
  ******************************************************************/

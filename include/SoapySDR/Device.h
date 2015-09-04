@@ -1019,6 +1019,15 @@ SOAPY_SDR_API unsigned SoapySDRDevice_readGPIO(const SoapySDRDevice *device, con
  */
 SOAPY_SDR_API void SoapySDRDevice_writeGPIODir(SoapySDRDevice *device, const char *bank, const unsigned dir, const unsigned mask);
 
+/*!
+ * Read the data direction of a GPIO bank.
+ * \param device a pointer to a device instance
+ * 1 bits represent outputs, 0 bits represent inputs.
+ * \param bank the name of an available bank
+ * \return an integer representing data direction bits
+ */
+SOAPY_SDR_API unsigned SoapySDRDevice_readGPIODir(const SoapySDRDevice *device, const char *bank);
+
 /*******************************************************************
  * I2C API
  ******************************************************************/
