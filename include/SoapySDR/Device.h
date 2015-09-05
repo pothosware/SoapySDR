@@ -16,6 +16,7 @@
 #include <SoapySDR/Config.h>
 #include <SoapySDR/Types.h>
 #include <SoapySDR/Constants.h>
+#include <SoapySDR/Errors.h>
 
 #ifdef __cplusplus
 extern "C" {

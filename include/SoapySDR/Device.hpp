@@ -12,6 +12,7 @@
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Constants.h>
+#include <SoapySDR/Errors.h>
 #include <vector>
 #include <string>
 #include <complex>

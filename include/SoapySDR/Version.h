@@ -26,6 +26,11 @@
  */
 #define SOAPY_SDR_API_HAS_CHANNEL_SENSORS
 
+/*!
+ * Compatibility define for error to string function
+ */
+#define SOAPY_SDR_API_HAS_ERR_TO_STR
+
 #ifdef __cplusplus
 extern "C" {
 #endif
