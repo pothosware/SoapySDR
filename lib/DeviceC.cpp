@@ -250,6 +250,11 @@ char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, const int directio
 /*******************************************************************
  * Frontend corrections API
  ******************************************************************/
+bool SoapySDRDevice_hasDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->hasDCOffsetMode(direction, channel);
+}
+
 char *SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
 {
     __SOAPY_SDR_C_TRY
@@ -260,6 +265,11 @@ char *SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const int direction
 bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel)
 {
     return device->getDCOffsetMode(direction, channel);
+}
+
+bool SoapySDRDevice_hasDCOffset(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->hasDCOffset(direction, channel);
 }
 
 char *SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const int direction, const size_t channel, const double offsetI, const double offsetQ)
@@ -274,6 +284,11 @@ void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int directio
     std::complex<double> ret = device->getDCOffset(direction, channel);
     *offsetI = ret.real();
     *offsetQ = ret.imag();
+}
+
+bool SoapySDRDevice_hasIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->hasIQBalance(direction, channel);
 }
 
 char *SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)

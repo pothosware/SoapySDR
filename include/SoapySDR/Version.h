@@ -31,6 +31,11 @@
  */
 #define SOAPY_SDR_API_HAS_ERR_TO_STR
 
+/*!
+ * Compatibility define for corrections support checks
+ */
+#define SOAPY_SDR_API_HAS_CORRECTIONS_QUERY
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -455,6 +455,14 @@ public:
      ******************************************************************/
 
     /*!
+     * Does the device support automatic DC offset corrections?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true if automatic corrections are supported
+     */
+    virtual bool hasDCOffsetMode(const int direction, const size_t channel) const;
+
+    /*!
      * Set the automatic DC offset corrections mode.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
@@ -471,6 +479,14 @@ public:
     virtual bool getDCOffsetMode(const int direction, const size_t channel) const;
 
     /*!
+     * Does the device support frontend DC offset correction?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true if DC offset corrections are supported
+     */
+    virtual bool hasDCOffset(const int direction, const size_t channel) const;
+
+    /*!
      * Set the frontend DC offset correction.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
@@ -485,6 +501,14 @@ public:
      * \return the relative correction (1.0 max)
      */
     virtual std::complex<double> getDCOffset(const int direction, const size_t channel) const;
+
+    /*!
+     * Does the device support frontend IQ balance correction?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true if IQ balance corrections are supported
+     */
+    virtual bool hasIQBalance(const int direction, const size_t channel) const;
 
     /*!
      * Set the frontend IQ balance correction.

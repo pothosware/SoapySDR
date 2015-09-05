@@ -486,6 +486,15 @@ SOAPY_SDR_API char *SoapySDRDevice_getAntenna(const SoapySDRDevice *device, cons
  ******************************************************************/
 
 /*!
+ * Does the device support automatic DC offset corrections?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true if automatic corrections are supported
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
  * Set the automatic DC offset corrections mode.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
@@ -503,6 +512,15 @@ SOAPY_SDR_API char *SoapySDRDevice_setDCOffsetMode(SoapySDRDevice *device, const
  * \return true for automatic offset correction
  */
 SOAPY_SDR_API bool SoapySDRDevice_getDCOffsetMode(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
+ * Does the device support frontend DC offset correction?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true if DC offset corrections are supported
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasDCOffset(const SoapySDRDevice *device, const int direction, const size_t channel);
 
 /*!
  * Set the frontend DC offset correction.
@@ -524,6 +542,15 @@ SOAPY_SDR_API char *SoapySDRDevice_setDCOffset(SoapySDRDevice *device, const int
  * \param [out] offsetQ the relative correction (1.0 max)
  */
 SOAPY_SDR_API void SoapySDRDevice_getDCOffset(const SoapySDRDevice *device, const int direction, const size_t channel, double *offsetI, double *offsetQ);
+
+/*!
+ * Does the device support frontend IQ balance correction?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true if IQ balance corrections are supported
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel);
 
 /*!
  * Set the frontend IQ balance correction.

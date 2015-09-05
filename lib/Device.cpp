@@ -150,12 +150,22 @@ std::string SoapySDR::Device::getAntenna(const int, const size_t) const
  * Frontend corrections API
  ******************************************************************/
 
+bool SoapySDR::Device::hasDCOffsetMode(const int, const size_t) const
+{
+    return false;
+}
+
 void SoapySDR::Device::setDCOffsetMode(const int, const size_t, const bool)
 {
     return;
 }
 
 bool SoapySDR::Device::getDCOffsetMode(const int, const size_t) const
+{
+    return false;
+}
+
+bool SoapySDR::Device::hasDCOffset(const int, const size_t) const
 {
     return false;
 }
@@ -168,6 +178,11 @@ void SoapySDR::Device::setDCOffset(const int, const size_t, const std::complex<d
 std::complex<double> SoapySDR::Device::getDCOffset(const int, const size_t) const
 {
     return std::complex<double>();
+}
+
+bool SoapySDR::Device::hasIQBalance(const int, const size_t) const
+{
+    return false;
 }
 
 void SoapySDR::Device::setIQBalance(const int, const size_t, const std::complex<double> &)
