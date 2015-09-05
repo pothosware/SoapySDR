@@ -920,7 +920,7 @@ SOAPY_SDR_API void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const l
  ******************************************************************/
 
 /*!
- * List the available readback sensors.
+ * List the available global readback sensors.
  * A sensor can represent a reference lock, RSSI, temperature.
  * \param device a pointer to a device instance
  * \param [out] length the number of sensor names
@@ -929,7 +929,7 @@ SOAPY_SDR_API void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const l
 SOAPY_SDR_API char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length);
 
 /*!
- * Readback a sensor given the name.
+ * Readback a global sensor given the name.
  * The value returned is a string which can represent
  * a boolean ("true"/"false"), an integer, or float.
  * \param device a pointer to a device instance
@@ -937,6 +937,29 @@ SOAPY_SDR_API char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, si
  * \return the current value of the sensor
  */
 SOAPY_SDR_API char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name);
+
+/*!
+ * List the available channel readback sensors.
+ * A sensor can represent a reference lock, RSSI, temperature.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of sensor names
+ * \return a list of available sensor string names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Readback a channel sensor given the name.
+ * The value returned is a string which can represent
+ * a boolean ("true"/"false"), an integer, or float.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an available sensor
+ * \return the current value of the sensor
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const char *name, const int direction, const size_t channel);
 
 /*******************************************************************
  * Register API

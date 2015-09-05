@@ -491,6 +491,16 @@ std::string SoapySDR::Device::readSensor(const std::string &) const
     return "";
 }
 
+std::vector<std::string> SoapySDR::Device::listSensors(const int, const size_t) const
+{
+    return std::vector<std::string>();
+}
+
+std::string SoapySDR::Device::readSensor(const std::string &, const int, const size_t) const
+{
+    return "";
+}
+
 /*******************************************************************
  * Register API
  ******************************************************************/

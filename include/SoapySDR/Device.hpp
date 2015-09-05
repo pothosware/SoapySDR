@@ -824,20 +824,40 @@ public:
      ******************************************************************/
 
     /*!
-     * List the available readback sensors.
+     * List the available global readback sensors.
      * A sensor can represent a reference lock, RSSI, temperature.
      * \return a list of available sensor string names
      */
     virtual std::vector<std::string> listSensors(void) const;
 
     /*!
-     * Readback a sensor given the name.
+     * Readback a global sensor given the name.
      * The value returned is a string which can represent
      * a boolean ("true"/"false"), an integer, or float.
      * \param name the name of an available sensor
      * \return the current value of the sensor
      */
     virtual std::string readSensor(const std::string &name) const;
+
+    /*!
+     * List the available channel readback sensors.
+     * A sensor can represent a reference lock, RSSI, temperature.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of available sensor string names
+     */
+    virtual std::vector<std::string> listSensors(const int direction, const size_t channel) const;
+
+    /*!
+     * Readback a channel sensor given the name.
+     * The value returned is a string which can represent
+     * a boolean ("true"/"false"), an integer, or float.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of an available sensor
+     * \return the current value of the sensor
+     */
+    virtual std::string readSensor(const std::string &name, const int direction, const size_t channel) const;
 
     /*******************************************************************
      * Register API

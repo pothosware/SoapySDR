@@ -508,6 +508,16 @@ char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
     return strdup(device->readSensor(name).c_str());
 }
 
+char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toStrArray(device->listSensors(direction, channel), length);
+}
+
+char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const char *name, const int direction, const size_t channel)
+{
+    return strdup(device->readSensor(name, direction, channel).c_str());
+}
+
 /*******************************************************************
  * Register API
  ******************************************************************/

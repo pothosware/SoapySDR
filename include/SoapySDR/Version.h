@@ -16,6 +16,16 @@
  */
 #define SOAPY_SDR_ABI_VERSION "0.3-0"
 
+/*!
+ * Compatibility define for GPIO access API with masks
+ */
+#define SOAPY_SDR_API_HAS_MASKED_GPIO
+
+/*!
+ * Compatibility define for channel sensors access API
+ */
+#define SOAPY_SDR_API_HAS_CHANNEL_SENSORS
+
 #ifdef __cplusplus
 extern "C" {
 #endif
