@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.2.2-g3e858946</span>
+   &#160;<span id="projectnumber">0.2.2-g40d5ce73</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -152,14 +152,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a30247730320855d7a348617e60916770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35774fd45f088b5d9fe6baffe248250c"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a35774fd45f088b5d9fe6baffe248250c">getAntenna</a> (const int direction, const size_t channel) const </td></tr>
 <tr class="separator:a35774fd45f088b5d9fe6baffe248250c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac59df047fc98fbed1799e048af0ae730"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ac59df047fc98fbed1799e048af0ae730">hasDCOffsetMode</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:ac59df047fc98fbed1799e048af0ae730"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7b1b668b7981a57123913a119b691b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ae7b1b668b7981a57123913a119b691b8">setDCOffsetMode</a> (const int direction, const size_t channel, const bool automatic)</td></tr>
 <tr class="separator:ae7b1b668b7981a57123913a119b691b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ade1eab73eb759bf08294d8c21cb63"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a23ade1eab73eb759bf08294d8c21cb63">getDCOffsetMode</a> (const int direction, const size_t channel) const </td></tr>
 <tr class="separator:a23ade1eab73eb759bf08294d8c21cb63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7010c831f72cb26898ff8abd83057ceb"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a7010c831f72cb26898ff8abd83057ceb">hasDCOffset</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:a7010c831f72cb26898ff8abd83057ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a328629168c2ab9b79aee0990e2afa5ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a328629168c2ab9b79aee0990e2afa5ef">setDCOffset</a> (const int direction, const size_t channel, const std::complex&lt; double &gt; &amp;offset)</td></tr>
 <tr class="separator:a328629168c2ab9b79aee0990e2afa5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace40c41708168e72af8b9bbd836efe96"><td class="memItemLeft" align="right" valign="top">virtual std::complex&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ace40c41708168e72af8b9bbd836efe96">getDCOffset</a> (const int direction, const size_t channel) const </td></tr>
 <tr class="separator:ace40c41708168e72af8b9bbd836efe96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd491ac255fb9cc746ae4d883a551f68"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#acd491ac255fb9cc746ae4d883a551f68">hasIQBalance</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:acd491ac255fb9cc746ae4d883a551f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c9b4b54793c6e372a047c69be45de01"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a3c9b4b54793c6e372a047c69be45de01">setIQBalance</a> (const int direction, const size_t channel, const std::complex&lt; double &gt; &amp;balance)</td></tr>
 <tr class="separator:a3c9b4b54793c6e372a047c69be45de01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12a177db320d18560ae188e9841ca792"><td class="memItemLeft" align="right" valign="top">virtual std::complex&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a12a177db320d18560ae188e9841ca792">getIQBalance</a> (const int direction, const size_t channel) const </td></tr>
@@ -236,6 +242,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adc497f47850bd73c44ef024247cfc4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4921e6aa61671ef88b8cecf8e6406e1"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ae4921e6aa61671ef88b8cecf8e6406e1">readSensor</a> (const std::string &amp;name) const </td></tr>
 <tr class="separator:ae4921e6aa61671ef88b8cecf8e6406e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba5f44738213a6d1e82a9ce4c34ed67"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a9ba5f44738213a6d1e82a9ce4c34ed67">listSensors</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:a9ba5f44738213a6d1e82a9ce4c34ed67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f489af497c819b62a7f07aa2c38e8d1"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a6f489af497c819b62a7f07aa2c38e8d1">readSensor</a> (const int direction, const size_t channel, const std::string &amp;name) const </td></tr>
+<tr class="separator:a6f489af497c819b62a7f07aa2c38e8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e2197da76406a7ca40cac44b52ec836"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a6e2197da76406a7ca40cac44b52ec836">writeRegister</a> (const unsigned addr, const unsigned value)</td></tr>
 <tr class="separator:a6e2197da76406a7ca40cac44b52ec836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc2efbb1c1b248a17320eb1e538112e8"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8">readRegister</a> (const unsigned addr) const </td></tr>
@@ -248,8 +258,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0a4f0485d8ae3ece1bf6147d36463e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab71d1b3880f6614fb61a65286903f8d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ab71d1b3880f6614fb61a65286903f8d2">writeGPIO</a> (const std::string &amp;bank, const unsigned value)</td></tr>
 <tr class="separator:ab71d1b3880f6614fb61a65286903f8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f078f99601998ca2cfd0a67e735c07e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a3f078f99601998ca2cfd0a67e735c07e">writeGPIO</a> (const std::string &amp;bank, const unsigned value, const unsigned mask)</td></tr>
+<tr class="separator:a3f078f99601998ca2cfd0a67e735c07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af51c8e17cfc44127908c0491252fe03d"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#af51c8e17cfc44127908c0491252fe03d">readGPIO</a> (const std::string &amp;bank) const </td></tr>
 <tr class="separator:af51c8e17cfc44127908c0491252fe03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a57cee1261f01c83f5bf2743b6a0a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a67a57cee1261f01c83f5bf2743b6a0a9">writeGPIODir</a> (const std::string &amp;bank, const unsigned dir)</td></tr>
+<tr class="separator:a67a57cee1261f01c83f5bf2743b6a0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a539ba1b5bc8f5529d001126b43a143b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a539ba1b5bc8f5529d001126b43a143b6">writeGPIODir</a> (const std::string &amp;bank, const unsigned dir, const unsigned mask)</td></tr>
+<tr class="separator:a539ba1b5bc8f5529d001126b43a143b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2319d307a894e4b70519cddd5c1f5cd1"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a2319d307a894e4b70519cddd5c1f5cd1">readGPIODir</a> (const std::string &amp;bank) const </td></tr>
+<tr class="separator:a2319d307a894e4b70519cddd5c1f5cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1786a7332836269c068a318384512c59"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a1786a7332836269c068a318384512c59">writeI2C</a> (const int addr, const std::string &amp;data)</td></tr>
 <tr class="separator:a1786a7332836269c068a318384512c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7785d5af0567d413676252d4990df7f"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#aa7785d5af0567d413676252d4990df7f">readI2C</a> (const int addr, const size_t numBytes)</td></tr>
@@ -1721,6 +1739,92 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7010c831f72cb26898ff8abd83057ceb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool SoapySDR::Device::hasDCOffset </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Does the device support frontend DC offset correction? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if DC offset corrections are supported </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac59df047fc98fbed1799e048af0ae730"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool SoapySDR::Device::hasDCOffsetMode </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Does the device support automatic DC offset corrections? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if automatic corrections are supported </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a77669546f4d519b589e1ba75ade18a24"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1750,6 +1854,49 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the hardware clock exists </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="acd491ac255fb9cc746ae4d883a551f68"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool SoapySDR::Device::hasIQBalance </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Does the device support frontend IQ balance correction? </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if IQ balance corrections are supported </dd></dl>
 
 </div>
 </div>
@@ -2040,7 +2187,50 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>List the available readback sensors. A sensor can represent a reference lock, RSSI, temperature. </p>
+<p>List the available global readback sensors. A sensor can represent a reference lock, RSSI, temperature. </p>
+<dl class="section return"><dt>Returns</dt><dd>a list of available sensor string names </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9ba5f44738213a6d1e82a9ce4c34ed67"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt;std::string&gt; SoapySDR::Device::listSensors </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>List the available channel readback sensors. A sensor can represent a reference lock, RSSI, temperature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>a list of available sensor string names </dd></dl>
 
 </div>
@@ -2195,6 +2385,38 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2319d307a894e4b70519cddd5c1f5cd1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual unsigned SoapySDR::Device::readGPIODir </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bank</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read the data direction of a GPIO bank. 1 bits represent outputs, 0 bits represent inputs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank</td><td>the name of an available bank </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an integer representing data direction bits </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="aa7785d5af0567d413676252d4990df7f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2291,9 +2513,59 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Readback a sensor given the name. The value returned is a string which can represent a boolean ("true"/"false"), an integer, or float. </p>
+<p>Readback a global sensor given the name. The value returned is a string which can represent a boolean ("true"/"false"), an integer, or float. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">name</td><td>the name of an available sensor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of the sensor </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6f489af497c819b62a7f07aa2c38e8d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string SoapySDR::Device::readSensor </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Readback a channel sensor given the name. The value returned is a string which can represent a boolean ("true"/"false"), an integer, or float. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
     <tr><td class="paramname">name</td><td>the name of an available sensor </td></tr>
   </table>
   </dd>
@@ -3630,6 +3902,146 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3f078f99601998ca2cfd0a67e735c07e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::writeGPIO </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write the value of a GPIO bank with modification mask. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank</td><td>the name of an available bank </td></tr>
+    <tr><td class="paramname">value</td><td>an integer representing GPIO bits </td></tr>
+    <tr><td class="paramname">mask</td><td>a modification mask where 1 = modify </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a67a57cee1261f01c83f5bf2743b6a0a9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::writeGPIODir </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>dir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write the data direction of a GPIO bank. 1 bits represent outputs, 0 bits represent inputs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank</td><td>the name of an available bank </td></tr>
+    <tr><td class="paramname">dir</td><td>an integer representing data direction bits </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a539ba1b5bc8f5529d001126b43a143b6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SoapySDR::Device::writeGPIODir </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write the data direction of a GPIO bank with modification mask. 1 bits represent outputs, 0 bits represent inputs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bank</td><td>the name of an available bank </td></tr>
+    <tr><td class="paramname">dir</td><td>an integer representing data direction bits </td></tr>
+    <tr><td class="paramname">mask</td><td>a modification mask where 1 = modify </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a1786a7332836269c068a318384512c59"></a>
 <div class="memitem">
 <div class="memproto">
@@ -3875,7 +4287,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 26 2015 16:50:15 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 4 2015 23:17:43 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

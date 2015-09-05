@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>SoapySDR: Registry.hpp File Reference</title>
+<title>SoapySDR: Errors.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -67,6 +67,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -81,56 +82,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">Registry.hpp File Reference</div>  </div>
+<div class="title">Errors.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="Config_8hpp_source.html">SoapySDR/Config.hpp</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="Version_8hpp_source.html">SoapySDR/Version.hpp</a>&gt;</code><br/>
-<code>#include &lt;<a class="el" href="Types_8hpp_source.html">SoapySDR/Types.hpp</a>&gt;</code><br/>
-<code>#include &lt;vector&gt;</code><br/>
-<code>#include &lt;string&gt;</code><br/>
-<code>#include &lt;map&gt;</code><br/>
-</div>
-<p><a href="Registry_8hpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Registry.html">SoapySDR::Registry</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespaceSoapySDR"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html">SoapySDR</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ade8a97c12a17d62ff58bf472b9941346"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; Kwargs &gt;(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">SoapySDR::FindFunction</a> )(const Kwargs &amp;)</td></tr>
-<tr class="memdesc:ade8a97c12a17d62ff58bf472b9941346"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a device enumeration function  <a href="#ade8a97c12a17d62ff58bf472b9941346">More...</a><br/></td></tr>
-<tr class="separator:ade8a97c12a17d62ff58bf472b9941346"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af73e5e46a1d87b30593e137296e96b8d"><td class="memItemLeft" align="right" valign="top">typedef Device *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">SoapySDR::MakeFunction</a> )(const Kwargs &amp;)</td></tr>
-<tr class="memdesc:af73e5e46a1d87b30593e137296e96b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a device factory function  <a href="#af73e5e46a1d87b30593e137296e96b8d">More...</a><br/></td></tr>
-<tr class="separator:af73e5e46a1d87b30593e137296e96b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a911d459c60a5a20ff9f517f2739db50b"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <br class="typebreak"/>
-FindFunction &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">SoapySDR::FindFunctions</a></td></tr>
-<tr class="memdesc:a911d459c60a5a20ff9f517f2739db50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a dictionary of find functions  <a href="#a911d459c60a5a20ff9f517f2739db50b">More...</a><br/></td></tr>
-<tr class="separator:a911d459c60a5a20ff9f517f2739db50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19c1c1658c32d55d3faac7d7b1584626"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <br class="typebreak"/>
-MakeFunction &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a19c1c1658c32d55d3faac7d7b1584626">SoapySDR::MakeFunctions</a></td></tr>
-<tr class="memdesc:a19c1c1658c32d55d3faac7d7b1584626"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a dictionary of make functions  <a href="#a19c1c1658c32d55d3faac7d7b1584626">More...</a><br/></td></tr>
-<tr class="separator:a19c1c1658c32d55d3faac7d7b1584626"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Device factory registration API.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2014 Josh Blum SPDX-License-Identifier: BSL-1.0 </dd></dl>
-</div></div><!-- contents -->
+<a href="Errors_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="Config_8h.html">SoapySDR/Config.h</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Errors_8h.html">SoapySDR/Errors.h</a>&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>SoapySDR</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="namespaceSoapySDR.html#ad971bbe81839e05dd5f08e9782667a3b">errToStr</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> errorCode);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="ttc" id="Errors_8h_html"><div class="ttname"><a href="Errors_8h.html">Errors.h</a></div></div>
+<div class="ttc" id="Config_8h_html"><div class="ttname"><a href="Config_8h.html">Config.h</a></div></div>
+<div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_ad971bbe81839e05dd5f08e9782667a3b"><div class="ttname"><a href="namespaceSoapySDR.html#ad971bbe81839e05dd5f08e9782667a3b">SoapySDR::errToStr</a></div><div class="ttdeci">SOAPY_SDR_API const char * errToStr(const int errorCode)</div></div>
+</div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated on Fri Sep 4 2015 23:17:42 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">

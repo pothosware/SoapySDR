@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.2.2-g3e858946</span>
+   &#160;<span id="projectnumber">0.2.2-g40d5ce73</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -130,6 +130,8 @@ std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad971bbe81839e05dd5f08e9782667a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ad971bbe81839e05dd5f08e9782667a3b">errToStr</a> (const int errorCode)</td></tr>
+<tr class="separator:ad971bbe81839e05dd5f08e9782667a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc85246abb7c67379bf2824ba144aa0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#acc85246abb7c67379bf2824ba144aa0d">log</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">LogLevel</a> logLevel, const std::string &amp;message)</td></tr>
 <tr class="separator:acc85246abb7c67379bf2824ba144aa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b1e9d955ef43207dbc00b74aed83a40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a0b1e9d955ef43207dbc00b74aed83a40">vlogf</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a> logLevel, const char *format, va_list argList)</td></tr>
@@ -268,6 +270,30 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ad971bbe81839e05dd5f08e9782667a3b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> const char* SoapySDR::errToStr </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>errorCode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert a error code to a string for printing purposes. If the error code is unrecognized, errToStr returns "UNKNOWN". </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">errorCode</td><td>a negative integer return code </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to a string representing the error </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a6807cd72d68f421d16824f05928cc0c0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -601,7 +627,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Aug 26 2015 16:50:15 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 4 2015 23:17:42 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
