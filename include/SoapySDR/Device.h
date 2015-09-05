@@ -987,7 +987,7 @@ SOAPY_SDR_API char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *dev
  * \param name the name of an available sensor
  * \return the current value of the sensor
  */
-SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const char *name, const int direction, const size_t channel);
+SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
 
 /*******************************************************************
  * Register API

@@ -511,7 +511,7 @@ std::vector<std::string> SoapySDR::Device::listSensors(const int, const size_t) 
     return std::vector<std::string>();
 }
 
-std::string SoapySDR::Device::readSensor(const std::string &, const int, const size_t) const
+std::string SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const
 {
     return "";
 }

@@ -882,7 +882,7 @@ public:
      * \param name the name of an available sensor
      * \return the current value of the sensor
      */
-    virtual std::string readSensor(const std::string &name, const int direction, const size_t channel) const;
+    virtual std::string readSensor(const int direction, const size_t channel, const std::string &name) const;
 
     /*******************************************************************
      * Register API
