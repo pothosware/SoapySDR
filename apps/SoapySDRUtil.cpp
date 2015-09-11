@@ -105,7 +105,7 @@ static void makeDevices(void)
 }
 
 /***********************************************************************
- * Print help message
+ * main utility entry point
  **********************************************************************/
 int main(int argc, char *argv[])
 {
