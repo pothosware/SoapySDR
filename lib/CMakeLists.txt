@@ -15,6 +15,12 @@ list(APPEND SOAPY_SDR_LIBRARIES
     ${CMAKE_DL_LIBS}
 )
 
+#support threaded client code
+#notice that -pthread is not the same as -lpthread
+if(CMAKE_COMPILER_IS_GNUCXX)
+    list(APPEND SOAPY_SDR_LIBRARIES -pthread)
+endif()
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp)
