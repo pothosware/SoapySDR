@@ -598,7 +598,7 @@ SOAPY_SDR_API char **SoapySDRDevice_listGains(const SoapySDRDevice *device, cons
  */
 SOAPY_SDR_API char *SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic);
 
- /*!
+/*!
  * Get the automatic gain mode on the chain.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX

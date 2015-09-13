@@ -547,7 +547,7 @@ public:
      */
     virtual void setGainMode(const int direction, const size_t channel, const bool automatic);
 
-     /*!
+    /*!
      * Get the automatic gain mode on the chain.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
