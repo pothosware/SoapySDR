@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -10,10 +10,12 @@
 #include <iostream>
 #include <getopt.h>
 
+std::string SoapySDRDeviceProbe(SoapySDR::Device *);
+
 /***********************************************************************
  * Print help message
  **********************************************************************/
-static void printHelp(void)
+static int printHelp(void)
 {
     std::cout << "Usage SoapySDRUtil [options]" << std::endl;
     std::cout << "  Options summary:" << std::endl;
@@ -21,13 +23,15 @@ static void printHelp(void)
     std::cout << "    --info \t\t\t\t Print module information" << std::endl;
     std::cout << "    --find[=\"driver=foo,type=bar\"] \t Discover available devices" << std::endl;
     std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
+    std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
     std::cout << std::endl;
+    return EXIT_SUCCESS;
 }
 
 /***********************************************************************
  * Print version and module info
  **********************************************************************/
-static void printInfo(void)
+static int printInfo(void)
 {
     std::cout << "API Version: v" << SoapySDR::getAPIVersion() << std::endl;
     std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
@@ -52,12 +56,13 @@ static void printInfo(void)
     }
     if (factories.empty()) std::cout << "No factories found!" << std::endl;
     std::cout << std::endl;
+    return EXIT_SUCCESS;
 }
 
 /***********************************************************************
  * Find devices and print args
  **********************************************************************/
-static void findDevices(void)
+static int findDevices(void)
 {
     std::string argStr;
     if (optarg != NULL) argStr = optarg;
@@ -72,14 +77,19 @@ static void findDevices(void)
         }
         std::cout << std::endl;
     }
-    if (results.empty()) std::cout << "No devices found!" << std::endl;
+    if (results.empty())
+    {
+        std::cerr << "No devices found!" << std::endl;
+        return EXIT_FAILURE;
+    }
     std::cout << std::endl;
+    return EXIT_SUCCESS;
 }
 
 /***********************************************************************
- * Make devices and print
+ * Make device and print hardware info
  **********************************************************************/
-static void makeDevices(void)
+static int makeDevice(void)
 {
     std::string argStr;
     if (optarg != NULL) argStr = optarg;
@@ -100,8 +110,35 @@ static void makeDevices(void)
     catch (const std::exception &ex)
     {
         std::cerr << "Error making device: " << ex.what() << std::endl;
+        return EXIT_FAILURE;
     }
     std::cout << std::endl;
+    return EXIT_SUCCESS;
+}
+
+
+/***********************************************************************
+ * Make device and print detailed info
+ **********************************************************************/
+static int probeDevice(void)
+{
+    std::string argStr;
+    if (optarg != NULL) argStr = optarg;
+
+    std::cout << "Probe device " << argStr << std::endl;
+    try
+    {
+        SoapySDR::Device *device = SoapySDR::Device::make(argStr);
+        std::cout << SoapySDRDeviceProbe(device) << std::endl;
+        SoapySDR::Device::unmake(device);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Error probing device: " << ex.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << std::endl;
+    return EXIT_SUCCESS;
 }
 
 /***********************************************************************
@@ -122,6 +159,7 @@ int main(int argc, char *argv[])
         {"find", optional_argument, 0, 'f'},
         {"make", optional_argument, 0, 'm'},
         {"info", optional_argument, 0, 'i'},
+        {"probe", optional_argument, 0, 'p'},
         {0, 0, 0,  0}
     };
     int long_index = 0;
@@ -130,14 +168,14 @@ int main(int argc, char *argv[])
     {
         switch (option)
         {
-        case 'h': printHelp(); return EXIT_SUCCESS;
-        case 'i': printInfo(); return EXIT_SUCCESS;
-        case 'f': findDevices(); return EXIT_SUCCESS;
-        case 'm': makeDevices(); return EXIT_SUCCESS;
+        case 'h': return printHelp();
+        case 'i': return printInfo();
+        case 'f': return findDevices();
+        case 'm': return makeDevice();
+        case 'p': return probeDevice();
         }
     }
 
     //unknown or unspecified options, do help...
-    printHelp();
-    return EXIT_SUCCESS;
+    return printHelp();
 }

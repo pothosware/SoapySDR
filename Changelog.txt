@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.3 (pending)
 ==========================
 
+- Util --probe option for detailed info summary
 - Added corrections API to check for availability
 - Added API to convert error codes to string
 - Added per-channel API to query readback sensors
