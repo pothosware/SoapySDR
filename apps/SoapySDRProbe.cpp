@@ -99,7 +99,8 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "  Sample rates: " << toString(device->listSampleRates(dir, chan), 1e6) << " MHz" << std::endl;
 
     //bandwidths
-    ss << "  Filter bandwidths: " << toString(device->listBandwidths(dir, chan), 1e6) << " MHz" << std::endl;
+    const std::vector<double> bws = device->listBandwidths(dir, chan);
+    if (not bws.empty()) ss << "  Filter bandwidths: " << toString(bws, 1e6) << " MHz" << std::endl;
 
     //sensors
     std::string sensors = toString(device->listSensors(dir, chan));
