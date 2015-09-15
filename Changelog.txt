@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.2.3 (pending)
 ==========================
 
+- Link with -flat_namespace for OSX application bundle
 - GCC link with -pthread for threaded client support
 
 Release 0.2.2 (2015-08-15)
