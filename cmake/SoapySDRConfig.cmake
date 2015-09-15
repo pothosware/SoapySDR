@@ -68,6 +68,12 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
 endif()
 
+if(APPLE)
+    #fixes issue with duplicate module registry when using application bundle
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flat_namespace")
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -flat_namespace")
+endif()
+
 if(MSVC)
     add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
 
