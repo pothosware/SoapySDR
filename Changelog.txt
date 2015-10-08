@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.3 (pending)
+Release 0.3.0 (pending)
 ==========================
 
 - Util --probe option for detailed info summary
@@ -10,9 +10,10 @@ Release 0.3 (pending)
 - Added GPIO API data direction modification mask
 - Removed SoapyUHD and SoapyOsmo submodules
 
-Release 0.2.3 (pending)
+Release 0.2.3 (2015-10-08)
 ==========================
 
+- Append to linker flags to avoid overwriting them
 - Link with -flat_namespace for OSX application bundle
 - GCC link with -pthread for threaded client support
 
