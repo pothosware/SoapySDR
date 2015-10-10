@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.3.0 (pending)
+Release 0.3.0 (2015-10-10)
 ==========================
 
 - Util --probe option for detailed info summary
