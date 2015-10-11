@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.3.1 (pending)
 ==========================
 
+- Fixed missing python bindings for Errors.hpp
 - Added -DSOAPY_SDR_ROOT=<path> option to build
 
 Release 0.3.0 (2015-10-10)

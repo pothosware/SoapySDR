@@ -43,6 +43,9 @@ script:
 
   # basic test for python bindings
   - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+  - python -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
+  - python -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - python -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
   - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
   # run unit tests
