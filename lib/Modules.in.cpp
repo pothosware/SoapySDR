@@ -39,7 +39,7 @@ std::string SoapySDR::getRootPath(void)
 {
     const std::string rootPathEnv = getEnvImpl("SOAPY_SDR_ROOT");
     if (not rootPathEnv.empty()) return rootPathEnv;
-    return "@CMAKE_INSTALL_PREFIX@";
+    return "@SOAPY_SDR_ROOT@";
 }
 
 /***********************************************************************

@@ -10,7 +10,7 @@ enable_testing()
 # gather version information
 # packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
 ########################################################################
-set(SOAPY_SDR_LIBVER "0.3.0")
+set(SOAPY_SDR_LIBVER "0.3.1")
 
 if (NOT SOAPY_SDR_EXTVER)
     include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
@@ -24,6 +24,13 @@ if (NOT SOAPY_SDR_EXTVER)
 endif()
 
 set(SOAPY_SDR_VERSION "${SOAPY_SDR_LIBVER}-${SOAPY_SDR_EXTVER}")
+
+#SOAPY_SDR_ROOT is compiled into the library to locate the install base.
+#By default, the SOAPY_SDR_ROOT is set to the CMAKE_INSTALL_PREFIX.
+#However users may overload this by specifying -DSOAPY_SDR_ROOT=<path>.
+if(NOT SOAPY_SDR_ROOT)
+    file(TO_CMAKE_PATH ${CMAKE_INSTALL_PREFIX} SOAPY_SDR_ROOT)
+endif(NOT SOAPY_SDR_ROOT)
 
 ########################################################################
 # select the release build type by default to get optimization flags
