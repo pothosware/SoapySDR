@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.3.1 (pending)
+Release 0.3.1 (2015-10-11)
 ==========================
 
 - Fixed missing python bindings for Errors.hpp
