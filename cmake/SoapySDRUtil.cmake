@@ -34,6 +34,8 @@ function(SOAPY_SDR_MODULE_UTIL)
 
     #determine user-specified or automatic install prefix
     if (MODULE_PREFIX)
+    elseif (SOAPY_SDR_IN_TREE_SOURCE_DIR)
+        set(MODULE_PREFIX ${CMAKE_INSTALL_PREFIX})
     elseif ("${SOAPY_SDR_ROOT}" STREQUAL "/usr")
         set(MODULE_PREFIX ${CMAKE_INSTALL_PREFIX})
     else()

@@ -84,7 +84,9 @@ endif()
 # In-tree settings
 ########################################################################
 if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
-    set(SOAPY_SDR_ROOT ${CMAKE_INSTALL_PREFIX})
+    if(NOT SOAPY_SDR_ROOT)
+        set(SOAPY_SDR_ROOT ${CMAKE_INSTALL_PREFIX})
+    endif(NOT SOAPY_SDR_ROOT)
     set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_IN_TREE_SOURCE_DIR}/include)
     set(SoapySDR_LIBRARIES SoapySDR)
     return()
