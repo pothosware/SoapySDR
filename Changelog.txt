@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.3.2 (pending)
+==========================
+
+- Set library SOVERSION using SOAPY_SDR_ABI_VERSION
+
 Release 0.3.1 (2015-10-11)
 ==========================
 
