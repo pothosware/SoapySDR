@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -30,6 +30,63 @@ typedef struct
     char **keys;
     char **vals;
 } SoapySDRKwargs;
+
+typedef enum
+{
+    SOAPY_SDR_ARG_INFO_BOOL,
+    SOAPY_SDR_ARG_INFO_INT,
+    SOAPY_SDR_ARG_INFO_FLOAT,
+    SOAPY_SDR_ARG_INFO_STRING
+} SoapySDRArgInfoType;
+
+//! Definition for argument info
+typedef struct
+{
+    //! The key used to identify the argument (required)
+    char *key;
+
+    /*!
+     * The default value of the argument when not specified (required)
+     * Numbers should use standard floating point and integer formats.
+     * Boolean values should be represented as "true" and  "false".
+     */
+    char *value;
+
+    //! The displayable name of the argument (optional, use key if empty)
+    char *name;
+
+    //! A brief description about the argument (optional)
+    char *description;
+
+    //! The units of the argument: dB, Hz, etc (optional)
+    char *units;
+
+    //! The data type of the argument (required)
+    SoapySDRArgInfoType type;
+
+    /*!
+     * The range of possible numeric values (optional)
+     * When specified, the argument should be restricted to this range.
+     * The range is only applicable to numeric argument types.
+     */
+    SoapySDRRange range;
+
+    //! The size of the options set, or 0 when not used.
+    size_t numOptions;
+
+    /*!
+     * A discrete list of possible values (optional)
+     * When specified, the argument should be restricted to this options set.
+     */
+    char **options;
+
+    /*!
+     * A discrete list of displayable names for the enumerated options (optional)
+     * When not specified, the option value itself can be used as a display name.
+     */
+    char **optionNames;
+
+} SoapySDRArgInfo;
 
 /*!
  * Clear the contents of a list of string

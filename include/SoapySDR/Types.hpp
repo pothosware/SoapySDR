@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -50,6 +50,63 @@ private:
  * Overall maximum: rl.back().maximum();
  */
 typedef std::vector<Range> RangeList;
+
+/*!
+ * Argument info describes a key/value argument.
+ */
+class SOAPY_SDR_API ArgInfo
+{
+public:
+
+    //! Default constructor
+    ArgInfo(void);
+
+    //! The key used to identify the argument (required)
+    std::string key;
+
+    /*!
+     * The default value of the argument when not specified (required)
+     * Numbers should use standard floating point and integer formats.
+     * Boolean values should be represented as "true" and  "false".
+     */
+    std::string value;
+
+    //! The displayable name of the argument (optional, use key if empty)
+    std::string name;
+
+    //! A brief description about the argument (optional)
+    std::string description;
+
+    //! The units of the argument: dB, Hz, etc (optional)
+    std::string units;
+
+    //! The data type of the argument (required)
+    enum Type {BOOL, INT, FLOAT, STRING} type;
+
+    /*!
+     * The range of possible numeric values (optional)
+     * When specified, the argument should be restricted to this range.
+     * The range is only applicable to numeric argument types.
+     */
+    Range range;
+
+    /*!
+     * A discrete list of possible values (optional)
+     * When specified, the argument should be restricted to this options set.
+     */
+    std::vector<std::string> options;
+
+    /*!
+     * A discrete list of displayable names for the enumerated options (optional)
+     * When not specified, the option value itself can be used as a display name.
+     */
+    std::vector<std::string> optionNames;
+};
+
+/*!
+ * Typedef for a list of Argument infos.
+ */
+typedef std::vector<ArgInfo> ArgInfoList;
 
 }
 
