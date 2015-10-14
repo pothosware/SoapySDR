@@ -31,6 +31,7 @@ typedef struct
     char **vals;
 } SoapySDRKwargs;
 
+//! Possible data types for argument info
 typedef enum
 {
     SOAPY_SDR_ARG_INFO_BOOL,
@@ -110,6 +111,12 @@ SOAPY_SDR_API const char *SoapySDRKwargs_get(SoapySDRKwargs *args, const char *k
  * This frees all the underlying memory and clears the members.
  */
 SOAPY_SDR_API void SoapySDRKwargs_clear(SoapySDRKwargs *args);
+
+/*!
+ * Clear the contents of a argument info structure.
+ * This frees all the underlying memory and clears the members.
+ */
+SOAPY_SDR_API void SoapySDRArgInfo_clear(SoapySDRArgInfo *info);
 
 #ifdef __cplusplus
 }

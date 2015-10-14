@@ -79,6 +79,32 @@ SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
     return out;
 }
 
+static SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
+{
+    SoapySDRArgInfo out;
+    out.key = strdup(info.key.c_str());
+    out.name = strdup(info.name.c_str());
+    out.description = strdup(info.description.c_str());
+    out.units = strdup(info.units.c_str());
+    out.type = SoapySDRArgInfoType(info.type);
+    out.range = toRange(info.range);
+    out.options = toStrArray(info.options, &out.numOptions);
+    out.optionNames = toStrArray(info.optionNames, &out.numOptions);
+
+    return out;
+}
+
+static SoapySDRArgInfo *toArgInfoList(const SoapySDR::ArgInfoList &infos, size_t *length)
+{
+    SoapySDRArgInfo *out = (SoapySDRArgInfo *)calloc(infos.size(), sizeof(SoapySDRArgInfo));
+    for (size_t i = 0; i < infos.size(); i++)
+    {
+        out[i] = toArgInfo(infos[i]);
+    }
+    *length = infos.size();
+    return out;
+}
+
 extern "C" {
 
 /*******************************************************************

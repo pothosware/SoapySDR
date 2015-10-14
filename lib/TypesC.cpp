@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Types.h>
@@ -54,6 +54,30 @@ void SoapySDRKwargs_clear(SoapySDRKwargs *args)
     SoapySDRStrings_clear(&args->keys, args->size);
     SoapySDRStrings_clear(&args->vals, args->size);
     args->size = 0;
+}
+
+void SoapySDRArgInfo_clear(SoapySDRArgInfo *info)
+{
+    //clear strings
+    free(info->key);
+    info->key = NULL;
+
+    free(info->value);
+    info->value = NULL;
+
+    free(info->name);
+    info->name = NULL;
+
+    free(info->description);
+    info->description = NULL;
+
+    free(info->units);
+    info->units = NULL;
+
+    //clear options
+    SoapySDRStrings_clear(&info->options, info->numOptions);
+    SoapySDRStrings_clear(&info->optionNames, info->numOptions);
+    info->numOptions = 0;
 }
 
 }
