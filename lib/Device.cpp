@@ -440,6 +440,11 @@ double SoapySDR::Device::getMasterClockRate(void) const
     return 0.0;
 }
 
+SoapySDR::RangeList SoapySDR::Device::getMasterClockRates(void) const
+{
+    return SoapySDR::RangeList();
+}
+
 std::vector<std::string> SoapySDR::Device::listClockSources(void) const
 {
     return std::vector<std::string>();

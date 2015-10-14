@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.3-0"
+#define SOAPY_SDR_ABI_VERSION "0.4-0"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -35,6 +35,11 @@
  * Compatibility define for corrections support checks
  */
 #define SOAPY_SDR_API_HAS_CORRECTIONS_QUERY
+
+/*!
+ * Compatibility define for clock rates query API
+ */
+#define SOAPY_SDR_API_HAS_CLOCK_RATES_QUERY
 
 #ifdef __cplusplus
 extern "C" {

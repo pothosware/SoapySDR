@@ -773,6 +773,12 @@ public:
     virtual double getMasterClockRate(void) const;
 
     /*!
+     * Get the range of available master clock rates.
+     * \return a list of clock rate ranges in Hz
+     */
+    virtual RangeList getMasterClockRates(void) const;
+
+    /*!
      * Get the list of available clock sources.
      * \return a list of clock source names
      */

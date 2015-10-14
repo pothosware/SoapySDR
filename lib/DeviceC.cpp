@@ -453,6 +453,11 @@ double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *device)
     return device->getMasterClockRate();
 }
 
+SoapySDRRange *SoapySDRDevice_getMasterClockRates(const SoapySDRDevice *device, size_t *length)
+{
+    return toRangeList(device->getMasterClockRates(), length);
+}
+
 char **SoapySDRDevice_listClockSources(const SoapySDRDevice *device, size_t *length)
 {
     return toStrArray(device->listClockSources(), length);
