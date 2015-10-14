@@ -589,6 +589,15 @@ SOAPY_SDR_API void SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, con
 SOAPY_SDR_API char **SoapySDRDevice_listGains(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
 /*!
+ * Does the device support automatic gain control?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true for automatic gain control
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasGainMode(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
  * Set the automatic gain mode on the chain.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX

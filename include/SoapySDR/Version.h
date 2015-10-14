@@ -41,6 +41,11 @@
  */
 #define SOAPY_SDR_API_HAS_CLOCK_RATES_QUERY
 
+/*!
+ * Compatibility define for AGC support check
+ */
+#define SOAPY_SDR_API_HAS_AGC_MODE_QUERY
+
 #ifdef __cplusplus
 extern "C" {
 #endif

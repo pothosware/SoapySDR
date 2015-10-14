@@ -313,6 +313,11 @@ char **SoapySDRDevice_listGains(const SoapySDRDevice *device, const int directio
     return toStrArray(device->listGains(direction, channel), length);
 }
 
+bool SoapySDRDevice_hasGainMode(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return device->hasGainMode(direction, channel);
+}
+
 char *SoapySDRDevice_setGainMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
 {
     __SOAPY_SDR_C_TRY

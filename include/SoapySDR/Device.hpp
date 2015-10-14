@@ -540,6 +540,14 @@ public:
     virtual std::vector<std::string> listGains(const int direction, const size_t channel) const;
 
     /*!
+     * Does the device support automatic gain control?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true for automatic gain control
+     */
+    virtual bool hasGainMode(const int direction, const size_t channel) const;
+
+    /*!
      * Set the automatic gain mode on the chain.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device

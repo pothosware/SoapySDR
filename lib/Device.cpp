@@ -203,6 +203,11 @@ std::vector<std::string> SoapySDR::Device::listGains(const int, const size_t) co
     return std::vector<std::string>();
 }
 
+bool SoapySDR::Device::hasGainMode(const int, const size_t) const
+{
+    return false;
+}
+
 void SoapySDR::Device::setGainMode(const int, const size_t, const bool)
 {
     return;

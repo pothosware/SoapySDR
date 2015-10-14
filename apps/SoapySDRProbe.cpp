@@ -64,6 +64,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "----------------------------------------------------" << std::endl;
 
     ss << "  Full-duplex: " << (device->getFullDuplex(dir, chan)?"YES":"NO") << std::endl;
+    ss << "  Supports AGC: " << (device->hasGainMode(dir, chan)?"YES":"NO") << std::endl;
 
     //antennas
     std::string antennas = toString(device->listAntennas(dir, chan));
