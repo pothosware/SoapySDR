@@ -54,6 +54,16 @@ bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
 /*******************************************************************
  * Stream API
  ******************************************************************/
+std::vector<std::string> SoapySDR::Device::getStreamFormats(const int, const size_t) const
+{
+    return std::vector<std::string>();
+}
+
+SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_t) const
+{
+    return SoapySDR::ArgInfoList();
+}
+
 SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &)
 {
     return NULL;

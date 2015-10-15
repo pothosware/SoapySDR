@@ -153,6 +153,16 @@ bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direct
 /*******************************************************************
  * Stream API
  ******************************************************************/
+char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toStrArray(device->getStreamFormats(direction, channel), length);
+}
+
+SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toArgInfoList(device->getStreamArgsInfo(direction, channel), length);
+}
+
 char *SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
     __SOAPY_SDR_C_TRY

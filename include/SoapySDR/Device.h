@@ -157,6 +157,26 @@ SOAPY_SDR_API bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, co
  ******************************************************************/
 
 /*!
+ * Query a list of the available stream formats.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of format strings
+ * \return a list of allowed format strings
+ */
+SOAPY_SDR_API char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Query the argument info description for stream args.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of argument infos
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
  * Initialize a stream given a list of channels and stream arguments.
  *
  * Format string markup guidelines:

@@ -151,6 +151,22 @@ public:
      ******************************************************************/
 
     /*!
+     * Query a list of the available stream formats.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of allowed format strings
+     */
+    std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
+
+    /*!
+     * Query the argument info description for stream args.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    ArgInfoList getStreamArgsInfo(const int direction, const size_t channel) const;
+
+    /*!
      * Initialize a stream given a list of channels and stream arguments.
      * The implementation may change switches or power-up components.
      *

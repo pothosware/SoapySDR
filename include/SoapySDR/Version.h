@@ -46,6 +46,11 @@
  */
 #define SOAPY_SDR_API_HAS_AGC_MODE_QUERY
 
+/*!
+ * Compatibility define for querying stream argument info
+ */
+#define SOAPY_SDR_SPI_HAS_STREAM_ARG_INFO
+
 #ifdef __cplusplus
 extern "C" {
 #endif
