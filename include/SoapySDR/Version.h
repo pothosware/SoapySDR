@@ -51,6 +51,11 @@
  */
 #define SOAPY_SDR_SPI_HAS_STREAM_ARG_INFO
 
+/*!
+ * Compatibility define for querying setting argument info
+ */
+#define SOAPY_SDR_SPI_HAS_SETTING_ARG_INFO
+
 #ifdef __cplusplus
 extern "C" {
 #endif

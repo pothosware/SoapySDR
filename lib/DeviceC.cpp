@@ -595,6 +595,11 @@ unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigne
 /*******************************************************************
  * Settings API
  ******************************************************************/
+SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, size_t *length)
+{
+    return toArgInfoList(device->getSettingInfo(), length);
+}
+
 void SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value)
 {
     return device->writeSetting(key, value);

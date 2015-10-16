@@ -552,6 +552,11 @@ unsigned SoapySDR::Device::readRegister(const unsigned) const
 /*******************************************************************
  * Settings API
  ******************************************************************/
+SoapySDR::ArgInfoList SoapySDR::Device::getSettingInfo(void) const
+{
+    return SoapySDR::ArgInfoList();
+}
+
 void SoapySDR::Device::writeSetting(const std::string &, const std::string &)
 {
     return;

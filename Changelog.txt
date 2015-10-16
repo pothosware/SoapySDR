@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.0 (pending)
 ==========================
 
+- Added API to query setting argument info
 - Added API to query stream argument info
 - Added API to query AGC mode availability
 - Added API to query available clock rates

@@ -1053,6 +1053,14 @@ SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device,
  ******************************************************************/
 
 /*!
+ * Describe the allowed keys and values used for settings.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sensor names
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, size_t *length);
+
+/*!
  * Write an arbitrary setting on the device.
  * The interpretation is up the implementation.
  * \param device a pointer to a device instance

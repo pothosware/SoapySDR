@@ -939,6 +939,12 @@ public:
      ******************************************************************/
 
     /*!
+     * Describe the allowed keys and values used for settings.
+     * \return a list of argument info structures
+     */
+    ArgInfoList getSettingInfo(void) const;
+
+    /*!
      * Write an arbitrary setting on the device.
      * The interpretation is up the implementation.
      * \param key the setting identifier
