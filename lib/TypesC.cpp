@@ -56,6 +56,12 @@ void SoapySDRKwargs_clear(SoapySDRKwargs *args)
     args->size = 0;
 }
 
+void SoapySDRKwargsList_clear(SoapySDRKwargs *args, const size_t length)
+{
+    for (size_t i = 0; i < length; i++) SoapySDRKwargs_clear(args+i);
+    free(args);
+}
+
 void SoapySDRArgInfo_clear(SoapySDRArgInfo *info)
 {
     //clear strings
@@ -78,6 +84,12 @@ void SoapySDRArgInfo_clear(SoapySDRArgInfo *info)
     SoapySDRStrings_clear(&info->options, info->numOptions);
     SoapySDRStrings_clear(&info->optionNames, info->numOptions);
     info->numOptions = 0;
+}
+
+void SoapySDRArgInfoList_clear(SoapySDRArgInfo *info, const size_t length)
+{
+    for (size_t i = 0; i < length; i++) SoapySDRArgInfo_clear(info+i);
+    free(info);
 }
 
 }

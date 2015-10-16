@@ -113,10 +113,22 @@ SOAPY_SDR_API const char *SoapySDRKwargs_get(SoapySDRKwargs *args, const char *k
 SOAPY_SDR_API void SoapySDRKwargs_clear(SoapySDRKwargs *args);
 
 /*!
+ * Clear a list of kwargs structures.
+ * This frees all the underlying memory and clears the members.
+ */
+SOAPY_SDR_API void SoapySDRKwargsList_clear(SoapySDRKwargs *args, const size_t length);
+
+/*!
  * Clear the contents of a argument info structure.
  * This frees all the underlying memory and clears the members.
  */
 SOAPY_SDR_API void SoapySDRArgInfo_clear(SoapySDRArgInfo *info);
+
+/*!
+ * Clear a list of argument info structures.
+ * This frees all the underlying memory and clears the members.
+ */
+SOAPY_SDR_API void SoapySDRArgInfoList_clear(SoapySDRArgInfo *info, const size_t length);
 
 #ifdef __cplusplus
 }
