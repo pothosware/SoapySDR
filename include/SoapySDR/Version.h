@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.4-0"
+#define SOAPY_SDR_ABI_VERSION "0.4-1"
 
 /*!
  * Compatibility define for GPIO access API with masks

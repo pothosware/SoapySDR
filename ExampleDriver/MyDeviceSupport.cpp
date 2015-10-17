@@ -12,9 +12,18 @@ class MyDevice : public SoapySDR::Device
 };
 
 /***********************************************************************
+ * Device arg meta info
+ **********************************************************************/
+SoapySDR::ArgInfoList infoMyDevice(void)
+{
+    //return list of ArgInfo structures
+    //each structure describe an allowed option in the find/make args
+}
+
+/***********************************************************************
  * Find available devices
  **********************************************************************/
-std::vector<SoapySDR::Kwargs> findMyDevice(const SoapySDR::Kwargs &args)
+SoapySDR::KwargsList findMyDevice(const SoapySDR::Kwargs &args)
 {
     //locate the device on the system...
     //return a list of 0, 1, or more argument maps that each identify a device
@@ -33,4 +42,4 @@ SoapySDR::Device *makeMyDevice(const SoapySDR::Kwargs &args)
 /***********************************************************************
  * Registration
  **********************************************************************/
-static SoapySDR::Registry registerMyDevice("my_device", &findMyDevice, &makeMyDevice, SOAPY_SDR_ABI_VERSION);
+static SoapySDR::Registry registerMyDevice("my_device", &infoMyDevice, &findMyDevice, &makeMyDevice, SOAPY_SDR_ABI_VERSION);

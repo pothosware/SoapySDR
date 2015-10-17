@@ -21,6 +21,9 @@ namespace SoapySDR
 //! Typedef for a dictionary of key-value string arguments
 typedef std::map<std::string, std::string> Kwargs;
 
+//! Typedef for a list of key-word dictionaries
+typedef std::vector<Kwargs> KwargsList;
+
 /*!
  * A simple min/max numeric range pair
  */

@@ -67,7 +67,7 @@ static int findDevices(void)
     std::string argStr;
     if (optarg != NULL) argStr = optarg;
 
-    std::vector<SoapySDR::Kwargs> results = SoapySDR::Device::enumerate(argStr);
+    SoapySDR::KwargsList results = SoapySDR::Device::enumerate(argStr);
     for (size_t i = 0; i < results.size(); i++)
     {
         std::cout << "Found device " << i << std::endl;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -23,9 +23,9 @@ public:
     }
 };
 
-std::vector<SoapySDR::Kwargs> findNullDevice(const SoapySDR::Kwargs &args)
+SoapySDR::KwargsList findNullDevice(const SoapySDR::Kwargs &args)
 {
-    std::vector<SoapySDR::Kwargs> results;
+    SoapySDR::KwargsList results;
 
     //require that the user specify type=null
     if (args.count("type") == 0) return results;
