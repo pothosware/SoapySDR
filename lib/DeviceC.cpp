@@ -564,6 +564,11 @@ char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length)
     return toStrArray(device->listSensors(), length);
 }
 
+SoapySDRArgInfo SoapySDRDevice_getSensorInfo(const SoapySDRDevice *device, const char *name)
+{
+    return toArgInfo(device->getSensorInfo(name));
+}
+
 char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
 {
     return strdup(device->readSensor(name).c_str());
@@ -572,6 +577,11 @@ char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
 char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
     return toStrArray(device->listSensors(direction, channel), length);
+}
+
+SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name)
+{
+    return toArgInfo(device->getSensorInfo(direction, channel, name));
 }
 
 char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name)

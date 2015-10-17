@@ -521,6 +521,11 @@ std::vector<std::string> SoapySDR::Device::listSensors(void) const
     return std::vector<std::string>();
 }
 
+SoapySDR::ArgInfo SoapySDR::Device::getSensorInfo(const std::string &) const
+{
+    return SoapySDR::ArgInfo();
+}
+
 std::string SoapySDR::Device::readSensor(const std::string &) const
 {
     return "";
@@ -529,6 +534,11 @@ std::string SoapySDR::Device::readSensor(const std::string &) const
 std::vector<std::string> SoapySDR::Device::listSensors(const int, const size_t) const
 {
     return std::vector<std::string>();
+}
+
+SoapySDR::ArgInfo SoapySDR::Device::getSensorInfo(const int, const size_t, const std::string &) const
+{
+    return SoapySDR::ArgInfo();
 }
 
 std::string SoapySDR::Device::readSensor(const int, const size_t, const std::string &) const

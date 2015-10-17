@@ -886,6 +886,14 @@ public:
     virtual std::vector<std::string> listSensors(void) const;
 
     /*!
+     * Get meta-information about a sensor.
+     * Example: displayable name, type, range.
+     * \param name the name of an available sensor
+     * \return meta-information about a sensor
+     */
+    virtual ArgInfo getSensorInfo(const std::string &name) const;
+
+    /*!
      * Readback a global sensor given the name.
      * The value returned is a string which can represent
      * a boolean ("true"/"false"), an integer, or float.
@@ -902,6 +910,16 @@ public:
      * \return a list of available sensor string names
      */
     virtual std::vector<std::string> listSensors(const int direction, const size_t channel) const;
+
+    /*!
+     * Get meta-information about a channel sensor.
+     * Example: displayable name, type, range.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of an available sensor
+     * \return meta-information about a sensor
+     */
+    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &name) const;
 
     /*!
      * Readback a channel sensor given the name.
