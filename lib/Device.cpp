@@ -318,7 +318,7 @@ void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double fre
         {
             //do nothing, dont change component
         }
-        else if (args.count(name) != 0)
+        else if (args.count(name) != 0 and args.at(name) != "DEFAULT")
         {
             //specific frequency for component specified
             const double f(std::atof(args.at(name).c_str()));
@@ -407,6 +407,48 @@ SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const siz
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int, const size_t, const std::string &) const
 {
     return SoapySDR::RangeList();
+}
+
+SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, const size_t chan) const
+{
+    SoapySDR::ArgInfoList args;
+
+    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+
+    //support offset tuning when there are multiple components
+    if (comps.size() >= 2)
+    {
+        SoapySDR::ArgInfo info;
+        info.key = "OFFSET";
+        info.name = "LO Offset";
+        info.value = "0.0";
+        info.units = "Hz";
+        info.type = SoapySDR::ArgInfo::FLOAT;
+        info.description = "Tune the LO with an offset and compensate with the baseband CORDIC.";
+        SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(1));
+        if (not ranges.empty()) info.range = ranges.front();
+        args.push_back(info);
+    }
+
+    //every tunable component becomes an option
+    for (size_t comp_i = 1; comp_i < comps.size(); comp_i++)
+    {
+        SoapySDR::ArgInfo info;
+        info.key = comps[comp_i];
+        info.value = "DEFAULT";
+        info.units = "Hz";
+        info.type = SoapySDR::ArgInfo::FLOAT;
+        info.description = "Specify a specific value for this component or IGNORE to skip tuning it.";
+        info.options.push_back("DEFAULT");
+        info.optionNames.push_back("Default");
+        info.options.push_back("IGNORE");
+        info.optionNames.push_back("Ingore");
+        SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(comp_i));
+        if (not ranges.empty()) info.range = ranges.front();
+        args.push_back(info);
+    }
+
+    return args;
 }
 
 /*******************************************************************

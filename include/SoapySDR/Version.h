@@ -61,6 +61,11 @@
  */
 #define SOAPY_SDR_SPI_HAS_QUERY_SENSOR_INFO
 
+/*!
+ * Compatibility define for querying tune args info
+ */
+#define SOAPY_SDR_SPI_HAS_QUERY_TUNE_ARG_INFO
+
 #ifdef __cplusplus
 extern "C" {
 #endif

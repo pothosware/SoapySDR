@@ -728,6 +728,14 @@ public:
      */
     virtual RangeList getFrequencyRange(const int direction, const size_t channel, const std::string &name) const;
 
+    /*!
+     * Query the argument info description for tune args.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    virtual ArgInfoList getFrequencyArgsInfo(const int direction, const size_t channel) const;
+
     /*******************************************************************
      * Sample Rate API
      ******************************************************************/

@@ -442,6 +442,11 @@ SoapySDRRange *SoapySDRDevice_getFrequencyRangeComponent(const SoapySDRDevice *d
     return toRangeList(device->getFrequencyRange(direction, channel, name), length);
 }
 
+SoapySDRArgInfo *SoapySDRDevice_getFrequencyArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toArgInfoList(device->getFrequencyArgsInfo(direction, channel), length);
+}
+
 /*******************************************************************
  * Sample Rate API
  ******************************************************************/
