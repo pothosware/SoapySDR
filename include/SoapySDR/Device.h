@@ -167,6 +167,18 @@ SOAPY_SDR_API bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, co
 SOAPY_SDR_API char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
 /*!
+ * Get the hardware's native stream format for this channel.
+ * This is the format used by the underlying transport layer,
+ * and the direct buffer access API calls (when available).
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] fullScale the maximum possible value
+ * \return the native stream buffer format string
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getNativeStreamFormat(const SoapySDRDevice *device, const int direction, const size_t channel, double *fullScale);
+
+/*!
  * Query the argument info description for stream args.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX

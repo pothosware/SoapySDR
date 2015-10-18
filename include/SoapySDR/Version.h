@@ -66,6 +66,11 @@
  */
 #define SOAPY_SDR_SPI_HAS_QUERY_TUNE_ARG_INFO
 
+/*!
+ * Compatibility define for querying native stream format
+ */
+#define SOAPY_SDR_SPI_HAS_NATIVE_STREAM_FORMAT
+
 #ifdef __cplusplus
 extern "C" {
 #endif

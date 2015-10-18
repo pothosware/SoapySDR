@@ -59,6 +59,12 @@ std::vector<std::string> SoapySDR::Device::getStreamFormats(const int, const siz
     return std::vector<std::string>();
 }
 
+std::string SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &fullScale) const
+{
+    fullScale = double(1 << 15);
+    return "CS16";
+}
+
 SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_t) const
 {
     return SoapySDR::ArgInfoList();

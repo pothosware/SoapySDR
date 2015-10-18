@@ -159,6 +159,17 @@ public:
     std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
 
     /*!
+     * Get the hardware's native stream format for this channel.
+     * This is the format used by the underlying transport layer,
+     * and the direct buffer access API calls (when available).
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param [out] fullScale the maximum possible value
+     * \return the native stream buffer format string
+     */
+    std::string getNativeStreamFormat(const int direction, const size_t channel, double &fullScale) const;
+
+    /*!
      * Query the argument info description for stream args.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device

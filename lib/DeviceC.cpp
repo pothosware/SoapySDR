@@ -158,6 +158,11 @@ char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int d
     return toStrArray(device->getStreamFormats(direction, channel), length);
 }
 
+char *SoapySDRDevice_getNativeStreamFormat(const SoapySDRDevice *device, const int direction, const size_t channel, double *fullScale)
+{
+    return strdup(device->getNativeStreamFormat(direction, channel, *fullScale).c_str());
+}
+
 SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
     return toArgInfoList(device->getStreamArgsInfo(direction, channel), length);
