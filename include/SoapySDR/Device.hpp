@@ -35,6 +35,19 @@ public:
     virtual ~Device(void);
 
     /*!
+     * Get a list of available drivers on the system.
+     * \return a list of strings representing driver keys
+     */
+    static std::vector<std::string> listDrivers(void);
+
+    /*!
+     * Get the argument info descriptors for a given driver.
+     * \param name the name the identifies a driver module
+     * \return a list of argument info structures
+     */
+    static ArgInfoList getDriverArgsInfo(const std::string &name);
+
+    /*!
      * Enumerate a list of available devices on the system.
      * \param args device construction key/value argument filters
      * \return a list of argument maps, each unique to a device
