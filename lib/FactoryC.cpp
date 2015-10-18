@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.h>
@@ -8,7 +8,7 @@
 
 SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args);
 SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args);
-SoapySDRKwargs *toKwargsList(const std::vector<SoapySDR::Kwargs> &args, size_t *length)
+SoapySDRKwargs *toKwargsList(const SoapySDR::KwargsList &args, size_t *length)
 {
     SoapySDRKwargs *outArgs = (SoapySDRKwargs *)calloc(args.size(), sizeof(SoapySDRKwargs));
     for (size_t i = 0; i < args.size(); i++) outArgs[i] = toKwargs(args[i]);

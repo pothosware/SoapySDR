@@ -4,7 +4,7 @@
 /// Device factory registration API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -23,7 +23,7 @@ namespace SoapySDR
 class Device;
 
 //! typedef for a device enumeration function
-typedef std::vector<Kwargs> (*FindFunction)(const Kwargs &);
+typedef KwargsList (*FindFunction)(const Kwargs &);
 
 //! typedef for a device factory function
 typedef Device* (*MakeFunction)(const Kwargs &);
@@ -42,10 +42,10 @@ class SOAPY_SDR_API Registry
 public:
 
     /*!
-     * Register an SDR device find and make function.
+     * Register a SDR device find and make function.
      * \param name a unique name to identify the module
-     * \param find the find function returns arg list
-     * \param make the make function returns device sptr
+     * \param find the find function returns an arg list
+     * \param make the make function returns a device sptr
      * \param abi this value must be SOAPY_SDR_ABI_VERSION
      */
     Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi);

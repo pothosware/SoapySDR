@@ -43,7 +43,7 @@ static SoapySDRRange toRange(const SoapySDR::Range &range)
     return out;
 }
 
-static SoapySDRRange *toRangeList(const std::vector<SoapySDR::Range> &ranges, size_t *length)
+static SoapySDRRange *toRangeList(const SoapySDR::RangeList &ranges, size_t *length)
 {
     SoapySDRRange *out = (SoapySDRRange *)calloc(ranges.size(), sizeof(SoapySDRRange));
     for (size_t i = 0; i < ranges.size(); i++) out[i] = toRange(ranges[i]);

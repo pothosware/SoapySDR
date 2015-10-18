@@ -39,7 +39,7 @@ public:
      * \param args device construction key/value argument filters
      * \return a list of argument maps, each unique to a device
      */
-    static std::vector<Kwargs> enumerate(const Kwargs &args = Kwargs());
+    static KwargsList enumerate(const Kwargs &args = Kwargs());
 
     /*!
      * Enumerate a list of available devices on the system.
@@ -47,7 +47,7 @@ public:
      * \param args a markup string of key/value argument filters
      * \return a list of argument maps, each unique to a device
      */
-    static std::vector<Kwargs> enumerate(const std::string &args);
+    static KwargsList enumerate(const std::string &args);
 
     /*!
      * Make a new Device object given device construction args.
