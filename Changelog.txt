@@ -3,6 +3,12 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.0 (pending)
 ==========================
 
+- Added API to query native stream format
+- Added C++ typedef for list of Kwargs
+- Added API to query tune argument info
+- Added API to query sensors meta info
+- Added API to query setting argument info
+- Added API to query stream argument info
 - CMAKE_BUILD_TYPE automatically defaults to Release
 - Added API to query AGC mode availability
 - Added API to query available clock rates

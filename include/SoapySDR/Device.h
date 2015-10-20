@@ -157,6 +157,38 @@ SOAPY_SDR_API bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, co
  ******************************************************************/
 
 /*!
+ * Query a list of the available stream formats.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of format strings
+ * \return a list of allowed format strings
+ */
+SOAPY_SDR_API char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Get the hardware's native stream format for this channel.
+ * This is the format used by the underlying transport layer,
+ * and the direct buffer access API calls (when available).
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] fullScale the maximum possible value
+ * \return the native stream buffer format string
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getNativeStreamFormat(const SoapySDRDevice *device, const int direction, const size_t channel, double *fullScale);
+
+/*!
+ * Query the argument info description for stream args.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of argument infos
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
  * Initialize a stream given a list of channels and stream arguments.
  *
  * Format string markup guidelines:
@@ -785,6 +817,16 @@ SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRange(const SoapySDRDevi
  */
 SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getFrequencyRangeComponent(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name, size_t *length);
 
+/*!
+ * Query the argument info description for tune args.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of argument infos
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getFrequencyArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
 /*******************************************************************
  * Sample Rate API
  ******************************************************************/
@@ -974,6 +1016,15 @@ SOAPY_SDR_API void SoapySDRDevice_setCommandTime(SoapySDRDevice *device, const l
 SOAPY_SDR_API char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length);
 
 /*!
+ * Get meta-information about a sensor.
+ * Example: displayable name, type, range.
+ * \param device a pointer to a device instance
+ * \param name the name of an available sensor
+ * \return meta-information about a sensor
+ */
+SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getSensorInfo(const SoapySDRDevice *device, const char *name);
+
+/*!
  * Readback a global sensor given the name.
  * The value returned is a string which can represent
  * a boolean ("true"/"false"), an integer, or float.
@@ -993,6 +1044,17 @@ SOAPY_SDR_API char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, cons
  * \return a list of available sensor string names
  */
 SOAPY_SDR_API char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Get meta-information about a channel sensor.
+ * Example: displayable name, type, range.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param name the name of an available sensor
+ * \return meta-information about a sensor
+ */
+SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
 
 /*!
  * Readback a channel sensor given the name.
@@ -1031,6 +1093,14 @@ SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device,
 /*******************************************************************
  * Settings API
  ******************************************************************/
+
+/*!
+ * Describe the allowed keys and values used for settings.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sensor names
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, size_t *length);
 
 /*!
  * Write an arbitrary setting on the device.

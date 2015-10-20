@@ -43,7 +43,7 @@ static SoapySDRRange toRange(const SoapySDR::Range &range)
     return out;
 }
 
-static SoapySDRRange *toRangeList(const std::vector<SoapySDR::Range> &ranges, size_t *length)
+static SoapySDRRange *toRangeList(const SoapySDR::RangeList &ranges, size_t *length)
 {
     SoapySDRRange *out = (SoapySDRRange *)calloc(ranges.size(), sizeof(SoapySDRRange));
     for (size_t i = 0; i < ranges.size(); i++) out[i] = toRange(ranges[i]);
@@ -76,6 +76,32 @@ SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
     {
         SoapySDRKwargs_set(&out, it->first.c_str(), it->second.c_str());
     }
+    return out;
+}
+
+static SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
+{
+    SoapySDRArgInfo out;
+    out.key = strdup(info.key.c_str());
+    out.name = strdup(info.name.c_str());
+    out.description = strdup(info.description.c_str());
+    out.units = strdup(info.units.c_str());
+    out.type = SoapySDRArgInfoType(info.type);
+    out.range = toRange(info.range);
+    out.options = toStrArray(info.options, &out.numOptions);
+    out.optionNames = toStrArray(info.optionNames, &out.numOptions);
+
+    return out;
+}
+
+static SoapySDRArgInfo *toArgInfoList(const SoapySDR::ArgInfoList &infos, size_t *length)
+{
+    SoapySDRArgInfo *out = (SoapySDRArgInfo *)calloc(infos.size(), sizeof(SoapySDRArgInfo));
+    for (size_t i = 0; i < infos.size(); i++)
+    {
+        out[i] = toArgInfo(infos[i]);
+    }
+    *length = infos.size();
     return out;
 }
 
@@ -127,6 +153,21 @@ bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direct
 /*******************************************************************
  * Stream API
  ******************************************************************/
+char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toStrArray(device->getStreamFormats(direction, channel), length);
+}
+
+char *SoapySDRDevice_getNativeStreamFormat(const SoapySDRDevice *device, const int direction, const size_t channel, double *fullScale)
+{
+    return strdup(device->getNativeStreamFormat(direction, channel, *fullScale).c_str());
+}
+
+SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toArgInfoList(device->getStreamArgsInfo(direction, channel), length);
+}
+
 char *SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
     __SOAPY_SDR_C_TRY
@@ -406,6 +447,11 @@ SoapySDRRange *SoapySDRDevice_getFrequencyRangeComponent(const SoapySDRDevice *d
     return toRangeList(device->getFrequencyRange(direction, channel, name), length);
 }
 
+SoapySDRArgInfo *SoapySDRDevice_getFrequencyArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toArgInfoList(device->getFrequencyArgsInfo(direction, channel), length);
+}
+
 /*******************************************************************
  * Sample Rate API
  ******************************************************************/
@@ -528,6 +574,11 @@ char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, size_t *length)
     return toStrArray(device->listSensors(), length);
 }
 
+SoapySDRArgInfo SoapySDRDevice_getSensorInfo(const SoapySDRDevice *device, const char *name)
+{
+    return toArgInfo(device->getSensorInfo(name));
+}
+
 char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
 {
     return strdup(device->readSensor(name).c_str());
@@ -536,6 +587,11 @@ char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name)
 char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
     return toStrArray(device->listSensors(direction, channel), length);
+}
+
+SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name)
+{
+    return toArgInfo(device->getSensorInfo(direction, channel, name));
 }
 
 char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name)
@@ -559,6 +615,11 @@ unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigne
 /*******************************************************************
  * Settings API
  ******************************************************************/
+SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, size_t *length)
+{
+    return toArgInfoList(device->getSettingInfo(), length);
+}
+
 void SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value)
 {
     return device->writeSetting(key, value);

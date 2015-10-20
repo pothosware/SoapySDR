@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.4-0"
+#define SOAPY_SDR_ABI_VERSION "0.4-1"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -45,6 +45,31 @@
  * Compatibility define for AGC support check
  */
 #define SOAPY_SDR_API_HAS_AGC_MODE_QUERY
+
+/*!
+ * Compatibility define for querying stream argument info
+ */
+#define SOAPY_SDR_SPI_HAS_STREAM_ARG_INFO
+
+/*!
+ * Compatibility define for querying setting argument info
+ */
+#define SOAPY_SDR_SPI_HAS_SETTING_ARG_INFO
+
+/*!
+ * Compatibility define for querying sensor info API
+ */
+#define SOAPY_SDR_SPI_HAS_QUERY_SENSOR_INFO
+
+/*!
+ * Compatibility define for querying tune args info
+ */
+#define SOAPY_SDR_SPI_HAS_QUERY_TUNE_ARG_INFO
+
+/*!
+ * Compatibility define for querying native stream format
+ */
+#define SOAPY_SDR_SPI_HAS_NATIVE_STREAM_FORMAT
 
 #ifdef __cplusplus
 extern "C" {

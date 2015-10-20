@@ -39,7 +39,7 @@ public:
      * \param args device construction key/value argument filters
      * \return a list of argument maps, each unique to a device
      */
-    static std::vector<Kwargs> enumerate(const Kwargs &args = Kwargs());
+    static KwargsList enumerate(const Kwargs &args = Kwargs());
 
     /*!
      * Enumerate a list of available devices on the system.
@@ -47,7 +47,7 @@ public:
      * \param args a markup string of key/value argument filters
      * \return a list of argument maps, each unique to a device
      */
-    static std::vector<Kwargs> enumerate(const std::string &args);
+    static KwargsList enumerate(const std::string &args);
 
     /*!
      * Make a new Device object given device construction args.
@@ -149,6 +149,33 @@ public:
     /*******************************************************************
      * Stream API
      ******************************************************************/
+
+    /*!
+     * Query a list of the available stream formats.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of allowed format strings
+     */
+    std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the hardware's native stream format for this channel.
+     * This is the format used by the underlying transport layer,
+     * and the direct buffer access API calls (when available).
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param [out] fullScale the maximum possible value
+     * \return the native stream buffer format string
+     */
+    std::string getNativeStreamFormat(const int direction, const size_t channel, double &fullScale) const;
+
+    /*!
+     * Query the argument info description for stream args.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    ArgInfoList getStreamArgsInfo(const int direction, const size_t channel) const;
 
     /*!
      * Initialize a stream given a list of channels and stream arguments.
@@ -712,6 +739,14 @@ public:
      */
     virtual RangeList getFrequencyRange(const int direction, const size_t channel, const std::string &name) const;
 
+    /*!
+     * Query the argument info description for tune args.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    virtual ArgInfoList getFrequencyArgsInfo(const int direction, const size_t channel) const;
+
     /*******************************************************************
      * Sample Rate API
      ******************************************************************/
@@ -870,6 +905,14 @@ public:
     virtual std::vector<std::string> listSensors(void) const;
 
     /*!
+     * Get meta-information about a sensor.
+     * Example: displayable name, type, range.
+     * \param name the name of an available sensor
+     * \return meta-information about a sensor
+     */
+    virtual ArgInfo getSensorInfo(const std::string &name) const;
+
+    /*!
      * Readback a global sensor given the name.
      * The value returned is a string which can represent
      * a boolean ("true"/"false"), an integer, or float.
@@ -886,6 +929,16 @@ public:
      * \return a list of available sensor string names
      */
     virtual std::vector<std::string> listSensors(const int direction, const size_t channel) const;
+
+    /*!
+     * Get meta-information about a channel sensor.
+     * Example: displayable name, type, range.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param name the name of an available sensor
+     * \return meta-information about a sensor
+     */
+    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &name) const;
 
     /*!
      * Readback a channel sensor given the name.
@@ -921,6 +974,12 @@ public:
     /*******************************************************************
      * Settings API
      ******************************************************************/
+
+    /*!
+     * Describe the allowed keys and values used for settings.
+     * \return a list of argument info structures
+     */
+    ArgInfoList getSettingInfo(void) const;
 
     /*!
      * Write an arbitrary setting on the device.

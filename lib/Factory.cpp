@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -24,17 +24,17 @@ static DeviceCounts &getDeviceCounts(void)
     return table;
 }
 
-std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const Kwargs &args)
+SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
     loadModules();
-    std::vector<SoapySDR::Kwargs> results;
+    SoapySDR::KwargsList results;
     const FindFunctions findFunctions = Registry::listFindFunctions();
     for (FindFunctions::const_iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
     {
         if (args.count("driver") != 0 and args.at("driver") != it->first) continue;
         try
         {
-            std::vector<SoapySDR::Kwargs> results0 = it->second(args);
+            SoapySDR::KwargsList results0 = it->second(args);
             for (size_t i = 0; i < results0.size(); i++)
             {
                 results0[i]["driver"] = it->first;
@@ -94,7 +94,7 @@ static SoapySDR::Kwargs argsStrToKwargs(const std::string &args)
     return kwargs;
 }
 
-std::vector<SoapySDR::Kwargs> SoapySDR::Device::enumerate(const std::string &args)
+SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 {
     return enumerate(argsStrToKwargs(args));
 }
@@ -116,7 +116,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
     {
         //the args must always come from an enumeration result
         {
-            std::vector<SoapySDR::Kwargs> results = Device::enumerate(args);
+            SoapySDR::KwargsList results = Device::enumerate(args);
             if (not results.empty()) args = results.front();
         }
 

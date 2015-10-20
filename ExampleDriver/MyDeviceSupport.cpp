@@ -14,7 +14,7 @@ class MyDevice : public SoapySDR::Device
 /***********************************************************************
  * Find available devices
  **********************************************************************/
-std::vector<SoapySDR::Kwargs> findMyDevice(const SoapySDR::Kwargs &args)
+SoapySDR::KwargsList findMyDevice(const SoapySDR::Kwargs &args)
 {
     //locate the device on the system...
     //return a list of 0, 1, or more argument maps that each identify a device
