@@ -6,7 +6,7 @@
 /// The default log handler prints to the stdout and stderr.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -58,5 +58,11 @@ typedef SoapySDRLogHandler LogHandler;
  * Platforms should call this to replace the default stdio handler.
  */
 SOAPY_SDR_API void registerLogHandler(const LogHandler &handler);
+
+/*!
+ * Set the log level threshold.
+ * Log messages with lower priority are dropped.
+ */
+SOAPY_SDR_API void setLogLevel(const LogLevel logLevel);
 
 }

@@ -14,6 +14,18 @@
 #include <SoapySDR/Config.h>
 #include <stdarg.h>
 
+/*!
+ * The available priority levels for log messages.
+ *
+ * The default log level threshold is SOAPY_SDR_INFO.
+ * Log messages with lower priorities are dropped.
+ *
+ * The default threshold can be set via the
+ * SOAPY_SDR_LOG_LEVEL environment variable.
+ * Set SOAPY_SDR_LOG_LEVEL to the string value:
+ * "WARNING", "ERROR", "DEBUG", etc...
+ * or set it to the equivalent integer value.
+ */
 typedef enum
 {
     SOAPY_SDR_FATAL    = 1, //!< A fatal error. The application will most likely terminate. This is the highest priority.
@@ -72,6 +84,12 @@ typedef void (*SoapySDRLogHandler)(const SoapySDRLogLevel logLevel, const char *
  * Platforms should call this to replace the default stdio handler.
  */
 SOAPY_SDR_API void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler);
+
+/*!
+ * Set the log level threshold.
+ * Log messages with lower priority are dropped.
+ */
+SOAPY_SDR_API void SoapySDR_setLogLevel(const SoapySDRLogLevel logLevel);
 
 #ifdef __cplusplus
 }

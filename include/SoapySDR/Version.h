@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.4-1"
+#define SOAPY_SDR_ABI_VERSION "0.4-2"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -70,6 +70,11 @@
  * Compatibility define for querying native stream format
  */
 #define SOAPY_SDR_SPI_HAS_NATIVE_STREAM_FORMAT
+
+/*!
+ * Compatibility define for setting the log level
+ */
+#define SOAPY_SDR_SPI_HAS_SET_LOG_LEVEL
 
 #ifdef __cplusplus
 extern "C" {

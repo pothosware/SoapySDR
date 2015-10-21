@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Logger.hpp>
@@ -16,4 +16,9 @@ void SoapySDR::vlogf(const SoapySDRLogLevel logLevel, const char *format, va_lis
 void SoapySDR::registerLogHandler(const LogHandler &handler)
 {
     return SoapySDR_registerLogHandler(handler);
+}
+
+void SoapySDR::setLogLevel(const LogLevel logLevel)
+{
+    SoapySDR_setLogLevel(logLevel);
 }

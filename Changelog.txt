@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.0 (pending)
 ==========================
 
+- Added setLogLevel() and default log threshold
 - Added API to query native stream format
 - Added C++ typedef for list of Kwargs
 - Added API to query tune argument info

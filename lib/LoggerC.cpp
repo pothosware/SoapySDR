@@ -4,6 +4,36 @@
 #include <SoapySDR/Logger.h>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
+#include <iostream>
+
+/***********************************************************************
+ * default log level supports environment variable
+ **********************************************************************/
+std::string getEnvImpl(const char *name);
+
+static SoapySDRLogLevel getDefaultLogLevel(void)
+{
+    const std::string logLevelEnvStr = getEnvImpl("SOAPY_SDR_LOG_LEVEL");
+    if (logLevelEnvStr.empty()) return SOAPY_SDR_INFO;
+
+    //check string names
+    #define checkLogLevelEnvStr(level) \
+        if (logLevelEnvStr == #level) return SOAPY_SDR_ ## level
+    checkLogLevelEnvStr(FATAL);
+    checkLogLevelEnvStr(CRITICAL);
+    checkLogLevelEnvStr(ERROR);
+    checkLogLevelEnvStr(WARNING);
+    checkLogLevelEnvStr(NOTICE);
+    checkLogLevelEnvStr(DEBUG);
+    checkLogLevelEnvStr(TRACE);
+
+    //check int values
+    const int logLevelInt = std::atoi(logLevelEnvStr.c_str());
+    if (logLevelInt < SOAPY_SDR_FATAL) return SOAPY_SDR_FATAL;
+    if (logLevelInt > SOAPY_SDR_TRACE) return SOAPY_SDR_TRACE;
+    return SoapySDRLogLevel(logLevelInt);
+}
 
 /***********************************************************************
  * Compatibility for vasprintf under MSVC
@@ -50,17 +80,20 @@ void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
 }
 
 static SoapySDRLogHandler registeredLogHandler = &defaultLogHandler;
+static SoapySDRLogLevel registeredLogLevel = getDefaultLogLevel();
 
 extern "C" {
 
 void SoapySDR_log(const SoapySDRLogLevel logLevel, const char *message)
 {
+    if (logLevel > registeredLogLevel and logLevel != SOAPY_SDR_SSI) return;
     return registeredLogHandler(logLevel, message);
 }
 
 void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList)
 {
-    char *message;
+    if (logLevel > registeredLogLevel) return;
+    char *message = NULL;
     vasprintf(&message, format, argList);
     SoapySDR_log(logLevel, message);
     free(message);
@@ -69,6 +102,11 @@ void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list
 void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
 {
     registeredLogHandler = handler;
+}
+
+void SoapySDR_setLogLevel(const SoapySDRLogLevel logLevel)
+{
+    registeredLogLevel = logLevel;
 }
 
 }
