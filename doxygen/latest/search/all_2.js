@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['deactivatestream',['deactivateStream',['../classSoapySDR_1_1Device.html#a6e5df11bb3d71e1e584fffb96fc3035f',1,'SoapySDR::Device']]],
-  ['device',['Device',['../classSoapySDR_1_1Device.html',1,'SoapySDR']]],
-  ['device_2eh',['Device.h',['../Device_8h.html',1,'']]],
-  ['device_2ehpp',['Device.hpp',['../Device_8hpp.html',1,'']]]
+  ['closestream',['closeStream',['../classSoapySDR_1_1Device.html#a3af55b3e429765b8e057b2b8c2af009b',1,'SoapySDR::Device']]],
+  ['config_2eh',['Config.h',['../Config_8h.html',1,'']]],
+  ['config_2ehpp',['Config.hpp',['../Config_8hpp.html',1,'']]],
+  ['constants_2eh',['Constants.h',['../Constants_8h.html',1,'']]]
 ];

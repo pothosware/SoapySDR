@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -100,6 +100,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Range.html">Range</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -107,14 +109,14 @@ Typedefs</h2></td></tr>
 <tr class="separator:a095fdafac63ba09d2d6cc1ce21c2611c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1fee48c48d837fb5f73ae3316329dee"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="Logger_8h.html#aa13726385238e2e8466130d685eede5e">SoapySDRLogHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#aa1fee48c48d837fb5f73ae3316329dee">LogHandler</a></td></tr>
 <tr class="separator:aa1fee48c48d837fb5f73ae3316329dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade8a97c12a17d62ff58bf472b9941346"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &gt;(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">FindFunction</a> )(const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;)</td></tr>
-<tr class="memdesc:ade8a97c12a17d62ff58bf472b9941346"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a device enumeration function  <a href="#ade8a97c12a17d62ff58bf472b9941346">More...</a><br/></td></tr>
-<tr class="separator:ade8a97c12a17d62ff58bf472b9941346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d08858b95cfb5bb44328cc1462b1cc6"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">KwargsList</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">FindFunction</a> )(const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;)</td></tr>
+<tr class="memdesc:a7d08858b95cfb5bb44328cc1462b1cc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a device enumeration function  <a href="#a7d08858b95cfb5bb44328cc1462b1cc6">More...</a><br/></td></tr>
+<tr class="separator:a7d08858b95cfb5bb44328cc1462b1cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af73e5e46a1d87b30593e137296e96b8d"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSoapySDR_1_1Device.html">Device</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">MakeFunction</a> )(const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;)</td></tr>
 <tr class="memdesc:af73e5e46a1d87b30593e137296e96b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a device factory function  <a href="#af73e5e46a1d87b30593e137296e96b8d">More...</a><br/></td></tr>
 <tr class="separator:af73e5e46a1d87b30593e137296e96b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a911d459c60a5a20ff9f517f2739db50b"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <br class="typebreak"/>
-<a class="el" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">FindFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">FindFunctions</a></td></tr>
+<a class="el" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">FindFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">FindFunctions</a></td></tr>
 <tr class="memdesc:a911d459c60a5a20ff9f517f2739db50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef for a dictionary of find functions  <a href="#a911d459c60a5a20ff9f517f2739db50b">More...</a><br/></td></tr>
 <tr class="separator:a911d459c60a5a20ff9f517f2739db50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19c1c1658c32d55d3faac7d7b1584626"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <br class="typebreak"/>
@@ -125,8 +127,13 @@ Typedefs</h2></td></tr>
 std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a></td></tr>
 <tr class="memdesc:ac7c038598fa1a11acee1b0194f9dad62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef for a dictionary of key-value string arguments.  <a href="#ac7c038598fa1a11acee1b0194f9dad62">More...</a><br/></td></tr>
 <tr class="separator:ac7c038598fa1a11acee1b0194f9dad62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfeb27ccbf4f8840debd7c21757c72d6"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">KwargsList</a></td></tr>
+<tr class="memdesc:adfeb27ccbf4f8840debd7c21757c72d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef for a list of key-word dictionaries.  <a href="#adfeb27ccbf4f8840debd7c21757c72d6">More...</a><br/></td></tr>
+<tr class="separator:adfeb27ccbf4f8840debd7c21757c72d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75daa1b2fa0c08e898b805ce23d7672e"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classSoapySDR_1_1Range.html">Range</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a></td></tr>
 <tr class="separator:a75daa1b2fa0c08e898b805ce23d7672e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e03ef3609c4efd972b1178cf0b5370"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a></td></tr>
+<tr class="separator:a95e03ef3609c4efd972b1178cf0b5370"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -140,6 +147,8 @@ Functions</h2></td></tr>
 <tr class="separator:af5721633a187da4346589b0816b05125"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a795feaacf27ca0008193fc362badaf27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a795feaacf27ca0008193fc362badaf27">registerLogHandler</a> (const <a class="el" href="namespaceSoapySDR.html#aa1fee48c48d837fb5f73ae3316329dee">LogHandler</a> &amp;handler)</td></tr>
 <tr class="separator:a795feaacf27ca0008193fc362badaf27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a324c34eda6854e47d23644f6da54cb01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a324c34eda6854e47d23644f6da54cb01">setLogLevel</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">LogLevel</a> logLevel)</td></tr>
+<tr class="separator:a324c34eda6854e47d23644f6da54cb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37a1da663087d48150012087b442c954"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a37a1da663087d48150012087b442c954">getRootPath</a> (void)</td></tr>
 <tr class="memdesc:a37a1da663087d48150012087b442c954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the root installation path.  <a href="#a37a1da663087d48150012087b442c954">More...</a><br/></td></tr>
 <tr class="separator:a37a1da663087d48150012087b442c954"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,12 +170,25 @@ Functions</h2></td></tr>
 <tr class="separator:a6807cd72d68f421d16824f05928cc0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="ade8a97c12a17d62ff58bf472b9941346"></a>
+<a class="anchor" id="a95e03ef3609c4efd972b1178cf0b5370"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::vector&lt;<a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>&gt;(* SoapySDR::FindFunction)(const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;)</td>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a>&gt; <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">SoapySDR::ArgInfoList</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Typedef for a list of Argument infos. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7d08858b95cfb5bb44328cc1462b1cc6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef <a class="el" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">KwargsList</a>(* SoapySDR::FindFunction)(const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -180,7 +202,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;std::string, <a class="el" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">FindFunction</a>&gt; <a class="el" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">SoapySDR::FindFunctions</a></td>
+          <td class="memname">typedef std::map&lt;std::string, <a class="el" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">FindFunction</a>&gt; <a class="el" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">SoapySDR::FindFunctions</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -200,6 +222,20 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Typedef for a dictionary of key-value string arguments. </p>
+
+</div>
+</div>
+<a class="anchor" id="adfeb27ccbf4f8840debd7c21757c72d6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>&gt; <a class="el" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">SoapySDR::KwargsList</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Typedef for a list of key-word dictionaries. </p>
 
 </div>
 </div>
@@ -497,6 +533,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a324c34eda6854e47d23644f6da54cb01"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDR::setLogLevel </td>
+          <td>(</td>
+          <td class="paramtype">const LogLevel&#160;</td>
+          <td class="paramname"><em>logLevel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the log level threshold. Log messages with lower priority are dropped. </p>
+
+</div>
+</div>
 <a class="anchor" id="a38159df503d35fd23521643da952eb86"></a>
 <div class="memitem">
 <div class="memproto">
@@ -627,7 +680,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

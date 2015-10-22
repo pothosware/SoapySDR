@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['device',['Device',['../classSoapySDR_1_1Device.html',1,'SoapySDR']]]
+  ['arginfo',['ArgInfo',['../classSoapySDR_1_1ArgInfo.html',1,'SoapySDR']]]
 ];

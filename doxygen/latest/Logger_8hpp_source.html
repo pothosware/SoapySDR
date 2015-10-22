@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -114,21 +114,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="namespaceSoapySDR.html#a795feaacf27ca0008193fc362badaf27">registerLogHandler</a>(<span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#aa1fee48c48d837fb5f73ae3316329dee">LogHandler</a> &amp;handler);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="namespaceSoapySDR.html#a324c34eda6854e47d23644f6da54cb01">setLogLevel</a>(<span class="keyword">const</span> <a class="code" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">LogLevel</a> logLevel);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
 <div class="ttc" id="namespaceSoapySDR_html_a0b1e9d955ef43207dbc00b74aed83a40"><div class="ttname"><a href="namespaceSoapySDR.html#a0b1e9d955ef43207dbc00b74aed83a40">SoapySDR::vlogf</a></div><div class="ttdeci">SOAPY_SDR_API void vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList)</div></div>
-<div class="ttc" id="Logger_8h_html_acca12132060bee17ae201b1c9604f7f0"><div class="ttname"><a href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a></div><div class="ttdeci">SoapySDRLogLevel</div><div class="ttdef"><b>Definition:</b> Logger.h:17</div></div>
+<div class="ttc" id="Logger_8h_html_acca12132060bee17ae201b1c9604f7f0"><div class="ttname"><a href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a></div><div class="ttdeci">SoapySDRLogLevel</div><div class="ttdef"><b>Definition:</b> Logger.h:29</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_aa1fee48c48d837fb5f73ae3316329dee"><div class="ttname"><a href="namespaceSoapySDR.html#aa1fee48c48d837fb5f73ae3316329dee">SoapySDR::LogHandler</a></div><div class="ttdeci">SoapySDRLogHandler LogHandler</div><div class="ttdef"><b>Definition:</b> Logger.hpp:54</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_af5721633a187da4346589b0816b05125"><div class="ttname"><a href="namespaceSoapySDR.html#af5721633a187da4346589b0816b05125">SoapySDR::logf</a></div><div class="ttdeci">static void logf(const SoapySDRLogLevel logLevel, const char *format,...)</div><div class="ttdef"><b>Definition:</b> Logger.hpp:43</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_a324c34eda6854e47d23644f6da54cb01"><div class="ttname"><a href="namespaceSoapySDR.html#a324c34eda6854e47d23644f6da54cb01">SoapySDR::setLogLevel</a></div><div class="ttdeci">SOAPY_SDR_API void setLogLevel(const LogLevel logLevel)</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_a795feaacf27ca0008193fc362badaf27"><div class="ttname"><a href="namespaceSoapySDR.html#a795feaacf27ca0008193fc362badaf27">SoapySDR::registerLogHandler</a></div><div class="ttdeci">SOAPY_SDR_API void registerLogHandler(const LogHandler &amp;handler)</div></div>
 <div class="ttc" id="Logger_8h_html"><div class="ttname"><a href="Logger_8h.html">Logger.h</a></div></div>
 <div class="ttc" id="namespaceSoapySDR_html_acc85246abb7c67379bf2824ba144aa0d"><div class="ttname"><a href="namespaceSoapySDR.html#acc85246abb7c67379bf2824ba144aa0d">SoapySDR::log</a></div><div class="ttdeci">SOAPY_SDR_API void log(const LogLevel logLevel, const std::string &amp;message)</div></div>
 <div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
-<div class="ttc" id="Logger_8h_html_aa13726385238e2e8466130d685eede5e"><div class="ttname"><a href="Logger_8h.html#aa13726385238e2e8466130d685eede5e">SoapySDRLogHandler</a></div><div class="ttdeci">void(* SoapySDRLogHandler)(const SoapySDRLogLevel logLevel, const char *message)</div><div class="ttdef"><b>Definition:</b> Logger.h:68</div></div>
+<div class="ttc" id="Logger_8h_html_aa13726385238e2e8466130d685eede5e"><div class="ttname"><a href="Logger_8h.html#aa13726385238e2e8466130d685eede5e">SoapySDRLogHandler</a></div><div class="ttdeci">void(* SoapySDRLogHandler)(const SoapySDRLogLevel logLevel, const char *message)</div><div class="ttdef"><b>Definition:</b> Logger.h:80</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_a095fdafac63ba09d2d6cc1ce21c2611c"><div class="ttname"><a href="namespaceSoapySDR.html#a095fdafac63ba09d2d6cc1ce21c2611c">SoapySDR::LogLevel</a></div><div class="ttdeci">SoapySDRLogLevel LogLevel</div><div class="ttdef"><b>Definition:</b> Logger.hpp:21</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

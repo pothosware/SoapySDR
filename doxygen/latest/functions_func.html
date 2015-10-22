@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -73,6 +73,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>All</span></a></li>
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
+      <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
+      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
@@ -121,6 +123,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>activateStream()
 : <a class="el" href="classSoapySDR_1_1Device.html#af778f46410037507038479670492eb01">SoapySDR::Device</a>
 </li>
+<li>ArgInfo()
+: <a class="el" href="classSoapySDR_1_1ArgInfo.html#a5d9d91c6f81dec91dee366133e0ec09f">SoapySDR::ArgInfo</a>
+</li>
 </ul>
 
 
@@ -140,7 +145,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>enumerate()
-: <a class="el" href="classSoapySDR_1_1Device.html#a92c68206634b1c0f1774e4ee6bd5fedd">SoapySDR::Device</a>
+: <a class="el" href="classSoapySDR_1_1Device.html#a562f4fc2cb77d134357b111d3d5256ff">SoapySDR::Device</a>
 </li>
 </ul>
 
@@ -169,6 +174,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>getFrequency()
 : <a class="el" href="classSoapySDR_1_1Device.html#a660fdf1b8df3397607f13cb5145d91d0">SoapySDR::Device</a>
+</li>
+<li>getFrequencyArgsInfo()
+: <a class="el" href="classSoapySDR_1_1Device.html#a0d855b7049bd2291c209527cd82bce98">SoapySDR::Device</a>
 </li>
 <li>getFrequencyRange()
 : <a class="el" href="classSoapySDR_1_1Device.html#aa322708095a5e203757f8c47a159bc05">SoapySDR::Device</a>
@@ -203,6 +211,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>getMasterClockRate()
 : <a class="el" href="classSoapySDR_1_1Device.html#aac696eacf77aecd7750b179fbf76f31b">SoapySDR::Device</a>
 </li>
+<li>getMasterClockRates()
+: <a class="el" href="classSoapySDR_1_1Device.html#a509e5655f1466059974c13f3db63a4d2">SoapySDR::Device</a>
+</li>
+<li>getNativeStreamFormat()
+: <a class="el" href="classSoapySDR_1_1Device.html#a14f822788b56b5ebb0d388e904b6685b">SoapySDR::Device</a>
+</li>
 <li>getNumChannels()
 : <a class="el" href="classSoapySDR_1_1Device.html#ad9b1457772212674458521419f76a911">SoapySDR::Device</a>
 </li>
@@ -211,6 +225,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>getSampleRate()
 : <a class="el" href="classSoapySDR_1_1Device.html#ae467ff8003678fbaedab8ef023a156a9">SoapySDR::Device</a>
+</li>
+<li>getSensorInfo()
+: <a class="el" href="classSoapySDR_1_1Device.html#a46b9db4ac856fdd3e9a27da62446c2b4">SoapySDR::Device</a>
+</li>
+<li>getSettingInfo()
+: <a class="el" href="classSoapySDR_1_1Device.html#abd1f92919d54ffc9bd0115b21dfa9afb">SoapySDR::Device</a>
+</li>
+<li>getStreamArgsInfo()
+: <a class="el" href="classSoapySDR_1_1Device.html#a101a6e65386a31bfcd4d5a935a8d7b96">SoapySDR::Device</a>
+</li>
+<li>getStreamFormats()
+: <a class="el" href="classSoapySDR_1_1Device.html#a93e71578cdd1123065428a6ed0cbbf67">SoapySDR::Device</a>
 </li>
 <li>getStreamMTU()
 : <a class="el" href="classSoapySDR_1_1Device.html#a49c03a51884b121b8eb5afca0c9c400f">SoapySDR::Device</a>
@@ -227,6 +253,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>hasDCOffsetMode()
 : <a class="el" href="classSoapySDR_1_1Device.html#ac59df047fc98fbed1799e048af0ae730">SoapySDR::Device</a>
+</li>
+<li>hasGainMode()
+: <a class="el" href="classSoapySDR_1_1Device.html#a97c5d620f2699425a793e283eeadd2bf">SoapySDR::Device</a>
 </li>
 <li>hasHardwareTime()
 : <a class="el" href="classSoapySDR_1_1Device.html#a77669546f4d519b589e1ba75ade18a24">SoapySDR::Device</a>
@@ -432,7 +461,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

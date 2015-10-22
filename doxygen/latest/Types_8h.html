@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Types.h File Reference</div>  </div>
@@ -103,6 +104,19 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition for a key/value string map.  <a href="structSoapySDRKwargs.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition for argument info.  <a href="structSoapySDRArgInfo.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a1e35540d68f16b541eedec132d92614d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614d">SoapySDRArgInfoType</a> { <a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614da95dbd951bc5a2606b435cd1221e1163a">SOAPY_SDR_ARG_INFO_BOOL</a>, 
+<a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614dab3426397cd6fc84af2f39963b6afc26c">SOAPY_SDR_ARG_INFO_INT</a>, 
+<a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614daa3fecb094334ab31fdd4dbb6f933b65a">SOAPY_SDR_ARG_INFO_FLOAT</a>, 
+<a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614dadcc0c508189705282933322d47855ed2">SOAPY_SDR_ARG_INFO_STRING</a>
+ }</td></tr>
+<tr class="memdesc:a1e35540d68f16b541eedec132d92614d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible data types for argument info.  <a href="Types_8h.html#a1e35540d68f16b541eedec132d92614d">More...</a><br/></td></tr>
+<tr class="separator:a1e35540d68f16b541eedec132d92614d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -114,11 +128,86 @@ Functions</h2></td></tr>
 <tr class="separator:a2700a7977c5590be1811b8fc444a04c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac568687fafde7375d4381b04aeb0c7ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#ac568687fafde7375d4381b04aeb0c7ae">SoapySDRKwargs_clear</a> (<a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args)</td></tr>
 <tr class="separator:ac568687fafde7375d4381b04aeb0c7ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9edce1d903d891a2e83fda646ba6ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#ace9edce1d903d891a2e83fda646ba6ff">SoapySDRKwargsList_clear</a> (<a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args, const size_t length)</td></tr>
+<tr class="separator:ace9edce1d903d891a2e83fda646ba6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad193d37002b0361c46227d5e24bb6cb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#ad193d37002b0361c46227d5e24bb6cb4">SoapySDRArgInfo_clear</a> (<a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a> *info)</td></tr>
+<tr class="separator:ad193d37002b0361c46227d5e24bb6cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cf5b00f55f75d6c7feccb8ebdcab5d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#a0cf5b00f55f75d6c7feccb8ebdcab5d4">SoapySDRArgInfoList_clear</a> (<a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a> *info, const size_t length)</td></tr>
+<tr class="separator:a0cf5b00f55f75d6c7feccb8ebdcab5d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Misc data type definitions used in the API.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2014 Josh Blum SPDX-License-Identifier: BSL-1.0 </dd></dl>
-</div><h2 class="groupheader">Function Documentation</h2>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2015 Josh Blum SPDX-License-Identifier: BSL-1.0 </dd></dl>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="a1e35540d68f16b541eedec132d92614d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="Types_8h.html#a1e35540d68f16b541eedec132d92614d">SoapySDRArgInfoType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Possible data types for argument info. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="a1e35540d68f16b541eedec132d92614da95dbd951bc5a2606b435cd1221e1163a"></a>SOAPY_SDR_ARG_INFO_BOOL</em>&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a1e35540d68f16b541eedec132d92614dab3426397cd6fc84af2f39963b6afc26c"></a>SOAPY_SDR_ARG_INFO_INT</em>&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a1e35540d68f16b541eedec132d92614daa3fecb094334ab31fdd4dbb6f933b65a"></a>SOAPY_SDR_ARG_INFO_FLOAT</em>&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><em><a class="anchor" id="a1e35540d68f16b541eedec132d92614dadcc0c508189705282933322d47855ed2"></a>SOAPY_SDR_ARG_INFO_STRING</em>&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ad193d37002b0361c46227d5e24bb6cb4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDRArgInfo_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a> *&#160;</td>
+          <td class="paramname"><em>info</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Clear the contents of a argument info structure. This frees all the underlying memory and clears the members. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0cf5b00f55f75d6c7feccb8ebdcab5d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDRArgInfoList_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a> *&#160;</td>
+          <td class="paramname"><em>info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Clear a list of argument info structures. This frees all the underlying memory and clears the members. </p>
+
+</div>
+</div>
 <a class="anchor" id="ac568687fafde7375d4381b04aeb0c7ae"></a>
 <div class="memitem">
 <div class="memproto">
@@ -197,6 +286,33 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ace9edce1d903d891a2e83fda646ba6ff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDRKwargsList_clear </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Clear a list of kwargs structures. This frees all the underlying memory and clears the members. </p>
+
+</div>
+</div>
 <a class="anchor" id="a6b2f720f65ba9637e0e3da7eb907feb5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +343,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

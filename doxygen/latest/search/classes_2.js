@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['soapysdrkwargs',['SoapySDRKwargs',['../structSoapySDRKwargs.html',1,'']]],
-  ['soapysdrrange',['SoapySDRRange',['../structSoapySDRRange.html',1,'']]]
+  ['range',['Range',['../classSoapySDR_1_1Range.html',1,'SoapySDR']]],
+  ['registry',['Registry',['../classSoapySDR_1_1Registry.html',1,'SoapySDR']]]
 ];

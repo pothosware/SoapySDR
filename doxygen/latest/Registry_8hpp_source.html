@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -101,7 +101,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span>Device;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">   26</a></span>&#160;<span class="keyword">typedef</span> std::vector&lt;Kwargs&gt; (*FindFunction)(<span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;);</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">   26</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">KwargsList</a> (*<a class="code" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">FindFunction</a>)(<span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">   29</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="classSoapySDR_1_1Device.html">Device</a>* (*MakeFunction)(<span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
@@ -113,7 +113,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classSoapySDR_1_1Registry.html">Registry</a>(<span class="keyword">const</span> std::string &amp;name, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">FindFunction</a> &amp;find, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">MakeFunction</a> &amp;make, <span class="keyword">const</span> std::string &amp;abi);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classSoapySDR_1_1Registry.html">Registry</a>(<span class="keyword">const</span> std::string &amp;name, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">FindFunction</a> &amp;find, <span class="keyword">const</span> <a class="code" href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">MakeFunction</a> &amp;make, <span class="keyword">const</span> std::string &amp;abi);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">static</span> <a class="code" href="namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b">FindFunctions</a> listFindFunctions(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
@@ -121,6 +121,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;};</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="ttc" id="namespaceSoapySDR_html_adfeb27ccbf4f8840debd7c21757c72d6"><div class="ttname"><a href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">SoapySDR::KwargsList</a></div><div class="ttdeci">std::vector&lt; Kwargs &gt; KwargsList</div><div class="ttdoc">Typedef for a list of key-word dictionaries. </div><div class="ttdef"><b>Definition:</b> Types.hpp:25</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_a7d08858b95cfb5bb44328cc1462b1cc6"><div class="ttname"><a href="namespaceSoapySDR.html#a7d08858b95cfb5bb44328cc1462b1cc6">SoapySDR::FindFunction</a></div><div class="ttdeci">KwargsList(* FindFunction)(const Kwargs &amp;)</div><div class="ttdoc">typedef for a device enumeration function </div><div class="ttdef"><b>Definition:</b> Registry.hpp:26</div></div>
 <div class="ttc" id="Config_8hpp_html"><div class="ttname"><a href="Config_8hpp.html">Config.hpp</a></div></div>
 <div class="ttc" id="namespaceSoapySDR_html_ac7c038598fa1a11acee1b0194f9dad62"><div class="ttname"><a href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">SoapySDR::Kwargs</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; Kwargs</div><div class="ttdoc">Typedef for a dictionary of key-value string arguments. </div><div class="ttdef"><b>Definition:</b> Types.hpp:22</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_af73e5e46a1d87b30593e137296e96b8d"><div class="ttname"><a href="namespaceSoapySDR.html#af73e5e46a1d87b30593e137296e96b8d">SoapySDR::MakeFunction</a></div><div class="ttdeci">Device *(* MakeFunction)(const Kwargs &amp;)</div><div class="ttdoc">typedef for a device factory function </div><div class="ttdef"><b>Definition:</b> Registry.hpp:29</div></div>
@@ -131,11 +133,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classSoapySDR_1_1Device_html"><div class="ttname"><a href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></div><div class="ttdef"><b>Definition:</b> Device.hpp:30</div></div>
 <div class="ttc" id="Version_8hpp_html"><div class="ttname"><a href="Version_8hpp.html">Version.hpp</a></div></div>
 <div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
-<div class="ttc" id="namespaceSoapySDR_html_ade8a97c12a17d62ff58bf472b9941346"><div class="ttname"><a href="namespaceSoapySDR.html#ade8a97c12a17d62ff58bf472b9941346">SoapySDR::FindFunction</a></div><div class="ttdeci">std::vector&lt; Kwargs &gt;(* FindFunction)(const Kwargs &amp;)</div><div class="ttdoc">typedef for a device enumeration function </div><div class="ttdef"><b>Definition:</b> Registry.hpp:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

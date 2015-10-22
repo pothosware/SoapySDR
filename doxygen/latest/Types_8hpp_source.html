@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -100,47 +100,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">   22</a></span>&#160;<span class="keyword">typedef</span> std::map&lt;std::string, std::string&gt; <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="code" href="classSoapySDR_1_1Range.html">Range</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="classSoapySDR_1_1Range.html">Range</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">   25</a></span>&#160;<span class="keyword">typedef</span> std::vector&lt;Kwargs&gt; <a class="code" href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">KwargsList</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="code" href="classSoapySDR_1_1Range.html">Range</a></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="classSoapySDR_1_1Range.html">Range</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> minimum, <span class="keyword">const</span> <span class="keywordtype">double</span> maximum);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="classSoapySDR_1_1Range.html">Range</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">double</span> minimum(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="classSoapySDR_1_1Range.html">Range</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> minimum, <span class="keyword">const</span> <span class="keywordtype">double</span> maximum);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> maximum(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> minimum(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">double</span> _min, _max;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">   52</a></span>&#160;<span class="keyword">typedef</span> std::vector&lt;Range&gt; <a class="code" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">   56</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">SoapySDR::Range::minimum</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">return</span> _min;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">   61</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">SoapySDR::Range::maximum</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">return</span> _max;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">double</span> maximum(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">double</span> _min, _max;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">   55</a></span>&#160;<span class="keyword">typedef</span> std::vector&lt;Range&gt; <a class="code" href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">RangeList</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="code" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#ac6ff8b7f7fe6601d4fd6cfaf160ce115">   68</a></span>&#160;    std::string <a class="code" href="classSoapySDR_1_1ArgInfo.html#ac6ff8b7f7fe6601d4fd6cfaf160ce115">key</a>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a843f950b5002aea712e030b7111f89d1">   75</a></span>&#160;    std::string <a class="code" href="classSoapySDR_1_1ArgInfo.html#a843f950b5002aea712e030b7111f89d1">value</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a9528b7e313bef323c32678eb239d2eec">   78</a></span>&#160;    std::string <a class="code" href="classSoapySDR_1_1ArgInfo.html#a9528b7e313bef323c32678eb239d2eec">name</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a6d999c94c0da4d201a13664ebb9f91fd">   81</a></span>&#160;    std::string <a class="code" href="classSoapySDR_1_1ArgInfo.html#a6d999c94c0da4d201a13664ebb9f91fd">description</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a61de314975b0cb56578ffea3c30d0ec4">   84</a></span>&#160;    std::string <a class="code" href="classSoapySDR_1_1ArgInfo.html#a61de314975b0cb56578ffea3c30d0ec4">units</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aed">   87</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aed">Type</a> {BOOL, INT, FLOAT, STRING} type;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a6878e84000f63cfd5819b37caee62fe8">   94</a></span>&#160;    <a class="code" href="classSoapySDR_1_1Range.html">Range</a> <a class="code" href="classSoapySDR_1_1ArgInfo.html#a6878e84000f63cfd5819b37caee62fe8">range</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a69df07a6c4e8b69ad14126cd8c86eda7">  100</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="classSoapySDR_1_1ArgInfo.html#a69df07a6c4e8b69ad14126cd8c86eda7">options</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1ArgInfo.html#a6fc666259d76c3987ebe9a683b20f342">  106</a></span>&#160;    std::vector&lt;std::string&gt; <a class="code" href="classSoapySDR_1_1ArgInfo.html#a6fc666259d76c3987ebe9a683b20f342">optionNames</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;};</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">  112</a></span>&#160;<span class="keyword">typedef</span> std::vector&lt;ArgInfo&gt; <a class="code" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">  116</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">SoapySDR::Range::minimum</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">return</span> _min;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">  121</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">double</span> <a class="code" href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">SoapySDR::Range::maximum</a>(<span class="keywordtype">void</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordflow">return</span> _max;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}</div>
 <div class="ttc" id="Types_8h_html"><div class="ttname"><a href="Types_8h.html">Types.h</a></div></div>
-<div class="ttc" id="classSoapySDR_1_1Range_html"><div class="ttname"><a href="classSoapySDR_1_1Range.html">SoapySDR::Range</a></div><div class="ttdef"><b>Definition:</b> Types.hpp:27</div></div>
-<div class="ttc" id="classSoapySDR_1_1Range_html_ae6bfca82cea08fb7cd1fc728187a6be2"><div class="ttname"><a href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">SoapySDR::Range::maximum</a></div><div class="ttdeci">double maximum(void) const </div><div class="ttdoc">Get the range maximum. </div><div class="ttdef"><b>Definition:</b> Types.hpp:61</div></div>
+<div class="ttc" id="classSoapySDR_1_1Range_html"><div class="ttname"><a href="classSoapySDR_1_1Range.html">SoapySDR::Range</a></div><div class="ttdef"><b>Definition:</b> Types.hpp:30</div></div>
+<div class="ttc" id="classSoapySDR_1_1Range_html_ae6bfca82cea08fb7cd1fc728187a6be2"><div class="ttname"><a href="classSoapySDR_1_1Range.html#ae6bfca82cea08fb7cd1fc728187a6be2">SoapySDR::Range::maximum</a></div><div class="ttdeci">double maximum(void) const </div><div class="ttdoc">Get the range maximum. </div><div class="ttdef"><b>Definition:</b> Types.hpp:121</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_adfeb27ccbf4f8840debd7c21757c72d6"><div class="ttname"><a href="namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6">SoapySDR::KwargsList</a></div><div class="ttdeci">std::vector&lt; Kwargs &gt; KwargsList</div><div class="ttdoc">Typedef for a list of key-word dictionaries. </div><div class="ttdef"><b>Definition:</b> Types.hpp:25</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_a95e03ef3609c4efd972b1178cf0b5370"><div class="ttname"><a href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">SoapySDR::ArgInfoList</a></div><div class="ttdeci">std::vector&lt; ArgInfo &gt; ArgInfoList</div><div class="ttdef"><b>Definition:</b> Types.hpp:112</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a6878e84000f63cfd5819b37caee62fe8"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a6878e84000f63cfd5819b37caee62fe8">SoapySDR::ArgInfo::range</a></div><div class="ttdeci">Range range</div><div class="ttdef"><b>Definition:</b> Types.hpp:94</div></div>
 <div class="ttc" id="Config_8hpp_html"><div class="ttname"><a href="Config_8hpp.html">Config.hpp</a></div></div>
 <div class="ttc" id="namespaceSoapySDR_html_ac7c038598fa1a11acee1b0194f9dad62"><div class="ttname"><a href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">SoapySDR::Kwargs</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; Kwargs</div><div class="ttdoc">Typedef for a dictionary of key-value string arguments. </div><div class="ttdef"><b>Definition:</b> Types.hpp:22</div></div>
-<div class="ttc" id="namespaceSoapySDR_html_a75daa1b2fa0c08e898b805ce23d7672e"><div class="ttname"><a href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">SoapySDR::RangeList</a></div><div class="ttdeci">std::vector&lt; Range &gt; RangeList</div><div class="ttdef"><b>Definition:</b> Types.hpp:52</div></div>
-<div class="ttc" id="classSoapySDR_1_1Range_html_a834cebf3965864d187b6347dd6bd6678"><div class="ttname"><a href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">SoapySDR::Range::minimum</a></div><div class="ttdeci">double minimum(void) const </div><div class="ttdoc">Get the range minimum. </div><div class="ttdef"><b>Definition:</b> Types.hpp:56</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_a75daa1b2fa0c08e898b805ce23d7672e"><div class="ttname"><a href="namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e">SoapySDR::RangeList</a></div><div class="ttdeci">std::vector&lt; Range &gt; RangeList</div><div class="ttdef"><b>Definition:</b> Types.hpp:55</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html">SoapySDR::ArgInfo</a></div><div class="ttdef"><b>Definition:</b> Types.hpp:60</div></div>
+<div class="ttc" id="classSoapySDR_1_1Range_html_a834cebf3965864d187b6347dd6bd6678"><div class="ttname"><a href="classSoapySDR_1_1Range.html#a834cebf3965864d187b6347dd6bd6678">SoapySDR::Range::minimum</a></div><div class="ttdeci">double minimum(void) const </div><div class="ttdoc">Get the range minimum. </div><div class="ttdef"><b>Definition:</b> Types.hpp:116</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a6d999c94c0da4d201a13664ebb9f91fd"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a6d999c94c0da4d201a13664ebb9f91fd">SoapySDR::ArgInfo::description</a></div><div class="ttdeci">std::string description</div><div class="ttdoc">A brief description about the argument (optional) </div><div class="ttdef"><b>Definition:</b> Types.hpp:81</div></div>
 <div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a69df07a6c4e8b69ad14126cd8c86eda7"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a69df07a6c4e8b69ad14126cd8c86eda7">SoapySDR::ArgInfo::options</a></div><div class="ttdeci">std::vector&lt; std::string &gt; options</div><div class="ttdef"><b>Definition:</b> Types.hpp:100</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_ac6ff8b7f7fe6601d4fd6cfaf160ce115"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#ac6ff8b7f7fe6601d4fd6cfaf160ce115">SoapySDR::ArgInfo::key</a></div><div class="ttdeci">std::string key</div><div class="ttdoc">The key used to identify the argument (required) </div><div class="ttdef"><b>Definition:</b> Types.hpp:68</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a6fc666259d76c3987ebe9a683b20f342"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a6fc666259d76c3987ebe9a683b20f342">SoapySDR::ArgInfo::optionNames</a></div><div class="ttdeci">std::vector&lt; std::string &gt; optionNames</div><div class="ttdef"><b>Definition:</b> Types.hpp:106</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a9528b7e313bef323c32678eb239d2eec"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a9528b7e313bef323c32678eb239d2eec">SoapySDR::ArgInfo::name</a></div><div class="ttdeci">std::string name</div><div class="ttdoc">The displayable name of the argument (optional, use key if empty) </div><div class="ttdef"><b>Definition:</b> Types.hpp:78</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a61de314975b0cb56578ffea3c30d0ec4"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a61de314975b0cb56578ffea3c30d0ec4">SoapySDR::ArgInfo::units</a></div><div class="ttdeci">std::string units</div><div class="ttdoc">The units of the argument: dB, Hz, etc (optional) </div><div class="ttdef"><b>Definition:</b> Types.hpp:84</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_acf2322d6142ab0ae1f137730b6b54aed"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aed">SoapySDR::ArgInfo::Type</a></div><div class="ttdeci">Type</div><div class="ttdoc">The data type of the argument (required) </div><div class="ttdef"><b>Definition:</b> Types.hpp:87</div></div>
+<div class="ttc" id="classSoapySDR_1_1ArgInfo_html_a843f950b5002aea712e030b7111f89d1"><div class="ttname"><a href="classSoapySDR_1_1ArgInfo.html#a843f950b5002aea712e030b7111f89d1">SoapySDR::ArgInfo::value</a></div><div class="ttdeci">std::string value</div><div class="ttdef"><b>Definition:</b> Types.hpp:75</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

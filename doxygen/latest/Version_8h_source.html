@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -91,7 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="Config_8h.html">SoapySDR/Config.h</a>&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="Version_8h.html#ac37ad2e558bce396b003326f10d27633">   17</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_ABI_VERSION &quot;0.3-0&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="Version_8h.html#ac37ad2e558bce396b003326f10d27633">   17</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_ABI_VERSION &quot;0.4-2&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="Version_8h.html#a34d6719bb04c9d3035556e9e8420810a">   22</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_API_HAS_MASKED_GPIO</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
@@ -101,17 +101,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="Version_8h.html#a3466a2647907495a35616864a27034d4">   37</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_API_HAS_CORRECTIONS_QUERY</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Version_8h.html#ad229d625df0113e76ddfe83464b07154">SoapySDR_getAPIVersion</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Version_8h.html#a3287ca22a5e72248c21a1f6f8258e2ae">SoapySDR_getABIVersion</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="Version_8h.html#aa7cd2d51912d99d3818cc2172da7fae3">   42</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_API_HAS_CLOCK_RATES_QUERY</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="Version_8h.html#ad0d0e282a3f8130f1ebd57309e3392b3">   47</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_API_HAS_AGC_MODE_QUERY</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="Version_8h.html#aa79b72046f7d727b55293e44fbd8c31b">   52</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_STREAM_ARG_INFO</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="Version_8h.html#a8a015e0809cb145f5f7596dc20bf8549">   57</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_SETTING_ARG_INFO</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="Version_8h.html#a76318d63eed494b66aff07f7a8848bb7">   62</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_QUERY_SENSOR_INFO</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="Version_8h.html#a2c710467b3b27e1bf126f2aac41b9eed">   67</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_QUERY_TUNE_ARG_INFO</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="Version_8h.html#a1f051b68701e2f22f1bb2577361bef4f">   72</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_NATIVE_STREAM_FORMAT</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="Version_8h.html#ac1ba01c71b2c5a07e8fc24b773b83204">   77</a></span>&#160;<span class="preprocessor">#define SOAPY_SDR_SPI_HAS_SET_LOG_LEVEL</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Version_8h.html#ad229d625df0113e76ddfe83464b07154">SoapySDR_getAPIVersion</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Version_8h.html#a3287ca22a5e72248c21a1f6f8258e2ae">SoapySDR_getABIVersion</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="Version_8h_html_ad229d625df0113e76ddfe83464b07154"><div class="ttname"><a href="Version_8h.html#ad229d625df0113e76ddfe83464b07154">SoapySDR_getAPIVersion</a></div><div class="ttdeci">SOAPY_SDR_API const char * SoapySDR_getAPIVersion(void)</div></div>
 <div class="ttc" id="Config_8h_html"><div class="ttname"><a href="Config_8h.html">Config.h</a></div></div>
 <div class="ttc" id="Version_8h_html_a3287ca22a5e72248c21a1f6f8258e2ae"><div class="ttname"><a href="Version_8h.html#a3287ca22a5e72248c21a1f6f8258e2ae">SoapySDR_getABIVersion</a></div><div class="ttdeci">SOAPY_SDR_API const char * SoapySDR_getABIVersion(void)</div></div>
@@ -119,7 +135,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

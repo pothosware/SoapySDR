@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['soapysdrloghandler',['SoapySDRLogHandler',['../Logger_8h.html#aa13726385238e2e8466130d685eede5e',1,'Logger.h']]]
+  ['rangelist',['RangeList',['../namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e',1,'SoapySDR']]]
 ];

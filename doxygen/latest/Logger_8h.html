@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.3.1-g7583091a</span>
+   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -136,6 +136,8 @@ Functions</h2></td></tr>
 <tr class="separator:a11d7220d73c527ba984f2368bcaf96f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4ed0ed16e3133ea6150067336bb83a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Logger_8h.html#ad4ed0ed16e3133ea6150067336bb83a0">SoapySDR_registerLogHandler</a> (const <a class="el" href="Logger_8h.html#aa13726385238e2e8466130d685eede5e">SoapySDRLogHandler</a> handler)</td></tr>
 <tr class="separator:ad4ed0ed16e3133ea6150067336bb83a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93915ded5b954d73f0bf7f04d22abfc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Logger_8h.html#a93915ded5b954d73f0bf7f04d22abfc2">SoapySDR_setLogLevel</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a> logLevel)</td></tr>
+<tr class="separator:a93915ded5b954d73f0bf7f04d22abfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Logger API for <a class="el" href="namespaceSoapySDR.html">SoapySDR</a> devices. Implementations should use the logger rather than stdio. The default log handler prints to the stdout and stderr.</p>
@@ -179,6 +181,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>The available priority levels for log messages.</p>
+<p>The default log level threshold is SOAPY_SDR_INFO. Log messages with lower priorities are dropped.</p>
+<p>The default threshold can be set via the SOAPY_SDR_LOG_LEVEL environment variable. Set SOAPY_SDR_LOG_LEVEL to the string value: "WARNING", "ERROR", "DEBUG", etc... or set it to the equivalent integer value. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><em><a class="anchor" id="acca12132060bee17ae201b1c9604f7f0ada5d1fb7f2b331f0d96eb580c0277b35"></a>SOAPY_SDR_FATAL</em>&#160;</td><td class="fielddoc">
 <p>A fatal error. The application will most likely terminate. This is the highest priority. </p>
@@ -311,6 +316,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a93915ded5b954d73f0bf7f04d22abfc2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDR_setLogLevel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a>&#160;</td>
+          <td class="paramname"><em>logLevel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the log level threshold. Log messages with lower priority are dropped. </p>
+
+</div>
+</div>
 <a class="anchor" id="a95536e86eb2330c6fede2c54028bd943"></a>
 <div class="memitem">
 <div class="memproto">
@@ -355,7 +377,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 11 2015 11:26:48 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
