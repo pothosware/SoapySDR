@@ -156,7 +156,7 @@ public:
      * \param channel an available channel on the device
      * \return a list of allowed format strings
      */
-    std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
+    virtual std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
 
     /*!
      * Get the hardware's native stream format for this channel.
@@ -167,7 +167,7 @@ public:
      * \param [out] fullScale the maximum possible value
      * \return the native stream buffer format string
      */
-    std::string getNativeStreamFormat(const int direction, const size_t channel, double &fullScale) const;
+    virtual std::string getNativeStreamFormat(const int direction, const size_t channel, double &fullScale) const;
 
     /*!
      * Query the argument info description for stream args.
@@ -175,7 +175,7 @@ public:
      * \param channel an available channel on the device
      * \return a list of argument info structures
      */
-    ArgInfoList getStreamArgsInfo(const int direction, const size_t channel) const;
+    virtual ArgInfoList getStreamArgsInfo(const int direction, const size_t channel) const;
 
     /*!
      * Initialize a stream given a list of channels and stream arguments.
@@ -979,7 +979,7 @@ public:
      * Describe the allowed keys and values used for settings.
      * \return a list of argument info structures
      */
-    ArgInfoList getSettingInfo(void) const;
+    virtual ArgInfoList getSettingInfo(void) const;
 
     /*!
      * Write an arbitrary setting on the device.
