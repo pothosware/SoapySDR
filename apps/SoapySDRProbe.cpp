@@ -53,6 +53,34 @@ std::string toString(const std::vector<double> &nums, const double scale)
     return "[" + ss.str() + "]";
 }
 
+std::string toString(const SoapySDR::ArgInfo &argInfo)
+{
+    std::stringstream ss;
+
+    if (argInfo.name.empty()) ss << argInfo.key;
+    else ss << argInfo.name;
+
+    return ss.str();
+}
+
+std::string toString(const SoapySDR::ArgInfoList &argInfos)
+{
+    std::stringstream ss;
+
+    if (argInfos.size() > 3)
+    {
+        ss << "[" << toString(argInfos.front()) << ", " << toString(argInfos.back()) << "]";
+        return ss.str();
+    }
+
+    for (size_t i = 0; i < argInfos.size(); i++)
+    {
+        if (not ss.str().empty()) ss << ", ";
+        ss << toString(argInfos[i]);
+    }
+    return ss.str();
+}
+
 static std::string probeChannel(SoapySDR::Device *device, const int dir, const size_t chan)
 {
     std::stringstream ss;
@@ -65,6 +93,19 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     ss << "  Full-duplex: " << (device->getFullDuplex(dir, chan)?"YES":"NO") << std::endl;
     ss << "  Supports AGC: " << (device->hasGainMode(dir, chan)?"YES":"NO") << std::endl;
+
+    //formats
+    std::string formats = toString(device->getStreamFormats(dir, chan));
+    if (not formats.empty()) ss << "  Stream formats: " << formats << std::endl;
+
+    //native
+    double fullScale = 0.0;
+    std::string native = device->getNativeStreamFormat(dir, chan, fullScale);
+    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;
+
+    //stream args
+    std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
+    if (not streamArgs.empty()) ss << "  Stream args: " << streamArgs << std::endl;
 
     //antennas
     std::string antennas = toString(device->listAntennas(dir, chan));
@@ -95,6 +136,10 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
         const std::string name = freqsList[i];
         ss << "    " << name << " freq range: " << toString(device->getFrequencyRange(dir, chan, name), 1e6) << " MHz" << std::endl;
     }
+
+    //freq args
+    std::string freqArgs = toString(device->getFrequencyArgsInfo(dir, chan));
+    if (not freqArgs.empty()) ss << "  Tune args: " << freqArgs << std::endl;
 
     //rates
     ss << "  Sample rates: " << toString(device->listSampleRates(dir, chan), 1e6) << " MHz" << std::endl;
@@ -152,6 +197,9 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     std::string sensors = toString(device->listSensors());
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+
+    std::string settings = toString(device->getSettingInfo());
+    if (not settings.empty()) ss << "  Settings: " << settings << std::endl;
 
     std::string gpios = toString(device->listGPIOBanks());
     if (not gpios.empty()) ss << "  GPIOs: " << gpios << std::endl;
