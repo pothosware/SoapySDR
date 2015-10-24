@@ -421,8 +421,9 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
 
     const std::vector<std::string> comps = this->listFrequencies(dir, chan);
 
-    //support offset tuning when there are multiple components
-    if (comps.size() >= 2)
+    if (comps.size() < 2) return args; //no tuning options with single components
+
+    //support offset tuning
     {
         SoapySDR::ArgInfo info;
         info.key = "OFFSET";
