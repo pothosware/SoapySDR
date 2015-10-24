@@ -218,7 +218,7 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
 
     std::string settings = toString(device->getSettingInfo());
-    if (not settings.empty()) ss << "  Settings:" << std::endl << settings;
+    if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
 
     std::string gpios = toString(device->listGPIOBanks());
     if (not gpios.empty()) ss << "  GPIOs: " << gpios << std::endl;
