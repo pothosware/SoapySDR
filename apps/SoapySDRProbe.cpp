@@ -53,12 +53,37 @@ std::string toString(const std::vector<double> &nums, const double scale)
     return "[" + ss.str() + "]";
 }
 
-std::string toString(const SoapySDR::ArgInfo &argInfo)
+std::string toString(const SoapySDR::ArgInfo &argInfo, const std::string indent = "    ")
 {
     std::stringstream ss;
 
-    if (argInfo.name.empty()) ss << argInfo.key;
-    else ss << argInfo.name;
+    //name, or use key if missing
+    std::string name = argInfo.name;
+    if (argInfo.name.empty()) name = argInfo.key;
+    ss << indent << " * " << name;
+
+    //optional description
+    if (not argInfo.description.empty()) ss << " - " << argInfo.description << std::endl << indent << "  ";
+
+    //other fields
+    ss << " [key=" << argInfo.key;
+    if (not argInfo.units.empty()) ss << ", units=" << argInfo.units;
+    if (not argInfo.value.empty()) ss << ", default=" << argInfo.value;
+
+    //type
+    switch (argInfo.type)
+    {
+    case SoapySDR::ArgInfo::BOOL: ss << ", type=bool"; break;
+    case SoapySDR::ArgInfo::INT: ss << ", type=int"; break;
+    case SoapySDR::ArgInfo::FLOAT: ss << ", type=float"; break;
+    case SoapySDR::ArgInfo::STRING: ss << ", type=string"; break;
+    }
+
+    //optional range/enumeration
+    if (argInfo.range.minimum() < argInfo.range.maximum()) ss << ", range=" << toString(argInfo.range);
+    if (not argInfo.options.empty()) ss << ", options=(" << toString(argInfo.options) << ")";
+
+    ss << "]";
 
     return ss.str();
 }
@@ -67,17 +92,11 @@ std::string toString(const SoapySDR::ArgInfoList &argInfos)
 {
     std::stringstream ss;
 
-    if (argInfos.size() > 3)
-    {
-        ss << "[" << toString(argInfos.front()) << ", " << toString(argInfos.back()) << "]";
-        return ss.str();
-    }
-
     for (size_t i = 0; i < argInfos.size(); i++)
     {
-        if (not ss.str().empty()) ss << ", ";
-        ss << toString(argInfos[i]);
+        ss << toString(argInfos[i]) << std::endl;
     }
+
     return ss.str();
 }
 
@@ -105,7 +124,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
-    if (not streamArgs.empty()) ss << "  Stream args: " << streamArgs << std::endl;
+    if (not streamArgs.empty()) ss << "  Stream args:" << std::endl << streamArgs;
 
     //antennas
     std::string antennas = toString(device->listAntennas(dir, chan));
@@ -139,7 +158,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     //freq args
     std::string freqArgs = toString(device->getFrequencyArgsInfo(dir, chan));
-    if (not freqArgs.empty()) ss << "  Tune args: " << freqArgs << std::endl;
+    if (not freqArgs.empty()) ss << "  Tune args:" << std::endl << freqArgs;
 
     //rates
     ss << "  Sample rates: " << toString(device->listSampleRates(dir, chan), 1e6) << " MHz" << std::endl;
@@ -199,7 +218,7 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
 
     std::string settings = toString(device->getSettingInfo());
-    if (not settings.empty()) ss << "  Settings: " << settings << std::endl;
+    if (not settings.empty()) ss << "  Settings:" << std::endl << settings;
 
     std::string gpios = toString(device->listGPIOBanks());
     if (not gpios.empty()) ss << "  GPIOs: " << gpios << std::endl;
