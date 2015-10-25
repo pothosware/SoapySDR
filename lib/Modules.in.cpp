@@ -152,6 +152,13 @@ std::string &getModuleLoading(void)
     return moduleLoading;
 }
 
+//! share registration errors during loadModule
+std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void)
+{
+    static std::map<std::string, SoapySDR::Kwargs> results;
+    return results;
+}
+
 std::string SoapySDR::loadModule(const std::string &path)
 {
     //check if already loaded
@@ -176,6 +183,12 @@ std::string SoapySDR::loadModule(const std::string &path)
     return "";
 }
 
+SoapySDR::Kwargs SoapySDR::getLoaderResult(const std::string &path)
+{
+    if (getLoaderResults().count(path) == 0) return SoapySDR::Kwargs();
+    return getLoaderResults()[path];
+}
+
 std::string SoapySDR::unloadModule(const std::string &path)
 {
     //check if already loaded
@@ -197,6 +210,7 @@ std::string SoapySDR::unloadModule(const std::string &path)
 #endif
 
     //clear the handle
+    getLoaderResults().erase(path);
     getModuleHandles().erase(path);
     return "";
 }
@@ -214,7 +228,12 @@ void SoapySDR::loadModules(void)
     for (size_t i = 0; i < paths.size(); i++)
     {
         const std::string errorMsg = loadModule(paths[i]);
-        if (errorMsg.empty()) continue;
-        SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
+        if (not errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
+        const SoapySDR::Kwargs loaderResults = SoapySDR::getLoaderResult(paths[i]);
+        for (SoapySDR::Kwargs::const_iterator it = loaderResults.begin(); it != loaderResults.end(); ++it)
+        {
+            if (it->second.empty()) continue;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it->second.c_str());
+        }
     }
 }

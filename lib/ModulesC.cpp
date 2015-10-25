@@ -7,6 +7,7 @@
 #include <cstring>
 
 char **toStrArray(const std::vector<std::string> &strs, size_t *length);
+SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args);
 
 extern "C" {
 
@@ -29,6 +30,11 @@ char **SoapySDR_listModulesPath(const char *path, size_t *length)
 char *SoapySDR_loadModule(const char *path)
 {
     return strdup(SoapySDR::loadModule(path).c_str());
+}
+
+SoapySDRKwargs SoapySDR_getLoaderResult(const char *path)
+{
+    return toKwargs(SoapySDR::getLoaderResult(path));
 }
 
 char *SoapySDR_unloadModule(const char *path)

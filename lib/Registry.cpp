@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
-#include <SoapySDR/Logger.hpp>
 
-std::string &getModuleLoading(void);
-
+/***********************************************************************
+ * Function table holds all registration entries by name
+ **********************************************************************/
 struct FunctionsEntry
 {
     std::string modulePath;
@@ -21,29 +21,36 @@ static FunctionTable &getFunctionTable(void)
     return table;
 }
 
+/***********************************************************************
+ * Module loader shared data structures
+ **********************************************************************/
+std::string &getModuleLoading(void);
+
+std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void);
+
+/***********************************************************************
+ * Registry entry-point implementation
+ **********************************************************************/
 SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi)
 {
+    //create an entry for the loader result
+    std::string &errorMsg = getLoaderResults()[getModuleLoading()][name];
+
+    //abi check
     if (abi != SOAPY_SDR_ABI_VERSION)
     {
-        SoapySDR::logf(SOAPY_SDR_ERROR,
-            "SoapySDR::Registry(%s) failed ABI check\n"
-            "  Library ABI Version: %s\n"
-            "  Module ABI Version: %s\n"
-            "  Rebuild module against installed library...",
-            name.c_str(), SOAPY_SDR_ABI_VERSION, abi.c_str());
+        errorMsg = name + " failed ABI check: Library ABI=" SOAPY_SDR_ABI_VERSION ", Module ABI="+abi;
         return;
     }
 
+    //duplicate check
     if (getFunctionTable().count(name) != 0)
     {
-        SoapySDR::logf(SOAPY_SDR_ERROR,
-            "SoapySDR::Registry(%s) already registered\n"
-            "  From: %s\n"
-            "  Loading: %s",
-            name.c_str(), getFunctionTable()[name].modulePath.c_str(), getModuleLoading().c_str());
+        errorMsg = "duplicate entry for " + name + " ("+getFunctionTable()[name].modulePath + ")";
         return;
     }
 
+    //register functions
     FunctionsEntry entry;
     entry.modulePath = getModuleLoading();
     entry.find = find;
@@ -54,10 +61,14 @@ SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, 
 
 SoapySDR::Registry::~Registry(void)
 {
+    //erase entry
     if (_name.empty()) return;
     getFunctionTable().erase(_name);
 }
 
+/***********************************************************************
+ * Registry access API
+ **********************************************************************/
 SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 {
     FindFunctions functions;

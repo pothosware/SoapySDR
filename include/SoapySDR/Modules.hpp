@@ -12,6 +12,7 @@
 
 #pragma once
 #include <SoapySDR/Config.hpp>
+#include <SoapySDR/Types.hpp>
 #include <vector>
 #include <string>
 
@@ -40,6 +41,16 @@ SOAPY_SDR_API std::vector<std::string> listModules(const std::string &path);
  * \param return an error message, empty on success
  */
 SOAPY_SDR_API std::string loadModule(const std::string &path);
+
+/*!
+ * List all registration loader errors for a given module path.
+ * The resulting dictionary contains all registry entry names
+ * provided by the specified module. The value of each entry
+ * is an error message string or empty on successful load.
+ * \param path the path to a specific module file
+ * \return a dictionary of registry names to error messages
+ */
+SOAPY_SDR_API Kwargs getLoaderResult(const std::string &path);
 
 /*!
  * Unload a module that was loaded with loadModule().

@@ -12,6 +12,7 @@
 
 #pragma once
 #include <SoapySDR/Config.h>
+#include <SoapySDR/Types.h>
 #include <stddef.h> //size_t
 
 #ifdef __cplusplus
@@ -45,6 +46,16 @@ SOAPY_SDR_API char **SoapySDR_listModulesPath(const char *path, size_t *length);
  * \param return an error message, empty on success
  */
 SOAPY_SDR_API char *SoapySDR_loadModule(const char *path);
+
+/*!
+ * List all registration loader errors for a given module path.
+ * The resulting dictionary contains all registry entry names
+ * provided by the specified module. The value of each entry
+ * is an error message string or empty on successful load.
+ * \param path the path to a specific module file
+ * \return a dictionary of registry names to error messages
+ */
+SOAPY_SDR_API SoapySDRKwargs SoapySDR_getLoaderResult(const char *path);
 
 /*!
  * Unload a module that was loaded with loadModule().
