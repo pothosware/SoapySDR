@@ -162,7 +162,7 @@ std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void)
 std::string SoapySDR::loadModule(const std::string &path)
 {
     //check if already loaded
-    if (getModuleHandles().count(path) != 0) return "already loaded";
+    if (getModuleHandles().count(path) != 0) return path + " already loaded";
 
     //stash the path for registry access
     getModuleLoading().assign(path);
@@ -192,7 +192,7 @@ SoapySDR::Kwargs SoapySDR::getLoaderResult(const std::string &path)
 std::string SoapySDR::unloadModule(const std::string &path)
 {
     //check if already loaded
-    if (getModuleHandles().count(path) == 0) return "never loaded";
+    if (getModuleHandles().count(path) == 0) return path + " never loaded";
 
     //stash the path for registry access
     getModuleLoading().assign(path);
@@ -227,6 +227,7 @@ void SoapySDR::loadModules(void)
     const std::vector<std::string> paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
+        if (getModuleHandles().count(paths[i]) != 0) continue; //was manually loaded
         const std::string errorMsg = loadModule(paths[i]);
         if (not errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
         const SoapySDR::Kwargs loaderResults = SoapySDR::getLoaderResult(paths[i]);
