@@ -50,6 +50,9 @@ public:
      */
     Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi);
 
+    //! Cleanup this registry entry
+    ~Registry(void);
+
     /*!
      * List all loaded find functions.
      * \return a dictionary of module name to find function
@@ -61,6 +64,9 @@ public:
      * \return a dictionary of module name to make function
      */
     static MakeFunctions listMakeFunctions(void);
+
+private:
+    const std::string _name;
 };
 
 }

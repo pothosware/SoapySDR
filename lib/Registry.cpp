@@ -18,7 +18,8 @@ static FunctionTable &getFunctionTable(void)
     return table;
 }
 
-SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi)
+SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi):
+    _name(name)
 {
     if (abi != SOAPY_SDR_ABI_VERSION)
     {
@@ -32,6 +33,11 @@ SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, 
     entry.find = find;
     entry.make = make;
     getFunctionTable()[name] = entry;
+}
+
+SoapySDR::Registry::~Registry(void)
+{
+    getFunctionTable().erase(_name);
 }
 
 SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
