@@ -3,7 +3,6 @@
 
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Logger.hpp>
-#include <iostream>
 
 std::string &getModuleLoading(void);
 

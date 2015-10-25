@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -22,16 +22,37 @@ extern "C" {
 SOAPY_SDR_API const char *SoapySDR_getRootPath(void);
 
 /*!
- * List the paths to the modules available on this system.
+ * List all modules found in default path.
  * The result is an array of strings owned by the caller.
  * \param [out] length the number of elements in the result.
+ * \return a list of file paths to loadable modules
  */
 SOAPY_SDR_API char **SoapySDR_listModules(size_t *length);
 
 /*!
- * Load a single module given its file system path.
+ * List all modules found in the given path.
+ * The result is an array of strings owned by the caller.
+ * \param path a directory on the system
+ * \param [out] length the number of elements in the result.
+ * \return a list of file paths to loadable modules
  */
-SOAPY_SDR_API void SoapySDR_loadModule(const char *path);
+SOAPY_SDR_API char **SoapySDR_listModulesPath(const char *path, size_t *length);
+
+/*!
+ * Load a single module given its file system path.
+ * The caller must free the result error string.
+ * \param path the path to a specific module file
+ * \param return an error message, empty on success
+ */
+SOAPY_SDR_API char *SoapySDR_loadModule(const char *path);
+
+/*!
+ * Unload a module that was loaded with loadModule().
+ * The caller must free the result error string.
+ * \param path the path to a specific module file
+ * \param return an error message, empty on success
+ */
+SOAPY_SDR_API char *SoapySDR_unloadModule(const char *path);
 
 /*!
  * Load the support modules installed on this system.

@@ -37,16 +37,16 @@ SOAPY_SDR_API std::vector<std::string> listModules(const std::string &path);
 /*!
  * Load a single module given its file system path.
  * \param path the path to a specific module file
- * \return the modules handle to unload it later (null on error)
+ * \param return an error message, empty on success
  */
-SOAPY_SDR_API void *loadModule(const std::string &path);
+SOAPY_SDR_API std::string loadModule(const std::string &path);
 
 /*!
  * Unload a module that was loaded with loadModule().
- * \param handle the handle to a loaded module
- * \param return true on success, false on failure
+ * \param path the path to a specific module file
+ * \param return an error message, empty on success
  */
-SOAPY_SDR_API bool unloadModule(void *handle);
+SOAPY_SDR_API std::string unloadModule(const std::string &path);
 
 /*!
  * Load the support modules installed on this system.

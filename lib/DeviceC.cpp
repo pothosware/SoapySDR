@@ -24,7 +24,7 @@ struct SoapySDRDevice : SoapySDR::Device {};
 /*******************************************************************
  * Helpful converters
  ******************************************************************/
-static char **toStrArray(const std::vector<std::string> &strs, size_t *length)
+char **toStrArray(const std::vector<std::string> &strs, size_t *length)
 {
     char **out = (char **)calloc(strs.size(), sizeof(char *));
     for (size_t i = 0; i < strs.size(); i++)
