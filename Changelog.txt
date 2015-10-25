@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.0 (pending)
 ==========================
 
+- Improved module loader API and results query
 - New query information for SoapySDRUtil --probe
 - Added setLogLevel() and default log threshold
 - Added API to query native stream format
