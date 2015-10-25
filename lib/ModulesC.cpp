@@ -1,13 +1,11 @@
 // Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
+#include "TypeHelpers.hpp"
 #include <SoapySDR/Modules.h>
 #include <SoapySDR/Modules.hpp>
 #include <cstdlib>
 #include <cstring>
-
-char **toStrArray(const std::vector<std::string> &strs, size_t *length);
-SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args);
 
 extern "C" {
 
