@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
+#include <SoapySDR/Logger.hpp>
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
@@ -14,6 +15,13 @@
 #include <dlfcn.h>
 #include <glob.h>
 #endif
+
+//! share the module path during loadModule
+std::string &getModuleLoading(void)
+{
+    static std::string moduleLoading;
+    return moduleLoading;
+}
 
 /***********************************************************************
  * root installation path
@@ -124,24 +132,44 @@ std::vector<std::string> SoapySDR::listModules(void)
     std::vector<std::string> modules;
     for (size_t i = 0; i < searchPaths.size(); i++)
     {
-        const std::string &path = searchPaths.at(i) + "/"; //requires trailing slash
-        const std::vector<std::string> subModules = searchModulePath(path);
+        const std::vector<std::string> subModules = SoapySDR::listModules(searchPaths.at(i));
         modules.insert(modules.end(), subModules.begin(), subModules.end());
     }
     return modules;
 }
 
+std::vector<std::string> SoapySDR::listModules(const std::string &path)
+{
+    return searchModulePath(path + "/"); //requires trailing slash
+}
+
 /***********************************************************************
  * load module API call
  **********************************************************************/
-void SoapySDR::loadModule(const std::string &path)
+void *SoapySDR::loadModule(const std::string &path)
 {
+    getModuleLoading().assign(path);
 #ifdef _MSC_VER
     HMODULE handle = LoadLibrary(path.c_str());
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() LoadLibrary(" << path << ") failed: " << GetLastError() << std::endl;
+    if (handle == NULL) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule() LoadLibrary(%s) failed: %s", path.c_str(), GetLastError());
 #else
     void *handle = dlopen(path.c_str(), RTLD_LAZY);
-    if (handle == NULL) std::cerr << "SoapySDR::loadModules() dlopen(" << path << ") failed: " << dlerror() << std::endl;
+    if (handle == NULL) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule() dlopen(%s) failed: %s", path.c_str(), dlerror());
+#endif
+    getModuleLoading().clear();
+    return handle;
+}
+
+bool SoapySDR::unloadModule(void *handle)
+{
+#ifdef _MSC_VER
+    BOOL success = FreeLibrary((HMODULE)handle);
+    if (not success) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::unloadModule() FreeLibrary() failed: %s", GetLastError());
+    return success != 0;
+#else
+    int status = dlclose(handle);
+    if (status != 0) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::unloadModule() dlclose() failed: %s", dlerror());
+    return status == 0;
 #endif
 }
 

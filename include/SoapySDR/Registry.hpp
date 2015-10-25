@@ -66,7 +66,7 @@ public:
     static MakeFunctions listMakeFunctions(void);
 
 private:
-    const std::string _name;
+    std::string _name;
 };
 
 }

@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2014 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -22,14 +22,31 @@ namespace SoapySDR
 SOAPY_SDR_API std::string getRootPath(void);
 
 /*!
- * List the paths to the modules available on this system.
+ * List all modules found in default path.
+ * \return a list of file paths to loadable modules
  */
 SOAPY_SDR_API std::vector<std::string> listModules(void);
 
 /*!
- * Load a single module given its file system path.
+ * List all modules found in the given path.
+ * \param path a directory on the system
+ * \return a list of file paths to loadable modules
  */
-SOAPY_SDR_API void loadModule(const std::string &path);
+SOAPY_SDR_API std::vector<std::string> listModules(const std::string &path);
+
+/*!
+ * Load a single module given its file system path.
+ * \param path the path to a specific module file
+ * \return the modules handle to unload it later (null on error)
+ */
+SOAPY_SDR_API void *loadModule(const std::string &path);
+
+/*!
+ * Unload a module that was loaded with loadModule().
+ * \param handle the handle to a loaded module
+ * \param return true on success, false on failure
+ */
+SOAPY_SDR_API bool unloadModule(void *handle);
 
 /*!
  * Load the support modules installed on this system.
