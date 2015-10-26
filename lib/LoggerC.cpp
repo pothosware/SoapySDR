@@ -94,9 +94,11 @@ void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list
 {
     if (logLevel > registeredLogLevel) return;
     char *message = NULL;
-    vasprintf(&message, format, argList);
-    SoapySDR_log(logLevel, message);
-    free(message);
+    if (vasprintf(&message, format, argList) != -1)
+    {
+        SoapySDR_log(logLevel, message);
+        free(message);
+    }
 }
 
 void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
