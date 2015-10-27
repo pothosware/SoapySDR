@@ -159,6 +159,28 @@ std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void)
     return results;
 }
 
+#ifdef _MSC_VER
+static std::string GetLastErrorMessage(void)
+{
+    LPVOID lpMsgBuf;
+    DWORD dw = GetLastError();
+
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+        FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        dw,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR) &lpMsgBuf,
+        0, NULL );
+
+    std::string msg((char *)lpMsgBuf);
+    LocalFree(lpMsgBuf);
+    return msg;
+}
+#endif
+
 std::string SoapySDR::loadModule(const std::string &path)
 {
     //check if already loaded
@@ -171,7 +193,7 @@ std::string SoapySDR::loadModule(const std::string &path)
 #ifdef _MSC_VER
     HMODULE handle = LoadLibrary(path.c_str());
     getModuleLoading().clear();
-    if (handle == NULL) return "LoadLibrary() failed: " + std::string(GetLastError());
+    if (handle == NULL) return "LoadLibrary() failed: " + GetLastErrorMessage();
 #else
     void *handle = dlopen(path.c_str(), RTLD_LAZY);
     getModuleLoading().clear();
@@ -202,7 +224,7 @@ std::string SoapySDR::unloadModule(const std::string &path)
 #ifdef _MSC_VER
     BOOL success = FreeLibrary((HMODULE)handle);
     getModuleLoading().clear();
-    if (not success) return "FreeLibrary() failed: " + std::string(GetLastError());
+    if (not success) return "FreeLibrary() failed: " + GetLastErrorMessage();
 #else
     int status = dlclose(handle);
     getModuleLoading().clear();
