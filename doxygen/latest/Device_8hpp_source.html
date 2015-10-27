@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
+   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -145,11 +145,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">     * Stream API</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">     ******************************************************************/</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    std::vector&lt;std::string&gt; getStreamFormats(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">virtual</span> std::vector&lt;std::string&gt; getStreamFormats(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    std::string getNativeStreamFormat(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keywordtype">double</span> &amp;fullScale) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">virtual</span> std::string getNativeStreamFormat(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel, <span class="keywordtype">double</span> &amp;fullScale) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> getStreamArgsInfo(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> getStreamArgsInfo(<span class="keyword">const</span> <span class="keywordtype">int</span> direction, <span class="keyword">const</span> <span class="keywordtype">size_t</span> channel) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">virtual</span> Stream *setupStream(</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> direction,</div>
@@ -382,7 +382,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;<span class="comment">     * Settings API</span></div>
 <div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;<span class="comment">     ******************************************************************/</span></div>
 <div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;</div>
-<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;    <a class="code" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> getSettingInfo(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> getSettingInfo(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;</div>
 <div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeSetting(<span class="keyword">const</span> std::string &amp;key, <span class="keyword">const</span> std::string &amp;value);</div>
 <div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;</div>
@@ -448,7 +448,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

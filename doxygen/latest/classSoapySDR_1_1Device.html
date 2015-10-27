@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
+   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -118,12 +118,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad9b1457772212674458521419f76a911"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada93d36b990c60a6428b8fc6a33796c6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ada93d36b990c60a6428b8fc6a33796c6">getFullDuplex</a> (const int direction, const size_t channel) const </td></tr>
 <tr class="separator:ada93d36b990c60a6428b8fc6a33796c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93e71578cdd1123065428a6ed0cbbf67"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a93e71578cdd1123065428a6ed0cbbf67">getStreamFormats</a> (const int direction, const size_t channel) const </td></tr>
-<tr class="separator:a93e71578cdd1123065428a6ed0cbbf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14f822788b56b5ebb0d388e904b6685b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a14f822788b56b5ebb0d388e904b6685b">getNativeStreamFormat</a> (const int direction, const size_t channel, double &amp;fullScale) const </td></tr>
-<tr class="separator:a14f822788b56b5ebb0d388e904b6685b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a101a6e65386a31bfcd4d5a935a8d7b96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a101a6e65386a31bfcd4d5a935a8d7b96">getStreamArgsInfo</a> (const int direction, const size_t channel) const </td></tr>
-<tr class="separator:a101a6e65386a31bfcd4d5a935a8d7b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d9d0a21b9076d9e16078665cbb77f88"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a4d9d0a21b9076d9e16078665cbb77f88">getStreamFormats</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:a4d9d0a21b9076d9e16078665cbb77f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a035315c1b744e97bed270e1cd0025c73"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a035315c1b744e97bed270e1cd0025c73">getNativeStreamFormat</a> (const int direction, const size_t channel, double &amp;fullScale) const </td></tr>
+<tr class="separator:a035315c1b744e97bed270e1cd0025c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1abc62ff80f405a31e2825f147e3c1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#aad1abc62ff80f405a31e2825f147e3c1">getStreamArgsInfo</a> (const int direction, const size_t channel) const </td></tr>
+<tr class="separator:aad1abc62ff80f405a31e2825f147e3c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a64e7fef972e9c24bbc2f1b4811a38f"><td class="memItemLeft" align="right" valign="top">virtual Stream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a8a64e7fef972e9c24bbc2f1b4811a38f">setupStream</a> (const int direction, const std::string &amp;format, const std::vector&lt; size_t &gt; &amp;channels=std::vector&lt; size_t &gt;(), const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;args=<a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>())</td></tr>
 <tr class="separator:a8a64e7fef972e9c24bbc2f1b4811a38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3af55b3e429765b8e057b2b8c2af009b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a3af55b3e429765b8e057b2b8c2af009b">closeStream</a> (Stream *stream)</td></tr>
@@ -266,8 +266,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6e2197da76406a7ca40cac44b52ec836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc2efbb1c1b248a17320eb1e538112e8"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8">readRegister</a> (const unsigned addr) const </td></tr>
 <tr class="separator:adc2efbb1c1b248a17320eb1e538112e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd1f92919d54ffc9bd0115b21dfa9afb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#abd1f92919d54ffc9bd0115b21dfa9afb">getSettingInfo</a> (void) const </td></tr>
-<tr class="separator:abd1f92919d54ffc9bd0115b21dfa9afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeecdfd72f5cb624aa2c9c8d90b9e6af"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#abeecdfd72f5cb624aa2c9c8d90b9e6af">getSettingInfo</a> (void) const </td></tr>
+<tr class="separator:abeecdfd72f5cb624aa2c9c8d90b9e6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a8e4f0b6253aabb31f0cdbd2e98f40114">writeSetting</a> (const std::string &amp;key, const std::string &amp;value)</td></tr>
 <tr class="separator:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a993563ec4b3f426e3b54e7e44ca2c620"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620">readSetting</a> (const std::string &amp;key) const </td></tr>
@@ -1668,12 +1668,15 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a14f822788b56b5ebb0d388e904b6685b"></a>
+<a class="anchor" id="a035315c1b744e97bed270e1cd0025c73"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string SoapySDR::Device::getNativeStreamFormat </td>
+          <td class="memname">virtual std::string SoapySDR::Device::getNativeStreamFormat </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
@@ -1696,6 +1699,11 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Get the hardware's native stream format for this channel. This is the format used by the underlying transport layer, and the direct buffer access API calls (when available). </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1892,30 +1900,41 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abd1f92919d54ffc9bd0115b21dfa9afb"></a>
+<a class="anchor" id="abeecdfd72f5cb624aa2c9c8d90b9e6af"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> SoapySDR::Device::getSettingInfo </td>
+          <td class="memname">virtual <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> SoapySDR::Device::getSettingInfo </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Describe the allowed keys and values used for settings. </p>
 <dl class="section return"><dt>Returns</dt><dd>a list of argument info structures </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a101a6e65386a31bfcd4d5a935a8d7b96"></a>
+<a class="anchor" id="aad1abc62ff80f405a31e2825f147e3c1"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> SoapySDR::Device::getStreamArgsInfo </td>
+          <td class="memname">virtual <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a> SoapySDR::Device::getStreamArgsInfo </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
@@ -1932,6 +1951,11 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Query the argument info description for stream args. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1945,12 +1969,15 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a93e71578cdd1123065428a6ed0cbbf67"></a>
+<a class="anchor" id="a4d9d0a21b9076d9e16078665cbb77f88"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::string&gt; SoapySDR::Device::getStreamFormats </td>
+          <td class="memname">virtual std::vector&lt;std::string&gt; SoapySDR::Device::getStreamFormats </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
@@ -1967,6 +1994,11 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Query a list of the available stream formats. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -4629,7 +4661,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

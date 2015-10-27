@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
+   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -90,31 +90,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="Modules_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="Config_8hpp.html">SoapySDR/Config.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span>SoapySDR</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string <a class="code" href="namespaceSoapySDR.html#a37a1da663087d48150012087b442c954">getRootPath</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector&lt;std::string&gt; <a class="code" href="namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86">listModules</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="namespaceSoapySDR.html#a9e1d118d5d1e5b471683eb05e14a1f1a">loadModule</a>(<span class="keyword">const</span> std::string &amp;path);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">loadModules</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Types_8hpp.html">SoapySDR/Types.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span>SoapySDR</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string <a class="code" href="namespaceSoapySDR.html#a37a1da663087d48150012087b442c954">getRootPath</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector&lt;std::string&gt; <a class="code" href="namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86">listModules</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector&lt;std::string&gt; <a class="code" href="namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86">listModules</a>(<span class="keyword">const</span> std::string &amp;path);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string <a class="code" href="namespaceSoapySDR.html#af47fa1af120c2ae9cbeaddd670756f9f">loadModule</a>(<span class="keyword">const</span> std::string &amp;path);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="code" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> <a class="code" href="namespaceSoapySDR.html#a16eceddb4feab92df3f139b570037586">getLoaderResult</a>(<span class="keyword">const</span> std::string &amp;path);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string <a class="code" href="namespaceSoapySDR.html#afd1fd337e716c119d441152d077fd807">unloadModule</a>(<span class="keyword">const</span> std::string &amp;path);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">loadModules</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="ttc" id="namespaceSoapySDR_html_a16eceddb4feab92df3f139b570037586"><div class="ttname"><a href="namespaceSoapySDR.html#a16eceddb4feab92df3f139b570037586">SoapySDR::getLoaderResult</a></div><div class="ttdeci">SOAPY_SDR_API Kwargs getLoaderResult(const std::string &amp;path)</div></div>
 <div class="ttc" id="Config_8hpp_html"><div class="ttname"><a href="Config_8hpp.html">Config.hpp</a></div></div>
+<div class="ttc" id="namespaceSoapySDR_html_ac7c038598fa1a11acee1b0194f9dad62"><div class="ttname"><a href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">SoapySDR::Kwargs</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; Kwargs</div><div class="ttdoc">Typedef for a dictionary of key-value string arguments. </div><div class="ttdef"><b>Definition:</b> Types.hpp:22</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_a2d653dc7342deb5332689168ade8e86e"><div class="ttname"><a href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">SoapySDR::loadModules</a></div><div class="ttdeci">SOAPY_SDR_API void loadModules(void)</div></div>
-<div class="ttc" id="namespaceSoapySDR_html_a9e1d118d5d1e5b471683eb05e14a1f1a"><div class="ttname"><a href="namespaceSoapySDR.html#a9e1d118d5d1e5b471683eb05e14a1f1a">SoapySDR::loadModule</a></div><div class="ttdeci">SOAPY_SDR_API void loadModule(const std::string &amp;path)</div></div>
+<div class="ttc" id="Types_8hpp_html"><div class="ttname"><a href="Types_8hpp.html">Types.hpp</a></div></div>
 <div class="ttc" id="namespaceSoapySDR_html_a6febffdf005115bbc2aad542fb981c86"><div class="ttname"><a href="namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86">SoapySDR::listModules</a></div><div class="ttdeci">SOAPY_SDR_API std::vector&lt; std::string &gt; listModules(void)</div></div>
 <div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
 <div class="ttc" id="namespaceSoapySDR_html_a37a1da663087d48150012087b442c954"><div class="ttname"><a href="namespaceSoapySDR.html#a37a1da663087d48150012087b442c954">SoapySDR::getRootPath</a></div><div class="ttdeci">SOAPY_SDR_API std::string getRootPath(void)</div><div class="ttdoc">Query the root installation path. </div></div>
+<div class="ttc" id="namespaceSoapySDR_html_af47fa1af120c2ae9cbeaddd670756f9f"><div class="ttname"><a href="namespaceSoapySDR.html#af47fa1af120c2ae9cbeaddd670756f9f">SoapySDR::loadModule</a></div><div class="ttdeci">SOAPY_SDR_API std::string loadModule(const std::string &amp;path)</div></div>
+<div class="ttc" id="namespaceSoapySDR_html_afd1fd337e716c119d441152d077fd807"><div class="ttname"><a href="namespaceSoapySDR.html#afd1fd337e716c119d441152d077fd807">SoapySDR::unloadModule</a></div><div class="ttdeci">SOAPY_SDR_API std::string unloadModule(const std::string &amp;path)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

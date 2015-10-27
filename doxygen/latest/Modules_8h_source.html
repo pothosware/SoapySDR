@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
+   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -90,33 +90,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="Modules_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;<a class="code" href="Config_8h.html">SoapySDR/Config.h</a>&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span> <span class="comment">//size_t</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Modules_8h.html#a8a2a8746a82363446cdfb81cae57b93c">SoapySDR_getRootPath</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">char</span> **<a class="code" href="Modules_8h.html#a81d66a25aefb8b7acc4df78ada00cc7b">SoapySDR_listModules</a>(<span class="keywordtype">size_t</span> *length);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="Modules_8h.html#af714905c450e92a33718ad994e726924">SoapySDR_loadModule</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="Modules_8h.html#a3a966a79cbd67b4ba4476a6fc29fe995">SoapySDR_loadModules</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Types_8h.html">SoapySDR/Types.h</a>&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span> <span class="comment">//size_t</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="Modules_8h.html#a8a2a8746a82363446cdfb81cae57b93c">SoapySDR_getRootPath</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">char</span> **<a class="code" href="Modules_8h.html#a81d66a25aefb8b7acc4df78ada00cc7b">SoapySDR_listModules</a>(<span class="keywordtype">size_t</span> *length);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">char</span> **<a class="code" href="Modules_8h.html#a8572a8846ec7f04c7fe40f93a4b70d90">SoapySDR_listModulesPath</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path, <span class="keywordtype">size_t</span> *length);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">char</span> *<a class="code" href="Modules_8h.html#a1dcfbb245eea3e73c7ad42b27e0f91f5">SoapySDR_loadModule</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="code" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> <a class="code" href="Modules_8h.html#a25db70bd08f34f0700bc7355e20f9af0">SoapySDR_getLoaderResult</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">char</span> *<a class="code" href="Modules_8h.html#a49ab5a8cbb6455a1bae0d1ca03c11aed">SoapySDR_unloadModule</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *path);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<a class="code" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <span class="keywordtype">void</span> <a class="code" href="Modules_8h.html#a3a966a79cbd67b4ba4476a6fc29fe995">SoapySDR_loadModules</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="Types_8h_html"><div class="ttname"><a href="Types_8h.html">Types.h</a></div></div>
+<div class="ttc" id="Modules_8h_html_a49ab5a8cbb6455a1bae0d1ca03c11aed"><div class="ttname"><a href="Modules_8h.html#a49ab5a8cbb6455a1bae0d1ca03c11aed">SoapySDR_unloadModule</a></div><div class="ttdeci">SOAPY_SDR_API char * SoapySDR_unloadModule(const char *path)</div></div>
 <div class="ttc" id="Modules_8h_html_a81d66a25aefb8b7acc4df78ada00cc7b"><div class="ttname"><a href="Modules_8h.html#a81d66a25aefb8b7acc4df78ada00cc7b">SoapySDR_listModules</a></div><div class="ttdeci">SOAPY_SDR_API char ** SoapySDR_listModules(size_t *length)</div></div>
 <div class="ttc" id="Config_8h_html"><div class="ttname"><a href="Config_8h.html">Config.h</a></div></div>
+<div class="ttc" id="Modules_8h_html_a25db70bd08f34f0700bc7355e20f9af0"><div class="ttname"><a href="Modules_8h.html#a25db70bd08f34f0700bc7355e20f9af0">SoapySDR_getLoaderResult</a></div><div class="ttdeci">SOAPY_SDR_API SoapySDRKwargs SoapySDR_getLoaderResult(const char *path)</div></div>
 <div class="ttc" id="Modules_8h_html_a3a966a79cbd67b4ba4476a6fc29fe995"><div class="ttname"><a href="Modules_8h.html#a3a966a79cbd67b4ba4476a6fc29fe995">SoapySDR_loadModules</a></div><div class="ttdeci">SOAPY_SDR_API void SoapySDR_loadModules(void)</div></div>
+<div class="ttc" id="structSoapySDRKwargs_html"><div class="ttname"><a href="structSoapySDRKwargs.html">SoapySDRKwargs</a></div><div class="ttdoc">Definition for a key/value string map. </div><div class="ttdef"><b>Definition:</b> Types.h:27</div></div>
 <div class="ttc" id="Modules_8h_html_a8a2a8746a82363446cdfb81cae57b93c"><div class="ttname"><a href="Modules_8h.html#a8a2a8746a82363446cdfb81cae57b93c">SoapySDR_getRootPath</a></div><div class="ttdeci">SOAPY_SDR_API const char * SoapySDR_getRootPath(void)</div><div class="ttdoc">Query the root installation path. </div></div>
-<div class="ttc" id="Modules_8h_html_af714905c450e92a33718ad994e726924"><div class="ttname"><a href="Modules_8h.html#af714905c450e92a33718ad994e726924">SoapySDR_loadModule</a></div><div class="ttdeci">SOAPY_SDR_API void SoapySDR_loadModule(const char *path)</div></div>
+<div class="ttc" id="Modules_8h_html_a8572a8846ec7f04c7fe40f93a4b70d90"><div class="ttname"><a href="Modules_8h.html#a8572a8846ec7f04c7fe40f93a4b70d90">SoapySDR_listModulesPath</a></div><div class="ttdeci">SOAPY_SDR_API char ** SoapySDR_listModulesPath(const char *path, size_t *length)</div></div>
 <div class="ttc" id="Config_8h_html_ae741d098469b68e36cc8238ca2005026"><div class="ttname"><a href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a></div><div class="ttdeci">#define SOAPY_SDR_API</div><div class="ttdef"><b>Definition:</b> Config.h:41</div></div>
+<div class="ttc" id="Modules_8h_html_a1dcfbb245eea3e73c7ad42b27e0f91f5"><div class="ttname"><a href="Modules_8h.html#a1dcfbb245eea3e73c7ad42b27e0f91f5">SoapySDR_loadModule</a></div><div class="ttdeci">SOAPY_SDR_API char * SoapySDR_loadModule(const char *path)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

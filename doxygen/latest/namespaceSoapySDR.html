@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g036c2df6</span>
+   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -155,8 +155,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a6febffdf005115bbc2aad542fb981c86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector<br class="typebreak"/>
 &lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86">listModules</a> (void)</td></tr>
 <tr class="separator:a6febffdf005115bbc2aad542fb981c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e1d118d5d1e5b471683eb05e14a1f1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a9e1d118d5d1e5b471683eb05e14a1f1a">loadModule</a> (const std::string &amp;path)</td></tr>
-<tr class="separator:a9e1d118d5d1e5b471683eb05e14a1f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2e9c7c1359ec331eb616d038be8804c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector<br class="typebreak"/>
+&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ae2e9c7c1359ec331eb616d038be8804c">listModules</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:ae2e9c7c1359ec331eb616d038be8804c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af47fa1af120c2ae9cbeaddd670756f9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#af47fa1af120c2ae9cbeaddd670756f9f">loadModule</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:af47fa1af120c2ae9cbeaddd670756f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16eceddb4feab92df3f139b570037586"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a16eceddb4feab92df3f139b570037586">getLoaderResult</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a16eceddb4feab92df3f139b570037586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd1fd337e716c119d441152d077fd807"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#afd1fd337e716c119d441152d077fd807">unloadModule</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:afd1fd337e716c119d441152d077fd807"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d653dc7342deb5332689168ade8e86e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">loadModules</a> (void)</td></tr>
 <tr class="separator:a2d653dc7342deb5332689168ade8e86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38159df503d35fd23521643da952eb86"><td class="memItemLeft" align="right" valign="top">static long long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a38159df503d35fd23521643da952eb86">ticksToTimeNs</a> (const long long ticks, const double rate)</td></tr>
@@ -365,6 +372,30 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a16eceddb4feab92df3f139b570037586"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> SoapySDR::getLoaderResult </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>List all registration loader errors for a given module path. The resulting dictionary contains all registry entry names provided by the specified module. The value of each entry is an error message string or empty on successful load. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the path to a specific module file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a dictionary of registry names to error messages </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a37a1da663087d48150012087b442c954"></a>
 <div class="memitem">
 <div class="memproto">
@@ -396,16 +427,41 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>List the paths to the modules available on this system. </p>
+<p>List all modules found in default path. </p>
+<dl class="section return"><dt>Returns</dt><dd>a list of file paths to loadable modules </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a9e1d118d5d1e5b471683eb05e14a1f1a"></a>
+<a class="anchor" id="ae2e9c7c1359ec331eb616d038be8804c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void SoapySDR::loadModule </td>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::vector&lt;std::string&gt; SoapySDR::listModules </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>List all modules found in the given path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>a directory on the system </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of file paths to loadable modules </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af47fa1af120c2ae9cbeaddd670756f9f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string SoapySDR::loadModule </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>
@@ -414,6 +470,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Load a single module given its file system path. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the path to a specific module file </td></tr>
+    <tr><td class="paramname">return</td><td>an error message, empty on success </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -636,6 +699,30 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="afd1fd337e716c119d441152d077fd807"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string SoapySDR::unloadModule </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Unload a module that was loaded with <a class="el" href="namespaceSoapySDR.html#af47fa1af120c2ae9cbeaddd670756f9f">loadModule()</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the path to a specific module file </td></tr>
+    <tr><td class="paramname">return</td><td>an error message, empty on success </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a0b1e9d955ef43207dbc00b74aed83a40"></a>
 <div class="memitem">
 <div class="memproto">
@@ -680,7 +767,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 22 2015 14:16:46 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
