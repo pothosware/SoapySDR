@@ -43,24 +43,30 @@ public:
 
     /*!
      * Register a SDR device find and make function.
-     * \param name a unique name to identify the module
+     * \param name a unique name to identify the entry
      * \param find the find function returns an arg list
      * \param make the make function returns a device sptr
      * \param abi this value must be SOAPY_SDR_ABI_VERSION
      */
     Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi);
 
+    //! Cleanup this registry entry
+    ~Registry(void);
+
     /*!
      * List all loaded find functions.
-     * \return a dictionary of module name to find function
+     * \return a dictionary of registry entry names to find functions
      */
     static FindFunctions listFindFunctions(void);
 
     /*!
      * List all loaded make functions.
-     * \return a dictionary of module name to make function
+     * \return a dictionary of registry entry names to make functions
      */
     static MakeFunctions listMakeFunctions(void);
+
+private:
+    std::string _name;
 };
 
 }

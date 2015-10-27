@@ -1,11 +1,14 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
-#include <iostream>
 
+/***********************************************************************
+ * Function table holds all registration entries by name
+ **********************************************************************/
 struct FunctionsEntry
 {
+    std::string modulePath;
     SoapySDR::FindFunction find;
     SoapySDR::MakeFunction make;
 };
@@ -18,22 +21,54 @@ static FunctionTable &getFunctionTable(void)
     return table;
 }
 
+/***********************************************************************
+ * Module loader shared data structures
+ **********************************************************************/
+std::string &getModuleLoading(void);
+
+std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void);
+
+/***********************************************************************
+ * Registry entry-point implementation
+ **********************************************************************/
 SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi)
 {
+    //create an entry for the loader result
+    std::string &errorMsg = getLoaderResults()[getModuleLoading()][name];
+
+    //abi check
     if (abi != SOAPY_SDR_ABI_VERSION)
     {
-        std::cerr << "SoapySDR::Registry(" << name << ") failed ABI check" << std::endl;
-        std::cerr << "  Library ABI Version: " << SOAPY_SDR_ABI_VERSION << std::endl;
-        std::cerr << "  Module ABI Version: " << abi << std::endl;
-        std::cerr << "  Rebuild module against installed library..." << std::endl;
+        errorMsg = name + " failed ABI check: Library ABI=" SOAPY_SDR_ABI_VERSION ", Module ABI="+abi;
         return;
     }
+
+    //duplicate check
+    if (getFunctionTable().count(name) != 0)
+    {
+        errorMsg = "duplicate entry for " + name + " ("+getFunctionTable()[name].modulePath + ")";
+        return;
+    }
+
+    //register functions
     FunctionsEntry entry;
+    entry.modulePath = getModuleLoading();
     entry.find = find;
     entry.make = make;
     getFunctionTable()[name] = entry;
+    _name = name;
 }
 
+SoapySDR::Registry::~Registry(void)
+{
+    //erase entry
+    if (_name.empty()) return;
+    getFunctionTable().erase(_name);
+}
+
+/***********************************************************************
+ * Registry access API
+ **********************************************************************/
 SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 {
     FindFunctions functions;

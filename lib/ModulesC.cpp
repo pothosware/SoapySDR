@@ -1,6 +1,7 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
+#include "TypeHelpers.hpp"
 #include <SoapySDR/Modules.h>
 #include <SoapySDR/Modules.hpp>
 #include <cstdlib>
@@ -16,19 +17,27 @@ const char *SoapySDR_getRootPath(void)
 
 char **SoapySDR_listModules(size_t *length)
 {
-    const std::vector<std::string> paths = SoapySDR::listModules();
-    char **pathArray = (char **) malloc(sizeof(char *)*paths.size());
-    for (size_t i = 0; i < paths.size(); i++)
-    {
-        pathArray[i] = strdup(paths[i].c_str());
-    }
-    *length = paths.size();
-    return pathArray;
+    return toStrArray(SoapySDR::listModules(), length);
 }
 
-void SoapySDR_loadModule(const char *path)
+char **SoapySDR_listModulesPath(const char *path, size_t *length)
 {
-    SoapySDR::loadModule(path);
+    return toStrArray(SoapySDR::listModules(path), length);
+}
+
+char *SoapySDR_loadModule(const char *path)
+{
+    return strdup(SoapySDR::loadModule(path).c_str());
+}
+
+SoapySDRKwargs SoapySDR_getLoaderResult(const char *path)
+{
+    return toKwargs(SoapySDR::getLoaderResult(path));
+}
+
+char *SoapySDR_unloadModule(const char *path)
+{
+    return strdup(SoapySDR::unloadModule(path).c_str());
 }
 
 void SoapySDR_loadModules(void)
