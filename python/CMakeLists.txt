@@ -23,18 +23,18 @@ include(UseSWIG)
 ########################################################################
 # Find python interp
 ########################################################################
-include(FindPythonInterp)
+find_package(PythonInterp)
 if (NOT PYTHONINTERP_FOUND)
     message(WARNING "Python bindings require python exe, skipping...")
     return()
 endif ()
 message(STATUS "PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
+message(STATUS "PYTHON_VERSION_STRING: ${PYTHON_VERSION_STRING}")
 
 ########################################################################
 # Find Python libs
 ########################################################################
-include(FindPythonLibs)
-
+find_package(PythonLibs)
 if (NOT PYTHONLIBS_FOUND)
     message(WARNING "Python bindings require python dev, skipping...")
     return()
@@ -48,8 +48,14 @@ if(WIN32 AND NOT PYTHON_DEBUG_LIBRARY AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug"
     return()
 endif()
 
+message(STATUS "PYTHONLIBS_VERSION_STRING ${PYTHONLIBS_VERSION_STRING}")
 message(STATUS "PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "PYTHON_LIBRARIES ${PYTHON_LIBRARIES}")
+
+if(NOT "${PYTHON_VERSION_STRING}" VERSION_EQUAL "${PYTHONLIBS_VERSION_STRING}")
+    message(WARNING "Python interp and library version mismatch, skipping...")
+    return()
+endif()
 
 ########################################################################
 # Build Module
