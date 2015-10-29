@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2014 Josh Blum
+// Copyright (c) 2014-2015 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 %module SoapySDR
@@ -119,7 +119,7 @@ import threading
 device_factory_lock = threading.Lock()
 
 __all__ = list()
-for key in globals().keys():
+for key in sorted(globals().keys()):
     if key.startswith('SOAPY_SDR_'):
         __all__.append(key)
 %}
