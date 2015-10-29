@@ -52,9 +52,11 @@ message(STATUS "PYTHONLIBS_VERSION_STRING ${PYTHONLIBS_VERSION_STRING}")
 message(STATUS "PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "PYTHON_LIBRARIES ${PYTHON_LIBRARIES}")
 
-if(NOT "${PYTHON_VERSION_STRING}" VERSION_EQUAL "${PYTHONLIBS_VERSION_STRING}")
-    message(WARNING "Python interp and library version mismatch, skipping...")
-    return()
+if (PYTHON_VERSION_STRING AND PYTHONLIBS_VERSION_STRING)
+    if(NOT "${PYTHON_VERSION_STRING}" VERSION_EQUAL "${PYTHONLIBS_VERSION_STRING}")
+        message(WARNING "Python interp and library version mismatch, skipping...")
+        return()
+    endif()
 endif()
 
 ########################################################################
