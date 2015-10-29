@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.0 (pending)
 ==========================
 
+- Support dual build of python2 and python3
 - Improved module loader API and results query
 - New query information for SoapySDRUtil --probe
 - Added setLogLevel() and default log threshold

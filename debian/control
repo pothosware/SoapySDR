@@ -48,7 +48,7 @@ Section: python
 Architecture: any
 Depends:
     libsoapysdr0 (= ${binary:Version}),
-    ${python:Depends},
+    python,
     ${shlibs:Depends},
     ${misc:Depends}
 Recommends: python-numpy
@@ -60,7 +60,7 @@ Section: python
 Architecture: any
 Depends:
     libsoapysdr0 (= ${binary:Version}),
-    ${python3:Depends},
+    python3,
     ${shlibs:Depends},
     ${misc:Depends}
 Recommends: python-numpy
