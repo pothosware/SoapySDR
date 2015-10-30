@@ -7,7 +7,9 @@ Build-Depends:
     cmake (>= 2.8.7),
     swig2.0,
     python,
-    python-dev
+    python-dev,
+    python3,
+    python3-dev
 Standards-Version: 3.9.5
 Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
@@ -51,4 +53,16 @@ Depends:
     ${misc:Depends}
 Recommends: python-numpy
 Description: Soapy SDR - python bindings
+ Vendor and platform neutral SDR support library.
+
+Package: python3-soapysdr
+Section: python
+Architecture: any
+Depends:
+    libsoapysdr0 (= ${binary:Version}),
+    python3,
+    ${shlibs:Depends},
+    ${misc:Depends}
+Recommends: python-numpy
+Description: Soapy SDR - python3 bindings
  Vendor and platform neutral SDR support library.
