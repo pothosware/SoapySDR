@@ -136,12 +136,13 @@ class Device(Device):
 def extractBuffPointer(buff):
     if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
     if hasattr(buff, '__long__'): return long(buff)
+    if hasattr(buff, '__int__'): return int(buff)
     raise Exception("Unrecognized data format: " + str(type(buff)))
 %}
 
 %extend SoapySDR::Device
 {
-    StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long timeoutUs)
+    StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
         StreamResult sr;
         sr.flags = flags;
@@ -151,7 +152,7 @@ def extractBuffPointer(buff):
         return sr;
     }
 
-    StreamResult writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
+    StreamResult writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
     {
         StreamResult sr;
         sr.flags = flags;
@@ -172,11 +173,11 @@ def extractBuffPointer(buff):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
 
         def readStream(self, stream, buffs, numElems, flags = 0, timeoutUs = 100000):
-            ptrs = map(extractBuffPointer, buffs)
+            ptrs = [extractBuffPointer(b) for b in buffs]
             return self.readStream__(stream, ptrs, numElems, flags, timeoutUs)
 
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
-            ptrs = map(extractBuffPointer, buffs)
+            ptrs = [extractBuffPointer(b) for b in buffs]
             return self.writeStream__(stream, ptrs, numElems, flags, timeNs, timeoutUs)
     %}
 };
