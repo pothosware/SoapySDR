@@ -11,7 +11,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 ########################################################################
 # Find SWIG
 ########################################################################
-include(FindSWIG)
+find_package(SWIG)
 
 if (NOT SWIG_FOUND)
     message(WARNING "Python bindings require SWIG, skipping...")

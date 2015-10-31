@@ -10,7 +10,7 @@ find_package(SoapySDR NO_MODULE REQUIRED)
 ########################################################################
 # Find SWIG
 ########################################################################
-include(FindSWIG)
+find_package(SWIG)
 
 if (NOT SWIG_FOUND)
     message(WARNING "Python bindings require SWIG, skipping...")
