@@ -194,8 +194,8 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
  * Format string markup guidelines:
  *  - C means complex
  *  - F means floating point
- *  - U means signed integer
- *  - S means unsigned integer
+ *  - S means signed integer
+ *  - U means unsigned integer
  *  - number float/int size in bytes (complex is 2x this size)
  *
  * Example format strings:
