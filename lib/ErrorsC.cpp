@@ -3,6 +3,8 @@
 
 #include <SoapySDR/Errors.h>
 
+extern "C" {
+
 const char *SoapySDR_errToStr(const int errorCode)
 {
     switch(errorCode)
@@ -18,3 +20,5 @@ const char *SoapySDR_errToStr(const int errorCode)
     }
     return "UNKNOWN";
 }
+
+} //extern "C"
