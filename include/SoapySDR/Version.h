@@ -49,32 +49,32 @@
 /*!
  * Compatibility define for querying stream argument info
  */
-#define SOAPY_SDR_SPI_HAS_STREAM_ARG_INFO
+#define SOAPY_SDR_API_HAS_STREAM_ARG_INFO
 
 /*!
  * Compatibility define for querying setting argument info
  */
-#define SOAPY_SDR_SPI_HAS_SETTING_ARG_INFO
+#define SOAPY_SDR_API_HAS_SETTING_ARG_INFO
 
 /*!
  * Compatibility define for querying sensor info API
  */
-#define SOAPY_SDR_SPI_HAS_QUERY_SENSOR_INFO
+#define SOAPY_SDR_API_HAS_QUERY_SENSOR_INFO
 
 /*!
  * Compatibility define for querying tune args info
  */
-#define SOAPY_SDR_SPI_HAS_QUERY_TUNE_ARG_INFO
+#define SOAPY_SDR_API_HAS_QUERY_TUNE_ARG_INFO
 
 /*!
  * Compatibility define for querying native stream format
  */
-#define SOAPY_SDR_SPI_HAS_NATIVE_STREAM_FORMAT
+#define SOAPY_SDR_API_HAS_NATIVE_STREAM_FORMAT
 
 /*!
  * Compatibility define for setting the log level
  */
-#define SOAPY_SDR_SPI_HAS_SET_LOG_LEVEL
+#define SOAPY_SDR_API_HAS_SET_LOG_LEVEL
 
 #ifdef __cplusplus
 extern "C" {
