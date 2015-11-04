@@ -9,6 +9,7 @@ list(APPEND SOAPY_SDR_SOURCES
     NullDevice.cpp
     Logger.cpp
     Errors.cpp
+    Formats.cpp
 )
 
 #dl libs used by dlopen in unix
@@ -46,6 +47,7 @@ list(APPEND SOAPY_SDR_SOURCES
     LoggerC.cpp
     TimeC.cpp
     ErrorsC.cpp
+    FormatsC.cpp
 )
 
 #disable MSVC warnings

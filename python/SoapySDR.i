@@ -11,6 +11,7 @@
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Errors.hpp>
+#include <SoapySDR/Formats.hpp>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -100,6 +101,7 @@
 %include <SoapySDR/Constants.h>
 %include <SoapySDR/Errors.h>
 %include <SoapySDR/Version.h>
+%include <SoapySDR/Formats.h>
 
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
@@ -107,6 +109,7 @@
 %include <SoapySDR/Errors.hpp>
 %include <SoapySDR/Version.hpp>
 %include <SoapySDR/Modules.hpp>
+%include <SoapySDR/Formats.hpp>
 
 ////////////////////////////////////////////////////////////////////////
 // Device object

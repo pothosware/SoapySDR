@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
+#include <SoapySDR/Formats.hpp>
 #include <cstdlib>
 #include <algorithm> //min/max
 
@@ -62,7 +63,7 @@ std::vector<std::string> SoapySDR::Device::getStreamFormats(const int, const siz
 std::string SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &fullScale) const
 {
     fullScale = double(1 << 15);
-    return "CS16";
+    return SOAPY_SDR_CS16;
 }
 
 SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_t) const
