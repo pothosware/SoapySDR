@@ -11,6 +11,7 @@
 #pragma once
 #include <SoapySDR/Config.h>
 #include <SoapySDR/Formats.h>
+#include <string>
 #include <cstddef>
 
 namespace SoapySDR
@@ -21,6 +22,6 @@ namespace SoapySDR
  * \param format a supported format string
  * \return the size of an element in bytes
  */
-SOAPY_SDR_API size_t formatToSize(const char *format);
+SOAPY_SDR_API size_t formatToSize(const std::string &format);
 
 }

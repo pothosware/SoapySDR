@@ -3,7 +3,7 @@
 
 #include <SoapySDR/Formats.hpp>
 
-size_t SoapySDR::formatToSize(const char *format)
+size_t SoapySDR::formatToSize(const std::string &format)
 {
-    return SoapySDR_formatToSize(format);
+    return SoapySDR_formatToSize(format.c_str());
 }
