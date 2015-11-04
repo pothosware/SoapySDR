@@ -76,6 +76,11 @@
  */
 #define SOAPY_SDR_API_HAS_SET_LOG_LEVEL
 
+/*!
+ * Compatibility define for format header and defines
+ */
+#define SOAPY_SDR_API_HAS_FORMAT_DEFINES
+
 #ifdef __cplusplus
 extern "C" {
 #endif
