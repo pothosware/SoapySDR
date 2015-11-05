@@ -3,14 +3,21 @@
 ########################################################################
 find_package(Doxygen)
 
-if (NOT DOXYGEN_FOUND)
-    return()
-endif()
-
-if (DOXYGEN_DOT_FOUND)
+if(DOXYGEN_DOT_FOUND)
     set(HAVE_DOT YES)
 else()
     set(HAVE_DOT NO)
+endif()
+
+########################################################################
+## Feature registration
+########################################################################
+include(FeatureSummary)
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_DOCS "Enable doxygen documentation" ON "DOXYGEN_FOUND" OFF)
+add_feature_info(Docs ENABLE_DOCS "doxygen documentation")
+if (NOT ENABLE_DOCS)
+    return()
 endif()
 
 #where to look for headers

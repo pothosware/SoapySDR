@@ -1,4 +1,15 @@
 ########################################################################
+## Feature registration
+########################################################################
+include(FeatureSummary)
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_LIBRARY "Enable runtime library" ON "TRUE" OFF)
+add_feature_info(Library ENABLE_LIBRARY "runtime library v${SOAPY_SDR_VERSION}")
+if (NOT ENABLE_LIBRARY)
+    return()
+endif()
+
+########################################################################
 # Soapy SDR sources and dependencies
 ########################################################################
 list(APPEND SOAPY_SDR_SOURCES

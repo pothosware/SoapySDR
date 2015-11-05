@@ -11,51 +11,51 @@ find_package(SoapySDR NO_MODULE REQUIRED)
 # Find SWIG
 ########################################################################
 find_package(SWIG)
-
-if (NOT SWIG_FOUND)
-    message(WARNING "Python bindings require SWIG, skipping...")
-    return()
-endif ()
-message(STATUS "SWIG_VERSION: ${SWIG_VERSION}")
-
-include(UseSWIG)
+message(STATUS "SWIG_FOUND: ${SWIG_FOUND} - ${SWIG_VERSION}")
 
 ########################################################################
 # Find python interp
 ########################################################################
 find_package(PythonInterp)
-if (NOT PYTHONINTERP_FOUND)
-    message(WARNING "Python bindings require python exe, skipping...")
-    return()
-endif ()
+message(STATUS "PYTHONINTERP_FOUND: ${PYTHONINTERP_FOUND} - ${PYTHON_VERSION_STRING}")
 message(STATUS "PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
-message(STATUS "PYTHON_VERSION_STRING: ${PYTHON_VERSION_STRING}")
+
+########################################################################
+# Determine install directory
+########################################################################
+execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c
+    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+)
+message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 
 ########################################################################
 # Find Python libs
 ########################################################################
 find_package(PythonLibs)
-if (NOT PYTHONLIBS_FOUND)
-    message(WARNING "Python bindings require python dev, skipping...")
-    return()
-endif ()
+message(STATUS "PYTHONLIBS_FOUND: ${PYTHONLIBS_FOUND} - ${PYTHONLIBS_VERSION_STRING}")
+message(STATUS "PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
+message(STATUS "PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")
 
 #on windows, we require a pythonxx_d.lib in debug mode
 #require that the PYTHON_DEBUG_LIBRARY flag is set
 #or the build assumes that the debug library DNE
+set(PYTHON_DEBUG_OK TRUE)
 if(WIN32 AND NOT PYTHON_DEBUG_LIBRARY AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    message(WARNING "Debug build: missing Python debug library...")
-    return()
+    message(WARNING "WIN32 Debug mode requires PYTHON_DEBUG_LIBRARY")
+    set(PYTHON_DEBUG_OK FALSE)
 endif()
 
-message(STATUS "PYTHONLIBS_VERSION_STRING ${PYTHONLIBS_VERSION_STRING}")
-message(STATUS "PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS}")
-message(STATUS "PYTHON_LIBRARIES ${PYTHON_LIBRARIES}")
-
+########################################################################
+# Python version check
+########################################################################
+set(PYTHON_VERSION_MATCH TRUE)
 if (PYTHON_VERSION_STRING AND PYTHONLIBS_VERSION_STRING)
     if(NOT "${PYTHON_VERSION_STRING}" VERSION_EQUAL "${PYTHONLIBS_VERSION_STRING}")
-        message(WARNING "Python interp and library version mismatch, skipping...")
-        return()
+        message(WARNING "Python interp and library version mismatch")
+        set(PYTHON_VERSION_MATCH FALSE)
     endif()
 endif()
 
@@ -66,8 +66,20 @@ if(PYTHON_VERSION_STRING AND "${PYTHON_VERSION_STRING}" VERSION_LESS "3.0")
 endif()
 
 ########################################################################
+## Feature registration
+########################################################################
+include(FeatureSummary)
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_PYTHON "Enable python bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;PYTHON_DEBUG_OK;PYTHON_VERSION_MATCH" OFF)
+add_feature_info(Python ENABLE_PYTHON "python bindings v${PYTHON_VERSION_STRING}")
+if (NOT ENABLE_PYTHON)
+    return()
+endif()
+
+########################################################################
 # Build Module
 ########################################################################
+include(UseSWIG)
 include_directories(${SoapySDR_INCLUDE_DIRS})
 include_directories(${PYTHON_INCLUDE_DIRS})
 
@@ -78,25 +90,14 @@ SWIG_ADD_MODULE(SoapySDR python SoapySDR.i)
 SWIG_LINK_LIBRARIES(SoapySDR ${SoapySDR_LIBRARIES} ${PYTHON_LIBRARIES})
 
 ########################################################################
-# Determine install directory
-########################################################################
-execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c
-    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    OUTPUT_VARIABLE PYTHON_LIBRARY_DIR
-)
-message(STATUS "PYTHON_LIBRARY_DIR: \${prefix}/${PYTHON_LIBRARY_DIR}")
-
-########################################################################
 # Install Module
 ########################################################################
 install(
     TARGETS ${SWIG_MODULE_SoapySDR_REAL_NAME}
-    DESTINATION ${PYTHON_LIBRARY_DIR}
+    DESTINATION ${PYTHON_INSTALL_DIR}
 )
 
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.py
-    DESTINATION ${PYTHON_LIBRARY_DIR}
+    DESTINATION ${PYTHON_INSTALL_DIR}
 )

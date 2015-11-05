@@ -113,11 +113,17 @@ configure_file(
 add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
-########################################################################
+#########################################################################
 # summary
-########################################################################
+#########################################################################
+include(FeatureSummary)
 message(STATUS "")
 message(STATUS "######################################################")
-message(STATUS "## SoapySDR v${SOAPY_SDR_VERSION}")
+message(STATUS "## SoapySDR enabled features")
 message(STATUS "######################################################")
-message(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
+feature_summary(WHAT ENABLED_FEATURES)
+message(STATUS "######################################################")
+message(STATUS "## SoapySDR disabled features")
+message(STATUS "######################################################")
+feature_summary(WHAT DISABLED_FEATURES)
+message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
