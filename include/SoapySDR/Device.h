@@ -190,6 +190,8 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
 
 /*!
  * Initialize a stream given a list of channels and stream arguments.
+ * All stream API calls should be usable with the new stream object
+ * after setupStream() is complete, regardless of the activity state.
  *
  * Format string markup guidelines:
  *  - C means complex
@@ -297,6 +299,11 @@ SOAPY_SDR_API int SoapySDRDevice_deactivateStream(SoapySDRDevice *device,
  * Read elements from a stream for reception.
  * This is a multi-channel call, and buffs should be an array of void *,
  * where each pointer will be filled with data from a different channel.
+ *
+ * The readStream() call should be well defined at all times,
+ * including prior to activation and after deactivation.
+ * When inactive, readStream() should implement the timeout
+ * specified by the caller and return SOAPY_SDR_TIMEOUT.
  *
  * \param device a pointer to a device instance
  * \param stream the opaque pointer to a stream handle
