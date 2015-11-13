@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
+   &#160;<span id="projectnumber">0.4.0-g9e7e528e</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -3152,6 +3152,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Read elements from a stream for reception. This is a multi-channel call, and buffs should be an array of void *, where each pointer will be filled with data from a different channel.</p>
+<p>The readStream() call should be well defined at all times, including prior to activation and after deactivation. When inactive, readStream() should implement the timeout specified by the caller and return SOAPY_SDR_TIMEOUT.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
@@ -4263,13 +4264,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initialize a stream given a list of channels and stream arguments.</p>
+<p>Initialize a stream given a list of channels and stream arguments. All stream API calls should be usable with the new stream object after setupStream() is complete, regardless of the activity state.</p>
 <p>Format string markup guidelines:</p>
 <ul>
 <li>C means complex</li>
 <li>F means floating point</li>
-<li>U means signed integer</li>
-<li>S means unsigned integer</li>
+<li>S means signed integer</li>
+<li>U means unsigned integer</li>
 <li>number float/int size in bytes (complex is 2x this size)</li>
 </ul>
 <p>Example format strings:</p>
@@ -4799,7 +4800,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 12 2015 16:11:06 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

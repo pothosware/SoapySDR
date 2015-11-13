@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.4.0-g3b33aa40</span>
+   &#160;<span id="projectnumber">0.4.0-g9e7e528e</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -139,6 +139,8 @@ std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 Functions</h2></td></tr>
 <tr class="memitem:ad971bbe81839e05dd5f08e9782667a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ad971bbe81839e05dd5f08e9782667a3b">errToStr</a> (const int errorCode)</td></tr>
 <tr class="separator:ad971bbe81839e05dd5f08e9782667a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f2586bd75c3bbf4380439ee6168142"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a19f2586bd75c3bbf4380439ee6168142">formatToSize</a> (const std::string &amp;format)</td></tr>
+<tr class="separator:a19f2586bd75c3bbf4380439ee6168142"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc85246abb7c67379bf2824ba144aa0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#acc85246abb7c67379bf2824ba144aa0d">log</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">LogLevel</a> logLevel, const std::string &amp;message)</td></tr>
 <tr class="separator:acc85246abb7c67379bf2824ba144aa0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b1e9d955ef43207dbc00b74aed83a40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a0b1e9d955ef43207dbc00b74aed83a40">vlogf</a> (const <a class="el" href="Logger_8h.html#acca12132060bee17ae201b1c9604f7f0">SoapySDRLogLevel</a> logLevel, const char *format, va_list argList)</td></tr>
@@ -334,6 +336,30 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to a string representing the error </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a19f2586bd75c3bbf4380439ee6168142"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> size_t SoapySDR::formatToSize </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the size of a single element in the specified format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">format</td><td>a supported format string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the size of an element in bytes </dd></dl>
 
 </div>
 </div>
@@ -767,7 +793,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Oct 27 2015 01:08:47 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 12 2015 16:11:06 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
