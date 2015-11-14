@@ -240,11 +240,15 @@ std::string SoapySDR::unloadModule(const std::string &path)
 /***********************************************************************
  * load modules API call
  **********************************************************************/
+
+void lateLoadNullDevice(void);
+
 void SoapySDR::loadModules(void)
 {
     static bool loaded = false;
     if (loaded) return;
     loaded = true;
+    lateLoadNullDevice();
 
     const std::vector<std::string> paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)

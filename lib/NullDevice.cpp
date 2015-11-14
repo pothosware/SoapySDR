@@ -43,4 +43,15 @@ SoapySDR::Device *makeNullDevice(const SoapySDR::Kwargs &)
     return new NullDevice();
 }
 
-static SoapySDR::Registry registerNullDevice("null", &findNullDevice, &makeNullDevice, SOAPY_SDR_ABI_VERSION);
+/*!
+ * lateLoadNullDevice() is called by loadModules()
+ * to load the null device on-demand/not statically.
+ * This works around an issue when a loading module
+ * is linked against an older copy of SoapySDR
+ * which also tries to load its null device
+ * into the running copy of the library.
+ */
+void lateLoadNullDevice(void)
+{
+    static SoapySDR::Registry registerNullDevice("null", &findNullDevice, &makeNullDevice, SOAPY_SDR_ABI_VERSION);
+}
