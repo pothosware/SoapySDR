@@ -3,7 +3,6 @@
 ##
 ## * build only on a 64-bit environment
 ## * the matrix builds Release and Debug
-## * swig bindings only build for Release (no python debug libs)
 ## * minimal testing for command line util
 ########################################################################
 
@@ -29,8 +28,9 @@ branches:
     - master
 
 # dependencies for python bindings
-install:
-  - choco install swig
+# disabled because of link issues on VM
+#install:
+#  - choco install swig
 
 # configure and build
 build_script:
