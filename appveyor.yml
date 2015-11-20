@@ -48,6 +48,7 @@ before_test:
 # basic test for command line utility
 test_script:
   - SoapySDRUtil --info
+  - SoapySDRUtil --check=null
   - SoapySDRUtil --make="driver=null"
 
   # run the unit tests

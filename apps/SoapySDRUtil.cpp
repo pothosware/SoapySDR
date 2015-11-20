@@ -24,6 +24,7 @@ static int printHelp(void)
     std::cout << "    --find[=\"driver=foo,type=bar\"] \t Discover available devices" << std::endl;
     std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
     std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
+    std::cout << "    --check[=driverName] \t\t Check if driver is present" << std::endl;
     std::cout << std::endl;
     return EXIT_SUCCESS;
 }
@@ -116,7 +117,6 @@ static int makeDevice(void)
     return EXIT_SUCCESS;
 }
 
-
 /***********************************************************************
  * Make device and print detailed info
  **********************************************************************/
@@ -142,6 +142,33 @@ static int probeDevice(void)
 }
 
 /***********************************************************************
+ * Check the registry for a specific driver
+ **********************************************************************/
+static int checkDriver(void)
+{
+    std::string driverName;
+    if (optarg != NULL) driverName = optarg;
+
+    std::cout << "Loading modules... " << std::flush;
+    SoapySDR::loadModules();
+    std::cout << "done" << std::endl;
+
+    std::cout << "Checking driver '" << driverName << "'... " << std::flush;
+    const SoapySDR::FindFunctions factories = SoapySDR::Registry::listFindFunctions();
+
+    if (factories.find(driverName) == factories.end())
+    {
+        std::cout << "MISSING!" << std::endl;
+        return EXIT_FAILURE;
+    }
+    else
+    {
+        std::cout << "PRESENT" << std::endl;
+        return EXIT_SUCCESS;
+    }
+}
+
+/***********************************************************************
  * main utility entry point
  **********************************************************************/
 int main(int argc, char *argv[])
@@ -160,6 +187,7 @@ int main(int argc, char *argv[])
         {"make", optional_argument, 0, 'm'},
         {"info", optional_argument, 0, 'i'},
         {"probe", optional_argument, 0, 'p'},
+        {"check", optional_argument, 0, 'c'},
         {0, 0, 0,  0}
     };
     int long_index = 0;
@@ -173,6 +201,7 @@ int main(int argc, char *argv[])
         case 'f': return findDevices();
         case 'm': return makeDevice();
         case 'p': return probeDevice();
+        case 'c': return checkDriver();
         }
     }
 

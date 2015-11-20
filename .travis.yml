@@ -39,6 +39,7 @@ script:
 
   # basic test for command line utility
   - SoapySDRUtil --info
+  - SoapySDRUtil --check=null
   - SoapySDRUtil --make="driver=null"
 
   # basic test for python bindings
