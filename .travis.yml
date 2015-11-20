@@ -61,8 +61,8 @@ script:
   - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON_INSTALL_DIR}:/usr/${PYTHON_INSTALL_DIR}
   - echo ${PYTHONPATH}
   - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
-  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
   - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
   - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
@@ -70,8 +70,8 @@ script:
   - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}:/usr/${PYTHON3_INSTALL_DIR}
   - echo ${PYTHONPATH}
   - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
-  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
   - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
   - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
