@@ -36,7 +36,7 @@ message(STATUS "PYTHON3_INSTALL_DIR: \${prefix}/${PYTHON3_INSTALL_DIR}")
 # Find Python libs
 ########################################################################
 find_package(Python3Libs)
-message(STATUS "PYTHON3LIBS_FOUND :${PYTHON3LIBS_FOUND}")
+message(STATUS "PYTHON3LIBS_FOUND: ${PYTHON3LIBS_FOUND}")
 message(STATUS "PYTHON3_INCLUDE_DIRS: ${PYTHON3_INCLUDE_DIRS}")
 message(STATUS "PYTHON3_LIBRARIES: ${PYTHON3_LIBRARIES}")
 

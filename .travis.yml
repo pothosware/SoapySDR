@@ -17,6 +17,10 @@ compiler: gcc
 env:
   global:
     - INSTALL_PREFIX=/usr/local
+    - PYTHON_EXECUTABLE=/usr/bin/python
+    - PYTHON_INSTALL_DIR=lib/python2.7/dist-packages
+    - PYTHON3_EXECUTABLE=/usr/bin/python3
+    - PYTHON3_INSTALL_DIR=lib/python3/dist-packages
   matrix:
     - BUILD_TYPE=Debug
     - BUILD_TYPE=Release
@@ -40,7 +44,7 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=/usr/bin/python -DPYTHON3_EXECUTABLE=/usr/bin/python3
+  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE}
   - make
   - sudo make install
 
@@ -54,22 +58,22 @@ script:
   - SoapySDRUtil --make="driver=null"
 
   # basic test for python bindings
-  - export PYTHONPATH=/usr/lib/python2.7/dist-packages
-  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python2.7/dist-packages:${PYTHONPATH}
-  - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-  - python -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
-  - python -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
-  - python -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-  - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+  - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON_INSTALL_DIR}:/usr/${PYTHON_INSTALL_DIR}
+  - echo ${PYTHONPATH}
+  - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
+  - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+  - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
   # basic test for python3 bindings
-  - export PYTHONPATH=/usr/lib/python3/dist-packages
-  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python3/dist-packages:${PYTHONPATH}
-  - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-  - python -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
-  - python -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
-  - python -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-  - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+  - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}:/usr/${PYTHON3_INSTALL_DIR}
+  - echo ${PYTHONPATH}
+  - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
+  - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+  - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
   # run unit tests
   - make test
