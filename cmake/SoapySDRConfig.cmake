@@ -84,6 +84,8 @@ if(APPLE)
 endif()
 
 if(MSVC)
+    #suppress the following warnings which are commonly caused by project headers
+    add_compile_options(/wd4251) #disable 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
     add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
 
     add_definitions(-DNOMINMAX) #enables std::min and std::max
