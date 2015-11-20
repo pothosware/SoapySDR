@@ -40,15 +40,13 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=/usr/bin/python
+  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=/usr/bin/python -DPYTHON3_EXECUTABLE=/usr/bin/python3
   - make
   - sudo make install
 
   # setup environment paths
   - export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
   - export PATH=${INSTALL_PREFIX}/bin:${PATH}
-  - export PYTHONPATH=/usr/lib/python2.7/dist-packages:${PYTHONPATH}
-  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python2.7/dist-packages:${PYTHONPATH}
 
   # basic test for command line utility
   - SoapySDRUtil --info
@@ -56,6 +54,17 @@ script:
   - SoapySDRUtil --make="driver=null"
 
   # basic test for python bindings
+  - export PYTHONPATH=/usr/lib/python2.7/dist-packages
+  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python2.7/dist-packages:${PYTHONPATH}
+  - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+  - python -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
+  - python -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
+  - python -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+  - python -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+
+  # basic test for python3 bindings
+  - export PYTHONPATH=/usr/lib/python3/dist-packages
+  - export PYTHONPATH=${INSTALL_PREFIX}/lib/python3/dist-packages:${PYTHONPATH}
   - python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
   - python -c "from SoapySDR import *; print SOAPY_SDR_ABI_VERSION"
   - python -c "from SoapySDR import *; print SOAPY_SDR_TIMEOUT"
