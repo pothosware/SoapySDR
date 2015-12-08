@@ -61,7 +61,7 @@ set(cmake_files
     ${PROJECT_SOURCE_DIR}/cmake/SoapySDRUtil.cmake
     ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
 if (UNIX)
-    install(FILES ${cmake_files} DESTINATION share/cmake/${CMAKE_PROJECT_NAME})
+    install(FILES ${cmake_files} DESTINATION share/cmake/${PROJECT_NAME})
 elseif (WIN32)
     install(FILES ${cmake_files} DESTINATION cmake)
 endif ()
@@ -110,8 +110,11 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY)
 
+#only add uninstall target if this is the top project
+if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 add_custom_target(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
 
 #########################################################################
 # summary
