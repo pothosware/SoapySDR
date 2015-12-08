@@ -88,7 +88,7 @@ include(UseSWIG)
 include_directories(${SoapySDR_INCLUDE_DIRS})
 include_directories(${PYTHON_INCLUDE_DIRS})
 
-set(CMAKE_SWIG_FLAGS -c++)
+set(CMAKE_SWIG_FLAGS -c++ -threads)
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
 SWIG_ADD_MODULE(SoapySDR python SoapySDR.i)
