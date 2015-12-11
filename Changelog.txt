@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.4.0 (pending)
+Release 0.4.0 (2015-12-10)
 ==========================
 
 - Added check for driver present to util app
@@ -19,10 +19,6 @@ Release 0.4.0 (pending)
 - CMAKE_BUILD_TYPE automatically defaults to Release
 - Added API to query AGC mode availability
 - Added API to query available clock rates
-
-Release 0.3.2 (pending)
-==========================
-
 - Set library SOVERSION using SOAPY_SDR_ABI_VERSION
 
 Release 0.3.1 (2015-10-11)
