@@ -36,6 +36,13 @@ Description: Soapy SDR - development files
 Package: soapysdr
 Section: comm
 Architecture: any
+Recommends:
+    soapysdr-remote,
+    soapysdr-rtlsdr,
+    soapysdr-hackrf,
+    soapysdr-bladerf,
+    soapysdr-uhd,
+    soapysdr-osmo
 Depends:
     libsoapysdr0 (= ${binary:Version}),
     ${shlibs:Depends},
