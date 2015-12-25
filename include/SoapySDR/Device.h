@@ -300,6 +300,7 @@ SOAPY_SDR_API int SoapySDRDevice_deactivateStream(SoapySDRDevice *device,
  * This is a multi-channel call, and buffs should be an array of void *,
  * where each pointer will be filled with data from a different channel.
  *
+ * **Client code compatibility:**
  * The readStream() call should be well defined at all times,
  * including prior to activation and after deactivation.
  * When inactive, readStream() should implement the timeout
@@ -327,6 +328,12 @@ SOAPY_SDR_API int SoapySDRDevice_readStream(SoapySDRDevice *device,
  * This is a multi-channel call, and buffs should be an array of void *,
  * where each pointer will be filled with data for a different channel.
  *
+ * **Client code compatibility:**
+ * Client code relies on writeStream() for proper back-pressure.
+ * The writeStream() implementation must enforce the timeout
+ * such that the call blocks until space becomes available
+ * or timeout expiration.
+ *
  * \param device a pointer to a device instance
  * \param stream the opaque pointer to a stream handle
  * \param buffs an array of void* buffers num chans in size
@@ -348,6 +355,14 @@ SOAPY_SDR_API int SoapySDRDevice_writeStream(SoapySDRDevice *device,
  * Readback status information about a stream.
  * This call is typically used on a transmit stream
  * to report time errors, underflows, and burst completion.
+ *
+ * **Client code compatibility:**
+ * Client code may continually poll readStreamStatus() in a loop.
+ * Implementations of readStreamStatus() should wait in the call
+ * for a status change event or until the timeout expiration.
+ * When stream status is not implemented on a particular stream,
+ * readStreamStatus() should return SOAPY_SDR_NOT_SUPPORTED.
+ * Client code may use this indication to disable a polling loop.
  *
  * \param device a pointer to a device instance
  * \param stream the opaque pointer to a stream handle
