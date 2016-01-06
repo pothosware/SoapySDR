@@ -882,6 +882,10 @@ SOAPY_SDR_API double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, 
  */
 SOAPY_SDR_API double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
+/*******************************************************************
+ * Bandwidth API
+ ******************************************************************/
+
 /*!
  * Set the baseband filter width of the chain.
  * \param device a pointer to a device instance

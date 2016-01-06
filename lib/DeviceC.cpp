@@ -389,6 +389,9 @@ double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const int d
     return toNumericList(device->listSampleRates(direction, channel), length);
 }
 
+/*******************************************************************
+ * Bandwidth API
+ ******************************************************************/
 char *SoapySDRDevice_setBandwidth(SoapySDRDevice *device, const int direction, const size_t channel, const double bw)
 {
     __SOAPY_SDR_C_TRY

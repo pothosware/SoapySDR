@@ -797,6 +797,10 @@ public:
      */
     virtual std::vector<double> listSampleRates(const int direction, const size_t channel) const;
 
+    /*******************************************************************
+     * Bandwidth API
+     ******************************************************************/
+
     /*!
      * Set the baseband filter width of the chain.
      * \param direction the channel direction RX or TX

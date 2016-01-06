@@ -477,6 +477,9 @@ std::vector<double> SoapySDR::Device::listSampleRates(const int, const size_t) c
     return std::vector<double>();
 }
 
+/*******************************************************************
+ * Bandwidth API
+ ******************************************************************/
 void SoapySDR::Device::setBandwidth(const int, const size_t, const double)
 {
     return;
