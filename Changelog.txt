@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.1 (pending)
 ==========================
 
+- Added readStreamStatus() to python bindings
 - Notes on stream timeouts for client code compatibility
 - Fix debian upstream changelog and license install
 - Added official modules to debian Recommends

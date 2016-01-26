@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 %module SoapySDR
@@ -79,10 +79,11 @@
     struct StreamResult
     {
         StreamResult(void):
-            ret(0), flags(0), timeNs(0){}
+            ret(0), flags(0), timeNs(0), chanMask(0){}
         int ret;
         int flags;
         long long timeNs;
+        size_t chanMask;
     };
 %}
 
@@ -165,6 +166,13 @@ def extractBuffPointer(buff):
         return sr;
     }
 
+    StreamResult readStreamStatus__(SoapySDR::Stream *stream, const long timeoutUs)
+    {
+        StreamResult sr;
+        sr.ret = self->readStreamStatus(stream, sr.chanMask, sr.flags, sr.timeNs, timeoutUs);
+        return sr;
+    }
+
     %insert("python")
     %{
         #call unmake from custom deleter
@@ -182,5 +190,8 @@ def extractBuffPointer(buff):
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
             ptrs = [extractBuffPointer(b) for b in buffs]
             return self.writeStream__(stream, ptrs, numElems, flags, timeNs, timeoutUs)
+
+        def readStreamStatus(self, stream, timeoutUs = 100000):
+            return self.readStreamStatus__(stream, timeoutUs)
     %}
 };
