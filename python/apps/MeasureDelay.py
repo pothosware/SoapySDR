@@ -82,7 +82,8 @@ def measure_delay(
     #accumulate receive buffer into large contiguous buffer
     while True:
         rxBuff = np.array([0]*1024, np.complex64)
-        sr = sdr.readStream(rxStream, [rxBuff], len(rxBuff))
+        timeoutUs = long(5e5) #500 ms >> stream time
+        sr = sdr.readStream(rxStream, [rxBuff], len(rxBuff), timeoutUs=timeoutUs)
 
         #stash time on first buffer
         if sr.ret > 0 and len(rxBuffs) == 0:
