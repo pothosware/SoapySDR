@@ -19,6 +19,8 @@ def measure_delay(
     args,
     rate,
     freq=None,
+    rxBw=None,
+    txBw=None,
     rxChan=0,
     txChan=0,
     rxAnt=None,
@@ -54,6 +56,10 @@ def measure_delay(
     #tune frontends
     if freq is not None: sdr.setFrequency(SOAPY_SDR_RX, rxChan, freq)
     if freq is not None: sdr.setFrequency(SOAPY_SDR_TX, txChan, freq)
+
+    #set bandwidth
+    if rxBw is not None: sdr.setBandwidth(SOAPY_SDR_RX, rxChan, rxBw)
+    if txBw is not None: sdr.setBandwidth(SOAPY_SDR_TX, txChan, txBw)
 
     #create rx and tx streams
     print("Create Rx and Tx streams")
@@ -154,6 +160,8 @@ def main():
     parser.add_option("--txAnt", type="string", dest="txAnt", help="Optional Tx antenna", default=None)
     parser.add_option("--rxGain", type="float", dest="rxGain", help="Optional Rx gain (dB)", default=None)
     parser.add_option("--txGain", type="float", dest="txGain", help="Optional Tx gain (dB)", default=None)
+    parser.add_option("--rxBw", type="float", dest="rxBw", help="Optional Rx filter bw (Hz)", default=None)
+    parser.add_option("--txBw", type="float", dest="txBw", help="Optional Tx filter bw (Hz)", default=None)
     parser.add_option("--rxChan", type="int", dest="rxChan", help="Receiver channel (def=0)", default=0)
     parser.add_option("--txChan", type="int", dest="txChan", help="Transmitter channel (def=0)", default=0)
     parser.add_option("--freq", type="float", dest="freq", help="Optional Tx and Rx freq (Hz)", default=None)
@@ -164,6 +172,8 @@ def main():
         args=options.args,
         rate=options.rate,
         freq=options.freq,
+        rxBw=options.rxBw,
+        txBw=options.txBw,
         rxAnt=options.rxAnt,
         txAnt=options.txAnt,
         rxGain=options.rxGain,
