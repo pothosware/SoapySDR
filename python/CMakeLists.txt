@@ -34,6 +34,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     OUTPUT_VARIABLE PYTHON_INSTALL_DIR
 )
+set(PYTHON_INSTALL_DIR ${PYTHON_INSTALL_DIR} CACHE PATH "python install prefix")
 message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 
 ########################################################################
