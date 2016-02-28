@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.2 (pending)
 ==========================
 
+- Fixes for SOAPY_SDR_MODULE_UTIL destination and install prefix
 - CMake override for PYTHON_INSTALL_DIR and PYTHON3_INSTALL_DIR
 
 Release 0.4.1 (2016-01-27)
