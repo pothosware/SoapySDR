@@ -30,7 +30,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     OUTPUT_VARIABLE PYTHON3_INSTALL_DIR
 )
-set(PYTHON3_INSTALL_DIR ${PYTHON3_INSTALL_DIR} CACHE PATH "python3 install prefix")
+set(PYTHON3_INSTALL_DIR ${PYTHON3_INSTALL_DIR} CACHE STRING "python3 install prefix")
 message(STATUS "PYTHON3_INSTALL_DIR: \${prefix}/${PYTHON3_INSTALL_DIR}")
 
 ########################################################################
