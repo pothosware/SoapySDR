@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.4.2 (pending)
+Release 0.4.2 (2016-03-02)
 ==========================
 
 - Fixes for SOAPY_SDR_MODULE_UTIL destination and install prefix
