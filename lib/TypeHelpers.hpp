@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -61,6 +61,7 @@ static inline SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
 static inline SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
 {
     SoapySDRKwargs out;
+    std::memset(&out, 0, sizeof(out));
     for (SoapySDR::Kwargs::const_iterator it = args.begin(); it != args.end(); ++it)
     {
         SoapySDRKwargs_set(&out, it->first.c_str(), it->second.c_str());
