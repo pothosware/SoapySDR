@@ -24,12 +24,10 @@ extern "C" {
 #endif
 
 //! Forward declaration of device handle
-struct SoapySDRDevice_struct;
-typedef struct SoapySDRDevice_struct SoapySDRDevice;
+typedef struct SoapySDRDevice SoapySDRDevice;
 
 //! Forward declaration of stream handle
-struct SoapySDRStream_struct;
-typedef struct SoapySDRStream_struct SoapySDRStream;
+typedef struct SoapySDRStream SoapySDRStream;
 
 /*!
  * Enumerate a list of available devices on the system.

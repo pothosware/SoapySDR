@@ -20,7 +20,7 @@
 /*******************************************************************
  * Simple subclass definition for device
  ******************************************************************/
-struct SoapySDRDevice_struct : SoapySDR::Device {};
+struct SoapySDRDevice : SoapySDR::Device {};
 
 extern "C" {
 
