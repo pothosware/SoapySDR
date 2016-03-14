@@ -8,7 +8,7 @@
 /// The caller must free non-const array results.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -17,16 +17,17 @@
 #include <SoapySDR/Types.h>
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Errors.h>
+#include <SoapySDR/Device.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 //! Forward declaration of device handle
-struct SoapySDRDevice;
+typedef struct SoapySDRDevice SoapySDRDevice;
 
 //! Forward declaration of stream handle
-struct SoapySDRStream;
+typedef struct SoapySDRStream SoapySDRStream;
 
 /*!
  * Enumerate a list of available devices on the system.
