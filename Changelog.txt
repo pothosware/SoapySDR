@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.4.3 (pending)
+==========================
+
+- Fix SoapySDRDevice declarations for use in a C only compiler
+
 Release 0.4.2 (2016-03-02)
 ==========================
 

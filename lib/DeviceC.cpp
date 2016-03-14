@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -20,7 +20,7 @@
 /*******************************************************************
  * Simple subclass definition for device
  ******************************************************************/
-struct SoapySDRDevice : SoapySDR::Device {};
+struct SoapySDRDevice_struct : SoapySDR::Device {};
 
 extern "C" {
 
