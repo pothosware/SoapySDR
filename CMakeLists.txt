@@ -10,7 +10,7 @@ enable_testing()
 # gather version information
 # packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
 ########################################################################
-set(SOAPY_SDR_LIBVER "0.4.1")
+set(SOAPY_SDR_LIBVER "0.4.3")
 
 if (NOT SOAPY_SDR_EXTVER)
     include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
