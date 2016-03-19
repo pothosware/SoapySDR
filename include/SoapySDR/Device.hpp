@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -1021,6 +1021,33 @@ public:
      * \return the setting value
      */
     virtual std::string readSetting(const std::string &key) const;
+
+    /*!
+     * Describe the allowed keys and values used for channel settings.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    virtual ArgInfoList getSettingInfo(const int direction, const size_t channel) const;
+
+    /*!
+     * Write an arbitrary channel setting on the device.
+     * The interpretation is up the implementation.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \param value the setting value
+     */
+    virtual void writeSetting(const int direction, const size_t channel, const std::string &key, const std::string &value);
+
+    /*!
+     * Read an arbitrary channel setting on the device.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \return the setting value
+     */
+    virtual std::string readSetting(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * GPIO API

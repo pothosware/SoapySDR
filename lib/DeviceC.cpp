@@ -550,6 +550,21 @@ char *SoapySDRDevice_readSetting(const SoapySDRDevice *device, const char *key)
     return strdup(device->readSetting(key).c_str());
 }
 
+SoapySDRArgInfo *SoapySDRDevice_getChannelSettingInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toArgInfoList(device->getSettingInfo(direction, channel), length);
+}
+
+void SoapySDRDevice_writeChannelSetting(SoapySDRDevice *device, const int direction, const size_t channel, const char *key, const char *value)
+{
+    return device->writeSetting(direction, channel, key, value);
+}
+
+char *SoapySDRDevice_readChannelSetting(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key)
+{
+    return strdup(device->readSetting(direction, channel, key).c_str());
+}
+
 /*******************************************************************
  * GPIO API
  ******************************************************************/

@@ -1146,6 +1146,37 @@ SOAPY_SDR_API void SoapySDRDevice_writeSetting(SoapySDRDevice *device, const cha
  */
 SOAPY_SDR_API char *SoapySDRDevice_readSetting(const SoapySDRDevice *device, const char *key);
 
+/*!
+ * Describe the allowed keys and values used for channel settings.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of sensor names
+ * \return a list of argument info structures
+ */
+SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getChannelSettingInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Write an arbitrary channel setting on the device.
+ * The interpretation is up the implementation.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param key the setting identifier
+ * \param value the setting value
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeChannelSetting(SoapySDRDevice *device, const int direction, const size_t channel, const char *key, const char *value);
+
+/*!
+ * Read an arbitrary channel setting on the device.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param key the setting identifier
+ * \return the setting value
+ */
+SOAPY_SDR_API char *SoapySDRDevice_readChannelSetting(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key);
+
 /*******************************************************************
  * GPIO API
  ******************************************************************/

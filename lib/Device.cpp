@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -626,6 +626,21 @@ void SoapySDR::Device::writeSetting(const std::string &, const std::string &)
 }
 
 std::string SoapySDR::Device::readSetting(const std::string &) const
+{
+    return "";
+}
+
+SoapySDR::ArgInfoList SoapySDR::Device::getSettingInfo(const int, const size_t) const
+{
+    return SoapySDR::ArgInfoList();
+}
+
+void SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &)
+{
+    return;
+}
+
+std::string SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const
 {
     return "";
 }
