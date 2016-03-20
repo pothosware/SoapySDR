@@ -4,7 +4,7 @@
 /// Utility functions to query version information.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.4-2"
+#define SOAPY_SDR_ABI_VERSION "0.5-0"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -80,6 +80,11 @@
  * Compatibility define for format header and defines
  */
 #define SOAPY_SDR_API_HAS_FORMAT_DEFINES
+
+/*!
+ * Compatibility define for arbitrary channel settings
+ */
+#define SOAPY_SDR_API_HAS_CHANNEL_SETTINGS
 
 #ifdef __cplusplus
 extern "C" {
