@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.4.3 (pending)
 ==========================
 
+- CMake SOAPY_SDR_SOVER variable cache fix use INTERNAL type
 - Added missing memset for internal use of SoapySDRKwargs type
 - Fix SoapySDRDevice declarations for use in a C only compiler
 

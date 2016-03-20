@@ -74,7 +74,7 @@ string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+-[0-9]+)\"
 if(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
     message(FATAL_ERROR "Failed to extract version number from Version.h")
 endif(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
-set(SOAPY_SDR_SOVER "${CMAKE_MATCH_1}" CACHE STRING "")
+set(SOAPY_SDR_SOVER "${CMAKE_MATCH_1}" CACHE INTERNAL "")
 
 ########################################################################
 # Build the library
