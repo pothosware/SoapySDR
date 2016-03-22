@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.5.0 (pending)
+==========================
+
+- Implemented channel-specific settings API
+
 Release 0.4.3 (pending)
 ==========================
 
