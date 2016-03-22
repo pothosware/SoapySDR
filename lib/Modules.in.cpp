@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
@@ -40,6 +40,30 @@ std::string SoapySDR::getRootPath(void)
 {
     const std::string rootPathEnv = getEnvImpl("SOAPY_SDR_ROOT");
     if (not rootPathEnv.empty()) return rootPathEnv;
+
+    // Get the path to the current dynamic linked library.
+    // The path to this library can be used to determine
+    // the installation root without prior knowledge.
+    #ifdef _MSC_VER
+    char path[MAX_PATH];
+    HMODULE hm = NULL;
+    if (GetModuleHandleExA(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+        GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        (LPCSTR) &SoapySDR::getRootPath, &hm))
+    {
+        const DWORD size = GetModuleFileNameA(hm, path, sizeof(path));
+        if (size != 0)
+        {
+            const std::string libPath(path, size);
+            const size_t slash0Pos = libPath.find_last_of("/\\");
+            const size_t slash1Pos = libPath.substr(0, slash0Pos).find_last_of("/\\");
+            if (slash0Pos != std::string::npos and slash1Pos != std::string::npos)
+                return libPath.substr(0, slash1Pos);
+        }
+    }
+    #endif
+
     return "@SOAPY_SDR_ROOT@";
 }
 
