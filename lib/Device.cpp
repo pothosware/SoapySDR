@@ -495,6 +495,19 @@ std::vector<double> SoapySDR::Device::listBandwidths(const int, const size_t) co
     return std::vector<double>();
 }
 
+SoapySDR::RangeList SoapySDR::Device::getBandwidthRange(const int direction, const size_t channel) const
+{
+    SoapySDR::RangeList ranges;
+    //call into the older deprecated listBandwidths() call
+    const std::vector<double> bws = this->listBandwidths(direction, channel);
+    for (size_t i = 0; i < bws.size(); i++)
+    {
+        const double bw = bws.at(i);
+        ranges.push_back(SoapySDR::Range(bw, bw));
+    }
+    return ranges;
+}
+
 /*******************************************************************
  * Clocking API
  ******************************************************************/

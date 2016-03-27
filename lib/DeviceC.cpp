@@ -409,6 +409,11 @@ double *SoapySDRDevice_listBandwidths(const SoapySDRDevice *device, const int di
     return toNumericList(device->listBandwidths(direction, channel), length);
 }
 
+SoapySDRRange *SoapySDRDevice_getBandwidthRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    return toRangeList(device->getBandwidthRange(direction, channel), length);
+}
+
 /*******************************************************************
  * Clocking API
  ******************************************************************/

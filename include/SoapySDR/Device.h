@@ -908,6 +908,7 @@ SOAPY_SDR_API double SoapySDRDevice_getBandwidth(const SoapySDRDevice *device, c
 
 /*!
  * Get the range of possible baseband filter widths.
+ * \deprecated replaced by getBandwidthRange()
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
@@ -915,6 +916,16 @@ SOAPY_SDR_API double SoapySDRDevice_getBandwidth(const SoapySDRDevice *device, c
  * \return a list of possible bandwidths in Hz
  */
 SOAPY_SDR_API double *SoapySDRDevice_listBandwidths(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Get the range of possible baseband filter widths.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of ranges
+ * \return a list of bandwidth ranges in Hz
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getBandwidthRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
 /*******************************************************************
  * Clocking API

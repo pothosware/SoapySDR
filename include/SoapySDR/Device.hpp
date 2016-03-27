@@ -819,11 +819,20 @@ public:
 
     /*!
      * Get the range of possible baseband filter widths.
+     * \deprecated replaced by getBandwidthRange()
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible bandwidths in Hz
      */
     virtual std::vector<double> listBandwidths(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the range of possible baseband filter widths.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of bandwidth ranges in Hz
+     */
+    virtual RangeList getBandwidthRange(const int direction, const size_t channel) const;
 
     /*******************************************************************
      * Clocking API
