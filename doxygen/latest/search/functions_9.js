@@ -6,7 +6,7 @@ var searchData=
   ['readi2c',['readI2C',['../classSoapySDR_1_1Device.html#aa7785d5af0567d413676252d4990df7f',1,'SoapySDR::Device']]],
   ['readregister',['readRegister',['../classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8',1,'SoapySDR::Device']]],
   ['readsensor',['readSensor',['../classSoapySDR_1_1Device.html#ae4921e6aa61671ef88b8cecf8e6406e1',1,'SoapySDR::Device::readSensor(const std::string &amp;name) const '],['../classSoapySDR_1_1Device.html#a6f489af497c819b62a7f07aa2c38e8d1',1,'SoapySDR::Device::readSensor(const int direction, const size_t channel, const std::string &amp;name) const ']]],
-  ['readsetting',['readSetting',['../classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620',1,'SoapySDR::Device']]],
+  ['readsetting',['readSetting',['../classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620',1,'SoapySDR::Device::readSetting(const std::string &amp;key) const '],['../classSoapySDR_1_1Device.html#a8a98023ca84024f3f64057ce3f418a16',1,'SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &amp;key) const ']]],
   ['readstream',['readStream',['../classSoapySDR_1_1Device.html#a872010f1eb64e259981cf31f2e726027',1,'SoapySDR::Device']]],
   ['readstreamstatus',['readStreamStatus',['../classSoapySDR_1_1Device.html#a6683daba918938769afb2bfbb40e38af',1,'SoapySDR::Device']]],
   ['readuart',['readUART',['../classSoapySDR_1_1Device.html#a1c8992dbada612925191dda406dc4f11',1,'SoapySDR::Device']]],
