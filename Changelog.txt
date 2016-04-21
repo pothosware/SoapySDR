@@ -8,7 +8,7 @@ Release 0.5.0 (pending)
 - Use current DLL path to determine the system install root
 - Implemented channel-specific settings API
 
-Release 0.4.3 (pending)
+Release 0.4.3 (2016-04-21)
 ==========================
 
 - CMake SOAPY_SDR_SOVER variable cache fix use INTERNAL type
