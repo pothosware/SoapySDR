@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2015 Josh Blum
+// Copyright (c) 2015-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -170,6 +170,10 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     //sensors
     std::string sensors = toString(device->listSensors(dir, chan));
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+
+    //settings
+    std::string settings = toString(device->getSettingInfo(dir, chan));
+    if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
 
     return ss.str();
 }
