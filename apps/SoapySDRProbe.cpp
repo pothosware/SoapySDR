@@ -63,7 +63,13 @@ std::string toString(const SoapySDR::ArgInfo &argInfo, const std::string indent 
     ss << indent << " * " << name;
 
     //optional description
-    if (not argInfo.description.empty()) ss << " - " << argInfo.description << std::endl << indent << "  ";
+    std::string desc = argInfo.description;
+    const std::string replace("\n"+indent+"   ");
+    for (size_t pos = 0; (pos=desc.find("\n", pos)) != std::string::npos; pos+=replace.size())
+    {
+        desc.replace(pos, 1, replace);
+    }
+    if (not desc.empty()) ss << " - " << desc << std::endl << indent << "  ";
 
     //other fields
     ss << " [key=" << argInfo.key;
