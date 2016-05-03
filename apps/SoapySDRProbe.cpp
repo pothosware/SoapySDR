@@ -116,6 +116,17 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "-- " << dirName << " Channel " << chan << std::endl;
     ss << "----------------------------------------------------" << std::endl;
 
+    // info
+    SoapySDR::Kwargs info = device->getChannelInfo(dir, chan);
+    if (info.size() > 0)
+    {
+        ss << "  Channel Information:" << std::endl;
+        for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+        {
+            ss << "    " << it->first << "=" << it->second << std::endl;
+        }
+    }
+
     ss << "  Full-duplex: " << (device->getFullDuplex(dir, chan)?"YES":"NO") << std::endl;
     ss << "  Supports AGC: " << (device->hasGainMode(dir, chan)?"YES":"NO") << std::endl;
 
@@ -126,14 +137,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     //native
     double fullScale = 0.0;
     std::string native = device->getNativeStreamFormat(dir, chan, fullScale);
-    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;
-
-    // info
-    SoapySDR::Kwargs info = device->getChannelInfo(dir, chan);
-    for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
-    {
-        ss << "  " << it->first << "=" << it->second << std::endl;
-    }
+    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;    
 
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
