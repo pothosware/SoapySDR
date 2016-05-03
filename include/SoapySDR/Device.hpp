@@ -139,6 +139,15 @@ public:
     virtual size_t getNumChannels(const int direction) const;
 
     /*!
+     * Query a dictionary of available channel information.
+     * This dictionary can any number of values like
+     * decoder type, version, available functions...
+     * This information can be displayed to the user
+     * to help identify the instantiated channel.
+     */
+    virtual Kwargs getChannelInfo(const int direction, const size_t channel) const;
+
+    /*!
      * Find out if the specified channel is full or half duplex.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device

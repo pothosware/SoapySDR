@@ -128,6 +128,13 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     std::string native = device->getNativeStreamFormat(dir, chan, fullScale);
     ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;
 
+    // info
+    SoapySDR::Kwargs info = device->getChannelInfo(dir, chan);
+    for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+    {
+        ss << "  " << it->first << "=" << it->second << std::endl;
+    }
+
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
     if (not streamArgs.empty()) ss << "  Stream args:" << std::endl << streamArgs;

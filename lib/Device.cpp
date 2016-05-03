@@ -47,6 +47,11 @@ size_t SoapySDR::Device::getNumChannels(const int) const
     return 0;
 }
 
+SoapySDR::Kwargs SoapySDR::Device::getChannelInfo(const int, const size_t) const
+{
+    return SoapySDR::Kwargs();
+}
+
 bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
 {
     return true;
