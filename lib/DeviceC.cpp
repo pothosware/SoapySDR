@@ -75,6 +75,11 @@ char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int 
     return strdup(device->getFrontendMapping(direction).c_str());
 }
 
+SoapySDRKwargs SoapySDRDevice_getChannelInfo(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return toKwargs(device->getChannelInfo(direction, channel));
+}    
+
 size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction)
 {
     return device->getNumChannels(direction);
