@@ -14,7 +14,7 @@
 /*!
  * ABI Version Information - incremented when the ABI is changed.
  */
-#define SOAPY_SDR_ABI_VERSION "0.5-1"
+#define SOAPY_SDR_ABI_VERSION "0.5-2"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -90,6 +90,11 @@
  * Compatibility define for get bandwidth range API
  */
 #define SOAPY_SDR_API_HAS_GET_BANDWIDTH_RANGE
+
+/*!
+ * Compatibility define for get channel info API
+ */
+#define SOAPY_SDR_API_HAS_GET_CHANNEL_INFO
 
 #ifdef __cplusplus
 extern "C" {

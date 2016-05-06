@@ -144,6 +144,9 @@ public:
      * decoder type, version, available functions...
      * This information can be displayed to the user
      * to help identify the instantiated channel.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return channel information
      */
     virtual Kwargs getChannelInfo(const int direction, const size_t channel) const;
 

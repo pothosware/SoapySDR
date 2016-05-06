@@ -146,6 +146,14 @@ SOAPY_SDR_API int SoapySDRDevice_setFrontendMapping(SoapySDRDevice *device, cons
 SOAPY_SDR_API char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int direction);
 
 /*!
+ * Get a number of channels given the streaming direction
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \return the number of channels
+ */
+SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction);
+
+/*!
  * Get channel info given the streaming direction
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
@@ -153,14 +161,6 @@ SOAPY_SDR_API char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *devi
  * \return channel information
  */
 SOAPY_SDR_API SoapySDRKwargs SoapySDRDevice_getChannelInfo(const SoapySDRDevice *device, const int direction, const size_t channel);
-
-/*!
- * Get a number of channels given the streaming direction
- * \param device a pointer to a device instance
- * \param direction the channel direction RX or TX
- * \return the number of channels
- */
-SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction);
 
 /*!
  * Find out if the specified channel is full or half duplex.
