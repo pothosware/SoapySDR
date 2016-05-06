@@ -3,6 +3,8 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.0 (pending)
 ==========================
 
+- Added named register API for multiple register interfaces
+- Added channel info API call for channel-specific info
 - C bindings return status code and stash the error message
 - Added getBandwidthRange() API call for continuous ranges
 - Use current DLL path to determine the system install root

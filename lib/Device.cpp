@@ -621,6 +621,21 @@ std::string SoapySDR::Device::readSensor(const int, const size_t, const std::str
 /*******************************************************************
  * Register API
  ******************************************************************/
+std::vector<std::string> SoapySDR::Device::listRegisterInterfaces(void) const
+{
+    return std::vector<std::string>();
+}
+
+void SoapySDR::Device::writeRegister(const std::string &, const unsigned addr, const unsigned value)
+{
+    this->writeRegister(addr, value);
+}
+
+unsigned SoapySDR::Device::readRegister(const std::string &, const unsigned addr) const
+{
+    return this->readRegister(addr);
+}
+
 void SoapySDR::Device::writeRegister(const unsigned, const unsigned)
 {
     return;

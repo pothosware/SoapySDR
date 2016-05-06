@@ -551,6 +551,21 @@ char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int d
 /*******************************************************************
  * Register API
  ******************************************************************/
+char **SoapySDRDevice_listRegisterInterfaces(const SoapySDRDevice *device, size_t *length)
+{
+    return toStrArray(device->listRegisterInterfaces(), length);
+}
+
+void SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value)
+{
+    return device->writeRegister(name, addr, value);
+}
+
+unsigned SoapySDRDevice_readNamedRegister(const SoapySDRDevice *device, const char *name, const unsigned addr)
+{
+    return device->readRegister(name, addr);
+}
+
 void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value)
 {
     return device->writeRegister(addr, value);

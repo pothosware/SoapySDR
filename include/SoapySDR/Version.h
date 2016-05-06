@@ -97,6 +97,11 @@
  */
 #define SOAPY_SDR_API_HAS_GET_CHANNEL_INFO
 
+/*!
+ * Compatibility define for named register interface API
+ */
+#define SOAPY_SDR_API_HAS_NAMED_REGISTER_API
+
 #ifdef __cplusplus
 extern "C" {
 #endif

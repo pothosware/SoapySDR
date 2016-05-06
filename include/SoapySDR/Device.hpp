@@ -1004,9 +1004,34 @@ public:
      ******************************************************************/
 
     /*!
+     * Get a list of available register interfaces by name.
+     * \return a list of available register interfaces
+     */
+    virtual std::vector<std::string> listRegisterInterfaces(void) const;
+
+    /*!
+     * Write a register on the device given the interface name.
+     * This can represent a register on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \param value the register value
+     */
+    virtual void writeRegister(const std::string &name, const unsigned addr, const unsigned value);
+
+    /*!
+     * Read a register on the device given the interface name.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \return the register value
+     */
+    virtual unsigned readRegister(const std::string &name, const unsigned addr) const;
+
+    /*!
      * Write a register on the device.
      * This can represent a register on a soft CPU, FPGA, IC;
      * the interpretation is up the implementation to decide.
+     * \deprecated replaced by writeRegister(name)
      * \param addr the register address
      * \param value the register value
      */
@@ -1014,6 +1039,7 @@ public:
 
     /*!
      * Read a register on the device.
+     * \deprecated replaced by readRegister(name)
      * \param addr the register address
      * \return the register value
      */
