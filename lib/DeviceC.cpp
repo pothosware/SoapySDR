@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
