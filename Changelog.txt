@@ -11,6 +11,7 @@ Release 0.5.0 (pending)
 Release 0.4.4 (pending)
 ==========================
 
+- Add known python version 3.5 to FindPython3Libs.cmake
 - Fix FindPython3Libs.cmake use of python3-config --includes
 
 Release 0.4.3 (2016-04-21)
