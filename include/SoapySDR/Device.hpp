@@ -874,6 +874,10 @@ public:
      */
     virtual std::string getClockSource(void) const;
 
+    /*******************************************************************
+     * Time API
+     ******************************************************************/
+
     /*!
      * Get the list of available time sources.
      * \return a list of time source names
@@ -891,10 +895,6 @@ public:
      * \return the name of a time source
      */
     virtual std::string getTimeSource(void) const;
-
-    /*******************************************************************
-     * Time API
-     ******************************************************************/
 
     /*!
      * Does this device have a hardware clock?

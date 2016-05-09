@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.0 (pending)
 ==========================
 
+- Moved time source calls to time API section
 - C bindings return status code and stash the error message
 - Added getBandwidthRange() API call for continuous ranges
 - Use current DLL path to determine the system install root
