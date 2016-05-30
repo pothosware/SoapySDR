@@ -547,6 +547,10 @@ std::string SoapySDR::Device::getClockSource(void) const
     return "";
 }
 
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
 std::vector<std::string> SoapySDR::Device::listTimeSources(void) const
 {
     return std::vector<std::string>();
@@ -562,9 +566,6 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-/*******************************************************************
- * Time API
- ******************************************************************/
 bool SoapySDR::Device::hasHardwareTime(const std::string &) const
 {
     return false;

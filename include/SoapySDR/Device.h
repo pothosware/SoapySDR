@@ -992,6 +992,10 @@ SOAPY_SDR_API int SoapySDRDevice_setClockSource(SoapySDRDevice *device, const ch
  */
 SOAPY_SDR_API char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device);
 
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
 /*!
  * Get the list of available time sources.
  * \param device a pointer to a device instance
@@ -1014,10 +1018,6 @@ SOAPY_SDR_API int SoapySDRDevice_setTimeSource(SoapySDRDevice *device, const cha
  * \return the name of a time source
  */
 SOAPY_SDR_API char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device);
-
-/*******************************************************************
- * Time API
- ******************************************************************/
 
 /*!
  * Does this device have a hardware clock?

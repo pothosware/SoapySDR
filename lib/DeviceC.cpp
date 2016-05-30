@@ -475,6 +475,10 @@ char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device)
     return strdup(device->getClockSource().c_str());
 }
 
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
 char **SoapySDRDevice_listTimeSources(const SoapySDRDevice *device, size_t *length)
 {
     return toStrArray(device->listTimeSources(), length);
@@ -492,9 +496,6 @@ char *SoapySDRDevice_getTimeSource(const SoapySDRDevice *device)
     return strdup(device->getTimeSource().c_str());
 }
 
-/*******************************************************************
- * Time API
- ******************************************************************/
 bool SoapySDRDevice_hasHardwareTime(const SoapySDRDevice *device, const char *what)
 {
     return device->hasHardwareTime(what);
