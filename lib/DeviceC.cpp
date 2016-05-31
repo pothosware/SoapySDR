@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -78,6 +79,11 @@ char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int 
 size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction)
 {
     return device->getNumChannels(direction);
+}
+
+SoapySDRKwargs SoapySDRDevice_getChannelInfo(const SoapySDRDevice *device, const int direction, const size_t channel)
+{
+    return toKwargs(device->getChannelInfo(direction, channel));
 }
 
 bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -546,6 +552,21 @@ char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int d
 /*******************************************************************
  * Register API
  ******************************************************************/
+char **SoapySDRDevice_listRegisterInterfaces(const SoapySDRDevice *device, size_t *length)
+{
+    return toStrArray(device->listRegisterInterfaces(), length);
+}
+
+void SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value)
+{
+    return device->writeRegister(name, addr, value);
+}
+
+unsigned SoapySDRDevice_readNamedRegister(const SoapySDRDevice *device, const char *name, const unsigned addr)
+{
+    return device->readRegister(name, addr);
+}
+
 void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value)
 {
     return device->writeRegister(addr, value);

@@ -9,6 +9,7 @@
 ///
 /// \copyright
 /// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -152,6 +153,15 @@ SOAPY_SDR_API char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *devi
  * \return the number of channels
  */
 SOAPY_SDR_API size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction);
+
+/*!
+ * Get channel info given the streaming direction
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel the channel number to get info for
+ * \return channel information
+ */
+SOAPY_SDR_API SoapySDRKwargs SoapySDRDevice_getChannelInfo(const SoapySDRDevice *device, const int direction, const size_t channel);
 
 /*!
  * Find out if the specified channel is full or half duplex.
@@ -1116,9 +1126,38 @@ SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *devic
  ******************************************************************/
 
 /*!
+ * Get a list of available register interfaces by name.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of interfaces
+ * \return a list of available register interfaces
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listRegisterInterfaces(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Write a register on the device given the interface name.
+ * This can represent a register on a soft CPU, FPGA, IC;
+ * the interpretation is up the implementation to decide.
+ * \param device a pointer to a device instance
+ * \param name the name of a available register interface
+ * \param addr the register address
+ * \param value the register value
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value);
+
+/*!
+ * Read a register on the device given the interface name.
+ * \param device a pointer to a device instance
+ * \param name the name of a available register interface
+ * \param addr the register address
+ * \return the register value
+ */
+SOAPY_SDR_API unsigned SoapySDRDevice_readNamedRegister(const SoapySDRDevice *device, const char *name, const unsigned addr);
+
+/*!
  * Write a register on the device.
  * This can represent a register on a soft CPU, FPGA, IC;
  * the interpretation is up the implementation to decide.
+ * \deprecated replaced by writeRegister(name)
  * \param device a pointer to a device instance
  * \param addr the register address
  * \param value the register value
@@ -1127,6 +1166,7 @@ SOAPY_SDR_API void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const un
 
 /*!
  * Read a register on the device.
+ * \deprecated replaced by readRegister(name)
  * \param device a pointer to a device instance
  * \param addr the register address
  * \return the register value

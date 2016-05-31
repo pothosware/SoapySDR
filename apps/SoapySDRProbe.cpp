@@ -1,4 +1,5 @@
 // Copyright (c) 2015-2016 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -116,6 +117,17 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "-- " << dirName << " Channel " << chan << std::endl;
     ss << "----------------------------------------------------" << std::endl;
 
+    // info
+    SoapySDR::Kwargs info = device->getChannelInfo(dir, chan);
+    if (info.size() > 0)
+    {
+        ss << "  Channel Information:" << std::endl;
+        for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+        {
+            ss << "    " << it->first << "=" << it->second << std::endl;
+        }
+    }
+
     ss << "  Full-duplex: " << (device->getFullDuplex(dir, chan)?"YES":"NO") << std::endl;
     ss << "  Supports AGC: " << (device->hasGainMode(dir, chan)?"YES":"NO") << std::endl;
 
@@ -126,7 +138,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     //native
     double fullScale = 0.0;
     std::string native = device->getNativeStreamFormat(dir, chan, fullScale);
-    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;
+    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;    
 
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
@@ -226,6 +238,9 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     std::string sensors = toString(device->listSensors());
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+
+    std::string registers = toString(device->listRegisterInterfaces());
+    if (not registers.empty()) ss << "  Registers: " << registers << std::endl;
 
     std::string settings = toString(device->getSettingInfo());
     if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
