@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 %module SoapySDR
@@ -132,10 +133,16 @@ for key in sorted(globals().keys()):
 //make device a constructable class
 %insert("python")
 %{
+_Device = Device
 class Device(Device):
     def __new__(cls, *args, **kwargs):
         with device_factory_lock:
             return cls.make(*args, **kwargs)
+
+    @staticmethod
+    def enumerate(*args):
+        with device_factory_lock:
+            return _Device.enumerate(*args)
 
 def extractBuffPointer(buff):
     if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
