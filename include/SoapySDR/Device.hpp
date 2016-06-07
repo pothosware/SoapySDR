@@ -5,6 +5,7 @@
 ///
 /// \copyright
 /// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -137,6 +138,18 @@ public:
      * Get a number of channels given the streaming direction
      */
     virtual size_t getNumChannels(const int direction) const;
+
+    /*!
+     * Query a dictionary of available channel information.
+     * This dictionary can any number of values like
+     * decoder type, version, available functions...
+     * This information can be displayed to the user
+     * to help identify the instantiated channel.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return channel information
+     */
+    virtual Kwargs getChannelInfo(const int direction, const size_t channel) const;
 
     /*!
      * Find out if the specified channel is full or half duplex.
@@ -874,6 +887,10 @@ public:
      */
     virtual std::string getClockSource(void) const;
 
+    /*******************************************************************
+     * Time API
+     ******************************************************************/
+
     /*!
      * Get the list of available time sources.
      * \return a list of time source names
@@ -891,10 +908,6 @@ public:
      * \return the name of a time source
      */
     virtual std::string getTimeSource(void) const;
-
-    /*******************************************************************
-     * Time API
-     ******************************************************************/
 
     /*!
      * Does this device have a hardware clock?
@@ -991,9 +1004,34 @@ public:
      ******************************************************************/
 
     /*!
+     * Get a list of available register interfaces by name.
+     * \return a list of available register interfaces
+     */
+    virtual std::vector<std::string> listRegisterInterfaces(void) const;
+
+    /*!
+     * Write a register on the device given the interface name.
+     * This can represent a register on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \param value the register value
+     */
+    virtual void writeRegister(const std::string &name, const unsigned addr, const unsigned value);
+
+    /*!
+     * Read a register on the device given the interface name.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \return the register value
+     */
+    virtual unsigned readRegister(const std::string &name, const unsigned addr) const;
+
+    /*!
      * Write a register on the device.
      * This can represent a register on a soft CPU, FPGA, IC;
      * the interpretation is up the implementation to decide.
+     * \deprecated replaced by writeRegister(name)
      * \param addr the register address
      * \param value the register value
      */
@@ -1001,6 +1039,7 @@ public:
 
     /*!
      * Read a register on the device.
+     * \deprecated replaced by readRegister(name)
      * \param addr the register address
      * \return the register value
      */

@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -45,6 +46,11 @@ std::string SoapySDR::Device::getFrontendMapping(const int) const
 size_t SoapySDR::Device::getNumChannels(const int) const
 {
     return 0;
+}
+
+SoapySDR::Kwargs SoapySDR::Device::getChannelInfo(const int, const size_t) const
+{
+    return SoapySDR::Kwargs();
 }
 
 bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
@@ -541,6 +547,10 @@ std::string SoapySDR::Device::getClockSource(void) const
     return "";
 }
 
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
 std::vector<std::string> SoapySDR::Device::listTimeSources(void) const
 {
     return std::vector<std::string>();
@@ -556,9 +566,6 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-/*******************************************************************
- * Time API
- ******************************************************************/
 bool SoapySDR::Device::hasHardwareTime(const std::string &) const
 {
     return false;
@@ -615,6 +622,21 @@ std::string SoapySDR::Device::readSensor(const int, const size_t, const std::str
 /*******************************************************************
  * Register API
  ******************************************************************/
+std::vector<std::string> SoapySDR::Device::listRegisterInterfaces(void) const
+{
+    return std::vector<std::string>();
+}
+
+void SoapySDR::Device::writeRegister(const std::string &, const unsigned addr, const unsigned value)
+{
+    this->writeRegister(addr, value);
+}
+
+unsigned SoapySDR::Device::readRegister(const std::string &, const unsigned addr) const
+{
+    return this->readRegister(addr);
+}
+
 void SoapySDR::Device::writeRegister(const unsigned, const unsigned)
 {
     return;

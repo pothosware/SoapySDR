@@ -3,6 +3,10 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.0 (pending)
 ==========================
 
+- Added named register API for multiple register interfaces
+- Added channel info API call for channel-specific info
+- Setup CMake rpath handling to be enabled by default
+- Moved time source calls to time API section
 - C bindings return status code and stash the error message
 - Added getBandwidthRange() API call for continuous ranges
 - Use current DLL path to determine the system install root
@@ -11,6 +15,7 @@ Release 0.5.0 (pending)
 Release 0.4.4 (pending)
 ==========================
 
+- Add known python version 3.5 to FindPython3Libs.cmake
 - Fix FindPython3Libs.cmake use of python3-config --includes
 
 Release 0.4.3 (2016-04-21)

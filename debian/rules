@@ -19,6 +19,7 @@ export DH_OPTIONS
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
+		-DCMAKE_SKIP_RPATH=TRUE \
 		-DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)" \
 		-DSOAPY_SDR_EXTVER="$(DEB_VERSION_EXTVER)"
 
