@@ -51,6 +51,7 @@ static inline double *toNumericList(const std::vector<double> &values, size_t *l
 static inline SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
 {
     SoapySDR::Kwargs out;
+    if (args == NULL) return out;
     for (size_t i = 0; i < args->size; i++)
     {
         out[args->keys[i]] = args->vals[i];
