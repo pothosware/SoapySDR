@@ -9,9 +9,9 @@
 #include <cctype>
 #include <mutex>
 
-static std::mutex &getFactoryMutex(void)
+static std::recursive_mutex &getFactoryMutex(void)
 {
-    static std::mutex mutex;
+    static std::recursive_mutex mutex;
     return mutex;
 }
 
@@ -33,7 +33,7 @@ static DeviceCounts &getDeviceCounts(void)
 
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
-    std::lock_guard<std::mutex> lock(getFactoryMutex());
+    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
 
     loadModules();
     SoapySDR::KwargsList results;
@@ -109,7 +109,7 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
 {
-    std::lock_guard<std::mutex> lock(getFactoryMutex());
+    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
 
     loadModules();
     Kwargs args = args_;
@@ -126,7 +126,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
     {
         //the args must always come from an enumeration result
         {
-            SoapySDR::KwargsList results = Device::enumerate(args);
+            const auto results = Device::enumerate(args);
             if (not results.empty()) args = results.front();
         }
 
@@ -162,7 +162,7 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 
 void SoapySDR::Device::unmake(Device *device)
 {
-    std::lock_guard<std::mutex> lock(getFactoryMutex());
+    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
 
     if (getDeviceCounts().count(device) == 0)
     {
