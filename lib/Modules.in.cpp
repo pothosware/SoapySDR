@@ -274,17 +274,16 @@ void SoapySDR::loadModules(void)
     loaded = true;
     lateLoadNullDevice();
 
-    const std::vector<std::string> paths = listModules();
+    const auto paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
         if (getModuleHandles().count(paths[i]) != 0) continue; //was manually loaded
         const std::string errorMsg = loadModule(paths[i]);
         if (not errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
-        const SoapySDR::Kwargs loaderResults = SoapySDR::getLoaderResult(paths[i]);
-        for (SoapySDR::Kwargs::const_iterator it = loaderResults.begin(); it != loaderResults.end(); ++it)
+        for (const auto &it : SoapySDR::getLoaderResult(paths[i]))
         {
-            if (it->second.empty()) continue;
-            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it->second.c_str());
+            if (it.second.empty()) continue;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it.second.c_str());
         }
     }
 }

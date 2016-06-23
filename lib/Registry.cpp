@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
@@ -72,9 +72,9 @@ SoapySDR::Registry::~Registry(void)
 SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 {
     FindFunctions functions;
-    for (FunctionTable::const_iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    for (const auto &it : getFunctionTable())
     {
-        functions[it->first] = it->second.find;
+        functions[it.first] = it.second.find;
     }
     return functions;
 }
@@ -82,9 +82,9 @@ SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 SoapySDR::MakeFunctions SoapySDR::Registry::listMakeFunctions(void)
 {
     MakeFunctions functions;
-    for (FunctionTable::const_iterator it = getFunctionTable().begin(); it != getFunctionTable().end(); ++it)
+    for (const auto &it : getFunctionTable())
     {
-        functions[it->first] = it->second.make;
+        functions[it.first] = it.second.make;
     }
     return functions;
 }

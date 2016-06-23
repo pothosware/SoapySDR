@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -28,26 +28,25 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
     loadModules();
     SoapySDR::KwargsList results;
-    const FindFunctions findFunctions = Registry::listFindFunctions();
-    for (FindFunctions::const_iterator it = findFunctions.begin(); it != findFunctions.end(); ++it)
+    for (const auto &it : Registry::listFindFunctions())
     {
-        if (args.count("driver") != 0 and args.at("driver") != it->first) continue;
+        if (args.count("driver") != 0 and args.at("driver") != it.first) continue;
         try
         {
-            SoapySDR::KwargsList results0 = it->second(args);
+            SoapySDR::KwargsList results0 = it.second(args);
             for (size_t i = 0; i < results0.size(); i++)
             {
-                results0[i]["driver"] = it->first;
+                results0[i]["driver"] = it.first;
                 results.push_back(results0[i]);
             }
         }
         catch (const std::exception &ex)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it->first << ") " << ex.what() << std::endl;
+            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << ex.what() << std::endl;
         }
         catch (...)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it->first << ") " << "unknown error" << std::endl;
+            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << "unknown error" << std::endl;
         }
     }
     return results;
@@ -121,17 +120,16 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
         }
 
         //load the enumeration args with missing keys from the make argument
-        for (Kwargs::const_iterator it = args_.begin(); it != args_.end(); ++it)
+        for (const auto &it : args_)
         {
-            if (args.count(it->first) == 0) args[it->first] = it->second;
+            if (args.count(it.first) == 0) args[it.first] = it.second;
         }
 
         //loop through make functions and call on module match
-        MakeFunctions makeFunctions = Registry::listMakeFunctions();
-        for (MakeFunctions::const_iterator it = makeFunctions.begin(); it != makeFunctions.end(); ++it)
+        for (const auto &it : Registry::listMakeFunctions())
         {
-            if (args.count("driver") != 0 and args.at("driver") != it->first) continue;
-            device = it->second(args);
+            if (args.count("driver") != 0 and args.at("driver") != it.first) continue;
+            device = it.second(args);
             break;
         }
     }
@@ -165,7 +163,7 @@ void SoapySDR::Device::unmake(Device *device)
         delete device;
 
         //cleanup the argument to device table
-        for (DeviceTable::iterator it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
+        for (auto it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
         {
             if (it->second == device)
             {

@@ -63,9 +63,9 @@ static inline SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
 {
     SoapySDRKwargs out;
     std::memset(&out, 0, sizeof(out));
-    for (SoapySDR::Kwargs::const_iterator it = args.begin(); it != args.end(); ++it)
+    for (const auto &it : args)
     {
-        SoapySDRKwargs_set(&out, it->first.c_str(), it->second.c_str());
+        SoapySDRKwargs_set(&out, it.first.c_str(), it.second.c_str());
     }
     return out;
 }

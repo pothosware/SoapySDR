@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -38,11 +38,8 @@ static int printInfo(void)
     std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
     std::cout << "Install root: " << SoapySDR::getRootPath() << std::endl;
 
-    std::vector<std::string> modules = SoapySDR::listModules();
-    for (size_t i = 0; i < modules.size(); i++)
-    {
-        std::cout << "Module found: " << modules[i] << std::endl;
-    }
+    const auto modules = SoapySDR::listModules();
+    for (const auto &mod : modules) std::cout << "Module found: " << mod << std::endl;
     if (modules.empty()) std::cout << "No modules found!" << std::endl;
 
     std::cout << "Loading modules... " << std::flush;
@@ -50,11 +47,8 @@ static int printInfo(void)
     std::cout << "done" << std::endl;
 
     std::cout << "Available factories...";
-    const SoapySDR::FindFunctions factories = SoapySDR::Registry::listFindFunctions();
-    for (SoapySDR::FindFunctions::const_iterator it = factories.begin(); it != factories.end(); ++it)
-    {
-        std::cout << it->first << ", ";
-    }
+    const auto factories = SoapySDR::Registry::listFindFunctions();
+    for (const auto &it : factories) std::cout << it.first << ", ";
     if (factories.empty()) std::cout << "No factories found!" << std::endl;
     std::cout << std::endl;
     return EXIT_SUCCESS;
@@ -68,13 +62,13 @@ static int findDevices(void)
     std::string argStr;
     if (optarg != NULL) argStr = optarg;
 
-    SoapySDR::KwargsList results = SoapySDR::Device::enumerate(argStr);
+    const auto results = SoapySDR::Device::enumerate(argStr);
     for (size_t i = 0; i < results.size(); i++)
     {
         std::cout << "Found device " << i << std::endl;
-        for (SoapySDR::Kwargs::const_iterator it = results[i].begin(); it != results[i].end(); ++it)
+        for (const auto &it : results[i])
         {
-            std::cout << "  " << it->first << " = " << it->second << std::endl;
+            std::cout << "  " << it.first << " = " << it.second << std::endl;
         }
         std::cout << std::endl;
     }
@@ -98,13 +92,12 @@ static int makeDevice(void)
     std::cout << "Make device " << argStr << std::endl;
     try
     {
-        SoapySDR::Device *device = SoapySDR::Device::make(argStr);
+        auto device = SoapySDR::Device::make(argStr);
         std::cout << "  driver=" << device->getDriverKey() << std::endl;
         std::cout << "  hardware=" << device->getHardwareKey() << std::endl;
-        SoapySDR::Kwargs info = device->getHardwareInfo();
-        for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+        for (const auto &it : device->getHardwareInfo())
         {
-            std::cout << "  " << it->first << "=" << it->second << std::endl;
+            std::cout << "  " << it.first << "=" << it.second << std::endl;
         }
         SoapySDR::Device::unmake(device);
     }
@@ -128,7 +121,7 @@ static int probeDevice(void)
     std::cout << "Probe device " << argStr << std::endl;
     try
     {
-        SoapySDR::Device *device = SoapySDR::Device::make(argStr);
+        auto device = SoapySDR::Device::make(argStr);
         std::cout << SoapySDRDeviceProbe(device) << std::endl;
         SoapySDR::Device::unmake(device);
     }
@@ -154,7 +147,7 @@ static int checkDriver(void)
     std::cout << "done" << std::endl;
 
     std::cout << "Checking driver '" << driverName << "'... " << std::flush;
-    const SoapySDR::FindFunctions factories = SoapySDR::Registry::listFindFunctions();
+    const auto factories = SoapySDR::Registry::listFindFunctions();
 
     if (factories.find(driverName) == factories.end())
     {
