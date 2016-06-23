@@ -113,7 +113,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
 
     loadModules();
     Kwargs args = args_;
-    Device *device = NULL;
+    Device *device = nullptr;
 
     //check the device table for an already allocated device
     if (getDeviceTable().count(args_) != 0 and getDeviceCounts().count(getDeviceTable().at(args_)) != 0)
@@ -145,7 +145,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
         }
     }
 
-    if (device == NULL) throw std::runtime_error("SoapySDR::Device::make() no match");
+    if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() no match");
 
     //store into the table
     getDeviceTable()[args_] = device;

@@ -79,7 +79,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_
 
 SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &)
 {
-    return NULL;
+    return nullptr;
 }
 
 void SoapySDR::Device::closeStream(Stream *)
