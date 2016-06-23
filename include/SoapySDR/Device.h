@@ -62,9 +62,6 @@ SOAPY_SDR_API SoapySDRKwargs *SoapySDRDevice_enumerateStrArgs(const char *args, 
  * with the same arguments will produce the same device.
  * For every call to make, there should be a matched call to unmake.
  *
- * \note This call is not thread safe. Implementations calling into make
- * from multiple threads should protect this call with a mutex.
- *
  * \param args device construction key/value argument map
  * \return a pointer to a new Device object
  */
@@ -75,9 +72,6 @@ SOAPY_SDR_API SoapySDRDevice *SoapySDRDevice_make(const SoapySDRKwargs *args);
  * The device pointer will be stored in a table so subsequent calls
  * with the same arguments will produce the same device.
  * For every call to make, there should be a matched call to unmake.
- *
- * \note This call is not thread safe. Implementations calling into make
- * from multiple threads should protect this call with a mutex.
  *
  * \param args a markup string of key/value arguments
  * \return a pointer to a new Device object

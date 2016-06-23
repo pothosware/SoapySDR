@@ -7,6 +7,13 @@
 #include <stdexcept>
 #include <iostream>
 #include <cctype>
+#include <mutex>
+
+static std::mutex &getFactoryMutex(void)
+{
+    static std::mutex mutex;
+    return mutex;
+}
 
 typedef std::map<SoapySDR::Kwargs, SoapySDR::Device *> DeviceTable;
 
@@ -26,6 +33,8 @@ static DeviceCounts &getDeviceCounts(void)
 
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
+    std::lock_guard<std::mutex> lock(getFactoryMutex());
+
     loadModules();
     SoapySDR::KwargsList results;
     for (const auto &it : Registry::listFindFunctions())
@@ -100,6 +109,8 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
 {
+    std::lock_guard<std::mutex> lock(getFactoryMutex());
+
     loadModules();
     Kwargs args = args_;
     Device *device = NULL;
@@ -151,6 +162,8 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 
 void SoapySDR::Device::unmake(Device *device)
 {
+    std::lock_guard<std::mutex> lock(getFactoryMutex());
+
     if (getDeviceCounts().count(device) == 0)
     {
         throw std::runtime_error("SoapySDR::Device::unmake() unknown device");
