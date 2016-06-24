@@ -79,7 +79,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_
 
 SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &)
 {
-    return NULL;
+    return nullptr;
 }
 
 void SoapySDR::Device::closeStream(Stream *)
@@ -244,12 +244,12 @@ bool SoapySDR::Device::getGainMode(const int, const size_t) const
 void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
 {
     //algorithm to distribute overall gain (TX gets BB first, RX gets RF first)
-    std::vector<std::string> names = this->listGains(dir, channel);
+    const auto names = this->listGains(dir, channel);
     if (dir == SOAPY_SDR_TX)
     {
         for (int i = names.size()-1; i >= 0; i--)
         {
-            const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+            const auto r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
             this->setGain(dir, channel, names[i], g+r.minimum());
             gain -= this->getGain(dir, channel, names[i])-r.minimum();
@@ -259,7 +259,7 @@ void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
     {
         for (size_t i = 0; i < names.size(); i++)
         {
-            const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+            const auto r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
             this->setGain(dir, channel, names[i], g+r.minimum());
             gain -= this->getGain(dir, channel, names[i])-r.minimum();
@@ -276,11 +276,10 @@ double SoapySDR::Device::getGain(const int dir, const size_t channel) const
 {
     //algorithm to return an overall gain (summing each normalized gain)
     double gain = 0.0;
-    std::vector<std::string> names = this->listGains(dir, channel);
-    for (size_t i = 0; i < names.size(); i++)
+    for (const auto &name : this->listGains(dir, channel))
     {
-        const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
-        gain += this->getGain(dir, channel, names[i])-r.minimum();
+        const auto r = this->getGainRange(dir, channel, name);
+        gain += this->getGain(dir, channel, name)-r.minimum();
     }
     return gain;
 }
@@ -299,10 +298,9 @@ SoapySDR::Range SoapySDR::Device::getGainRange(const int dir, const size_t chann
 {
     //algorithm to return an overall gain range (use 0 to max possible on each element)
     double gain = 0.0;
-    std::vector<std::string> names = this->listGains(dir, channel);
-    for (size_t i = 0; i < names.size(); i++)
+    for (const auto &name : this->listGains(dir, channel))
     {
-        const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+        const auto r = this->getGainRange(dir, channel, name);
         gain += r.maximum()-r.minimum();
     }
     return SoapySDR::Range(0.0, gain);
@@ -313,7 +311,7 @@ SoapySDR::Range SoapySDR::Device::getGainRange(const int dir, const size_t chann
  ******************************************************************/
 void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double freq, const Kwargs &args)
 {
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
     if (comps.empty()) return;
 
     //optional offset, use on RF element when specified
@@ -361,10 +359,9 @@ double SoapySDR::Device::getFrequency(const int dir, const size_t chan) const
     double freq = 0.0;
 
     //overall frequency is the sum of components
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
-    for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
+    for (const auto &comp : this->listFrequencies(dir, chan))
     {
-        const std::string &name = comps[comp_i];
+        const std::string &name = comp;
         freq += this->getFrequency(dir, chan, name);
     }
 
@@ -384,11 +381,11 @@ std::vector<std::string> SoapySDR::Device::listFrequencies(const int, const size
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const size_t chan) const
 {
     //get a list of tunable components
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
     if (comps.empty()) return SoapySDR::RangeList();
 
     //get the range list for the RF component
-    SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.front());
+    auto ranges = this->getFrequencyRange(dir, chan, comps.front());
 
     //use bandwidth setting to clip the range
     const double bw = this->getBandwidth(dir, chan);
@@ -396,7 +393,7 @@ SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const siz
     //add to the range list given subsequent components
     for (size_t comp_i = 1; comp_i < comps.size(); comp_i++)
     {
-        SoapySDR::RangeList subRange = this->getFrequencyRange(dir, chan, comps[comp_i]);
+        const auto subRange = this->getFrequencyRange(dir, chan, comps[comp_i]);
         if (subRange.empty()) continue;
 
         double subRangeLow = subRange.front().minimum();
@@ -426,7 +423,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
 {
     SoapySDR::ArgInfoList args;
 
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
 
     if (comps.size() < 2) return args; //no tuning options with single components
 
@@ -505,10 +502,8 @@ SoapySDR::RangeList SoapySDR::Device::getBandwidthRange(const int direction, con
 {
     SoapySDR::RangeList ranges;
     //call into the older deprecated listBandwidths() call
-    const std::vector<double> bws = this->listBandwidths(direction, channel);
-    for (size_t i = 0; i < bws.size(); i++)
+    for (auto &bw : this->listBandwidths(direction, channel))
     {
-        const double bw = bws.at(i);
         ranges.push_back(SoapySDR::Range(bw, bw));
     }
     return ranges;

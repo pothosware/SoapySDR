@@ -121,8 +121,6 @@
 
 //global factory lock support
 %pythoncode %{
-import threading
-device_factory_lock = threading.Lock()
 
 __all__ = list()
 for key in sorted(globals().keys()):
@@ -136,13 +134,7 @@ for key in sorted(globals().keys()):
 _Device = Device
 class Device(Device):
     def __new__(cls, *args, **kwargs):
-        with device_factory_lock:
-            return cls.make(*args, **kwargs)
-
-    @staticmethod
-    def enumerate(*args):
-        with device_factory_lock:
-            return _Device.enumerate(*args)
+        return cls.make(*args, **kwargs)
 
 def extractBuffPointer(buff):
     if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
@@ -184,8 +176,7 @@ def extractBuffPointer(buff):
     %{
         #call unmake from custom deleter
         def __del__(self):
-            with device_factory_lock:
-                Device.unmake(self)
+            Device.unmake(self)
 
         def __str__(self):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())

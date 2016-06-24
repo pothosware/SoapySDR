@@ -118,13 +118,13 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "----------------------------------------------------" << std::endl;
 
     // info
-    SoapySDR::Kwargs info = device->getChannelInfo(dir, chan);
+    const auto info = device->getChannelInfo(dir, chan);
     if (info.size() > 0)
     {
         ss << "  Channel Information:" << std::endl;
-        for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+        for (const auto &it : info)
         {
-            ss << "    " << it->first << "=" << it->second << std::endl;
+            ss << "    " << it.first << "=" << it.second << std::endl;
         }
     }
 
@@ -210,10 +210,9 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     ss << "  driver=" << device->getDriverKey() << std::endl;
     ss << "  hardware=" << device->getHardwareKey() << std::endl;
-    SoapySDR::Kwargs info = device->getHardwareInfo();
-    for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+    for (const auto &it : device->getHardwareInfo())
     {
-        ss << "  " << it->first << "=" << it->second << std::endl;
+        ss << "  " << it.first << "=" << it.second << std::endl;
     }
 
     /*******************************************************************
