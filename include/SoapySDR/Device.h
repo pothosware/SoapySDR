@@ -1043,6 +1043,7 @@ SOAPY_SDR_API void SoapySDRDevice_setHardwareTime(SoapySDRDevice *device, const 
  * Set the time of subsequent configuration calls.
  * The what argument can refer to a specific command queue.
  * Implementations may use a time of 0 to clear.
+ * \deprecated replaced by setHardwareTime()
  * \param device a pointer to a device instance
  * \param timeNs time in nanoseconds
  * \param what optional argument

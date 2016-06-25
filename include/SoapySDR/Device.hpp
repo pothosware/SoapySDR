@@ -930,6 +930,7 @@ public:
      * Set the time of subsequent configuration calls.
      * The what argument can refer to a specific command queue.
      * Implementations may use a time of 0 to clear.
+     * \deprecated replaced by setHardwareTime()
      * \param timeNs time in nanoseconds
      * \param what optional argument
      */

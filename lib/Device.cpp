@@ -571,9 +571,9 @@ long long SoapySDR::Device::getHardwareTime(const std::string &) const
     return 0;
 }
 
-void SoapySDR::Device::setHardwareTime(const long long, const std::string &)
+void SoapySDR::Device::setHardwareTime(const long long timeNs, const std::string &what)
 {
-    return;
+    if (what == "CMD") this->setCommandTime(timeNs, what);
 }
 
 void SoapySDR::Device::setCommandTime(const long long, const std::string &)

@@ -3,6 +3,14 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.0 (pending)
 ==========================
 
+Deprecated Device API calls:
+
+- Deprecated setCommandTime, use setHardwareTime
+- Deprecated listBandwidths, use getBandwidthRange
+- Deprecated unnamed read/writeRegister, use named
+
+General additions and changes:
+
 - Created wait trigger flag for trigger-based streaming
 - Added device factory lock to the python enumerate wrapper
 - Added named register API for multiple register interfaces
