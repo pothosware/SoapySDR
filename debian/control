@@ -15,7 +15,7 @@ Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
 Vcs-Browser: https://github.com/pothosware/SoapySDR
 
-Package: libsoapysdr0.5-1
+Package: libsoapysdr0.5-2
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -28,7 +28,7 @@ Package: libsoapysdr-dev
 Section: libdevel
 Architecture: any
 Depends:
-    libsoapysdr0.5-0 (= ${binary:Version}),
+    libsoapysdr0.5-2 (= ${binary:Version}),
     ${misc:Depends}
 Description: Soapy SDR - development files
  Vendor and platform neutral SDR support library.
@@ -44,7 +44,7 @@ Recommends:
     soapysdr-uhd,
     soapysdr-osmo
 Depends:
-    libsoapysdr0.5-0 (= ${binary:Version}),
+    libsoapysdr0.5-2 (= ${binary:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
 Description: Soapy SDR - runtime application
@@ -54,7 +54,7 @@ Package: python-soapysdr
 Section: python
 Architecture: any
 Depends:
-    libsoapysdr0.5-0 (= ${binary:Version}),
+    libsoapysdr0.5-2 (= ${binary:Version}),
     python,
     ${shlibs:Depends},
     ${misc:Depends}
@@ -66,7 +66,7 @@ Package: python3-soapysdr
 Section: python
 Architecture: any
 Depends:
-    libsoapysdr0.5-0 (= ${binary:Version}),
+    libsoapysdr0.5-2 (= ${binary:Version}),
     python3,
     ${shlibs:Depends},
     ${misc:Depends}
