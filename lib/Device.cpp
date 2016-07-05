@@ -453,7 +453,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
         info.options.push_back("DEFAULT");
         info.optionNames.push_back("Default");
         info.options.push_back("IGNORE");
-        info.optionNames.push_back("Ingore");
+        info.optionNames.push_back("Ignore");
         SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(comp_i));
         if (not ranges.empty()) info.range = ranges.front();
         args.push_back(info);
