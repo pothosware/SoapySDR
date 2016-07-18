@@ -71,10 +71,10 @@ void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
     case SOAPY_SDR_CRITICAL: fprintf(stderr, ANSI_COLOR_BOLD ANSI_COLOR_RED "[CRITICAL] %s" ANSI_COLOR_RESET "\n", message); break;
     case SOAPY_SDR_ERROR:    fprintf(stderr, ANSI_COLOR_BOLD ANSI_COLOR_RED "[ERROR] %s" ANSI_COLOR_RESET "\n", message); break;
     case SOAPY_SDR_WARNING:  fprintf(stderr, ANSI_COLOR_BOLD ANSI_COLOR_YELLOW "[WARNING] %s" ANSI_COLOR_RESET "\n", message); break;
-    case SOAPY_SDR_NOTICE:   fprintf(stdout, ANSI_COLOR_GREEN "[NOTICE] %s" ANSI_COLOR_RESET "\n", message); break;
-    case SOAPY_SDR_INFO:     fprintf(stdout, "[INFO] %s\n", message); break;
-    case SOAPY_SDR_DEBUG:    fprintf(stdout, "[DEBUG] %s\n", message); break;
-    case SOAPY_SDR_TRACE:    fprintf(stdout, "[TRACE] %s\n", message); break;
+    case SOAPY_SDR_NOTICE:   fprintf(stderr, ANSI_COLOR_GREEN "[NOTICE] %s" ANSI_COLOR_RESET "\n", message); break;
+    case SOAPY_SDR_INFO:     fprintf(stderr, "[INFO] %s\n", message); break;
+    case SOAPY_SDR_DEBUG:    fprintf(stderr, "[DEBUG] %s\n", message); break;
+    case SOAPY_SDR_TRACE:    fprintf(stderr, "[TRACE] %s\n", message); break;
     case SOAPY_SDR_SSI:      fputs(message, stderr); fflush(stderr); break;
     }
 }
