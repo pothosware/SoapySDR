@@ -115,6 +115,18 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
 endif()
 
 ########################################################################
+# extract the ABI version string from the Version.h header
+########################################################################
+function(_SOAPY_SDR_GET_ABI_VERSION VERSION SOAPY_SDR_INCLUDE_DIR)
+    file(READ "${SOAPY_SDR_INCLUDE_DIR}/SoapySDR/Version.h" version_h)
+    string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+-[0-9]+)\"" SOAPY_SDR_ABI_VERSION_MATCHES "${version_h}")
+    if(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
+        message(FATAL_ERROR "Failed to extract version number from Version.h")
+    endif(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
+    set(${VERSION} "${CMAKE_MATCH_1}" PARENT_SCOPE)
+endfunction(_SOAPY_SDR_GET_ABI_VERSION)
+
+########################################################################
 # In-tree settings
 ########################################################################
 if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
@@ -123,6 +135,7 @@ if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
     endif(NOT SOAPY_SDR_ROOT)
     set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_IN_TREE_SOURCE_DIR}/include)
     set(SoapySDR_LIBRARIES SoapySDR)
+    _SOAPY_SDR_GET_ABI_VERSION(SOAPY_SDR_ABI_VERSION ${SoapySDR_INCLUDE_DIRS})
     return()
 endif (SOAPY_SDR_IN_TREE_SOURCE_DIR)
 
@@ -161,3 +174,4 @@ if(NOT SOAPY_SDR_INCLUDE_DIR)
     message(FATAL_ERROR "cannot find SoapySDR includes in ${SOAPY_SDR_ROOT}/include")
 endif()
 set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_INCLUDE_DIR})
+_SOAPY_SDR_GET_ABI_VERSION(SOAPY_SDR_ABI_VERSION ${SoapySDR_INCLUDE_DIRS})

@@ -67,23 +67,13 @@ if (MSVC)
 endif ()
 
 ########################################################################
-# Extract SOVERSION
-########################################################################
-file(READ "${PROJECT_SOURCE_DIR}/include/SoapySDR/Version.h" version_h)
-string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+-[0-9]+)\"" SOAPY_SDR_ABI_VERSION_MATCHES "${version_h}")
-if(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
-    message(FATAL_ERROR "Failed to extract version number from Version.h")
-endif(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
-set(SOAPY_SDR_SOVER "${CMAKE_MATCH_1}" CACHE INTERNAL "")
-
-########################################################################
 # Build the library
 ########################################################################
 add_library(SoapySDR SHARED ${SOAPY_SDR_SOURCES})
 if (SOAPY_SDR_LIBRARIES)
     target_link_libraries(SoapySDR ${SOAPY_SDR_LIBRARIES})
 endif()
-set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_SOVER})
+set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_ABI_VERSION})
 set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
 set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
 

@@ -38,7 +38,7 @@ function(SOAPY_SDR_MODULE_UTIL)
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
 
     if (NOT MODULE_DESTINATION)
-        set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules/)
+        set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)
     endif()
 
     if (MODULE_PREFIX)

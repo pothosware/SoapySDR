@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.5.1 (pending)
+==========================
+
+- ABI-specific modules directory for multi-version install
+
 Release 0.5.0 (2016-07-10)
 ==========================
 

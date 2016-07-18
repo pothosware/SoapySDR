@@ -3,6 +3,7 @@
 
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Logger.hpp>
+#include <SoapySDR/Version.hpp>
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
@@ -117,16 +118,16 @@ std::vector<std::string> SoapySDR::listModules(void)
 {
     //the default search path
     std::vector<std::string> searchPaths;
-    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules");
+    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
 
     //support /usr/local module installs when the install prefix is /usr
     if (SoapySDR::getRootPath() == "/usr")
     {
-        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules");
+        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
         //when using a multi-arch directory, support single-arch path as well
         static const std::string libsuffix("@LIB_SUFFIX@");
         if (not libsuffix.empty() and libsuffix.at(0) == '/')
-            searchPaths.push_back("/usr/local/lib/SoapySDR/modules");
+            searchPaths.push_back("/usr/local/lib/SoapySDR/modules" + SoapySDR::getABIVersion());
     }
 
     //separator for search paths
