@@ -5,7 +5,7 @@ Maintainer: Josh Blum <josh@pothosware.com>
 Build-Depends:
     debhelper (>= 9.0.0),
     cmake (>= 2.8.7),
-    swig2.0,
+    swig (>= 2.0.0),
     python,
     python-dev,
     python3,
