@@ -13,7 +13,27 @@
 #include <SoapySDR/Config.h>
 
 /*!
+ * API version number which can be used as a preprocessor check.
+ * The format of the version number is encoded as follows:
+ * <b>(major << 24) | (minor << 16) | (16 bit increment)</b>.
+ * Where the increment can be used to indicate implementation
+ * changes, fixes, or API additions within a minor release series.
+ *
+ * The macro is typically used in an application as follows:
+ * \code
+ * #if defined(SOAPY_SDR_API_VERSION) && (SOAPY_SDR_API_VERSION >= 0x00001234)
+ * // Use a newer feature from the SoapySDR library API
+ * #endif
+ * \endcode
+ */
+#define SOAPY_SDR_API_VERSION 0x00050001
+
+/*!
  * ABI Version Information - incremented when the ABI is changed.
+ * The ABI version format is <b>major.minor-bump</b>. The <i>major.minor</i>
+ * comes from the in-progress library version when the change was made,
+ * and <i>bump</i> signifies a change to the ABI during library development.
+ * The ABI should remain constant across patch releases of the library.
  */
 #define SOAPY_SDR_ABI_VERSION "0.5-2"
 
@@ -107,15 +127,28 @@ extern "C" {
 #endif
 
 /*!
- * Query the API version string.
+ * Get the SoapySDR library API version as a string.
+ * The format of the version string is <b>major.minor.increment</b>,
+ * where the digits are taken directly from <b>SOAPY_SDR_API_VERSION</b>.
  */
 SOAPY_SDR_API const char *SoapySDR_getAPIVersion(void);
 
 /*!
- * Get the ABI version string.
- * This is the SOAPY_SDR_ABI_VERSION that the library was built against.
+ * Get the ABI version string that the library was built against.
+ * A client can compare <b>SOAPY_SDR_ABI_VERSION</b> to getABIVersion()
+ * to check for ABI incompatibility before using the library.
+ * If the values are not equal then the client code was
+ * compiled against a different ABI than the library.
  */
 SOAPY_SDR_API const char *SoapySDR_getABIVersion(void);
+
+/*!
+ * Get the library version and build information string.
+ * The format of the version string is <b>major.minor.patch-buildInfo</b>.
+ * This function is commonly used to identify the software back-end
+ * to the user for command-line utilities and graphical applications.
+ */
+SOAPY_SDR_API const char *SoapySDR_getLibVersion(void);
 
 #ifdef __cplusplus
 }
