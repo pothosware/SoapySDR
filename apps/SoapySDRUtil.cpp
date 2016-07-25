@@ -34,6 +34,7 @@ static int printHelp(void)
  **********************************************************************/
 static int printInfo(void)
 {
+    std::cout << "Lib Version: v" << SoapySDR::getLibVersion() << std::endl;
     std::cout << "API Version: v" << SoapySDR::getAPIVersion() << std::endl;
     std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
     std::cout << "Install root: " << SoapySDR::getRootPath() << std::endl;

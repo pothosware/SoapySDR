@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.1 (pending)
 ==========================
 
+- Added SoapySDR_getLibVersion() and SOAPY_SDR_API_VERSION
 - debian allow any swig >= 2.0.0 using the swig meta-package
 - Only use stderr in the default logger for command line tools
 - ABI-specific modules directory for multi-version install
