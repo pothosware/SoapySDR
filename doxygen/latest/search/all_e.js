@@ -6,7 +6,7 @@ var searchData=
   ['readgpio',['readGPIO',['../classSoapySDR_1_1Device.html#af51c8e17cfc44127908c0491252fe03d',1,'SoapySDR::Device']]],
   ['readgpiodir',['readGPIODir',['../classSoapySDR_1_1Device.html#a2319d307a894e4b70519cddd5c1f5cd1',1,'SoapySDR::Device']]],
   ['readi2c',['readI2C',['../classSoapySDR_1_1Device.html#aa7785d5af0567d413676252d4990df7f',1,'SoapySDR::Device']]],
-  ['readregister',['readRegister',['../classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8',1,'SoapySDR::Device']]],
+  ['readregister',['readRegister',['../classSoapySDR_1_1Device.html#a8b608f521bdcf2476c815d81d140c91b',1,'SoapySDR::Device::readRegister(const std::string &amp;name, const unsigned addr) const '],['../classSoapySDR_1_1Device.html#adc2efbb1c1b248a17320eb1e538112e8',1,'SoapySDR::Device::readRegister(const unsigned addr) const ']]],
   ['readsensor',['readSensor',['../classSoapySDR_1_1Device.html#ae4921e6aa61671ef88b8cecf8e6406e1',1,'SoapySDR::Device::readSensor(const std::string &amp;name) const '],['../classSoapySDR_1_1Device.html#a6f489af497c819b62a7f07aa2c38e8d1',1,'SoapySDR::Device::readSensor(const int direction, const size_t channel, const std::string &amp;name) const ']]],
   ['readsetting',['readSetting',['../classSoapySDR_1_1Device.html#a993563ec4b3f426e3b54e7e44ca2c620',1,'SoapySDR::Device::readSetting(const std::string &amp;key) const '],['../classSoapySDR_1_1Device.html#a8a98023ca84024f3f64057ce3f418a16',1,'SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &amp;key) const ']]],
   ['readstream',['readStream',['../classSoapySDR_1_1Device.html#a872010f1eb64e259981cf31f2e726027',1,'SoapySDR::Device']]],

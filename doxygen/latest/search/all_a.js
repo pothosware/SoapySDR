@@ -9,6 +9,7 @@ var searchData=
   ['listgpiobanks',['listGPIOBanks',['../classSoapySDR_1_1Device.html#a0a4f0485d8ae3ece1bf6147d36463e41',1,'SoapySDR::Device']]],
   ['listmakefunctions',['listMakeFunctions',['../classSoapySDR_1_1Registry.html#a4ec20addecf005e4753719a33863811f',1,'SoapySDR::Registry']]],
   ['listmodules',['listModules',['../namespaceSoapySDR.html#a6febffdf005115bbc2aad542fb981c86',1,'SoapySDR::listModules(void)'],['../namespaceSoapySDR.html#ae2e9c7c1359ec331eb616d038be8804c',1,'SoapySDR::listModules(const std::string &amp;path)']]],
+  ['listregisterinterfaces',['listRegisterInterfaces',['../classSoapySDR_1_1Device.html#a0303ddab5e1c86e3101ab3b675a814e3',1,'SoapySDR::Device']]],
   ['listsamplerates',['listSampleRates',['../classSoapySDR_1_1Device.html#ae11a151cd9e4913b81db66039caf0967',1,'SoapySDR::Device']]],
   ['listsensors',['listSensors',['../classSoapySDR_1_1Device.html#adc497f47850bd73c44ef024247cfc4ed',1,'SoapySDR::Device::listSensors(void) const '],['../classSoapySDR_1_1Device.html#a9ba5f44738213a6d1e82a9ce4c34ed67',1,'SoapySDR::Device::listSensors(const int direction, const size_t channel) const ']]],
   ['listtimesources',['listTimeSources',['../classSoapySDR_1_1Device.html#abe477e853f8bfed6dac4cdf0aabf9215',1,'SoapySDR::Device']]],
