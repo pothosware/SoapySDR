@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.5.1 (pending)
+Release 0.5.1 (2016-08-02)
 ==========================
 
 - Added SoapySDR_getLibVersion() and SOAPY_SDR_API_VERSION
