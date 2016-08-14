@@ -40,7 +40,26 @@ message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 ########################################################################
 # Find Python libs
 ########################################################################
-find_package(PythonLibs)
+set(PYTHON_CONFIG_EXECUTABLE ${PYTHON_EXECUTABLE}-config
+    CACHE FILEPATH "Path to python-config executable")
+if (USE_PYTHON_CONFIG AND EXISTS ${PYTHON_CONFIG_EXECUTABLE})
+    execute_process(
+        COMMAND ${PYTHON_CONFIG_EXECUTABLE}  --includes
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        OUTPUT_VARIABLE PYTHON_INCLUDE_DIRS)
+    string(REGEX REPLACE "^[-I]" "" PYTHON_INCLUDE_DIRS "${PYTHON_INCLUDE_DIRS}")
+    string(REGEX REPLACE "[ ]-I" " " PYTHON_INCLUDE_DIRS "${PYTHON_INCLUDE_DIRS}")
+    separate_arguments(PYTHON_INCLUDE_DIRS)
+    execute_process(
+        COMMAND ${PYTHON_CONFIG_EXECUTABLE}  --ldflags
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        OUTPUT_VARIABLE PYTHON_LIBRARIES)
+    set(PYTHONLIBS_VERSION_STRING ${PYTHON_VERSION_STRING})
+    set(PYTHONLIBS_FOUND TRUE)
+else()
+    find_package(PythonLibs)
+endif()
+
 message(STATUS "PYTHONLIBS_FOUND: ${PYTHONLIBS_FOUND} - ${PYTHONLIBS_VERSION_STRING}")
 message(STATUS "PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
 message(STATUS "PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")

@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.5.2 (pending)
+==========================
+
+- Additional build helpers for python development config
+
 Release 0.5.1 (2016-08-02)
 ==========================
 
