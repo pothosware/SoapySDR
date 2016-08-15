@@ -1222,12 +1222,6 @@ public:
      ******************************************************************/
 
     /*!
-     * Get a list of available memory block interfaces by name.
-     * \return a list of available memory block interfaces
-     */
-    virtual std::vector<std::string> listRegistersInterfaces(void) const;
-
-    /*!
      * Write a memory block on the device given the interface name.
      * This can represent a memory block on a soft CPU, FPGA, IC;
      * the interpretation is up the implementation to decide.
@@ -1246,24 +1240,6 @@ public:
      */
     virtual std::vector<unsigned> readRegisters(const std::string &name, const unsigned addr, const size_t length) const;
 
-    /*!
-     * Write a memory block on the device.
-     * This can represent a memory block on a soft CPU, FPGA, IC;
-     * the interpretation is up the implementation to decide.
-     * \deprecated replaced by writeRegisters(name)
-     * \param addr the memory block start address
-     * \param value the memory block content
-     */
-    virtual void writeRegisters(const unsigned addr, const std::vector<unsigned> value);
-
-    /*!
-     * Read a memory block on the device.
-     * \deprecated replaced by readRegisters(name)
-     * \param addr the memory block start address
-     * \param length size of data to be read from memory block
-     * \return the memory block content
-     */
-    virtual std::vector<unsigned> readRegisters(const unsigned addr, const size_t length) const;
 
 };
 

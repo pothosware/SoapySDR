@@ -694,11 +694,6 @@ char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, c
  * Memory Block API
  ******************************************************************/
 
-char **SoapySDRDevice_listRegistersInterfaces(const SoapySDRDevice *device, size_t *length)
-{
-    return toStrArray(device->listRegistersInterfaces(), length);
-}
-
 void SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, size_t length)
 {
     return device->writeRegisters(name, addr, toNumericVector(value, length));
@@ -709,14 +704,5 @@ unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const 
     return toNumericList(device->readRegisters(name, addr, length));
 }
 
-void SoapySDRDevice_writeRegisters(SoapySDRDevice *device, const unsigned addr, const unsigned *value, size_t length)
-{
-    return device->writeRegisters(addr, toNumericVector(value, length));
-}
-
-unsigned *SoapySDRDevice_readRegisters(const SoapySDRDevice *device, const unsigned addr, size_t length)
-{
-    return toNumericList(device->readRegisters(addr, length));
-}
 
 } //extern "C"
