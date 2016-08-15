@@ -103,3 +103,18 @@ static inline SoapySDRArgInfo *toArgInfoList(const SoapySDR::ArgInfoList &infos,
     *length = infos.size();
     return out;
 }
+
+static inline std::vector<unsigned> toNumericVector(const unsigned *values, size_t length)
+{
+	std::vector<unsigned> out (length, 0);
+    for (size_t i = 0; i < length; i++) out[i] = values[i];
+    return out;
+}
+
+static inline unsigned *toNumericList(const std::vector<unsigned> &values)
+{
+	unsigned *out = (unsigned *)calloc(values.size(), sizeof(unsigned));
+    for (size_t i = 0; i < values.size(); i++) out[i] = values[i];
+    return out;
+}
+

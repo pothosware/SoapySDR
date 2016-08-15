@@ -1369,6 +1369,61 @@ SOAPY_SDR_API void SoapySDRDevice_writeUART(SoapySDRDevice *device, const char *
  */
 SOAPY_SDR_API char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, const long timeoutUs);
 
+/*******************************************************************
+ * Memory Block API
+ ******************************************************************/
+
+/*!
+ * Get a list of available memory block interfaces by name.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of interfaces
+ * \return a list of available memory block interfaces
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listRegistersInterfaces(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Write a memory block on the device given the interface name.
+ * This can represent a memory block on a soft CPU, FPGA, IC;
+ * the interpretation is up the implementation to decide.
+ * \param device a pointer to a device instance
+ * \param name the name of a available memory block interface
+ * \param addr the memory block start address
+ * \param value the memory block content
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length);
+
+/*!
+ * Read a memory block on the device given the interface name.
+ * \param device a pointer to a device instance
+ * \param name the name of a available memory block interface
+ * \param addr the memory block start address
+ * \param length size of data to be read from memory block
+ * \return the memory block content
+ */
+SOAPY_SDR_API unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, const size_t length);
+
+/*!
+ * Write a memory block on the device.
+ * This can represent a memory block on a soft CPU, FPGA, IC;
+ * the interpretation is up the implementation to decide.
+ * \deprecated replaced by writeRegisters(name)
+ * \param device a pointer to a device instance
+ * \param addr the memory block start address
+ * \param value the memory block content
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeRegisters(SoapySDRDevice *device, const unsigned addr, const unsigned *value, const size_t length);
+
+/*!
+ * Read a memory block on the device.
+ * \deprecated replaced by readRegisters(name)
+ * \param device a pointer to a device instance
+ * \param addr the memory block start address
+ * \param length size of data to be read from memory block
+ * \return the memory block content
+ */
+SOAPY_SDR_API unsigned *SoapySDRDevice_readRegisters(const SoapySDRDevice *device, const unsigned addr, const size_t length);
+
+
 #ifdef __cplusplus
 }
 #endif
