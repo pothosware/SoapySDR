@@ -122,6 +122,11 @@
  */
 #define SOAPY_SDR_API_HAS_NAMED_REGISTER_API
 
+/*!
+ * Compatibility define for named memory block interface API
+ */
+#define SOAPY_SDR_API_HAS_NAMED_REGISTERS_API
+
 #ifdef __cplusplus
 extern "C" {
 #endif
