@@ -136,7 +136,7 @@ SOAPY_SDR_API int SoapySDRDevice_setFrontendMapping(SoapySDRDevice *device, cons
  * Get the mapping configuration string.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
- * \param the vendor-specific mapping string
+ * \return the vendor-specific mapping string
  */
 SOAPY_SDR_API char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int direction);
 
@@ -478,8 +478,6 @@ SOAPY_SDR_API void SoapySDRDevice_releaseReadBuffer(SoapySDRDevice *device,
  * \param stream the opaque pointer to a stream handle
  * \param handle an index value used in the release() call
  * \param buffs an array of void* buffers num chans in size
- * \param flags optional input flags and output flags
- * \param timeNs the buffer's timestamp in nanoseconds
  * \param timeoutUs the timeout in microseconds
  * \return the number of available elements per buffer or error
  */
@@ -686,7 +684,6 @@ SOAPY_SDR_API bool SoapySDRDevice_getGainMode(const SoapySDRDevice *device, cons
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \param name the name of an amplification element
  * \param value the new amplification value in dB
  * \return an error code or 0 for success
  */
