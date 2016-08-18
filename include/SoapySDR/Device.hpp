@@ -124,7 +124,7 @@ public:
     /*!
      * Get the mapping configuration string.
      * \param direction the channel direction RX or TX
-     * \param the vendor-specific mapping string
+     * \return the vendor-specific mapping string
      */
     virtual std::string getFrontendMapping(const int direction) const;
 
@@ -445,8 +445,6 @@ public:
      * \param stream the opaque pointer to a stream handle
      * \param handle an index value used in the release() call
      * \param buffs an array of void* buffers num chans in size
-     * \param flags optional input flags and output flags
-     * \param timeNs the buffer's timestamp in nanoseconds
      * \param timeoutUs the timeout in microseconds
      * \return the number of available elements per buffer or error
      */
@@ -624,7 +622,6 @@ public:
      * The gain will be distributed automatically across available element.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an amplification element
      * \param value the new amplification value in dB
      */
     virtual void setGain(const int direction, const size_t channel, const double value);
