@@ -642,6 +642,16 @@ unsigned SoapySDR::Device::readRegister(const unsigned) const
     return 0;
 }
 
+void SoapySDR::Device::writeRegisters(const std::string &, const unsigned, const std::vector<unsigned> &)
+{
+    return;
+}
+
+std::vector<unsigned> SoapySDR::Device::readRegisters(const std::string &, const unsigned, size_t length) const
+{
+    return std::vector<unsigned>(length, 0);
+}
+
 /*******************************************************************
  * Settings API
  ******************************************************************/
@@ -758,20 +768,3 @@ std::string SoapySDR::Device::readUART(const std::string &, const long) const
 {
     return "";
 }
-
-/*******************************************************************
- * Memory Block API
- ******************************************************************/
-
-void SoapySDR::Device::writeRegisters(const std::string &name, const unsigned addr, const std::vector<unsigned> value)
-{
-    return;
-}
-
-std::vector<unsigned> SoapySDR::Device::readRegisters(const std::string &name, const unsigned addr, size_t length) const
-{
-	std::vector<unsigned> o(0, 1);
-    return o;
-}
-
-

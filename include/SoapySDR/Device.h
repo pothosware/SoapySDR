@@ -1165,6 +1165,30 @@ SOAPY_SDR_API void SoapySDRDevice_writeRegister(SoapySDRDevice *device, const un
  */
 SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr);
 
+/*!
+ * Write a memory block on the device given the interface name.
+ * This can represent a memory block on a soft CPU, FPGA, IC;
+ * the interpretation is up the implementation to decide.
+ * \param device a pointer to a device instance
+ * \param name the name of a available memory block interface
+ * \param addr the memory block start address
+ * \param value the memory block content
+ * \param length the number of words in the block
+ */
+SOAPY_SDR_API void SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length);
+
+/*!
+ * Read a memory block on the device given the interface name.
+ * Pass the number of words to be read in via length;
+ * length will be set to the number of actual words read.
+ * \param device a pointer to a device instance
+ * \param name the name of a available memory block interface
+ * \param addr the memory block start address
+ * \param [inout] length number of words to be read from memory block
+ * \return the memory block content
+ */
+SOAPY_SDR_API unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length);
+
 /*******************************************************************
  * Settings API
  ******************************************************************/
@@ -1368,32 +1392,6 @@ SOAPY_SDR_API void SoapySDRDevice_writeUART(SoapySDRDevice *device, const char *
  * \return a null terminated array of bytes
  */
 SOAPY_SDR_API char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, const long timeoutUs);
-
-/*******************************************************************
- * Memory Block API
- ******************************************************************/
-
-/*!
- * Write a memory block on the device given the interface name.
- * This can represent a memory block on a soft CPU, FPGA, IC;
- * the interpretation is up the implementation to decide.
- * \param device a pointer to a device instance
- * \param name the name of a available memory block interface
- * \param addr the memory block start address
- * \param value the memory block content
- */
-SOAPY_SDR_API void SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length);
-
-/*!
- * Read a memory block on the device given the interface name.
- * \param device a pointer to a device instance
- * \param name the name of a available memory block interface
- * \param addr the memory block start address
- * \param length size of data to be read from memory block
- * \return the memory block content
- */
-SOAPY_SDR_API unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, const size_t length);
-
 
 #ifdef __cplusplus
 }

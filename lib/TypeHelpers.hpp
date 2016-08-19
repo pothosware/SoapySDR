@@ -111,10 +111,11 @@ static inline std::vector<unsigned> toNumericVector(const unsigned *values, size
     return out;
 }
 
-static inline unsigned *toNumericList(const std::vector<unsigned> &values)
+static inline unsigned *toNumericList(const std::vector<unsigned> &values, size_t *length)
 {
 	unsigned *out = (unsigned *)calloc(values.size(), sizeof(unsigned));
     for (size_t i = 0; i < values.size(); i++) out[i] = values[i];
+    *length = values.size();
     return out;
 }
 
