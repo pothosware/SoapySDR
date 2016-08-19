@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.5.2 (pending)
+Release 0.5.2 (2016-08-18)
 ==========================
 
 - Fixes for Doxygen warnings and Doxyfile version upgrade
