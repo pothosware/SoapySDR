@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.6.0 (pending)
+==========================
+
+- Added read/writeRegisters() API for bulk register IO
+
 Release 0.5.2 (2016-08-18)
 ==========================
 
