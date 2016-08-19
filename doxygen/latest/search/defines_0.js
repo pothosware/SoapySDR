@@ -13,6 +13,7 @@ var searchData=
   ['soapy_5fsdr_5fapi_5fhas_5fget_5fchannel_5finfo',['SOAPY_SDR_API_HAS_GET_CHANNEL_INFO',['../Version_8h.html#a505d4dd01180669b5e77df0ccc13aca3',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fmasked_5fgpio',['SOAPY_SDR_API_HAS_MASKED_GPIO',['../Version_8h.html#a34d6719bb04c9d3035556e9e8420810a',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fnamed_5fregister_5fapi',['SOAPY_SDR_API_HAS_NAMED_REGISTER_API',['../Version_8h.html#aedabb9da233a69f3e59dc304ba940f2e',1,'Version.h']]],
+  ['soapy_5fsdr_5fapi_5fhas_5fnamed_5fregisters_5fapi',['SOAPY_SDR_API_HAS_NAMED_REGISTERS_API',['../Version_8h.html#a5fccd3c053259edc0fb1033ba2a9bd76',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fnative_5fstream_5fformat',['SOAPY_SDR_API_HAS_NATIVE_STREAM_FORMAT',['../Version_8h.html#a453668af13dcf04c082f0c0d049cd19c',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fquery_5fsensor_5finfo',['SOAPY_SDR_API_HAS_QUERY_SENSOR_INFO',['../Version_8h.html#abbb43c81d61012a32999342d165840be',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fquery_5ftune_5farg_5finfo',['SOAPY_SDR_API_HAS_QUERY_TUNE_ARG_INFO',['../Version_8h.html#a263735086df3b38a944f469d3779ffbf',1,'Version.h']]],
