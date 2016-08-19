@@ -50,6 +50,7 @@
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
 %template(SoapySDRSizeList) std::vector<size_t>;
 %template(SoapySDRDoubleList) std::vector<double>;
+%template(SoapySDRUnsignedList) std::vector<unsigned>;
 
 %extend std::map<std::string, std::string>
 {

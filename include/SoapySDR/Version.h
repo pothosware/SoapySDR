@@ -26,16 +26,16 @@
  * #endif
  * \endcode
  */
-#define SOAPY_SDR_API_VERSION 0x00050001
+#define SOAPY_SDR_API_VERSION 0x00060000
 
 /*!
  * ABI Version Information - incremented when the ABI is changed.
- * The ABI version format is <b>major.minor-bump</b>. The <i>major.minor</i>
- * comes from the in-progress library version when the change was made,
- * and <i>bump</i> signifies a change to the ABI during library development.
+ * The ABI version format is <b>version[-extra]</b>.
+ * The <i>version</i> comes from the associated library major.minor version.
+ * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.5-2"
+#define SOAPY_SDR_ABI_VERSION "0.6-dev"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -121,6 +121,11 @@
  * Compatibility define for named register interface API
  */
 #define SOAPY_SDR_API_HAS_NAMED_REGISTER_API
+
+/*!
+ * Compatibility define for named memory block interface API
+ */
+#define SOAPY_SDR_API_HAS_NAMED_REGISTERS_API
 
 #ifdef __cplusplus
 extern "C" {

@@ -642,6 +642,16 @@ unsigned SoapySDR::Device::readRegister(const unsigned) const
     return 0;
 }
 
+void SoapySDR::Device::writeRegisters(const std::string &, const unsigned, const std::vector<unsigned> &)
+{
+    return;
+}
+
+std::vector<unsigned> SoapySDR::Device::readRegisters(const std::string &, const unsigned, size_t length) const
+{
+    return std::vector<unsigned>(length, 0);
+}
+
 /*******************************************************************
  * Settings API
  ******************************************************************/

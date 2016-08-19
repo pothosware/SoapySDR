@@ -119,7 +119,7 @@ endif()
 ########################################################################
 function(_SOAPY_SDR_GET_ABI_VERSION VERSION SOAPY_SDR_INCLUDE_DIR)
     file(READ "${SOAPY_SDR_INCLUDE_DIR}/SoapySDR/Version.h" version_h)
-    string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+-[0-9]+)\"" SOAPY_SDR_ABI_VERSION_MATCHES "${version_h}")
+    string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+(-[A-Za-z0-9]+)?)\"" SOAPY_SDR_ABI_VERSION_MATCHES "${version_h}")
     if(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
         message(FATAL_ERROR "Failed to extract version number from Version.h")
     endif(NOT SOAPY_SDR_ABI_VERSION_MATCHES)

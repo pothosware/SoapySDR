@@ -1037,6 +1037,25 @@ public:
      */
     virtual unsigned readRegister(const unsigned addr) const;
 
+    /*!
+     * Write a memory block on the device given the interface name.
+     * This can represent a memory block on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param name the name of a available memory block interface
+     * \param addr the memory block start address
+     * \param value the memory block content
+     */
+    virtual void writeRegisters(const std::string &name, const unsigned addr, const std::vector<unsigned> &value);
+
+    /*!
+     * Read a memory block on the device given the interface name.
+     * \param name the name of a available memory block interface
+     * \param addr the memory block start address
+     * \param length number of words to be read from memory block
+     * \return the memory block content
+     */
+    virtual std::vector<unsigned> readRegisters(const std::string &name, const unsigned addr, const size_t length) const;
+
     /*******************************************************************
      * Settings API
      ******************************************************************/

@@ -577,6 +577,16 @@ unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigne
     return device->readRegister(addr);
 }
 
+void SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length)
+{
+    return device->writeRegisters(name, addr, toNumericVector(value, length));
+}
+
+unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length)
+{
+    return toNumericList(device->readRegisters(name, addr, *length), length);
+}
+
 /*******************************************************************
  * Settings API
  ******************************************************************/
