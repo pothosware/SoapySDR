@@ -2,6 +2,7 @@
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
+#include "ErrorHelpers.hpp"
 #include "TypeHelpers.hpp"
 #include <SoapySDR/Device.h>
 #include <SoapySDR/Device.hpp>
@@ -10,21 +11,15 @@
 #include <cstring>
 
 /*******************************************************************
- * Helper macros for dealing with error messages
+ * Error message implementation
  ******************************************************************/
-#define __SOAPY_SDR_C_TRY try {
-#define __SOAPY_SDR_C_CATCH } \
-    catch (const std::exception &ex) { return SoapySDRDevice_reportError(ex.what()); } \
-    catch (...) { return SoapySDRDevice_reportError("unknown"); } \
-    return 0;
-
 #ifdef _MSC_VER
 #define __thread __declspec(thread)
 #endif
 
 static __thread char lastErrorMsg[1024];
 
-static int SoapySDRDevice_reportError(const char *msg)
+int SoapySDRDevice_reportError(const char *msg)
 {
     strncpy(lastErrorMsg, msg, sizeof(lastErrorMsg));
     lastErrorMsg[sizeof(lastErrorMsg)-1] = '\0';
