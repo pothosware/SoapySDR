@@ -42,17 +42,23 @@ extern "C" {
  ******************************************************************/
 char *SoapySDRDevice_getDriverKey(const SoapySDRDevice *device)
 {
+    __SOAPY_SDR_C_TRY
     return strdup(device->getDriverKey().c_str());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 char *SoapySDRDevice_getHardwareKey(const SoapySDRDevice *device)
 {
+    __SOAPY_SDR_C_TRY
     return strdup(device->getHardwareKey().c_str());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 SoapySDRKwargs SoapySDRDevice_getHardwareInfo(const SoapySDRDevice *device)
 {
+    __SOAPY_SDR_C_TRY
     return toKwargs(device->getHardwareInfo());
+    __SOAPY_SDR_C_CATCH_RET(toKwargs(SoapySDR::Kwargs()));
 }
 
 /*******************************************************************
@@ -67,17 +73,23 @@ int SoapySDRDevice_setFrontendMapping(SoapySDRDevice *device, const int directio
 
 char *SoapySDRDevice_getFrontendMapping(const SoapySDRDevice *device, const int direction)
 {
+    __SOAPY_SDR_C_TRY
     return strdup(device->getFrontendMapping(direction).c_str());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 size_t SoapySDRDevice_getNumChannels(const SoapySDRDevice *device, const int direction)
 {
+    __SOAPY_SDR_C_TRY
     return device->getNumChannels(direction);
+    __SOAPY_SDR_C_CATCH_RET(std::string::npos);
 }
 
 SoapySDRKwargs SoapySDRDevice_getChannelInfo(const SoapySDRDevice *device, const int direction, const size_t channel)
 {
+    __SOAPY_SDR_C_TRY
     return toKwargs(device->getChannelInfo(direction, channel));
+    __SOAPY_SDR_C_CATCH_RET(toKwargs(SoapySDR::Kwargs()));
 }
 
 bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direction, const size_t channel)
@@ -90,17 +102,23 @@ bool SoapySDRDevice_getFullDuplex(const SoapySDRDevice *device, const int direct
  ******************************************************************/
 char **SoapySDRDevice_getStreamFormats(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
+    __SOAPY_SDR_C_TRY
     return toStrArray(device->getStreamFormats(direction, channel), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 char *SoapySDRDevice_getNativeStreamFormat(const SoapySDRDevice *device, const int direction, const size_t channel, double *fullScale)
 {
+    __SOAPY_SDR_C_TRY
     return strdup(device->getNativeStreamFormat(direction, channel, *fullScale).c_str());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
 {
+    __SOAPY_SDR_C_TRY
     return toArgInfoList(device->getStreamArgsInfo(direction, channel), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 int SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
