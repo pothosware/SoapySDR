@@ -19,11 +19,10 @@
 
 static __thread char lastErrorMsg[1024];
 
-int SoapySDRDevice_reportError(const char *msg)
+void SoapySDRDevice_reportError(const char *msg)
 {
     strncpy(lastErrorMsg, msg, sizeof(lastErrorMsg));
     lastErrorMsg[sizeof(lastErrorMsg)-1] = '\0';
-    return -1;
 }
 
 const char *SoapySDRDevice_lastError(void)

@@ -8,10 +8,18 @@
 /*******************************************************************
  * Helper macros for dealing with error messages
  ******************************************************************/
+
+//! Start a section with an open try brace
 #define __SOAPY_SDR_C_TRY try {
-#define __SOAPY_SDR_C_CATCH } \
-    catch (const std::exception &ex) { return SoapySDRDevice_reportError(ex.what()); } \
-    catch (...) { return SoapySDRDevice_reportError("unknown"); } \
+
+//! Close a section with a catch, with specified return code
+#define __SOAPY_SDR_C_CATCH_RET(ret) } \
+    catch (const std::exception &ex) { SoapySDRDevice_reportError(ex.what()); return (ret); } \
+    catch (...) { SoapySDRDevice_reportError("unknown"); return (ret); } \
     return 0;
 
-int SoapySDRDevice_reportError(const char *msg);
+//! Close a section with a catch, -1 return on error
+#define __SOAPY_SDR_C_CATCH __SOAPY_SDR_C_CATCH_RET(-1)
+
+//! Report error called by catch macro
+void SoapySDRDevice_reportError(const char *msg);
