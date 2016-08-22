@@ -108,6 +108,8 @@ int SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, 
     __SOAPY_SDR_C_TRY
     *stream = reinterpret_cast<SoapySDRStream *>(device->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
     __SOAPY_SDR_C_CATCH
+    //TODO this would be a better design to return the stream
+    //__SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 void SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
