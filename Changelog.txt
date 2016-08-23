@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.6.0 (pending)
 ==========================
 
+- Status return for Device C API calls with void return
 - Added Kwargs type to/from markup string API calls
 - Added read/writeRegisters() API for bulk register IO
 

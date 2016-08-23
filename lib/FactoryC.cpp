@@ -15,7 +15,7 @@ SoapySDRKwargs *SoapySDRDevice_enumerate(const SoapySDRKwargs *args, size_t *len
     return toKwargsList(SoapySDR::Device::enumerate(toKwargs(args)), length);
 }
 
-SOAPY_SDR_API SoapySDRKwargs *SoapySDRDevice_enumerateStrArgs(const char *args, size_t *length)
+SoapySDRKwargs *SoapySDRDevice_enumerateStrArgs(const char *args, size_t *length)
 {
     return toKwargsList(SoapySDR::Device::enumerate(args), length);
 }
@@ -34,9 +34,11 @@ SoapySDRDevice *SoapySDRDevice_makeStrArgs(const char *args)
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
-void SoapySDRDevice_unmake(SoapySDRDevice *device)
+int SoapySDRDevice_unmake(SoapySDRDevice *device)
 {
+    __SOAPY_SDR_C_TRY
     SoapySDR::Device::unmake((SoapySDR::Device *)device);
+    __SOAPY_SDR_C_CATCH
 }
 
 }
