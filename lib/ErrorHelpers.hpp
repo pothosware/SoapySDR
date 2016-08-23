@@ -14,8 +14,8 @@
 
 //! Close a section with a catch, with specified return code
 #define __SOAPY_SDR_C_CATCH_RET(ret) } \
-    catch (const std::exception &ex) { SoapySDRDevice_reportError(ex.what()); return (ret); } \
-    catch (...) { SoapySDRDevice_reportError("unknown"); return (ret); }
+    catch (const std::exception &ex) { SoapySDRDevice_reportError(ex.what()); return ret; } \
+    catch (...) { SoapySDRDevice_reportError("unknown"); return ret; }
 
 //! Close a section with a catch, -1 return on error
 #define __SOAPY_SDR_C_CATCH \
