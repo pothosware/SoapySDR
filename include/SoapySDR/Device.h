@@ -31,10 +31,20 @@ typedef struct SoapySDRDevice SoapySDRDevice;
 typedef struct SoapySDRStream SoapySDRStream;
 
 /*!
+ * Get the last status code after a Device API call.
+ * The status code is cleared on entry to each Device call.
+ * When an device API call throws, the C bindings catch
+ * the exception, and set a non-zero last status code.
+ * Use lastStatus() to determine success/failure for
+ * Device calls without integer status return codes.
+ */
+SOAPY_SDR_API int SoapySDRDevice_lastStatus(void);
+
+/*!
  * Get the last error message after a device call fails.
  * When an device API call throws, the C bindings catch
  * the exception, store its message in thread-safe storage,
- * and return a non-zero status code to inidicate failure.
+ * and return a non-zero status code to indicate failure.
  * Use lastError() to access the exception's error message.
  */
 SOAPY_SDR_API const char *SoapySDRDevice_lastError(void);

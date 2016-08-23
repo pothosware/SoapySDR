@@ -6,6 +6,11 @@ Release 0.6.0 (pending)
 - Added Kwargs type to/from markup string API calls
 - Added read/writeRegisters() API for bulk register IO
 
+Release 0.5.3 (pending)
+==========================
+
+- Additional try/catch blocks for C API wrapper safety
+
 Release 0.5.2 (2016-08-18)
 ==========================
 
