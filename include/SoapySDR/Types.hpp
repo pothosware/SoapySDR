@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -20,6 +20,18 @@ namespace SoapySDR
 
 //! Typedef for a dictionary of key-value string arguments
 typedef std::map<std::string, std::string> Kwargs;
+
+/*!
+ * Convert a markup string to a key-value map.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API Kwargs KwargsFromString(const std::string &markup);
+
+/*!
+ * Convert a key-value map to a markup string.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API std::string KwargsToString(const Kwargs &args);
 
 //! Typedef for a list of key-word dictionaries
 typedef std::vector<Kwargs> KwargsList;

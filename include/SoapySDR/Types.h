@@ -31,6 +31,18 @@ typedef struct
     char **vals;
 } SoapySDRKwargs;
 
+/*!
+ * Convert a markup string to a key-value map.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API SoapySDRKwargs SoapySDRKwargs_fromString(const char *markup);
+
+/*!
+ * Convert a key-value map to a markup string.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API char *SoapySDRKwargs_toString(const SoapySDRKwargs *args);
+
 //! Possible data types for argument info
 typedef enum
 {

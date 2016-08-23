@@ -6,7 +6,6 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
-#include <cctype>
 #include <mutex>
 
 static std::recursive_mutex &getFactoryMutex(void)
@@ -61,50 +60,9 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
     return results;
 }
 
-static std::string trim(const std::string &s)
-{
-    std::string out = s;
-    while (not out.empty() and std::isspace(out[0])) out = out.substr(1);
-    while (not out.empty() and std::isspace(out[out.size()-1])) out = out.substr(0, out.size()-1);
-    return out;
-}
-
-static SoapySDR::Kwargs argsStrToKwargs(const std::string &args)
-{
-    SoapySDR::Kwargs kwargs;
-
-    bool inKey = true;
-    std::string key, val;
-    for (size_t i = 0; i < args.size(); i++)
-    {
-        const char ch = args[i];
-        if (inKey)
-        {
-            if (ch == '=') inKey = false;
-            else if (ch == ',') inKey = true;
-            else key += ch;
-        }
-        else
-        {
-            if (ch == ',') inKey = true;
-            else val += ch;
-        }
-        if ((inKey and not val.empty()) or ((i+1) == args.size()))
-        {
-            key = trim(key);
-            val = trim(val);
-            if (not key.empty()) kwargs[key] = val;
-            key = "";
-            val = "";
-        }
-    }
-
-    return kwargs;
-}
-
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 {
-    return enumerate(argsStrToKwargs(args));
+    return enumerate(KwargsFromString(args));
 }
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
@@ -157,7 +115,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
 
 SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 {
-    return make(argsStrToKwargs(args));
+    return make(KwargsFromString(args));
 }
 
 void SoapySDR::Device::unmake(Device *device)
