@@ -10,7 +10,8 @@
  ******************************************************************/
 
 //! Start a section with an open try brace
-#define __SOAPY_SDR_C_TRY try {
+#define __SOAPY_SDR_C_TRY \
+    SoapySDRDevice_clearError(); try {
 
 //! Close a section with a catch, with specified return code
 #define __SOAPY_SDR_C_CATCH_RET(ret) } \
@@ -20,6 +21,9 @@
 //! Close a section with a catch, -1 return on error
 #define __SOAPY_SDR_C_CATCH \
     __SOAPY_SDR_C_CATCH_RET(-1) return 0;
+
+//! Clear the error on try macro entry
+void SoapySDRDevice_clearError(void);
 
 //! Report error called by catch macro
 void SoapySDRDevice_reportError(const char *msg);

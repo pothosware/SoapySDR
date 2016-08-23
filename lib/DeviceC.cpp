@@ -18,12 +18,26 @@
 #define __thread __declspec(thread)
 #endif
 
+static __thread int lastErrorStatus;
+
 static __thread char lastErrorMsg[1024];
+
+void SoapySDRDevice_clearError(void)
+{
+    lastErrorMsg[0] = '\0';
+    lastErrorStatus = 0;
+}
+
+int SoapySDRDevice_lastStatus(void)
+{
+    return lastErrorStatus;
+}
 
 void SoapySDRDevice_reportError(const char *msg)
 {
     strncpy(lastErrorMsg, msg, sizeof(lastErrorMsg));
     lastErrorMsg[sizeof(lastErrorMsg)-1] = '\0';
+    lastErrorStatus = -1;
 }
 
 const char *SoapySDRDevice_lastError(void)
