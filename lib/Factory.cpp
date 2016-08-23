@@ -6,7 +6,6 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
-#include <cctype>
 #include <mutex>
 
 static std::recursive_mutex &getFactoryMutex(void)

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Types.hpp>
+#include <cctype>
 
 static std::string trim(const std::string &s)
 {
