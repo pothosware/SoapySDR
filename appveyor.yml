@@ -26,6 +26,7 @@ branches:
   # whitelist
   only:
     - master
+    - maint
 
 # dependencies for python bindings
 # disabled because of link issues on VM
