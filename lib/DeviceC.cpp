@@ -770,8 +770,11 @@ int SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name,
 
 unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length)
 {
+    const size_t inputLen = *length;
+    *length = 0; //clear in case of error
+
     __SOAPY_SDR_C_TRY
-    return toNumericList(device->readRegisters(name, addr, *length), length);
+    return toNumericList(device->readRegisters(name, addr, inputLen), length);
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
@@ -885,12 +888,16 @@ int SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr, const char *
     __SOAPY_SDR_C_CATCH
 }
 
-char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, const size_t numBytes)
+char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, size_t *numBytes)
 {
+    const size_t inputNumBytes = *numBytes;
+    *numBytes = 0; //clear in case of error
+
     __SOAPY_SDR_C_TRY
-    const std::string bytes = device->readI2C(addr, numBytes).c_str();
+    const std::string bytes = device->readI2C(addr, inputNumBytes).c_str();
     char *buff = (char *)std::malloc(bytes.size());
     std::copy(bytes.begin(), bytes.end(), buff);
+    *numBytes = bytes.size();
     return buff;
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }

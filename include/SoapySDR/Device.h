@@ -1358,12 +1358,14 @@ SOAPY_SDR_API int SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr
  * Read from an available I2C slave.
  * If the device contains multiple I2C masters,
  * the address bits can encode which master.
+ * Pass the number of bytes to be read in via numBytes;
+ * numBytes will be set to the number of actual bytes read.
  * \param device a pointer to a device instance
  * \param addr the address of the slave
- * \param numBytes the number of bytes to read
+ * \param [inout] numBytes the number of bytes to read
  * \return an array of bytes read from the slave
  */
-SOAPY_SDR_API char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, const size_t numBytes);
+SOAPY_SDR_API char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, size_t *numBytes);
 
 /*******************************************************************
  * SPI API
