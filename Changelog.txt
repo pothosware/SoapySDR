@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.5.3 (pending)
+==========================
+
+- Additional try/catch blocks for C API wrapper safety
+
 Release 0.5.2 (2016-08-18)
 ==========================
 
