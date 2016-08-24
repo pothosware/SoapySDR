@@ -73,7 +73,7 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i
 @ONLY)
 
-set(CMAKE_SWIG_FLAGS -c++ -threads)
+message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
 SWIG_ADD_MODULE(SoapySDR3 python ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)

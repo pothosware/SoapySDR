@@ -91,6 +91,25 @@ if(PYTHON_VERSION_STRING AND "${PYTHON_VERSION_STRING}" VERSION_LESS "3.0")
 endif()
 
 ########################################################################
+## set the swig flags - shared with python3 build
+########################################################################
+set(CMAKE_SWIG_FLAGS -c++ -threads)
+
+#check for size_t issue on arm 32-bit platforms
+include(CheckCXXSourceCompiles)
+CHECK_CXX_SOURCE_COMPILES("
+    #include <cstddef>
+    int main() {
+    size_t *x = (unsigned int *)(NULL);
+    return 0; }" SIZE_T_IS_UNSIGNED_INT)
+
+if (SIZE_T_IS_UNSIGNED_INT)
+    list(APPEND CMAKE_SWIG_FLAGS -DSIZE_T_IS_UNSIGNED_INT)
+endif (SIZE_T_IS_UNSIGNED_INT)
+
+set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS} PARENT_SCOPE)
+
+########################################################################
 ## Feature registration
 ########################################################################
 include(FeatureSummary)
@@ -108,7 +127,7 @@ include(UseSWIG)
 include_directories(${SoapySDR_INCLUDE_DIRS})
 include_directories(${PYTHON_INCLUDE_DIRS})
 
-set(CMAKE_SWIG_FLAGS -c++ -threads)
+message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
 SWIG_ADD_MODULE(SoapySDR python SoapySDR.i)
