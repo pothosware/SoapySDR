@@ -49,8 +49,6 @@ const char *SoapySDRDevice_lastError(void)
  * Error POD types
  ******************************************************************/
 
-#define SoapySDRVoidRet
-
 static const bool SoapySDRBoolErr = bool(-1);
 
 static const SoapySDRRange SoapySDRRangeNAN = {NAN, NAN};

@@ -22,6 +22,9 @@
 #define __SOAPY_SDR_C_CATCH \
     __SOAPY_SDR_C_CATCH_RET(-1) return 0;
 
+//! Padd into __SOAPY_SDR_C_CATCH_RET for void return calls
+#define SoapySDRVoidRet
+
 //! Clear the error on try macro entry
 void SoapySDRDevice_clearError(void);
 
