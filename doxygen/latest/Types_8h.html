@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g22ca4f76</span>
+   &#160;<span id="projectnumber">0.6.0-g7e5b0b5c</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -122,6 +122,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:af9f8010720ae60da16e2f929ca8d8293"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#af9f8010720ae60da16e2f929ca8d8293">SoapySDRKwargs_fromString</a> (const char *markup)</td></tr>
+<tr class="separator:af9f8010720ae60da16e2f929ca8d8293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5147b2e18e4a7fc4bf6b9dd8dfb83f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#ab5147b2e18e4a7fc4bf6b9dd8dfb83f0">SoapySDRKwargs_toString</a> (const <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args)</td></tr>
+<tr class="separator:ab5147b2e18e4a7fc4bf6b9dd8dfb83f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b2f720f65ba9637e0e3da7eb907feb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#a6b2f720f65ba9637e0e3da7eb907feb5">SoapySDRStrings_clear</a> (char ***elems, const size_t length)</td></tr>
 <tr class="separator:a6b2f720f65ba9637e0e3da7eb907feb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2662a55ded5b8b5ef2d01fa45230f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Types_8h.html#a3b2662a55ded5b8b5ef2d01fa45230f7">SoapySDRKwargs_set</a> (<a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args, const char *key, const char *val)</td></tr>
@@ -227,6 +231,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af9f8010720ae60da16e2f929ca8d8293"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> SoapySDRKwargs_fromString </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>markup</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert a markup string to a key-value map. The markup format is: "key0=value0, key1=value1" </p>
+
+</div>
+</div>
 <a class="anchor" id="a2700a7977c5590be1811b8fc444a04c4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -287,6 +308,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ab5147b2e18e4a7fc4bf6b9dd8dfb83f0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char* SoapySDRKwargs_toString </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert a key-value map to a markup string. The markup format is: "key0=value0, key1=value1" </p>
+
+</div>
+</div>
 <a class="anchor" id="ace9edce1d903d891a2e83fda646ba6ff"></a>
 <div class="memitem">
 <div class="memproto">
@@ -344,7 +382,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 19 2016 00:07:27 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 25 2016 10:27:06 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

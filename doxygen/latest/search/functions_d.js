@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vlogf',['vlogf',['../namespaceSoapySDR.html#a0b1e9d955ef43207dbc00b74aed83a40',1,'SoapySDR']]]
+  ['unloadmodule',['unloadModule',['../namespaceSoapySDR.html#afd1fd337e716c119d441152d077fd807',1,'SoapySDR']]],
+  ['unmake',['unmake',['../classSoapySDR_1_1Device.html#a6747bfba4c369c333e0405ebe007ef29',1,'SoapySDR::Device']]]
 ];
