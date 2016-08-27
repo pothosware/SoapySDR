@@ -731,42 +731,28 @@ char **SoapySDRDevice_listRegisterInterfaces(const SoapySDRDevice *device, size_
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
-int SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value)
+int SoapySDRDevice_writeRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value)
 {
     __SOAPY_SDR_C_TRY
     device->writeRegister(name, addr, value);
     __SOAPY_SDR_C_CATCH
 }
 
-unsigned SoapySDRDevice_readNamedRegister(const SoapySDRDevice *device, const char *name, const unsigned addr)
+unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const char *name, const unsigned addr)
 {
     __SOAPY_SDR_C_TRY
     return device->readRegister(name, addr);
     __SOAPY_SDR_C_CATCH
 }
 
-int SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value)
-{
-    __SOAPY_SDR_C_TRY
-    device->writeRegister(addr, value);
-    __SOAPY_SDR_C_CATCH
-}
-
-unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr)
-{
-    __SOAPY_SDR_C_TRY
-    return device->readRegister(addr);
-    __SOAPY_SDR_C_CATCH
-}
-
-int SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length)
+int SoapySDRDevice_writeRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length)
 {
     __SOAPY_SDR_C_TRY
     device->writeRegisters(name, addr, toNumericVector(value, length));
     __SOAPY_SDR_C_CATCH
 }
 
-unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length)
+unsigned *SoapySDRDevice_readRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length)
 {
     const size_t inputLen = *length;
     *length = 0; //clear in case of error

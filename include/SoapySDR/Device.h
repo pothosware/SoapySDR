@@ -1151,7 +1151,7 @@ SOAPY_SDR_API char **SoapySDRDevice_listRegisterInterfaces(const SoapySDRDevice 
  * \param value the register value
  * \return 0 for success or error code on failure
  */
-SOAPY_SDR_API int SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value);
+SOAPY_SDR_API int SoapySDRDevice_writeRegister(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned value);
 
 /*!
  * Read a register on the device given the interface name.
@@ -1160,28 +1160,7 @@ SOAPY_SDR_API int SoapySDRDevice_writeNamedRegister(SoapySDRDevice *device, cons
  * \param addr the register address
  * \return the register value
  */
-SOAPY_SDR_API unsigned SoapySDRDevice_readNamedRegister(const SoapySDRDevice *device, const char *name, const unsigned addr);
-
-/*!
- * Write a register on the device.
- * This can represent a register on a soft CPU, FPGA, IC;
- * the interpretation is up the implementation to decide.
- * \deprecated replaced by writeRegister(name)
- * \param device a pointer to a device instance
- * \param addr the register address
- * \param value the register value
- * \return 0 for success or error code on failure
- */
-SOAPY_SDR_API int SoapySDRDevice_writeRegister(SoapySDRDevice *device, const unsigned addr, const unsigned value);
-
-/*!
- * Read a register on the device.
- * \deprecated replaced by readRegister(name)
- * \param device a pointer to a device instance
- * \param addr the register address
- * \return the register value
- */
-SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const unsigned addr);
+SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device, const char *name, const unsigned addr);
 
 /*!
  * Write a memory block on the device given the interface name.
@@ -1194,7 +1173,7 @@ SOAPY_SDR_API unsigned SoapySDRDevice_readRegister(const SoapySDRDevice *device,
  * \param length the number of words in the block
  * \return 0 for success or error code on failure
  */
-SOAPY_SDR_API int SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length);
+SOAPY_SDR_API int SoapySDRDevice_writeRegisters(SoapySDRDevice *device, const char *name, const unsigned addr, const unsigned *value, const size_t length);
 
 /*!
  * Read a memory block on the device given the interface name.
@@ -1206,7 +1185,7 @@ SOAPY_SDR_API int SoapySDRDevice_writeNamedRegisters(SoapySDRDevice *device, con
  * \param [inout] length number of words to be read from memory block
  * \return the memory block content
  */
-SOAPY_SDR_API unsigned *SoapySDRDevice_readNamedRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length);
+SOAPY_SDR_API unsigned *SoapySDRDevice_readRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length);
 
 /*******************************************************************
  * Settings API

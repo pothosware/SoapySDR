@@ -3,7 +3,14 @@ This this the changelog file for the SoapySDR project.
 Release 0.6.0 (pending)
 ==========================
 
+Device C API changes:
+
+- Device readI2C - make numBytes an in/out argument
+- Device read/write registers switch to named variant
 - Status return for Device C API calls with void return
+
+General additions and changes:
+
 - Added Kwargs type to/from markup string API calls
 - Added read/writeRegisters() API for bulk register IO
 
