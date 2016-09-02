@@ -21,8 +21,12 @@ Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Soapy SDR - shared library
- Vendor and platform neutral SDR support library.
+Description: software defined radio interface library
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This package contains the shared library.
 
 Package: libsoapysdr-dev
 Section: libdevel
@@ -30,25 +34,26 @@ Architecture: any
 Depends:
     libsoapysdr0.5-2 (= ${binary:Version}),
     ${misc:Depends}
-Description: Soapy SDR - development files
- Vendor and platform neutral SDR support library.
+Description: SoapySDR library development files
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This package contains the development files for the library.
 
 Package: soapysdr
-Section: comm
 Architecture: any
-Recommends:
-    soapysdr-remote,
-    soapysdr-rtlsdr,
-    soapysdr-hackrf,
-    soapysdr-bladerf,
-    soapysdr-uhd,
-    soapysdr-osmo
 Depends:
     libsoapysdr0.5-2 (= ${binary:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
-Description: Soapy SDR - runtime application
- Vendor and platform neutral SDR support library.
+Description: software defined radio interface library tools
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This package contains the SoapySDRUtil command line utility which can
+ list available modules and hardware.
 
 Package: python-soapysdr
 Section: python
@@ -59,8 +64,12 @@ Depends:
     ${shlibs:Depends},
     ${misc:Depends}
 Recommends: python-numpy
-Description: Soapy SDR - python bindings
- Vendor and platform neutral SDR support library.
+Description: SoapySDR Python 2 bindings
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This package contains the Python 2 bindings for the library.
 
 Package: python3-soapysdr
 Section: python
@@ -70,6 +79,31 @@ Depends:
     python3,
     ${shlibs:Depends},
     ${misc:Depends}
-Recommends: python-numpy
-Description: Soapy SDR - python3 bindings
- Vendor and platform neutral SDR support library.
+Recommends: python3-numpy
+Description: SoapySDR Python 3 bindings
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This package contains the Python 3 bindings for the library.
+
+Package: soapysdr-modules-all
+Architecture: all
+Depends:
+    soapysdr-module-airspy,
+    soapysdr-module-bladerf,
+    soapysdr-module-hackrf,
+    soapysdr-module-redpitaya,
+    soapysdr-module-remote,
+    soapysdr-module-rtlsdr,
+    soapysdr-module-rfspace,
+    soapysdr-module-osmosdr,
+    soapysdr-module-mirisdr,
+    soapysdr-module-uhd,
+    ${misc:Depends}
+Description: software defined radio hardware support modules
+ SoapySDR is a library providing a common interface to SDR (software
+ defined radio) hardware. Support for different hardware is added through
+ external modules.
+ .
+ This is a metapackage for several common hardware support modules.
