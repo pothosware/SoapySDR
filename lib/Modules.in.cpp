@@ -216,7 +216,13 @@ std::string SoapySDR::loadModule(const std::string &path)
 
     //load the module
 #ifdef _MSC_VER
+
+    //SetThreadErrorMode() - disable error pop-ups when DLLs are not found
+    DWORD oldMode;
+    SetThreadErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX, &oldMode);
     HMODULE handle = LoadLibrary(path.c_str());
+    SetThreadErrorMode(oldMode, nullptr);
+
     getModuleLoading().clear();
     if (handle == NULL) return "LoadLibrary() failed: " + GetLastErrorMessage();
 #else
