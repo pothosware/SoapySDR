@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.4 (pending)
 ==========================
 
+- Windows: disable graphical error pop-ups when DLLs are not found
 - Debian: replaced recommends with soapysdr-modules-all metapackage
 
 Release 0.5.3 (2016-09-01)
