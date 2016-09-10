@@ -28,9 +28,9 @@ set(SOAPY_SDR_VERSION "${SOAPY_SDR_LIBVER}-${SOAPY_SDR_EXTVER}")
 #SOAPY_SDR_ROOT is compiled into the library to locate the install base.
 #By default, the SOAPY_SDR_ROOT is set to the CMAKE_INSTALL_PREFIX.
 #However users may overload this by specifying -DSOAPY_SDR_ROOT=<path>.
-if(NOT SOAPY_SDR_ROOT)
-    file(TO_CMAKE_PATH ${CMAKE_INSTALL_PREFIX} SOAPY_SDR_ROOT)
-endif(NOT SOAPY_SDR_ROOT)
+set(SOAPY_SDR_ROOT "${CMAKE_INSTALL_PREFIX}" CACHE PATH
+    "Installation root for SoapySDR::getRootPath()")
+file(TO_CMAKE_PATH "${SOAPY_SDR_ROOT}" SOAPY_SDR_ROOT)
 
 #SOAPY_SDR_ROOT_ENV is the name of the environment variable
 #which tells SoapySDR where to find the root installation.
