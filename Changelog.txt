@@ -17,6 +17,7 @@ General additions and changes:
 Release 0.5.4 (pending)
 ==========================
 
+- Dynamic root environment variable to support snappy packages
 - Windows: disable graphical error pop-ups when DLLs are not found
 - Debian: replaced recommends with soapysdr-modules-all metapackage
 
