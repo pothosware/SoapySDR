@@ -10,7 +10,7 @@ enable_testing()
 # gather version information
 # packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
 ########################################################################
-set(SOAPY_SDR_LIBVER "0.5.3")
+set(SOAPY_SDR_LIBVER "0.5.4")
 
 if (NOT SOAPY_SDR_EXTVER)
     include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
@@ -31,6 +31,13 @@ set(SOAPY_SDR_VERSION "${SOAPY_SDR_LIBVER}-${SOAPY_SDR_EXTVER}")
 if(NOT SOAPY_SDR_ROOT)
     file(TO_CMAKE_PATH ${CMAKE_INSTALL_PREFIX} SOAPY_SDR_ROOT)
 endif(NOT SOAPY_SDR_ROOT)
+
+#SOAPY_SDR_ROOT_ENV is the name of the environment variable
+#which tells SoapySDR where to find the root installation.
+#By default, the environment variable SOAPY_SDR_ROOT is used.
+#Example: set -DSOAPY_SDR_ROOT_ENV=SNAP for snappy packages.
+set(SOAPY_SDR_ROOT_ENV "SOAPY_SDR_ROOT" CACHE STRING
+    "Environment variable for SoapySDR::getRootPath()")
 
 ########################################################################
 # select the release build type by default to get optimization flags
