@@ -39,7 +39,7 @@ std::string getEnvImpl(const char *name)
 
 std::string SoapySDR::getRootPath(void)
 {
-    const std::string rootPathEnv = getEnvImpl("SOAPY_SDR_ROOT");
+    const std::string rootPathEnv = getEnvImpl("@SOAPY_SDR_ROOT_ENV@");
     if (not rootPathEnv.empty()) return rootPathEnv;
 
     // Get the path to the current dynamic linked library.

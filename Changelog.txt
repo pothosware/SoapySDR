@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.4 (pending)
 ==========================
 
+- Dynamic root environment variable to support snappy packages
 - Windows: disable graphical error pop-ups when DLLs are not found
 - Debian: replaced recommends with soapysdr-modules-all metapackage
 
