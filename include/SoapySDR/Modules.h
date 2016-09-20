@@ -23,6 +23,13 @@ extern "C" {
 SOAPY_SDR_API const char *SoapySDR_getRootPath(void);
 
 /*!
+ * The list of paths automatically searched by loadModules().
+ * \param [out] length the number of elements in the result.
+ * \return a list of automatically searched file paths
+ */
+SOAPY_SDR_API char **SoapySDR_listSearchPaths(size_t *length);
+
+/*!
  * List all modules found in default path.
  * The result is an array of strings owned by the caller.
  * \param [out] length the number of elements in the result.

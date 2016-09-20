@@ -39,6 +39,9 @@ static int printInfo(void)
     std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
     std::cout << "Install root: " << SoapySDR::getRootPath() << std::endl;
 
+    for (const auto &path : SoapySDR::listSearchPaths())
+        std::cout << "Search path: " << path << std::endl;
+
     const auto modules = SoapySDR::listModules();
     for (const auto &mod : modules) std::cout << "Module found: " << mod << std::endl;
     if (modules.empty()) std::cout << "No modules found!" << std::endl;

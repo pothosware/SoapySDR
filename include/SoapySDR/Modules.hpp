@@ -23,6 +23,12 @@ namespace SoapySDR
 SOAPY_SDR_API std::string getRootPath(void);
 
 /*!
+ * The list of paths automatically searched by loadModules().
+ * \return a list of automatically searched file paths
+ */
+SOAPY_SDR_API std::vector<std::string> listSearchPaths(void);
+
+/*!
  * List all modules found in default path.
  * \return a list of file paths to loadable modules
  */

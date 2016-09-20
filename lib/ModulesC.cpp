@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -13,6 +13,11 @@ const char *SoapySDR_getRootPath(void)
 {
     static const std::string root = SoapySDR::getRootPath();
     return root.c_str();
+}
+
+char **SoapySDR_listSearchPaths(size_t *length)
+{
+    return toStrArray(SoapySDR::listSearchPaths(), length);
 }
 
 char **SoapySDR_listModules(size_t *length)
