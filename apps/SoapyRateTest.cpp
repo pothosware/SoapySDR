@@ -33,6 +33,7 @@ void runRateTestStreamLoop(
 
     //state collected in this loop
     unsigned int overflows(0);
+    unsigned int underflows(0);
     unsigned long long totalSamples(0);
     const auto startTime = std::chrono::high_resolution_clock::now();
     auto timeLastPrint = std::chrono::high_resolution_clock::now();
@@ -61,6 +62,11 @@ void runRateTestStreamLoop(
             overflows++;
             continue;
         }
+        if (ret == SOAPY_SDR_UNDERFLOW)
+        {
+            underflows++;
+            continue;
+        }
         if (ret < 0)
         {
             std::cerr << "Unexpected stream error " << SoapySDR::errToStr(ret) << std::endl;
@@ -74,7 +80,10 @@ void runRateTestStreamLoop(
             timeLastPrint = now;
             const auto timePassed = std::chrono::duration_cast<std::chrono::microseconds>(now - startTime);
             const auto sampleRate = double(totalSamples)/timePassed.count();
-            printf("%g Msps\t%g Bps\tOverflows %u\n", sampleRate, sampleRate*numChans*elemSize, overflows);
+            printf("%g Msps\t%g Bps", sampleRate, sampleRate*numChans*elemSize);
+            if (overflows != 0) printf("\tOverflows %u", overflows);
+            if (underflows != 0) printf("\tUnderflows %u", underflows);
+            printf("\n");
         }
 
     }
