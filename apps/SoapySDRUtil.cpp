@@ -26,6 +26,13 @@ static int printHelp(void)
     std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
     std::cout << "    --check[=driverName] \t\t Check if driver is present" << std::endl;
     std::cout << std::endl;
+
+    std::cout << "  Rate testing options:" << std::endl;
+    std::cout << "    --args[=\"driver=foo\"] \t\t Arguments for testing" << std::endl;
+    std::cout << "    --rateTest[=rate Sps] \t\t Rate in samples per second" << std::endl;
+    std::cout << "    --channels[=\"0, 1, 2\"] \t\t List of channels, default 0" << std::endl;
+    std::cout << "    --direction[=RX or TX] \t\t Specify the channel direction" << std::endl;
+    std::cout << std::endl;
     return EXIT_SUCCESS;
 }
 
