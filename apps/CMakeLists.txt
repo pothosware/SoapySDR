@@ -4,6 +4,7 @@
 set(SOAPY_SDR_UTIL_SOURCES
     SoapySDRUtil.cpp
     SoapySDRProbe.cpp
+    SoapyRateTest.cpp
 )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 if (MSVC)

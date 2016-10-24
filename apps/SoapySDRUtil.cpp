@@ -11,6 +11,11 @@
 #include <getopt.h>
 
 std::string SoapySDRDeviceProbe(SoapySDR::Device *);
+int SoapySDRRateTest(
+    const std::string &argStr,
+    const double sampleRate,
+    const std::string &channelStr,
+    const std::string &directionStr);
 
 /***********************************************************************
  * Print help message
@@ -25,6 +30,13 @@ static int printHelp(void)
     std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
     std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
     std::cout << "    --check[=driverName] \t\t Check if driver is present" << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "  Rate testing options:" << std::endl;
+    std::cout << "    --args[=\"driver=foo\"] \t\t Arguments for testing" << std::endl;
+    std::cout << "    --rate[=stream rate Sps] \t\t Rate in samples per second" << std::endl;
+    std::cout << "    --channels[=\"0, 1, 2\"] \t\t List of channels, default 0" << std::endl;
+    std::cout << "    --direction[=RX or TX] \t\t Specify the channel direction" << std::endl;
     std::cout << std::endl;
     return EXIT_SUCCESS;
 }
@@ -175,6 +187,11 @@ int main(int argc, char *argv[])
     std::cout << "######################################################" << std::endl;
     std::cout << std::endl;
 
+    std::string argStr;
+    std::string chanStr;
+    std::string dirStr;
+    double sampleRate(0.0);
+
     /*******************************************************************
      * parse command line options
      ******************************************************************/
@@ -185,6 +202,11 @@ int main(int argc, char *argv[])
         {"info", optional_argument, 0, 'i'},
         {"probe", optional_argument, 0, 'p'},
         {"check", optional_argument, 0, 'c'},
+
+        {"args", optional_argument, 0, 'a'},
+        {"rate", optional_argument, 0, 'r'},
+        {"channels", optional_argument, 0, 'n'},
+        {"direction", optional_argument, 0, 'd'},
         {0, 0, 0,  0}
     };
     int long_index = 0;
@@ -199,7 +221,25 @@ int main(int argc, char *argv[])
         case 'm': return makeDevice();
         case 'p': return probeDevice();
         case 'c': return checkDriver();
+        case 'a':
+            if (optarg != nullptr) argStr = optarg;
+            break;
+        case 'r':
+            if (optarg != nullptr) sampleRate = std::stod(optarg);
+            break;
+        case 'n':
+            if (optarg != nullptr) chanStr = optarg;
+            break;
+        case 'd':
+            if (optarg != nullptr) dirStr = optarg;
+            break;
         }
+    }
+
+    //invoke utilities that rely on multiple arguments
+    if (sampleRate != 0.0)
+    {
+        return SoapySDRRateTest(argStr, sampleRate, chanStr, dirStr);
     }
 
     //unknown or unspecified options, do help...
