@@ -1,7 +1,7 @@
 .\" SoapySDRUtil.1 - manpage for SoapySDRUtil
 .\"
 .\"
-.TH SOAPYSDRUTIL 1 2016\-07\-20 "SoapySDR @SOAPY_SDR_LIBVER@"
+.TH SOAPYSDRUTIL 1 2016\-10\-28 "SoapySDR 0.5.4"
 .SH NAME
 \fBSoapySDRUtil\fR \- query and change module information of SoapySDR
 .\" ----------------------------------------------------------------------------
@@ -9,7 +9,9 @@
 \fBSoapySDRUtil\fR [\fIOPTIONS\fR]
 .\" ----------------------------------------------------------------------------
 .SH DESCRIPTION
-*** this still needs a description ***
+SoapySDRUtil is a command line application that provides basic
+diagnostic utility for SoapySDR by printing installation information,
+available modules, discovered devices, and tests on instantiated devices.
 .\" ----------------------------------------------------------------------------
 .SH OPTIONS
 .TP
@@ -23,8 +25,8 @@ given.
 If no matching devices are found it will exit with exit status 1.
 .TP
 \fB\-\-make\fR[="\fISPEC\fR"]
-Create device matching \fISPEC\fR if possible.
-If \fISPEC\fR is not given, assume "driver=null,type=null".
+Open and close device matching \fISPEC\fR if possible.
+If \fISPEC\fR is not given, the first discovered device is opened.
 .TP
 \fB\-\-probe\fR[="\fISPEC\fR"]
 Show detailed information on all devices or the devices matching \fISPEC\fR if
