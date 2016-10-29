@@ -13,3 +13,6 @@ endif ()
 add_executable(SoapySDRUtil ${SOAPY_SDR_UTIL_SOURCES})
 target_link_libraries(SoapySDRUtil SoapySDR)
 install(TARGETS SoapySDRUtil DESTINATION bin)
+
+#install man pages for the application executable
+install(FILES SoapySDRUtil.1 DESTINATION share/man/man1)
