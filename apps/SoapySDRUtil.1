@@ -1,0 +1,54 @@
+.\" SoapySDRUtil.1 - manpage for SoapySDRUtil
+.\"
+.\"
+.TH SOAPYSDRUTIL 1 2016\-10\-28 "SoapySDR 0.5.4"
+.SH NAME
+\fBSoapySDRUtil\fR \- query and change module information of SoapySDR
+.\" ----------------------------------------------------------------------------
+.SH SYNOPSIS
+\fBSoapySDRUtil\fR [\fIOPTIONS\fR]
+.\" ----------------------------------------------------------------------------
+.SH DESCRIPTION
+SoapySDRUtil is a command line application that provides basic
+diagnostic utility for SoapySDR by printing installation information,
+available modules, discovered devices, and tests on instantiated devices.
+.\" ----------------------------------------------------------------------------
+.SH OPTIONS
+.TP
+\fB\-\-info\fR
+Print general information on the library, list all found hardware support
+modules and available factories.
+.TP
+\fB\-\-find\fR[="\fISPEC\fR"]
+Discover available devices, restricted to those matching the \fISPEC\fR if
+given.
+If no matching devices are found it will exit with exit status 1.
+.TP
+\fB\-\-make\fR[="\fISPEC\fR"]
+Open and close device matching \fISPEC\fR if possible.
+If \fISPEC\fR is not given, the first discovered device is opened.
+.TP
+\fB\-\-probe\fR[="\fISPEC\fR"]
+Show detailed information on all devices or the devices matching \fISPEC\fR if
+given.
+.TP
+\fB\-\-check\fR=\fINAME\fR
+Check and print if driver module named \fINAME\fR is present.
+If it is not found it will exit with exit status 1.
+.\" ----------------------------------------------------------------------------
+.SH HOMEPAGE
+SoapySDRUtil is part of the
+.UR https://github.com/pothosware/SoapySDR/wiki
+SoapySDR project
+.UE .
+.\" ----------------------------------------------------------------------------
+.SH AUTHORS
+The SoapySDR library, including SoapySDRUtil, was written mostly by
+.MT josh@pothosware.com
+Josh Blum
+.ME .
+.\"
+.\"This man page was originally written for the Debian project by
+.\".MT aeb@debian.org
+.\"Andreas Bombe
+.\".ME .
