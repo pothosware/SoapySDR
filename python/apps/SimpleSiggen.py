@@ -67,7 +67,7 @@ def siggen_app(
         phaseAcc = phaseAccNext
         while phaseAcc > math.pi*2: phaseAcc -= math.pi*2
 
-        sr = sdr.writeStream(txStream, [sampsCh0], sampsCh0.size)
+        sr = sdr.writeStream(txStream, [sampsCh0], sampsCh0.size, timeoutUs=1000000)
         if sr.ret != sampsCh0.size:
             raise Exception("Expected writeStream() to consume all samples! %d"%sr.ret)
         totalSamps += sr.ret
