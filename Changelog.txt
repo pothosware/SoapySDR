@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.5.4 (pending)
+Release 0.5.4 (2016-11-29)
 ==========================
 
 - Added man page for SoapySDRUtil executable

@@ -1,3 +1,9 @@
+soapysdr (0.5.4-ppa1) unstable; urgency=low
+
+  * Release 0.5.4 (2016-11-29)
+
+ -- Josh Blum <josh@pothosware.com>  Tue, 29 Nov 2016 15:12:11 -0500
+
 soapysdr (0.5.3) unstable; urgency=low
 
   * Release 0.5.3 (2016-09-01)

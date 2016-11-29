@@ -10,7 +10,7 @@ Build-Depends:
     python-dev,
     python3,
     python3-dev
-Standards-Version: 3.9.7
+Standards-Version: 3.9.8
 Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
 Vcs-Browser: https://github.com/pothosware/SoapySDR
