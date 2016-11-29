@@ -1,5 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
+<<<<<<< HEAD
 Release 0.6.0 (pending)
 ==========================
 
@@ -16,7 +17,7 @@ General additions and changes:
 - Added Kwargs type to/from markup string API calls
 - Added read/writeRegisters() API for bulk register IO
 
-Release 0.5.4 (pending)
+Release 0.5.4 (2016-11-29)
 ==========================
 
 - Added man page for SoapySDRUtil executable
