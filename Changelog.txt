@@ -1,6 +1,5 @@
 This this the changelog file for the SoapySDR project.
 
-<<<<<<< HEAD
 Release 0.6.0 (pending)
 ==========================
 
