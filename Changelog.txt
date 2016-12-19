@@ -1,5 +1,10 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.5.5 (pending)
+==========================
+
+- Fix for cache overwrite of PYTHON_INSTALL_DIR variable
+
 Release 0.5.4 (2016-11-29)
 ==========================
 

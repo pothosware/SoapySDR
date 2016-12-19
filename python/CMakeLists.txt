@@ -32,9 +32,9 @@ execute_process(
     COMMAND ${PYTHON_EXECUTABLE} -c
     "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
     OUTPUT_STRIP_TRAILING_WHITESPACE
-    OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+    OUTPUT_VARIABLE PYTHON_INSTALL_DIR_SYSCONF
 )
-set(PYTHON_INSTALL_DIR ${PYTHON_INSTALL_DIR} CACHE STRING "python install prefix")
+set(PYTHON_INSTALL_DIR "${PYTHON_INSTALL_DIR_SYSCONF}" CACHE STRING "python install prefix")
 message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 
 ########################################################################
