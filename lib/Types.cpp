@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Types.hpp>
@@ -65,9 +65,10 @@ SoapySDR::Range::Range(void):
     return;
 }
 
-SoapySDR::Range::Range(const double minimum, const double maximum):
+SoapySDR::Range::Range(const double minimum, const double maximum, const double step):
     _min(minimum),
-    _max(maximum)
+    _max(maximum),
+    _step(step)
 {
     return;
 }

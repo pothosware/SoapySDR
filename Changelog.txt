@@ -11,6 +11,7 @@ Device C API changes:
 
 General additions and changes:
 
+- Added optional step size to the range type
 - Added rate testing to SoapySDRUtil application
 - Added listSearchPaths() API and SoapySDRUtil print
 - Added Kwargs type to/from markup string API calls

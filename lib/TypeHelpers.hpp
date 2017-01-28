@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -29,6 +29,7 @@ static inline SoapySDRRange toRange(const SoapySDR::Range &range)
     SoapySDRRange out;
     out.minimum = range.minimum();
     out.maximum = range.maximum();
+    out.step = range.step();
     return out;
 }
 

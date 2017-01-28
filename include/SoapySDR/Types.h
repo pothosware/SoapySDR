@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -21,6 +21,7 @@ typedef struct
 {
     double minimum;
     double maximum;
+    double step;
 } SoapySDRRange;
 
 //! Definition for a key/value string map

@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -47,7 +47,7 @@ public:
     Range(void);
 
     //! Create a min/max range
-    Range(const double minimum, const double maximum);
+    Range(const double minimum, const double maximum, const double step=0.0);
 
     //! Get the range minimum
     double minimum(void) const;
@@ -55,8 +55,11 @@ public:
     //! Get the range maximum
     double maximum(void) const;
 
+    //! Get the range step size
+    double step(void) const;
+
 private:
-    double _min, _max;
+    double _min, _max, _step;
 };
 
 /*!
@@ -133,4 +136,9 @@ inline double SoapySDR::Range::minimum(void) const
 inline double SoapySDR::Range::maximum(void) const
 {
     return _max;
+}
+
+inline double SoapySDR::Range::step(void) const
+{
+    return _step;
 }

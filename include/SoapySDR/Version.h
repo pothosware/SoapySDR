@@ -4,7 +4,7 @@
 /// Utility functions to query version information.
 ///
 /// \copyright
-/// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -126,6 +126,11 @@
  * Compatibility define for named memory block interface API
  */
 #define SOAPY_SDR_API_HAS_NAMED_REGISTERS_API
+
+/*!
+ * Compatibility define for step field in range type
+ */
+#define SOAPY_SDR_API_HAS_RANGE_TYPE_STEP
 
 #ifdef __cplusplus
 extern "C" {
