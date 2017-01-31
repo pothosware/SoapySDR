@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -75,7 +75,9 @@
     %insert("python")
     %{
         def __str__(self):
-            return "%s, %s"%(self.minimum(), self.maximum())
+            fields = [self.minimum(), self.maximum()]
+            if self.step() != 0.0: fields.append(self.step())
+            return ', '.join(['%g'%f for f in fields])
     %}
 };
 
