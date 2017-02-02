@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 Josh Blum
+// Copyright (c) 2015-2017 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -21,7 +21,9 @@ std::string toString(const std::vector<Type> &options)
 std::string toString(const SoapySDR::Range &range)
 {
     std::stringstream ss;
-    ss << "[" << range.minimum() << ", " << range.maximum() << "]";
+    ss << "[" << range.minimum() << ", " << range.maximum();
+    if (range.step() != 0.0) ss << ", " << range.step();
+    ss << "]";
     return ss.str();
 }
 
