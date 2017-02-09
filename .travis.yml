@@ -12,17 +12,25 @@ sudo: required
 dist: trusty
 
 language: cpp
-compiler: gcc
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      env:
+        global:
+          - PYTHON_EXECUTABLE=/usr/bin/python
+          - PYTHON3_EXECUTABLE=/usr/bin/python3
+    - os: osx
+      compiler: clang
+      env:
+        global:
+          - PYTHON_EXECUTABLE=/usr/local/bin/python
+          - PYTHON3_EXECUTABLE=/usr/local/bin/python3
 
 env:
   global:
     - INSTALL_PREFIX=/usr/local
-    - PYTHON_EXECUTABLE=/usr/bin/python
-    - PYTHON_INSTALL_DIR=lib/python2.7/dist-packages
-    - PYTHON3_EXECUTABLE=/usr/bin/python3
-    - PYTHON3_INSTALL_DIR=lib/python3/dist-packages
-  matrix:
-    - BUILD_TYPE=Debug
     - BUILD_TYPE=Release
 
 # whitelist
@@ -31,26 +39,19 @@ branches:
     - master
     - maint
 
-before_install:
-  # regular ubuntu packages
-  - sudo add-apt-repository main
-  - sudo add-apt-repository universe
-
-  # update after package changes
-  - sudo apt-get update
-
 install:
 
   # install python support dependencies
-  - sudo apt-get install -qq python python-dev python-numpy swig
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq python python-dev python-numpy swig; fi;
 
   # install python3 support dependencies
-  - sudo apt-get install -qq python3 python3-dev python3-numpy swig
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -qq python3 python3-dev python3-numpy swig; fi;
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install swig python3 ; fi
 
 script:
   - mkdir build
   - cd build
-  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE}
+  - cmake ../ -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DUSE_PYTHON_CONFIG=ON -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE}
   - make
   - sudo make install
 
@@ -64,7 +65,7 @@ script:
   - SoapySDRUtil --make="driver=null"
 
   # basic test for python bindings
-  - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON_INSTALL_DIR}:/usr/${PYTHON_INSTALL_DIR}
+  - export PYTHONPATH=$(${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
   - echo ${PYTHONPATH}
   - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
   - ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
@@ -73,7 +74,7 @@ script:
   - ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
 
   # basic test for python3 bindings
-  - export PYTHONPATH=${INSTALL_PREFIX}/${PYTHON3_INSTALL_DIR}:/usr/${PYTHON3_INSTALL_DIR}
+  - export PYTHONPATH=$(${PYTHON3_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
   - echo ${PYTHONPATH}
   - ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
   - ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
