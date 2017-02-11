@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Logger.h>
@@ -25,6 +25,7 @@ static SoapySDRLogLevel getDefaultLogLevel(void)
     checkLogLevelEnvStr(ERROR);
     checkLogLevelEnvStr(WARNING);
     checkLogLevelEnvStr(NOTICE);
+    checkLogLevelEnvStr(INFO);
     checkLogLevelEnvStr(DEBUG);
     checkLogLevelEnvStr(TRACE);
 
