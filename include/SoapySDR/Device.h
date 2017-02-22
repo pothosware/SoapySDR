@@ -91,9 +91,6 @@ SOAPY_SDR_API SoapySDRDevice *SoapySDRDevice_makeStrArgs(const char *args);
 /*!
  * Unmake or release a device object handle.
  *
- * \note This call is not thread safe. Implementations calling into unmake
- * from multiple threads should protect this call with a mutex.
- *
  * \param device a pointer to a device object
  * \return 0 for success or error code on failure
  */
