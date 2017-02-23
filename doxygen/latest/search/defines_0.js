@@ -17,6 +17,7 @@ var searchData=
   ['soapy_5fsdr_5fapi_5fhas_5fnative_5fstream_5fformat',['SOAPY_SDR_API_HAS_NATIVE_STREAM_FORMAT',['../Version_8h.html#a453668af13dcf04c082f0c0d049cd19c',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fquery_5fsensor_5finfo',['SOAPY_SDR_API_HAS_QUERY_SENSOR_INFO',['../Version_8h.html#abbb43c81d61012a32999342d165840be',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fquery_5ftune_5farg_5finfo',['SOAPY_SDR_API_HAS_QUERY_TUNE_ARG_INFO',['../Version_8h.html#a263735086df3b38a944f469d3779ffbf',1,'Version.h']]],
+  ['soapy_5fsdr_5fapi_5fhas_5frange_5ftype_5fstep',['SOAPY_SDR_API_HAS_RANGE_TYPE_STEP',['../Version_8h.html#af04618c3de52fe4f89f8f00bb51b8ae5',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fset_5flog_5flevel',['SOAPY_SDR_API_HAS_SET_LOG_LEVEL',['../Version_8h.html#aee5035c49a0dd116978a4bd263a8f85f',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fsetting_5farg_5finfo',['SOAPY_SDR_API_HAS_SETTING_ARG_INFO',['../Version_8h.html#a026ba8871a8732ab5d90dbb90ff4bc3b',1,'Version.h']]],
   ['soapy_5fsdr_5fapi_5fhas_5fstream_5farg_5finfo',['SOAPY_SDR_API_HAS_STREAM_ARG_INFO',['../Version_8h.html#a1d0ec23a2450c6723b9833014a632424',1,'Version.h']]],

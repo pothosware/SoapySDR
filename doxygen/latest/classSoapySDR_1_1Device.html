@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g7e5b0b5c</span>
+   &#160;<span id="projectnumber">0.6.0-gb4b39490</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -2123,7 +2123,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a list of allowed format strings </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of allowed format strings. See <a class="el" href="classSoapySDR_1_1Device.html#a8a64e7fef972e9c24bbc2f1b4811a38f">setupStream()</a> for the format syntax. </dd></dl>
 
 </div>
 </div>
@@ -2456,7 +2456,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Get the range of possible baseband filter widths. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>replaced by <a class="el" href="classSoapySDR_1_1Device.html#ac4a9734cfa459db13dadc52adbfb7881">getBandwidthRange()</a> </dd></dl>
+<p>Get the range of possible baseband filter widths. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>replaced by <a class="el" href="classSoapySDR_1_1Device.html#ac4a9734cfa459db13dadc52adbfb7881">getBandwidthRange()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
@@ -3017,7 +3017,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Read a register on the device. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>replaced by readRegister(name) </dd></dl>
+<p>Read a register on the device. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>replaced by readRegister(name) </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>the register address </td></tr>
@@ -3679,7 +3679,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the time of subsequent configuration calls. The what argument can refer to a specific command queue. Implementations may use a time of 0 to clear. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>replaced by <a class="el" href="classSoapySDR_1_1Device.html#a19e07b6fcd4c7d86329778838c613ab7">setHardwareTime()</a> </dd></dl>
+<p>Set the time of subsequent configuration calls. The what argument can refer to a specific command queue. Implementations may use a time of 0 to clear. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>replaced by <a class="el" href="classSoapySDR_1_1Device.html#a19e07b6fcd4c7d86329778838c613ab7">setHardwareTime()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeNs</td><td>time in nanoseconds </td></tr>
@@ -4356,34 +4356,41 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Initialize a stream given a list of channels and stream arguments. The implementation may change switches or power-up components. All stream API calls should be usable with the new stream object after <a class="el" href="classSoapySDR_1_1Device.html#a8a64e7fef972e9c24bbc2f1b4811a38f">setupStream()</a> is complete, regardless of the activity state.</p>
-<p>Format string markup guidelines:</p><ul>
-<li>C means complex</li>
-<li>F means floating point</li>
-<li>S means signed integer</li>
-<li>U means unsigned integer</li>
-<li>number float/int size in bytes (complex is 2x this size)</li>
-</ul>
-<p>Example format strings:</p><ul>
-<li>CF32 complex float32 (8 bytes per element)</li>
-<li>CS16 complex int16 (4 bytes per element)</li>
-<li>CS12 complex int12 (3 bytes per element)</li>
-<li>CS4 complex int4 (1 byte per element)</li>
-<li>S32 int32 (4 bytes per element)</li>
-<li>U8 uint8 (1 byte per element)</li>
-</ul>
-<p>Recommended keys to use in the args dictionary:</p><ul>
-<li>"WIRE" - format of the samples between device and host</li>
-</ul>
+<p>The API allows any number of simultaneous TX and RX streams, but many dual-channel devices are limited to one stream in each direction, using either one or both channels. This call will throw an exception if an unsupported combination is requested, or if a requested channel in this direction is already in use by another stream.</p>
+<p>When multiple channels are added to a stream, they are typically expected to have the same sample rate. See <a class="el" href="classSoapySDR_1_1Device.html#a799369d79133698e5f1233902eefb914">setSampleRate()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
-    <tr><td class="paramname">format</td><td>the desired buffer format in read/writeStream() </td></tr>
-    <tr><td class="paramname">channels</td><td>a list of channels for empty for automatic </td></tr>
-    <tr><td class="paramname">args</td><td>stream args or empty for defaults </td></tr>
+    <tr><td class="paramname">direction</td><td>the channel direction (<code>SOAPY_SDR_RX</code> or <code>SOAPY_SDR_TX</code>) </td></tr>
+    <tr><td class="paramname">format</td><td>A string representing the desired buffer format in read/writeStream() <p class="starttd"></p>
+<p>The first character selects the number type:</p><ul>
+<li>"C" means complex</li>
+<li>"F" means floating point</li>
+<li>"S" means signed integer</li>
+<li>"U" means unsigned integer</li>
+</ul>
+<p>The type character is followed by the number of bits per number (complex is 2x this size per sample)</p>
+<p>Example format strings:</p><ul>
+<li>"CF32" - complex float32 (8 bytes per element)</li>
+<li>"CS16" - complex int16 (4 bytes per element)</li>
+<li>"CS12" - complex int12 (3 bytes per element)</li>
+<li>"CS4" - complex int4 (1 byte per element)</li>
+<li>"S32" - int32 (4 bytes per element)</li>
+<li>"U8" - uint8 (1 byte per element)</li>
+</ul>
+<p class="endtd"></p>
+</td></tr>
+    <tr><td class="paramname">channels</td><td>a list of channels or empty for automatic. </td></tr>
+    <tr><td class="paramname">args</td><td>stream args or empty for defaults. <p class="starttd"></p>
+<p class="endtd">Recommended keys to use in the args dictionary:</p><ul>
+<li>"WIRE" - format of the samples between device and host </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>an opaque pointer to a stream handle </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>an opaque pointer to a stream handle. <p class="startdd"></p>
+<p class="enddd">The returned stream is not required to have internal locking, and may not be used concurrently from multiple threads. </p>
+</dd></dl>
 
 </div>
 </div>
@@ -4460,7 +4467,6 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Unmake or release a device object handle.</p>
-<dl class="section note"><dt>Note</dt><dd>This call is not thread safe. Implementations calling into unmake from multiple threads should protect this call with a mutex.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">device</td><td>a pointer to a device object </td></tr>
@@ -4768,7 +4774,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Write a register on the device. This can represent a register on a soft CPU, FPGA, IC; the interpretation is up the implementation to decide. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000007">Deprecated:</a></b></dt><dd>replaced by writeRegister(name) </dd></dl>
+<p>Write a register on the device. This can represent a register on a soft CPU, FPGA, IC; the interpretation is up the implementation to decide. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>replaced by writeRegister(name) </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>the register address </td></tr>
@@ -5042,7 +5048,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 25 2016 10:27:06 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 23 2017 10:27:31 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

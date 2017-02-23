@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g7e5b0b5c</span>
+   &#160;<span id="projectnumber">0.6.0-gb4b39490</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -102,6 +102,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a8a2a8746a82363446cdfb81cae57b93c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a8a2a8746a82363446cdfb81cae57b93c">SoapySDR_getRootPath</a> (void)</td></tr>
 <tr class="memdesc:a8a2a8746a82363446cdfb81cae57b93c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the root installation path.  <a href="#a8a2a8746a82363446cdfb81cae57b93c">More...</a><br /></td></tr>
 <tr class="separator:a8a2a8746a82363446cdfb81cae57b93c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6643c98292d4952cafab8c12a44e874"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#aa6643c98292d4952cafab8c12a44e874">SoapySDR_listSearchPaths</a> (size_t *length)</td></tr>
+<tr class="separator:aa6643c98292d4952cafab8c12a44e874"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81d66a25aefb8b7acc4df78ada00cc7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a81d66a25aefb8b7acc4df78ada00cc7b">SoapySDR_listModules</a> (size_t *length)</td></tr>
 <tr class="separator:a81d66a25aefb8b7acc4df78ada00cc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8572a8846ec7f04c7fe40f93a4b70d90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a8572a8846ec7f04c7fe40f93a4b70d90">SoapySDR_listModulesPath</a> (const char *path, size_t *length)</td></tr>
@@ -217,6 +219,29 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa6643c98292d4952cafab8c12a44e874"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char** SoapySDR_listSearchPaths </td>
+          <td>(</td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>length</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The list of paths automatically searched by <a class="el" href="namespaceSoapySDR.html#a2d653dc7342deb5332689168ade8e86e">loadModules()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">length</td><td>the number of elements in the result. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of automatically searched file paths </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a1dcfbb245eea3e73c7ad42b27e0f91f5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +308,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 25 2016 10:27:06 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 23 2017 10:27:31 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

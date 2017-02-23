@@ -1,7 +1,7 @@
 var searchData=
 [
   ['range',['Range',['../classSoapySDR_1_1Range.html',1,'SoapySDR']]],
-  ['range',['Range',['../classSoapySDR_1_1Range.html#add7e85bd9bab9e9741599f4ebf15fafa',1,'SoapySDR::Range::Range(void)'],['../classSoapySDR_1_1Range.html#ae052c3b5b15ea6d1f50ff2b4fce12e70',1,'SoapySDR::Range::Range(const double minimum, const double maximum)'],['../structSoapySDRArgInfo.html#a5c595fc875042a1fe2122081f2b424ed',1,'SoapySDRArgInfo::range()'],['../classSoapySDR_1_1ArgInfo.html#a6878e84000f63cfd5819b37caee62fe8',1,'SoapySDR::ArgInfo::range()']]],
+  ['range',['Range',['../classSoapySDR_1_1Range.html#add7e85bd9bab9e9741599f4ebf15fafa',1,'SoapySDR::Range::Range(void)'],['../classSoapySDR_1_1Range.html#aabd36297a328d03379e2735c13cdb3c0',1,'SoapySDR::Range::Range(const double minimum, const double maximum, const double step=0.0)'],['../structSoapySDRArgInfo.html#a5c595fc875042a1fe2122081f2b424ed',1,'SoapySDRArgInfo::range()'],['../classSoapySDR_1_1ArgInfo.html#a6878e84000f63cfd5819b37caee62fe8',1,'SoapySDR::ArgInfo::range()']]],
   ['rangelist',['RangeList',['../namespaceSoapySDR.html#a75daa1b2fa0c08e898b805ce23d7672e',1,'SoapySDR']]],
   ['readgpio',['readGPIO',['../classSoapySDR_1_1Device.html#af51c8e17cfc44127908c0491252fe03d',1,'SoapySDR::Device']]],
   ['readgpiodir',['readGPIODir',['../classSoapySDR_1_1Device.html#a2319d307a894e4b70519cddd5c1f5cd1',1,'SoapySDR::Device']]],

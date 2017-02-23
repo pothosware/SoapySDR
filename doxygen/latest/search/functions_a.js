@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['range',['Range',['../classSoapySDR_1_1Range.html#add7e85bd9bab9e9741599f4ebf15fafa',1,'SoapySDR::Range::Range(void)'],['../classSoapySDR_1_1Range.html#ae052c3b5b15ea6d1f50ff2b4fce12e70',1,'SoapySDR::Range::Range(const double minimum, const double maximum)']]],
+  ['range',['Range',['../classSoapySDR_1_1Range.html#add7e85bd9bab9e9741599f4ebf15fafa',1,'SoapySDR::Range::Range(void)'],['../classSoapySDR_1_1Range.html#aabd36297a328d03379e2735c13cdb3c0',1,'SoapySDR::Range::Range(const double minimum, const double maximum, const double step=0.0)']]],
   ['readgpio',['readGPIO',['../classSoapySDR_1_1Device.html#af51c8e17cfc44127908c0491252fe03d',1,'SoapySDR::Device']]],
   ['readgpiodir',['readGPIODir',['../classSoapySDR_1_1Device.html#a2319d307a894e4b70519cddd5c1f5cd1',1,'SoapySDR::Device']]],
   ['readi2c',['readI2C',['../classSoapySDR_1_1Device.html#aa7785d5af0567d413676252d4990df7f',1,'SoapySDR::Device']]],
