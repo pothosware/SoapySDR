@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -51,7 +51,7 @@ const char *SoapySDRDevice_lastError(void)
 
 static const bool SoapySDRBoolErr = bool(-1);
 
-static const SoapySDRRange SoapySDRRangeNAN = {NAN, NAN};
+static const SoapySDRRange SoapySDRRangeNAN = {NAN, NAN, 0.0};
 
 static SoapySDRArgInfo SoapySDRArgInfoNull(void)
 {
