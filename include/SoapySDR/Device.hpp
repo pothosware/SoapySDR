@@ -75,9 +75,6 @@ public:
     /*!
      * Unmake or release a device object handle.
      *
-     * \note This call is not thread safe. Implementations calling into unmake
-     * from multiple threads should protect this call with a mutex.
-     *
      * \param device a pointer to a device object
      */
     static void unmake(Device *device);
@@ -161,7 +158,7 @@ public:
      * Query a list of the available stream formats.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \return a list of allowed format strings
+     * \return a list of allowed format strings. See setupStream() for the format syntax.
      */
     virtual std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
 
@@ -190,29 +187,48 @@ public:
      * All stream API calls should be usable with the new stream object
      * after setupStream() is complete, regardless of the activity state.
      *
-     * Format string markup guidelines:
-     *  - C means complex
-     *  - F means floating point
-     *  - S means signed integer
-     *  - U means unsigned integer
-     *  - number float/int size in bytes (complex is 2x this size)
+     * The API allows any number of simultaneous TX and RX streams, but many dual-channel
+     * devices are limited to one stream in each direction, using either one or both channels.
+     * This call will throw an exception if an unsupported combination is requested,
+     * or if a requested channel in this direction is already in use by another stream.
      *
-     * Example format strings:
-     *  - CF32 complex float32 (8 bytes per element)
-     *  - CS16 complex int16 (4 bytes per element)
-     *  - CS12 complex int12 (3 bytes per element)
-     *  - CS4 complex int4 (1 byte per element)
-     *  - S32 int32 (4 bytes per element)
-     *  - U8 uint8 (1 byte per element)
+     * When multiple channels are added to a stream, they are typically expected to have
+     * the same sample rate. See setSampleRate().
      *
-     * Recommended keys to use in the args dictionary:
-     *  - "WIRE" - format of the samples between device and host
+     * \param direction the channel direction (`SOAPY_SDR_RX` or `SOAPY_SDR_TX`)
+     * \param format A string representing the desired buffer format in read/writeStream()
+     * \parblock
      *
-     * \param direction the channel direction RX or TX
-     * \param format the desired buffer format in read/writeStream()
-     * \param channels a list of channels for empty for automatic
-     * \param args stream args or empty for defaults
-     * \return an opaque pointer to a stream handle
+     * The first character selects the number type:
+     *   - "C" means complex
+     *   - "F" means floating point
+     *   - "S" means signed integer
+     *   - "U" means unsigned integer
+     *
+     * The type character is followed by the number of bits per number (complex is 2x this size per sample)
+     *
+     *  Example format strings:
+     *   - "CF32" -  complex float32 (8 bytes per element)
+     *   - "CS16" -  complex int16 (4 bytes per element)
+     *   - "CS12" -  complex int12 (3 bytes per element)
+     *   - "CS4" -  complex int4 (1 byte per element)
+     *   - "S32" -  int32 (4 bytes per element)
+     *   - "U8" -  uint8 (1 byte per element)
+     *
+     * \endparblock
+     * \param channels a list of channels or empty for automatic.
+     * \param args stream args or empty for defaults.
+     * \parblock
+     *
+     *   Recommended keys to use in the args dictionary:
+     *    - "WIRE" - format of the samples between device and host
+     * \endparblock
+     * \return an opaque pointer to a stream handle.
+     * \parblock
+     *
+     * The returned stream is not required to have internal locking, and may not be used
+     * concurrently from multiple threads.
+     * \endparblock
      */
     virtual Stream *setupStream(
         const int direction,
