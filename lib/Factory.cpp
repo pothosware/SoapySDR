@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -65,53 +65,63 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
     return enumerate(KwargsFromString(args));
 }
 
-SoapySDR::Device* SoapySDR::Device::make(const Kwargs &args_)
+static SoapySDR::Device* getDeviceFromTable(const SoapySDR::Kwargs &args)
 {
+    if (args.empty()) return nullptr;
     std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+    if (getDeviceTable().count(args) != 0 and getDeviceCounts().count(getDeviceTable().at(args)) != 0)
+    {
+        auto device = getDeviceTable().at(args);
+        getDeviceCounts()[device]++;
+        return device;
+    }
+    return nullptr;
+}
 
-    loadModules();
-    Kwargs args = args_;
+SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
+{
     Device *device = nullptr;
 
+    //the arguments may have already come from enumerate and been used to open a device
+    device = getDeviceFromTable(inputArgs);
+    if (device != nullptr) return device;
+
+    //otherwise the args must always come from an enumeration result
+    Kwargs discoveredArgs;
+    const auto results = Device::enumerate(inputArgs);
+    if (not results.empty()) discoveredArgs = results.front();
+
     //check the device table for an already allocated device
-    if (getDeviceTable().count(args_) != 0 and getDeviceCounts().count(getDeviceTable().at(args_)) != 0)
+    device = getDeviceFromTable(discoveredArgs);
+    if (device != nullptr) return device;
+
+    //load the enumeration args with missing keys from the make argument
+    Kwargs hybridArgs = discoveredArgs;
+    for (const auto &it : discoveredArgs)
     {
-        device = getDeviceTable().at(args_);
+        if (hybridArgs.count(it.first) == 0) hybridArgs[it.first] = it.second;
     }
 
-    //otherwise call into one of the factory functions
-    else
+    //lock during device construction
+    //make itself can be parallelized, but we need to keep track of in-process factories
+    //so that other calling threads with the same args can wait on the result
+    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+
+    //loop through make functions and call on module match
+    for (const auto &it : Registry::listMakeFunctions())
     {
-        //the args must always come from an enumeration result
-        {
-            const auto results = Device::enumerate(args);
-            if (not results.empty()) args = results.front();
-        }
-
-        //load the enumeration args with missing keys from the make argument
-        for (const auto &it : args_)
-        {
-            if (args.count(it.first) == 0) args[it.first] = it.second;
-        }
-
-        //loop through make functions and call on module match
-        for (const auto &it : Registry::listMakeFunctions())
-        {
-            if (args.count("driver") != 0 and args.at("driver") != it.first) continue;
-            device = it.second(args);
-            break;
-        }
+        if (hybridArgs.count("driver") != 0 and hybridArgs.at("driver") != it.first) continue;
+        device = it.second(hybridArgs);
+        break;
     }
-
     if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() no match");
 
     //store into the table
-    getDeviceTable()[args_] = device;
+    getDeviceTable()[discoveredArgs] = device;
     getDeviceCounts()[device]++;
 
     return device;
 }
-
 
 SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 {
