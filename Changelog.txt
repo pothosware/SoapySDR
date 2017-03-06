@@ -11,6 +11,7 @@ Device C API changes:
 
 General additions and changes:
 
+- Device factory table keys based on enumeration results
 - Added optional step size to the range type
 - Added rate testing to SoapySDRUtil application
 - Added listSearchPaths() API and SoapySDRUtil print
