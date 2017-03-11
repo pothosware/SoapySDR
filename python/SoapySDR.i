@@ -13,6 +13,7 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Errors.hpp>
 #include <SoapySDR/Formats.hpp>
+#include <SoapySDR/Time.hpp>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -121,6 +122,7 @@
 %include <SoapySDR/Version.hpp>
 %include <SoapySDR/Modules.hpp>
 %include <SoapySDR/Formats.hpp>
+%include <SoapySDR/Time.hpp>
 
 ////////////////////////////////////////////////////////////////////////
 // Device object
