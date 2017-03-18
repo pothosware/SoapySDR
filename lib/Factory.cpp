@@ -97,7 +97,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
 
     //load the enumeration args with missing keys from the make argument
     Kwargs hybridArgs = discoveredArgs;
-    for (const auto &it : discoveredArgs)
+    for (const auto &it : inputArgs)
     {
         if (hybridArgs.count(it.first) == 0) hybridArgs[it.first] = it.second;
     }
