@@ -132,6 +132,11 @@
  */
 #define SOAPY_SDR_API_HAS_RANGE_TYPE_STEP
 
+/*!
+ * Compatibility define for get sample rate range API
+ */
+#define SOAPY_SDR_API_HAS_GET_SAMPLE_RATE_RANGE
+
 #ifdef __cplusplus
 extern "C" {
 #endif
