@@ -5,7 +5,7 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <cstdlib>
-#include <algorithm> //min/max
+#include <algorithm> //min/max/find
 
 SoapySDR::Device::~Device(void)
 {
@@ -216,6 +216,34 @@ void SoapySDR::Device::setIQBalance(const int, const size_t, const std::complex<
 std::complex<double> SoapySDR::Device::getIQBalance(const int, const size_t) const
 {
     return std::complex<double>();
+}
+
+bool SoapySDR::Device::hasFrequencyCorrection(const int direction, const size_t channel) const
+{
+    //backwards compatibility with "COOR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    return (std::find(components.begin(), components.end(), "COOR") != components.end());
+}
+
+void SoapySDR::Device::setFrequencyCorrection(const int direction, const size_t channel, const double value)
+{
+    //backwards compatibility with "COOR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    if (std::find(components.begin(), components.end(), "COOR") != components.end())
+    {
+        this->setFrequency(direction, channel, "COOR", value);
+    }
+}
+
+double SoapySDR::Device::getFrequencyCorrection(const int direction, const size_t channel) const
+{
+    //backwards compatibility with "COOR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    if (std::find(components.begin(), components.end(), "COOR") != components.end())
+    {
+        return this->getFrequency(direction, channel, "COOR");
+    }
+    return 0.0;
 }
 
 /*******************************************************************

@@ -668,6 +668,34 @@ SOAPY_SDR_API int SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int 
  */
 SOAPY_SDR_API int SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel, double *balanceI, double *balanceQ);
 
+/*!
+ * Does the device support frontend frequency correction?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true if frequency corrections are supported
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasFrequencyCorrection(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
+ * Fine tune the frontend frequency correction.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param value the correction in PPM
+ * \return an error code or 0 for success
+ */
+SOAPY_SDR_API int SoapySDRDevice_setFrequencyCorrection(SoapySDRDevice *device, const int direction, const size_t channel, const double value);
+
+/*!
+ * Get the frontend frequency correction value.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return the correction value in PPM
+ */
+SOAPY_SDR_API double SoapySDRDevice_getFrequencyCorrection(const SoapySDRDevice *device, const int direction, const size_t channel);
+
 /*******************************************************************
  * Gain API
  ******************************************************************/

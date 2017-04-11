@@ -11,6 +11,7 @@ Device C API changes:
 
 General additions and changes:
 
+- Added frequency corrections API for fine adjustments
 - Added getSampleRateRange() API for continuous ranges
 - Device factory table keys based on enumeration results
 - Added optional step size to the range type
