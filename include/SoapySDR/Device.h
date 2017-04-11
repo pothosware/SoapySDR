@@ -8,7 +8,7 @@
 /// The caller must free non-const array results.
 ///
 /// \copyright
-/// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -914,6 +914,7 @@ SOAPY_SDR_API double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, 
 
 /*!
  * Get the range of possible baseband sample rates.
+ * \deprecated replaced by getSampleRateRange()
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
@@ -921,6 +922,16 @@ SOAPY_SDR_API double SoapySDRDevice_getSampleRate(const SoapySDRDevice *device, 
  * \return a list of possible rates in samples per second
  */
 SOAPY_SDR_API double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+/*!
+ * Get the range of possible baseband sample rates.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] length the number of sample rates
+ * \return a list of sample rate ranges in samples per second
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getSampleRateRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
 
 /*******************************************************************
  * Bandwidth API

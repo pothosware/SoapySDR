@@ -539,6 +539,14 @@ double *SoapySDRDevice_listSampleRates(const SoapySDRDevice *device, const int d
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+SoapySDRRange *SoapySDRDevice_getSampleRateRange(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length)
+{
+    *length = 0;
+    __SOAPY_SDR_C_TRY
+    return toRangeList(device->getSampleRateRange(direction, channel), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
 /*******************************************************************
  * Bandwidth API
  ******************************************************************/

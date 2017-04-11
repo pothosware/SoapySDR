@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -478,6 +478,17 @@ double SoapySDR::Device::getSampleRate(const int, const size_t) const
 std::vector<double> SoapySDR::Device::listSampleRates(const int, const size_t) const
 {
     return std::vector<double>();
+}
+
+SoapySDR::RangeList SoapySDR::Device::getSampleRateRange(const int direction, const size_t channel) const
+{
+    SoapySDR::RangeList ranges;
+    //call into the older deprecated listSampleRates() call
+    for (auto &bw : this->listSampleRates(direction, channel))
+    {
+        ranges.push_back(SoapySDR::Range(bw, bw));
+    }
+    return ranges;
 }
 
 /*******************************************************************

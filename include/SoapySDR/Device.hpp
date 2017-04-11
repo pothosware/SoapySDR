@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -811,11 +811,20 @@ public:
 
     /*!
      * Get the range of possible baseband sample rates.
+     * \deprecated replaced by getSampleRateRange()
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible rates in samples per second
      */
     virtual std::vector<double> listSampleRates(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the range of possible baseband sample rates.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of sample rate ranges in samples per second
+     */
+    virtual RangeList getSampleRateRange(const int direction, const size_t channel) const;
 
     /*******************************************************************
      * Bandwidth API
