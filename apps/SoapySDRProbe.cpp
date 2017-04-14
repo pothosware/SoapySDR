@@ -33,7 +33,8 @@ std::string toString(const SoapySDR::RangeList &range, const double scale)
     for (size_t i = 0; i < range.size(); i++)
     {
         if (not ss.str().empty()) ss << ", ";
-        ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
+        if (range[i].minimum() == range[i].maximum()) ss << (range[i].minimum()/scale);
+        else ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
     }
     return ss.str();
 }
@@ -181,10 +182,10 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     if (not freqArgs.empty()) ss << "  Tune args:" << std::endl << freqArgs;
 
     //rates
-    ss << "  Sample rates: " << toString(device->listSampleRates(dir, chan), 1e6) << " MHz" << std::endl;
+    ss << "  Sample rates: " << toString(device->getSampleRateRange(dir, chan), 1e6) << " MSps" << std::endl;
 
     //bandwidths
-    const std::vector<double> bws = device->listBandwidths(dir, chan);
+    const auto bws = device->getBandwidthRange(dir, chan);
     if (not bws.empty()) ss << "  Filter bandwidths: " << toString(bws, 1e6) << " MHz" << std::endl;
 
     //sensors
