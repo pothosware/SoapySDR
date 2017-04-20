@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-gb4b39490</span>
+   &#160;<span id="projectnumber">0.6.0-g6f52f9fd</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -199,6 +199,12 @@ Functions</h2></td></tr>
 <tr class="separator:ad91323dbc897d620535e5ee193e35dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43e0ff2881c5803e34beeb30ad55f299"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a43e0ff2881c5803e34beeb30ad55f299">SoapySDRDevice_getIQBalance</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, double *balanceI, double *balanceQ)</td></tr>
 <tr class="separator:a43e0ff2881c5803e34beeb30ad55f299"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6da3729b5c742903fe7ac1da30fb7601"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a6da3729b5c742903fe7ac1da30fb7601">SoapySDRDevice_hasFrequencyCorrection</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel)</td></tr>
+<tr class="separator:a6da3729b5c742903fe7ac1da30fb7601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb3dd6707bde089972beb0aaa0bb0027"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#aeb3dd6707bde089972beb0aaa0bb0027">SoapySDRDevice_setFrequencyCorrection</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, const double value)</td></tr>
+<tr class="separator:aeb3dd6707bde089972beb0aaa0bb0027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a439d7c207323eee6437bbec92f38494b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a439d7c207323eee6437bbec92f38494b">SoapySDRDevice_getFrequencyCorrection</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel)</td></tr>
+<tr class="separator:a439d7c207323eee6437bbec92f38494b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aada13491ccee7b7cb2637e955b372190"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#aada13491ccee7b7cb2637e955b372190">SoapySDRDevice_listGains</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, size_t *length)</td></tr>
 <tr class="separator:aada13491ccee7b7cb2637e955b372190"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d4417e3ad19c10ee9936f3489ba0c0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a7d4417e3ad19c10ee9936f3489ba0c0e">SoapySDRDevice_hasGainMode</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel)</td></tr>
@@ -241,6 +247,8 @@ Functions</h2></td></tr>
 <tr class="separator:a44f3c9307b93513105ccda97c56e5538"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba594a829261dd613dc20b9a60ad5338"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#aba594a829261dd613dc20b9a60ad5338">SoapySDRDevice_listSampleRates</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, size_t *length)</td></tr>
 <tr class="separator:aba594a829261dd613dc20b9a60ad5338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c1f7d51367de8ee787d441efb6a1aae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRRange.html">SoapySDRRange</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a6c1f7d51367de8ee787d441efb6a1aae">SoapySDRDevice_getSampleRateRange</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, size_t *length)</td></tr>
+<tr class="separator:a6c1f7d51367de8ee787d441efb6a1aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4775f6c6b888f9a2405737d290619e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#ac4775f6c6b888f9a2405737d290619e9">SoapySDRDevice_setBandwidth</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, const double bw)</td></tr>
 <tr class="separator:ac4775f6c6b888f9a2405737d290619e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62ef0b2101849f18634f117b5b02c355"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a62ef0b2101849f18634f117b5b02c355">SoapySDRDevice_getBandwidth</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel)</td></tr>
@@ -339,7 +347,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface definition for Soapy SDR devices. This is the C version of the Device interface.</p>
 <p>General design rules about the API: The caller must free non-const array results.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2016 Josh Blum Copyright (c) 2016-2016 Bastille Networks SPDX-License-Identifier: BSL-1.0 </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2017 Josh Blum Copyright (c) 2016-2016 Bastille Networks SPDX-License-Identifier: BSL-1.0 </dd></dl>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="a600bfa542e6d6771d0872371191e57ea"></a>
 <div class="memitem">
@@ -1308,6 +1316,47 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a439d7c207323eee6437bbec92f38494b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> double SoapySDRDevice_getFrequencyCorrection </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *&#160;</td>
+          <td class="paramname"><em>device</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the frontend frequency correction value. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the correction value in PPM </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="aa4f4a675b671d7a307504aea2d888c66"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2053,6 +2102,54 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6c1f7d51367de8ee787d441efb6a1aae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRRange.html">SoapySDRRange</a>* SoapySDRDevice_getSampleRateRange </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *&#160;</td>
+          <td class="paramname"><em>device</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the range of possible baseband sample rates. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">length</td><td>the number of sample rates </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of sample rate ranges in samples per second </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="affa9f9f7ee1f61aeda1c9d8338e6c84b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2357,6 +2454,47 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6da3729b5c742903fe7ac1da30fb7601"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> bool SoapySDRDevice_hasFrequencyCorrection </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *&#160;</td>
+          <td class="paramname"><em>device</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Does the device support frontend frequency correction? </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if frequency corrections are supported </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a7d4417e3ad19c10ee9936f3489ba0c0e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -2590,7 +2728,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the range of possible baseband filter widths. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>replaced by getBandwidthRange() </dd></dl>
+<p>Get the range of possible baseband filter widths. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>replaced by getBandwidthRange() </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
@@ -2884,7 +3022,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get the range of possible baseband sample rates. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Get the range of possible baseband sample rates. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>replaced by getSampleRateRange() </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
     <tr><td class="paramdir"></td><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
@@ -3848,7 +3987,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the time of subsequent configuration calls. The what argument can refer to a specific command queue. Implementations may use a time of 0 to clear. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>replaced by setHardwareTime() </dd></dl>
+<p>Set the time of subsequent configuration calls. The what argument can refer to a specific command queue. Implementations may use a time of 0 to clear. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>replaced by setHardwareTime() </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
@@ -4094,6 +4233,54 @@ Functions</h2></td></tr>
     <tr><td class="paramname">name</td><td>the name of a tunable element </td></tr>
     <tr><td class="paramname">frequency</td><td>the center frequency in Hz </td></tr>
     <tr><td class="paramname">args</td><td>optional tuner arguments </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an error code or 0 for success </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aeb3dd6707bde089972beb0aaa0bb0027"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int SoapySDRDevice_setFrequencyCorrection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *&#160;</td>
+          <td class="paramname"><em>device</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Fine tune the frontend frequency correction. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+    <tr><td class="paramname">value</td><td>the correction in PPM </td></tr>
   </table>
   </dd>
 </dl>
@@ -5219,7 +5406,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 23 2017 10:27:31 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 16 2017 11:22:35 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
