@@ -14,6 +14,7 @@
 #include <SoapySDR/Errors.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <SoapySDR/Time.hpp>
+#include <SoapySDR/Logger.hpp>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -106,6 +107,11 @@
 %include <SoapySDR/Version.h>
 %include <SoapySDR/Formats.h>
 
+%ignore SoapySDR_logf;
+%ignore SoapySDR_vlogf;
+%ignore SoapySDR_registerLogHandler;
+%include <SoapySDR/Logger.h>
+
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
 ////////////////////////////////////////////////////////////////////////
@@ -114,6 +120,11 @@
 %include <SoapySDR/Modules.hpp>
 %include <SoapySDR/Formats.hpp>
 %include <SoapySDR/Time.hpp>
+
+%ignore SoapySDR::logf;
+%ignore SoapySDR::vlogf;
+%ignore SoapySDR::registerLogHandler;
+%include <SoapySDR/Logger.hpp>
 
 ////////////////////////////////////////////////////////////////////////
 // Device object

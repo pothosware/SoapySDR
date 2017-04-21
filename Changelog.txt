@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.5.5 (pending)
 ==========================
 
+- Added logger API and constants to python SWIG bindings
 - Added missing time utils to the swig python support
 - Fixed missing INFO log level for SOAPY_SDR_LOG_LEVEL
 - Fix for cache overwrite of PYTHON_INSTALL_DIR variable
