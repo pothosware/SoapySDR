@@ -29,9 +29,15 @@ std::string toString(const SoapySDR::Range &range)
 
 std::string toString(const SoapySDR::RangeList &range, const double scale)
 {
+    const size_t MAXRLEN = 10; //for abbreviating long lists
     std::stringstream ss;
     for (size_t i = 0; i < range.size(); i++)
     {
+        if (range.size() >= MAXRLEN and i >= MAXRLEN/2 and i < (range.size()-MAXRLEN/2))
+        {
+            if (i == MAXRLEN) ss << ", ...";
+            continue;
+        }
         if (not ss.str().empty()) ss << ", ";
         if (range[i].minimum() == range[i].maximum()) ss << (range[i].minimum()/scale);
         else ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
