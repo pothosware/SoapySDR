@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.6.0 (pending)
+Release 0.6.0 (2017-04-29)
 ==========================
 
 Device C API changes:
