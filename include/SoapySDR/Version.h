@@ -35,7 +35,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.6-dev"
+#define SOAPY_SDR_ABI_VERSION "0.6"
 
 /*!
  * Compatibility define for GPIO access API with masks
