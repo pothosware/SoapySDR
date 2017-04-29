@@ -20,7 +20,7 @@ General additions and changes:
 - Added Kwargs type to/from markup string API calls
 - Added read/writeRegisters() API for bulk register IO
 
-Release 0.5.5 (pending)
+Release 0.5.5 (2017-04-28)
 ==========================
 
 - Added logger API and constants to python SWIG bindings
