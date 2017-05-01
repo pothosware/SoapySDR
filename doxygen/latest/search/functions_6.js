@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['hasdcoffset',['hasDCOffset',['../classSoapySDR_1_1Device.html#a7010c831f72cb26898ff8abd83057ceb',1,'SoapySDR::Device']]],
-  ['hasdcoffsetmode',['hasDCOffsetMode',['../classSoapySDR_1_1Device.html#ac59df047fc98fbed1799e048af0ae730',1,'SoapySDR::Device']]],
-  ['hasfrequencycorrection',['hasFrequencyCorrection',['../classSoapySDR_1_1Device.html#aea22ee12762e2a849b384669fe7d83d6',1,'SoapySDR::Device']]],
-  ['hasgainmode',['hasGainMode',['../classSoapySDR_1_1Device.html#a97c5d620f2699425a793e283eeadd2bf',1,'SoapySDR::Device']]],
-  ['hashardwaretime',['hasHardwareTime',['../classSoapySDR_1_1Device.html#a77669546f4d519b589e1ba75ade18a24',1,'SoapySDR::Device']]],
-  ['hasiqbalance',['hasIQBalance',['../classSoapySDR_1_1Device.html#acd491ac255fb9cc746ae4d883a551f68',1,'SoapySDR::Device']]]
+  ['hasdcoffset',['hasDCOffset',['../classSoapySDR_1_1Device.html#a194b566e5a48c3ca62d98ca0958dad76',1,'SoapySDR::Device']]],
+  ['hasdcoffsetmode',['hasDCOffsetMode',['../classSoapySDR_1_1Device.html#aba1d7df72b6a02de7d64e852b68486ec',1,'SoapySDR::Device']]],
+  ['hasfrequencycorrection',['hasFrequencyCorrection',['../classSoapySDR_1_1Device.html#a20a618e1362e7825c19f7e0771d2b0f3',1,'SoapySDR::Device']]],
+  ['hasgainmode',['hasGainMode',['../classSoapySDR_1_1Device.html#a664ee9d6bcbc2b6231095a80b6fb77e2',1,'SoapySDR::Device']]],
+  ['hashardwaretime',['hasHardwareTime',['../classSoapySDR_1_1Device.html#a0354c0e0dc844ebc917ac8e970186a3a',1,'SoapySDR::Device']]],
+  ['hasiqbalance',['hasIQBalance',['../classSoapySDR_1_1Device.html#a8eb74fd10a683c6f2abc76874d716ed9',1,'SoapySDR::Device']]]
 ];
