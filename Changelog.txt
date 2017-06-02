@@ -1,5 +1,11 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.6.1 (pending)
+==========================
+
+- Moved cmake modules into subdirectory to hide them from cmake's
+  default project search path when cloned in user's home directory
+
 Release 0.6.0 (2017-04-29)
 ==========================
 

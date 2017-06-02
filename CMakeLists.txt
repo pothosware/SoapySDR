@@ -13,7 +13,7 @@ enable_testing()
 set(SOAPY_SDR_LIBVER "0.6.0")
 
 if (NOT SOAPY_SDR_EXTVER)
-    include(${PROJECT_SOURCE_DIR}/cmake/GetGitRevisionDescription.cmake)
+    include(${PROJECT_SOURCE_DIR}/cmake/Modules/GetGitRevisionDescription.cmake)
     get_git_head_revision(GITREFSPEC GITHASH)
     if (GITHASH)
         string(SUBSTRING "${GITHASH}" 0 8 GITHASH)
@@ -87,12 +87,12 @@ include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
 # Install cmake helper modules
 ########################################################################
 configure_file(
-    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfigVersion.in.cmake
+    ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfigVersion.in.cmake
     ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
 @ONLY)
 set(cmake_files
-    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRConfig.cmake
-    ${PROJECT_SOURCE_DIR}/cmake/SoapySDRUtil.cmake
+    ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfig.cmake
+    ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRUtil.cmake
     ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
 if (UNIX)
     install(FILES ${cmake_files} DESTINATION share/cmake/${PROJECT_NAME})
