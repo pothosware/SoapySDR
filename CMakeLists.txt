@@ -78,7 +78,7 @@ endif()
 ########################################################################
 # Allows in-tree module util
 ########################################################################
-set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake)
+set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake/Modules)
 set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 find_package(SoapySDR NO_MODULE REQUIRED)
 include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
