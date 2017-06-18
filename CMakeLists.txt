@@ -10,7 +10,12 @@ enable_testing()
 # gather version information
 # packagers may specify -DSOAPY_SDR_EXTVER="foo" to replace the git hash
 ########################################################################
-set(SOAPY_SDR_LIBVER "0.6.0")
+file(READ "${PROJECT_SOURCE_DIR}/Changelog.txt" changelog_txt)
+string(REGEX MATCH "Release ([0-9]+\\.[0-9]+\\.[0-9]+) \\(" CHANGELOG_MATCH "${changelog_txt}")
+if(NOT CHANGELOG_MATCH)
+    message(FATAL_ERROR "Failed to extract version number from Changelog.txt")
+endif(NOT CHANGELOG_MATCH)
+set(SOAPY_SDR_LIBVER "${CMAKE_MATCH_1}")
 
 if (NOT SOAPY_SDR_EXTVER)
     include(${PROJECT_SOURCE_DIR}/cmake/Modules/GetGitRevisionDescription.cmake)
