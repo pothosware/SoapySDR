@@ -90,6 +90,12 @@ if(PYTHON_VERSION_STRING AND "${PYTHON_VERSION_STRING}" VERSION_LESS "3.0")
     set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
 endif()
 
+#or enable search for python3 when this directory failed to find
+#a full set of python interpreter and devel files of any version
+if(NOT PYTHONINTERP_FOUND OR NOT PYTHONLIBS_FOUND)
+    set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
+endif()
+
 ########################################################################
 ## set the swig flags - shared with python3 build
 ########################################################################
