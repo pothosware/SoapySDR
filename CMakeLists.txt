@@ -121,8 +121,6 @@ add_subdirectory(docs)
 ########################################################################
 # Python support (optional)
 ########################################################################
-option(ENABLE_PYTHON "enable python bindings" ON)
-if (ENABLE_PYTHON)
 message(STATUS "")
 message(STATUS "#############################################")
 message(STATUS "## Begin configuration for Python support...")
@@ -130,16 +128,13 @@ message(STATUS "#############################################")
 message(STATUS "Enabling optional Python bindings if possible...")
 add_subdirectory(python)
 
-if(BUILD_PYTHON3)
 message(STATUS "")
 message(STATUS "#############################################")
 message(STATUS "## Begin configuration for Python3 support...")
 message(STATUS "#############################################")
 message(STATUS "Enabling optional Python3 bindings if possible...")
 add_subdirectory(python3)
-endif(BUILD_PYTHON3)
 
-endif (ENABLE_PYTHON)
 
 ########################################################################
 # uninstall target
