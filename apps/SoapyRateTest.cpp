@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 Josh Blum
+// Copyright (c) 2016-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -80,7 +80,7 @@ void runRateTestStreamLoop(
             timeLastPrint = now;
             const auto timePassed = std::chrono::duration_cast<std::chrono::microseconds>(now - startTime);
             const auto sampleRate = double(totalSamples)/timePassed.count();
-            printf("%g Msps\t%g Bps", sampleRate, sampleRate*numChans*elemSize);
+            printf("%g Msps\t%g MBps", sampleRate, sampleRate*numChans*elemSize);
             if (overflows != 0) printf("\tOverflows %u", overflows);
             if (underflows != 0) printf("\tUnderflows %u", underflows);
             printf("\n");

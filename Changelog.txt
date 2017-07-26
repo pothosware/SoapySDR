@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.6.1 (pending)
 ==========================
 
+- Fixed units for average byte rate in stream rate testing utility
 - Separate ENABLE_PYTHON and ENABLE_PYTHON3 options for python support
 - Moved cmake modules into subdirectory to hide them from cmake's
   default project search path when cloned in user's home directory
