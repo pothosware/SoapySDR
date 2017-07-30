@@ -37,6 +37,8 @@ void runRateTestStreamLoop(
     unsigned long long totalSamples(0);
     const auto startTime = std::chrono::high_resolution_clock::now();
     auto timeLastPrint = std::chrono::high_resolution_clock::now();
+    auto timeLastSpin = std::chrono::high_resolution_clock::now();
+    int spinIndex(0);
 
     std::cout << "Starting stream loop, press Ctrl+C to exit..." << std::endl;
     device->activateStream(stream);
@@ -75,15 +77,22 @@ void runRateTestStreamLoop(
         totalSamples += ret;
 
         const auto now = std::chrono::high_resolution_clock::now();
+        if (timeLastSpin + std::chrono::milliseconds(300) < now)
+        {
+            timeLastSpin = now;
+            static const char spin[] = {"|/-\\"};
+            printf("\b%c", spin[(spinIndex++)%4]);
+            fflush(stdout);
+        }
         if (timeLastPrint + std::chrono::seconds(5) < now)
         {
             timeLastPrint = now;
             const auto timePassed = std::chrono::duration_cast<std::chrono::microseconds>(now - startTime);
             const auto sampleRate = double(totalSamples)/timePassed.count();
-            printf("%g Msps\t%g MBps", sampleRate, sampleRate*numChans*elemSize);
+            printf("\b%g Msps\t%g MBps", sampleRate, sampleRate*numChans*elemSize);
             if (overflows != 0) printf("\tOverflows %u", overflows);
             if (underflows != 0) printf("\tUnderflows %u", underflows);
-            printf("\n");
+            printf("\n ");
         }
 
     }
