@@ -38,6 +38,7 @@ void runRateTestStreamLoop(
     const auto startTime = std::chrono::high_resolution_clock::now();
     auto timeLastPrint = std::chrono::high_resolution_clock::now();
     auto timeLastSpin = std::chrono::high_resolution_clock::now();
+    auto timeLastStatus = std::chrono::high_resolution_clock::now();
     int spinIndex(0);
 
     std::cout << "Starting stream loop, press Ctrl+C to exit..." << std::endl;
@@ -83,6 +84,20 @@ void runRateTestStreamLoop(
             static const char spin[] = {"|/-\\"};
             printf("\b%c", spin[(spinIndex++)%4]);
             fflush(stdout);
+        }
+        //occasionally read out the stream status (non blocking)
+        if (timeLastStatus + std::chrono::seconds(1) < now)
+        {
+            timeLastStatus = now;
+            while (true)
+            {
+                size_t chanMask; int flags; long long timeNs;
+                ret = device->readStreamStatus(stream, chanMask, flags, timeNs, 0);
+                if (ret == SOAPY_SDR_OVERFLOW) overflows++;
+                else if (ret == SOAPY_SDR_UNDERFLOW) underflows++;
+                else if (ret == SOAPY_SDR_TIME_ERROR) {}
+                else break;
+            }
         }
         if (timeLastPrint + std::chrono::seconds(5) < now)
         {
