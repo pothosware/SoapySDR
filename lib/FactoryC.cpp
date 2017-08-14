@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "ErrorHelpers.hpp"
@@ -36,7 +36,7 @@ SoapySDRDevice *SoapySDRDevice_make(const SoapySDRKwargs *args)
 SoapySDRDevice *SoapySDRDevice_makeStrArgs(const char *args)
 {
     __SOAPY_SDR_C_TRY
-    return (SoapySDRDevice *)SoapySDR::Device::make(args);
+    return (SoapySDRDevice *)SoapySDR::Device::make((args==nullptr)?"":args);
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
