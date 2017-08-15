@@ -10,7 +10,7 @@ SoapySDR::ConvertFunction CF32toCF32(const void *srcBuff, void *dstBuff, const s
 {
   size_t elemDepth = 2;
 
-  std::cout << "CF32 to CF32" << std::endl;
+  std::cout << "converting CF32 to CF32" << std::endl;
 
   if (scaler == 1.0)
     {
@@ -58,7 +58,7 @@ SoapySDR::ConvertFunction CU16toCF32(const void *srcBuff, void *dstBuff, const s
   uint16_t *src = (uint16_t*)srcBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
     {
-      dst[i] = (src[i] - 2147483647) * scaler;
+      dst[i] = (src[i] - 0x7fff) * scaler;
     }
   std::cout << " sample copy with scaler" << std::endl;
   
@@ -98,16 +98,21 @@ int main(void)
       std::cout << " " << *it << std::endl;
     }
 
-  std::cout << "get supported source formats from " << SOAPY_SDR_CF32 << std::endl;
+  std::cout << "get supported source formats for " << SOAPY_SDR_CF32 << std::endl;
   formats = SoapySDR::convertSourceFormats(SOAPY_SDR_CF32);
   for(std::vector<std::string>::iterator it = formats.begin() ; it != formats.end(); ++it)
     {
       std::cout << " " << *it << std::endl;
     }
 
-  //  SoapySDR::ConvertFunction convert;
+  SoapySDR::ConvertFunction convert;
 
-  SoapySDR::ConvertFunction convert = SoapySDR::getConverter(SOAPY_SDR_CF32, formats[0]);
+  std::cout << std::endl << "try a registered conversion..." << std::endl;
+  convert = SoapySDR::getConverter(SOAPY_SDR_CF32, formats[0]);
+  convert(outElems, inElems, numElems, 0.1);
+
+  std::cout << std::endl << "try an unregistered conversion..." << std::endl;
+  convert = SoapySDR::getConverter(SOAPY_SDR_CU16, SOAPY_SDR_CS16);
   convert(outElems, inElems, numElems, 0.1);
 
   // todo
