@@ -112,8 +112,13 @@ int main(void)
   convert(outElems, inElems, numElems, 0.1);
 
   std::cout << std::endl << "try an unregistered conversion..." << std::endl;
-  convert = SoapySDR::getConverter(SOAPY_SDR_CU16, SOAPY_SDR_CS16);
-  convert(outElems, inElems, numElems, 0.1);
+  try{
+    convert = SoapySDR::getConverter(SOAPY_SDR_CU16, SOAPY_SDR_CS16);
+    convert(outElems, inElems, numElems, 0.1);
+  }
+  catch (const std::exception &ex){
+    std::cout << " got error '" << ex.what() << "' (thats good)" << std::endl;
+  }
 
   // todo
   // dump input elems
