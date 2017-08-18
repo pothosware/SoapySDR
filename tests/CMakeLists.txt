@@ -19,7 +19,3 @@ add_test(TestTimeConversion TestTimeConversion)
 add_executable(TestFormatParser TestFormatParser.cpp)
 target_link_libraries(TestFormatParser SoapySDR)
 add_test(TestFormatParser TestFormatParser)
-
-add_executable(TestFormatConvert TestFormatConvert.cpp)
-target_link_libraries(TestFormatConvert SoapySDR)
-add_test(TestFormatConvert TestFormatConvert)
