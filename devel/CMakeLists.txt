@@ -12,10 +12,7 @@
 ########################################################################
 # Unit tests
 ########################################################################
-add_executable(TestFormatConvert TestFormatConvert.cpp)
-target_link_libraries(TestFormatConvert SoapySDR)
-add_test(TestFormatConvert TestFormatConvert)
 
 add_executable(BufferSim BufferSim.cpp)
 target_link_libraries(BufferSim SoapySDR)
-add_test(BufferSim BufferSim)
+#add_test(BufferSim BufferSim)
