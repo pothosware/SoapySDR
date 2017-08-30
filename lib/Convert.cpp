@@ -9,19 +9,18 @@ bool SoapySDR::registerConverter(const std::string &sourceFormat, const std::str
 {
   if (Converters.count(sourceFormat) == 0)
     {
-      SoapySDR::FormatConverters converters;
-      converters[targetFormat] = converterFunction;
-      Converters[sourceFormat] = converters;
+      Converters[sourceFormat][targetFormat] = converterFunction;
     }
   else
     { 
-      SoapySDR::FormatConverters converters = Converters[sourceFormat];
-      if (converters.count(targetFormat) != 0){
-	throw std::invalid_argument("conversion already registered: " + sourceFormat + " to " + targetFormat + ".");
-      }
-      else{
-	converters[targetFormat] = converterFunction;
-      }
+      if (Converters[sourceFormat].count(targetFormat) != 0)
+	{
+	  throw std::invalid_argument("conversion already registered: " + sourceFormat + " to " + targetFormat + ".");
+	}
+      else
+	{
+	  Converters[sourceFormat][targetFormat] = converterFunction;
+	}
     }
   
   return true;
@@ -34,11 +33,10 @@ std::vector<std::string> SoapySDR::convertTargetFormats(const std::string &sourc
   if (Converters.count(sourceFormat) == 0)
     return targets;
 
-  SoapySDR::FormatConverters converters = Converters[sourceFormat];
-
-  for(SoapySDR::FormatConverters::iterator it = converters.begin() ; it != converters.end(); ++it)
+  for(SoapySDR::FormatConverters::iterator it = Converters[sourceFormat].begin() ; it != Converters[sourceFormat].end(); ++it)
     {
-      targets.push_back(it->first);
+      std::string targetFormat = it->first;
+      targets.push_back(targetFormat);
     }
   
   return targets;
@@ -50,9 +48,9 @@ std::vector<std::string> SoapySDR::convertSourceFormats(const std::string &targe
 
   for(SoapySDR::SourceFormatConverters::iterator it = Converters.begin() ; it != Converters.end(); ++it)
     {
-      SoapySDR::FormatConverters converters = Converters[it->first];
-      if (converters.count(targetFormat) > 0)
-	sources.push_back(it->first);
+      std::string sourceFormat = it->first;
+      if (Converters[sourceFormat].count(targetFormat) > 0)
+	sources.push_back(sourceFormat);
     }
   
   return sources;
@@ -63,9 +61,8 @@ SoapySDR::ConvertFunction SoapySDR::getConverter(const std::string &sourceFormat
   if (Converters.count(sourceFormat) == 0)
     throw std::invalid_argument("unsupported source format: " + sourceFormat + "."); 
   
-  SoapySDR::FormatConverters converters = Converters[sourceFormat];
-  if (converters.count(targetFormat) == 0)
+  if (Converters[sourceFormat].count(targetFormat) == 0)
     throw std::invalid_argument("unsupported target format: " + targetFormat + "."); 
 
-  return converters[targetFormat];
+  return Converters[sourceFormat][targetFormat];
 }
