@@ -1,17 +1,22 @@
 // Copyright (c) 2017 Coburn Wightman
 // SPDX-License-Identifier: BSL-1.0
 
+//#include "buffer.hpp"
 #include "convertPrimatives.hpp"
 #include <SoapySDR/Convert.hpp>
 //#include <SoapySDR/Device.hpp>
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
 bool fillBuffer(int8_t*, int, std::string);
 bool dumpBuffer(int8_t*, int, std::string);
 int readStream(void*, void * const *, const size_t);
 int acquireReadBuffer(void *, size_t &, const void **);
 void releaseReadBuffer(void *,  const size_t);
+std::string getNativeStreamFormat(const int, const size_t, double &);
+std::vector<std::string> getStreamFormats(const int, const size_t);
+struct Stream *setupStream(const int, const std::string &, const std::vector<size_t> &);
 
 SoapySDR::ConvertFunction cvtCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
@@ -59,6 +64,42 @@ SoapySDR::ConvertFunction cvtCS16toCF32(const void *srcBuff, void *dstBuff, cons
   return 0;
 }
 
+SoapySDR::ConvertFunction cvtCS16toCS16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  size_t elemDepth = 2;
+
+  //  std::cout << "converting CS16 to CS16" << std::endl;
+
+  float sf = float(1.0/scaler);
+  int16_t *dst = (int16_t*)dstBuff;
+  int16_t *src = (int16_t*)srcBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
+    {
+      CS16toCS16(&src[i], &dst[i], sf);
+    }
+  //  std::cout << " sample copy with scaler" << std::endl;
+  
+  return 0;
+}
+
+SoapySDR::ConvertFunction cvtCS16toCS32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  size_t elemDepth = 2;
+
+  //  std::cout << "converting CS16 to CS32" << std::endl;
+
+  float sf = float(1.0/scaler);
+  int32_t *dst = (int32_t*)dstBuff;
+  int16_t *src = (int16_t*)srcBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
+    {
+      CS16toCS32(&src[i], &dst[i], sf);
+    }
+  //  std::cout << " sample copy with scaler" << std::endl;
+  
+  return 0;
+}
+
 SoapySDR::ConvertFunction cvtCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
@@ -78,12 +119,26 @@ SoapySDR::ConvertFunction cvtCU16toCF32(const void *srcBuff, void *dstBuff, cons
   return 0;
 }
 
-// ******************************
 
 struct Stream{
   size_t numChans;
-  size_t elemDepth;
   //  vector chanList;
+
+  SoapySDR::ConvertFunction converter;
+  std::string streamElemFormat;
+  size_t streamElemWidth;
+  size_t streamElemDepth;
+  size_t streamElemSize;
+ 
+  std::string nativeElemFormat;
+  size_t nativeElemWidth;
+  size_t nativeElemDepth;
+  size_t nativeElemSize;
+
+  size_t fragmentRemaining;
+  size_t fragmentOffset;
+  size_t fragmentHandle;
+  const void *fragmentBuffs[8];
 };
 
 struct CS16{
@@ -97,32 +152,106 @@ struct CF32{
 };
 
 
+struct Stream _stream;
+
 int main(void)
 {
-  const size_t numElems = 64;
 
-  struct Stream stream;
-  stream.numChans = 8;
-  stream.elemDepth = 2;
-  
   std::cout << "registering converters..." << std::endl;
-  SoapySDR::registerConverter(SOAPY_SDR_CF32, SOAPY_SDR_CF32, (SoapySDR::ConvertFunction) cvtCF32toCF32);
+  SoapySDR::registerConverter(SOAPY_SDR_CS16, SOAPY_SDR_CS16, (SoapySDR::ConvertFunction) cvtCS16toCS16);
+  SoapySDR::registerConverter(SOAPY_SDR_CS16, SOAPY_SDR_CS32, (SoapySDR::ConvertFunction) cvtCS16toCS32);
   SoapySDR::registerConverter(SOAPY_SDR_CS16, SOAPY_SDR_CF32, (SoapySDR::ConvertFunction) cvtCS16toCF32);
-  SoapySDR::registerConverter(SOAPY_SDR_CU16, SOAPY_SDR_CF32, (SoapySDR::ConvertFunction) cvtCU16toCF32);
 
+  double fs;
+  std::string nativeFormat = getNativeStreamFormat(0,1,fs);
+  std::cout << "native format: " << nativeFormat << std::endl;
+
+  std::cout << std::endl << "supported stream formats for " << nativeFormat << std::endl;
+  std::vector<std::string> formats = SoapySDR::convertTargetFormats(nativeFormat);
+  for(std::vector<std::string>::iterator it = formats.begin() ; it != formats.end(); ++it)
+    {
+      std::cout << " " << *it << std::endl;
+    }
+
+  const size_t numElems = 100; //64
+  std::vector<size_t>channels;
+  
+  struct Stream* myStream = setupStream(0, SOAPY_SDR_CF32, channels );
+  
   struct CF32* buffs[8];
-  struct CF32 buffer[stream.numChans][numElems];
+  struct CF32 buffer[myStream->numChans][numElems];
 
-  for (size_t i = 0; i < stream.numChans; i++){
-    buffs[i] = buffer[i];
+  for (size_t chan = 0; chan < myStream->numChans; chan++){
+    buffs[chan] = buffer[chan];
   }
   
-  size_t elemCount = readStream((void *)&stream, (void**)buffs, numElems);
-  
-  //dumpBuffer((char*)soapyBuffer, numElems, outElemFormat);
+  size_t elemCount = readStream((void *)myStream, (void**)buffs, numElems);
+
+  for (size_t chan = 0; chan < myStream->numChans; chan++)
+    {
+      std::cout << "readStream() result: chan" << chan << " " << myStream->streamElemFormat << std::endl; 
+      dumpBuffer((int8_t*)buffs[chan], elemCount, myStream->streamElemFormat);
+    }
   
   std::cout << "DONE!" << std::endl;
-  return elemCount; //EXIT_SUCCESS;
+  return EXIT_SUCCESS;
+}
+
+/*!
+ * Query a list of the available stream formats.
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return a list of allowed format strings. See setupStream() for the format syntax.
+ */
+std::vector<std::string> getStreamFormats(const int direction, const size_t channel) //const
+{
+  double fs;
+  
+  const std::string sourceFormat = getNativeStreamFormat(direction, channel, fs);
+  std::vector<std::string> formats = SoapySDR::convertTargetFormats(sourceFormat);
+
+  return formats;
+}
+
+/*!
+ * Get the hardware's native stream format for this channel.
+ * This is the format used by the underlying transport layer,
+ * and the direct buffer access API calls (when available).
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \param [out] fullScale the maximum possible value
+ * \return the native stream buffer format string
+ */
+std::string getNativeStreamFormat(const int direction, const size_t channel, double &fullScale) //const
+{
+  fullScale = 3.3/2;
+  return SOAPY_SDR_CS16;
+}
+
+struct Stream *setupStream(const int direction, const std::string &format, const std::vector<size_t> &channels)
+{
+  struct Stream* stream = &_stream;
+  double fs;
+
+  stream->numChans = 8;
+
+  stream->nativeElemFormat = getNativeStreamFormat(direction, 0, fs);
+  stream->nativeElemWidth = 2; //bytes
+  stream->nativeElemDepth = 2; //samples
+  stream->nativeElemSize = stream->nativeElemWidth * stream->nativeElemDepth; 
+  
+  stream->streamElemFormat = format;
+  stream->streamElemWidth = 4; //bytes
+  stream->streamElemDepth = 2; //samples
+  stream->streamElemSize = stream->streamElemWidth * stream->streamElemDepth;
+  
+  stream->converter = SoapySDR::getConverter(stream->nativeElemFormat, stream->streamElemFormat);
+
+  stream->fragmentRemaining = 0;
+  stream->fragmentOffset = 0;
+  //  size_t fragmentHandle;
+
+  return stream;
 }
 
 /*!
@@ -144,37 +273,41 @@ int main(void)
  * \param timeoutUs the timeout in microseconds
  * \return the number of elements read per buffer or error code
  */
+
 int readStream(void* stream, void * const *buffs, const size_t numElems)
 {
   struct Stream* myStream = (struct Stream*)stream;  
   
-  std::string inElemFormat = SOAPY_SDR_CS16;
-  std::string outElemFormat = SOAPY_SDR_CF32;
-  SoapySDR::ConvertFunction convert = SoapySDR::getConverter(inElemFormat, outElemFormat);
-  
-  size_t handle;
-  const void *payload[8];
-
-  size_t elemOffset = 0;
-  while (elemOffset < numElems)
+  size_t streamOffset = 0;
+  size_t bufferRemaining = numElems;
+  while (streamOffset < numElems)
     {
-      size_t elemCount = acquireReadBuffer(stream, handle, payload);
+      if (myStream->fragmentRemaining == 0)
+	{
+	myStream->fragmentRemaining = acquireReadBuffer(stream, myStream->fragmentHandle, myStream->fragmentBuffs);
+	}
+      size_t elemCount = (bufferRemaining < myStream->fragmentRemaining) ? bufferRemaining : myStream->fragmentRemaining;
       for (size_t chan = 0; chan < myStream->numChans; chan++)
 	{
-	  struct CF32* toBuff = (struct CF32*) buffs[chan];
-	  struct CS16* fromBuff = (struct CS16*) payload[chan];
-	  convert(&fromBuff[0], &toBuff[elemOffset], elemCount, 1);
+	  int8_t* streamBuffer = (int8_t*) buffs[chan];
+	  int8_t* fragmentBuffer = (int8_t*) myStream->fragmentBuffs[chan];
+	  myStream->converter(&fragmentBuffer[myStream->fragmentOffset * myStream->nativeElemSize],
+			      &streamBuffer[streamOffset * myStream->streamElemSize], elemCount, 1);
 	}
-      elemOffset += elemCount;
-      releaseReadBuffer(stream, handle);
+      streamOffset += elemCount;
+      bufferRemaining -= elemCount;
+      
+      myStream->fragmentOffset += elemCount;
+      myStream->fragmentRemaining -= elemCount;
+      
+      std::cout << myStream->fragmentRemaining << std::endl;
+      if (myStream->fragmentRemaining == 0)
+	{
+	  myStream->fragmentOffset = 0;
+	  releaseReadBuffer(stream, myStream->fragmentHandle);
+	}
     }
 
-  for (size_t chan = 0; chan < myStream->numChans; chan++)
-    {
-      std::cout << "readStream(): chan " << chan << " " << outElemFormat << std::endl; 
-      dumpBuffer((int8_t*)buffs[chan], numElems, outElemFormat);
-    }
-  
   return numElems;
 }
 
@@ -201,16 +334,15 @@ int readStream(void* stream, void * const *buffs, const size_t numElems)
 
 int acquireReadBuffer(void *stream, size_t &handle, const void **buffs)
 {
-  const size_t numElems = 16;
+  const size_t numElems = 12; //16
   const size_t numChans = 8;
-  const size_t elemDepth = 2;
   static int cycleCount = 0;
   
   struct Stream* myStream = (struct Stream*)stream;  
+  std::cout << "acquireReadBuffer(): " << myStream->nativeElemFormat << std::endl; 
 
+  // fabricate a dummy device buffer.
   static struct CS16 devBuffer[numChans][numElems];
-
-  // fabricate a dummy buffer.
   for (size_t chan = 0; chan < numChans; chan++){
     for (size_t elem = 0; elem < numElems; elem++){
       devBuffer[chan][elem].i = cycleCount * 1000 + chan*100 + elem;
@@ -222,8 +354,7 @@ int acquireReadBuffer(void *stream, size_t &handle, const void **buffs)
   ++cycleCount;
   handle = 0;
 
-  std::cout << "acquireReadBuffer(): " << SOAPY_SDR_CS16 << std::endl; 
-  dumpBuffer((int8_t*)devBuffer, numChans*numElems, SOAPY_SDR_CS16);
+  dumpBuffer((int8_t*)devBuffer, numChans*numElems, myStream->nativeElemFormat);
   
   return numElems;
 }
@@ -240,39 +371,7 @@ int acquireReadBuffer(void *stream, size_t &handle, const void **buffs)
 void releaseReadBuffer(void *stream,  const size_t handle)
 {
   struct Stream* myStream = (struct Stream*)stream;  
-}
-
-bool fillBuffer(int8_t* buffer, int numElems, std::string elemFormat){
-  size_t elemDepth = 2;
-
-  if (elemFormat == SOAPY_SDR_CF32){
-    float* buff = (float*)buffer;
-    for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-      {
-	buff[i] = (float)i;
-	buff[i+1] = (float)i+1;
-      }
-  }
-  else if (elemFormat == SOAPY_SDR_CS32){
-    int32_t* buff = (int32_t*)buffer;
-    for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-      {
-	buff[i] = i;
-	buff[i+1] = i+1;
-      }
-  }
-  else if (elemFormat == SOAPY_SDR_CS16){
-    int16_t* buff = (int16_t*)buffer;
-    for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-      {
-	buff[i] = i;
-	buff[i+1] = i+1;
-      }
-  }
-  else
-    std::cout << "unrecognized elem format" << std::endl;
-
-  return true;
+  std::cout << "releaseReadBuffer(): " << myStream->nativeElemFormat << std::endl; 
 }
 
 bool dumpBuffer(int8_t* buffer, int numElems, std::string elemFormat){
