@@ -30,6 +30,15 @@ inline int32_t U8toS32(int8_t from){
   return (from - 0x7f);
 }
 
+inline int32_t S16toS32(int16_t from){
+  return int32_t(from);
+}
+
+inline int16_t S16toS16(int16_t from){
+  return int16_t(from);
+}
+
+
 //floats
 inline int32_t F32toS32(float from){
   return int32_t(from);
@@ -99,6 +108,32 @@ inline float* CU16toCF32(uint16_t* in, float* out, float scale){
 
   out[0] = U16toF32(in[0])*scale;
   out[1] = U16toF32(in[1])*scale;
+  
+  return out;
+}
+
+///////////////////////////
+// case CONVERT_CS32_CS16:
+///////////////////////////
+inline int32_t* CS16toCS32(int16_t* in, int32_t* out, float scale){
+  //const float scale = float(1.0/scaleFactor);
+  //  float out[2];
+
+  out[0] = S16toS32(in[0])*scale;
+  out[1] = S16toS32(in[1])*scale;
+  
+  return out;
+}
+
+///////////////////////////
+// case CONVERT_CS16_CS16:
+///////////////////////////
+inline int16_t* CS16toCS16(int16_t* in, int16_t* out, float scale){
+  //const float scale = float(1.0/scaleFactor);
+  //  float out[2];
+
+  out[0] = S16toS16(in[0])*scale;
+  out[1] = S16toS16(in[1])*scale;
   
   return out;
 }
