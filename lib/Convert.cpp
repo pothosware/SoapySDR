@@ -33,9 +33,9 @@ std::vector<std::string> SoapySDR::convertTargetFormats(const std::string &sourc
   if (Converters.count(sourceFormat) == 0)
     return targets;
 
-  for(SoapySDR::FormatConverters::iterator it = Converters[sourceFormat].begin() ; it != Converters[sourceFormat].end(); ++it)
+  for(const auto &it:Converters[sourceFormat])
     {
-      std::string targetFormat = it->first;
+      std::string targetFormat = it.first;
       targets.push_back(targetFormat);
     }
   
@@ -46,9 +46,9 @@ std::vector<std::string> SoapySDR::convertSourceFormats(const std::string &targe
 {
   std::vector<std::string> sources;
 
-  for(SoapySDR::SourceFormatConverters::iterator it = Converters.begin() ; it != Converters.end(); ++it)
+  for(const auto &it:Converters)
     {
-      std::string sourceFormat = it->first;
+      std::string sourceFormat = it.first;
       if (Converters[sourceFormat].count(targetFormat) > 0)
 	sources.push_back(sourceFormat);
     }
