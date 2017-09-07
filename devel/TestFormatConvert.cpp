@@ -5,6 +5,7 @@
 #include <SoapySDR/Convert.hpp>
 #include <iostream>
 #include <cstdlib>
+#include <cstring> //memcpy
 
 bool fillBuffer(uint8_t*, int, std::string);
 bool dumpBuffer(uint8_t*, int, std::string);

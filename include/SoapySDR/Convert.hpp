@@ -9,14 +9,10 @@
 ///
 
 #pragma once
-#include <SoapySDR/Config.h>
 #include <SoapySDR/Formats.hpp>
 #include <vector>
 #include <map>
 #include <string>
-#include <cstring> //memcpy
-#include <cstddef>
-#include <stdint.h>
 #include <stdexcept>
 
 namespace SoapySDR

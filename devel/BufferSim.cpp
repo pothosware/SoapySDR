@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <cstring> //memcpy
 
 bool fillBuffer(int8_t*, int, std::string);
 bool dumpBuffer(int8_t*, int, std::string);
