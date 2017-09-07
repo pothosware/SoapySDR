@@ -1,3 +1,4 @@
+// Copyright (c) 2017-2017 Coburn Wightman"
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
