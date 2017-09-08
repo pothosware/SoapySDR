@@ -24,17 +24,30 @@ namespace SoapySDR
  */
 typedef void (*ConvertFunction)(const void *, void *, const size_t, const double);
 
-// https://stackoverflow.com/questions/10758811/c-syntax-for-functions-returning-function-pointers
+/*!
+ * FormatConverterPriority: allow selection of a converter function with a given source and target format
+ */
+enum FormatConverterPriority{
+  GENERIC = 0,          // usual C for loops and shifts and multiplies
+  VECTORIZED = 3,       // using SIMD vectorized operations probably
+  CUSTOM = 5            // custom user re-implementation, max prio
+};
+
+    
+/*!
+ * TargetFormatConverterPriority: a map of possible conversion functions for a given priority.
+ */
+typedef std::map<FormatConverterPriority, ConvertFunction> TargetFormatConverterPriority;
 
 /*!
- * A typedef for a map of possible conversion targets given this conversion source.
+ * TargetFormatConverters: a map of possible conversion functions for a given Target Format.
  */
-typedef std::map<std::string, ConvertFunction> FormatConverters;
+typedef std::map<std::string, TargetFormatConverterPriority> TargetFormatConverters;
 
 /*!
- * A typedef for a map of possible conversion functions.
+ * FormatConverters: a map of possible conversion functions for a given Source Format.
  */
-typedef std::map<std::string, FormatConverters> SourceFormatConverters;
+typedef std::map<std::string, TargetFormatConverters> FormatConverters;
 
 /*!
  * Get a list of formats to which we can convert the source format into.
@@ -62,15 +75,27 @@ SOAPY_SDR_API std::vector<std::string> convertSourceFormats(const std::string &t
  * \param converter function to register
  * \return true
  */
-SOAPY_SDR_API bool registerConverter(const std::string &sourceFormat, const std::string &targetFormat, ConvertFunction);
+SOAPY_SDR_API bool registerConverter(const std::string &sourceFormat, const std::string &targetFormat, ConvertFunction, FormatConverterPriority &);
 
+/*!
+ * Get a list of available converter priorities for a given source and target format.
+ * \throws invalid_argument when the conversion does not exist
+ * \param sourceFormat the source format markup string
+ * \param targetFormat the target format markup string
+ * \return a vector of priorities
+ */
+SOAPY_SDR_API std::vector<FormatConverterPriority> getConverterPriorities(const std::string &sourceFormat, const std::string &targetFormat);
+  
 /*!
  * Get a converter between a source and target format.
  * \throws invalid_argument when the conversion does not exist
  * \param sourceFormat the source format markup string
  * \param targetFormat the target format markup string
+ * \param priority converter priority or highest if not specified
  * \return a conversion function pointer
  */
 SOAPY_SDR_API ConvertFunction getConverter(const std::string &sourceFormat, const std::string &targetFormat);
+
+SOAPY_SDR_API ConvertFunction getConverter(const std::string &sourceFormat, const std::string &targetFormat, FormatConverterPriority &priority);
 
 }
