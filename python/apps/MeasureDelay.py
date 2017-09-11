@@ -101,6 +101,12 @@ def measure_delay(
         if sr.ret > 0: rxBuffs = np.concatenate((rxBuffs, rxBuff[:sr.ret]))
         else: break
 
+    #cleanup streams
+    print("Cleanup streams")
+    sdr.deactivateStream(txStream)
+    sdr.closeStream(rxStream)
+    sdr.closeStream(txStream)
+
     #check resulting buffer
     if len(rxBuffs) != numRxSamps:
         raise Exception('receive fail - captured samples %d out of %d'%(len(rxBuffs), numRxSamps))
@@ -143,13 +149,6 @@ def measure_delay(
     rxPeakTime = rxTime0 + long((rxArgmaxIndex/rate)*1e9)
     timeDelta = rxPeakTime - txPeakTime
     print('>>> Time delta %f us'%(timeDelta/1e3))
-
-    #cleanup streams
-    print("Cleanup streams")
-    sdr.deactivateStream(rxStream)
-    sdr.deactivateStream(txStream)
-    sdr.closeStream(rxStream)
-    sdr.closeStream(txStream)
     print("Done!")
 
 def main():
