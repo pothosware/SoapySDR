@@ -17,5 +17,8 @@
 # target_compile_options(BufferSim PRIVATE -g)
 # target_link_libraries(BufferSim SoapySDR)
 
-add_executable(TestFormatConvert TestFormatConvert.cpp)
-target_link_libraries(TestFormatConvert SoapySDR)
+add_executable(TestFormatConvertFunctions TestFormatConvertFunctions.cpp)
+target_link_libraries(TestFormatConvertFunctions SoapySDR)
+
+add_executable(TestFormatConvertClass TestFormatConvertClass.cpp)
+target_link_libraries(TestFormatConvertClass SoapySDR)
