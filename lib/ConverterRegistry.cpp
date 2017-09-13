@@ -4,9 +4,9 @@
 #include <SoapySDR/ConverterRegistry.hpp>
 #include <iostream>
 
-SoapySDR::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
+SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
 
-SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, SoapySDR::FormatConverterPriority &priority, SoapySDR::FormatConverterFunction converterFunction)
+SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, FunctionPriority &priority, ConverterFunction converterFunction)
 {
   if (formatConverters[sourceFormat][targetFormat].count(priority) != 0)
     {
@@ -74,9 +74,9 @@ std::vector<std::string> SoapySDR::ConverterRegistry::listSourceFormats(const st
   return sources;
 }
 
-std::vector<SoapySDR::FormatConverterPriority> SoapySDR::ConverterRegistry::listPriorities(const std::string &sourceFormat, const std::string &targetFormat)
+std::vector<SoapySDR::ConverterRegistry::FunctionPriority> SoapySDR::ConverterRegistry::listPriorities(const std::string &sourceFormat, const std::string &targetFormat)
 {
-  std::vector<SoapySDR::FormatConverterPriority> priorities;
+  std::vector<FunctionPriority> priorities;
   
   if (formatConverters.count(sourceFormat) == 0)
     throw std::invalid_argument("unsupported source format: " + sourceFormat + "."); 
@@ -89,7 +89,7 @@ std::vector<SoapySDR::FormatConverterPriority> SoapySDR::ConverterRegistry::list
 
   for(const auto &it:formatConverters[sourceFormat][targetFormat])
     {
-      FormatConverterPriority priority = it.first;
+      FunctionPriority priority = it.first;
       priorities.push_back(priority);
     }
   
@@ -97,7 +97,7 @@ std::vector<SoapySDR::FormatConverterPriority> SoapySDR::ConverterRegistry::list
   
 }
 
-SoapySDR::FormatConverterFunction SoapySDR::ConverterRegistry::getConverterFunction(const std::string &sourceFormat, const std::string &targetFormat)
+SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getFunction(const std::string &sourceFormat, const std::string &targetFormat)
 {
   if (formatConverters.count(sourceFormat) == 0)
     throw std::invalid_argument("unsupported source format: " + sourceFormat + "."); 
@@ -108,7 +108,7 @@ SoapySDR::FormatConverterFunction SoapySDR::ConverterRegistry::getConverterFunct
   return formatConverters[sourceFormat][targetFormat].rbegin()->second;
 }
 
-SoapySDR::FormatConverterFunction SoapySDR::ConverterRegistry::getConverterFunction(const std::string &sourceFormat, const std::string &targetFormat, const SoapySDR::FormatConverterPriority &priority)
+SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getFunction(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority)
 {
   if (formatConverters.count(sourceFormat) == 0)
     throw std::invalid_argument("unsupported source format: " + sourceFormat + "."); 
