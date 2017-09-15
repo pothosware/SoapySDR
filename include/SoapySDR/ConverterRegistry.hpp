@@ -10,6 +10,7 @@
 ///
 
 #pragma once
+#include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <vector>
 #include <map>
@@ -54,10 +55,10 @@ namespace SoapySDR
 
     /*!
      * Class constructor for managing the Converter Registry.
-     * \throws invalid_argument if the converter already exists
+     * refuses to register converter and logs error if a source/target/priority entry already exists
      * \param sourceFormat the source format markup string
      * \param targetFormat the target format markup string
-     * \param priority the priority of the converter to register
+     * \param priority the FunctionPriority of the converter to register
      * \param converter function to register
      */
     ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, FunctionPriority &, ConverterFunction);
@@ -69,7 +70,14 @@ namespace SoapySDR
     ConverterRegistry(void);
     
     ~ConverterRegistry(void);
-    
+
+    /*!
+     * did the constructor for this instance register a function.
+     * \param none
+     * \return true if a function has been registered
+     */    
+    bool isRegistered(void);
+
     /*!
      * Remove the converter registered by this object otherwise do nothing.
      * \param none
@@ -82,7 +90,7 @@ namespace SoapySDR
      * There is a registered conversion function from the specified source
      * format to every target format returned in the result vector.
      * \param sourceFormat the source format markup string
-     * \return a list of target formats
+     * \return a vector of target formats or an empty vector if none found
      */
     std::vector<std::string> listTargetFormats(const std::string &sourceFormat);
     
@@ -91,13 +99,13 @@ namespace SoapySDR
      * There is a registered conversion function from every source format
      * returned in the result vector to the specified target format.
      * \param targetFormat the target format markup string
-     * \return a list of source formats
+     * \return a vector of source formats or an empty vector if none found
      */
     std::vector<std::string> listSourceFormats(const std::string &targetFormat);
     
     /*!
      * Get a list of available converter priorities for a given source and target format.
-     * \throws invalid_argument when the conversion does not exist
+     * \throws invalid_argument when the conversion does not exist and logs error
      * \param sourceFormat the source format markup string
      * \param targetFormat the target format markup string
      * \return a vector of priorities
@@ -106,7 +114,7 @@ namespace SoapySDR
     
     /*!
      * Get a converter between a source and target format.
-     * \throws invalid_argument when the conversion does not exist
+     * \throws invalid_argument when the conversion does not exist and logs error
      * \param sourceFormat the source format markup string
      * \param targetFormat the target format markup string
      * \return a conversion function pointer
