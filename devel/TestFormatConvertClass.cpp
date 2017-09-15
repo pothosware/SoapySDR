@@ -167,6 +167,8 @@ int main(void)
   try
     {
       converters.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCU16toCF32);
+      if (!converters.rbegin()->isRegistered())
+	converters.pop_back();
     }
   catch (const std::exception &ex){
     std::cout << " got exception '" << ex.what() << "' (thats good)" << std::endl;
@@ -204,7 +206,7 @@ int main(void)
     converterFunction(devBuffer, soapyBuffer, numElems, 0.1);
   }
   catch (const std::exception &ex){
-    std::cout << " got error '" << ex.what() << "' (thats good)" << std::endl;
+    std::cout << " got exception '" << ex.what() << "' (thats good)" << std::endl;
   }
 
   std::cout << "unregistering converters";
