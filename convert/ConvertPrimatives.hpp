@@ -1,14 +1,11 @@
+// ConvertPrimatives.hpp
 // Copyright (c) 2017-2017 Coburn Wightman"
+//
+// derived from SoapyRemote/client/ClientStreamData.cpp
+// Copyright (c) 2015-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
-//#include <SoapySDR/Config.hpp>
-//#include <SoapySDR/Types.hpp>
-//#include <SoapySDR/Types.h>
-//#include <vector>
-//#include <string>
-//#include <cstdlib>
-//#include <cstring>
 #include <stdint.h>
 
 // Simple Primatives
@@ -40,7 +37,7 @@ inline int16_t S16toS16(int16_t from){
 }
 
 
-//floats
+// floats
 inline int32_t F32toS32(float from){
   return int32_t(from);
 }

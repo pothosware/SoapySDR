@@ -33,9 +33,9 @@ namespace SoapySDR
      * FormatConverterPriority: allow selection of a converter function with a given source and target format
      */
     enum FunctionPriority{
-      GENERIC = 0,          // usual C for loops and shifts and multiplies
-      VECTORIZED = 3,       // using SIMD vectorized operations probably
-      CUSTOM = 5            // custom user re-implementation, max prio
+      GENERIC = 0,          // usual C for-loops, shifts, multiplies, etc
+      VECTORIZED = 3,       // vectorized operations such as SIMD
+      CUSTOM = 5            // custom user re-implementation, max priority
     };
 
     /*!
@@ -61,7 +61,7 @@ namespace SoapySDR
      * \param priority the FunctionPriority of the converter to register
      * \param converter function to register
      */
-    ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, FunctionPriority &, ConverterFunction);
+    ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &, ConverterFunction);
     
     /*!
      * Class constructor for using the Converter Registry.
