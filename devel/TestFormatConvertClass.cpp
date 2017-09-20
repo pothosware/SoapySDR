@@ -1,8 +1,10 @@
 // Copyright (c) 2017-2017 Coburn Wightman
 // SPDX-License-Identifier: BSL-1.0
 
-#include "convertPrimatives.hpp"
-//#include <SoapySDR/Convert.hpp>
+#include "../convert/ConvertPrimatives.hpp"
+#include <SoapySDR/Version.hpp>
+#include <SoapySDR/Modules.hpp>
+#include <SoapySDR/Registry.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
 #include <iostream>
 #include <cstdlib>
@@ -11,54 +13,8 @@
 bool fillBuffer(uint8_t*, int, std::string);
 bool dumpBuffer(uint8_t*, int, std::string);
 
-
-SoapySDR::ConverterRegistry::ConverterFunction cvtCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
-{
-  size_t elemDepth = 2;
-
-  std::cout << "converting CF32 to CF32" << std::endl;
-
-  if (scaler == 1.0)
-    {
-      size_t elemSize = 4;
-      std::memcpy(dstBuff, srcBuff, numElems*elemSize*elemDepth);
-      std::cout << " straight memcpy" << std::endl;
-    }
-  else
-    {
-      float sf = float(1.0/scaler);
-      float *dst = (float*)dstBuff;
-      float *src = (float*)srcBuff;
-      for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-	{
-	  // dst[i] = src[i] * sf;
-	  // dst[i+1] = src[i+1] * sf;
-	  CF32toCF32(&src[i], &dst[i], sf);
-	}
-      std::cout << " sample copy with scaler" << std::endl;
-    }
-  return 0;
-}
-
-SoapySDR::ConverterRegistry::ConverterFunction cvtCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
-{
-  size_t elemDepth = 2;
-
-  std::cout << "converting CS16 to CF32" << std::endl;
-
-  float sf = float(1.0/scaler);
-  float *dst = (float*)dstBuff;
-  int16_t *src = (int16_t*)srcBuff;
-  for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-    {
-      CS16toCF32(&src[i], &dst[i], sf);
-    }
-  std::cout << " sample copy with scaler" << std::endl;
-  
-  return 0;
-}
-
-SoapySDR::ConverterRegistry::ConverterFunction cvtCS16toCF32hs(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+SoapySDR::ConverterRegistry::ConverterFunction customCS16toCF32hs(const void *srcBuff, void *dstBuff, const size_t numElems,
+						     const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -72,30 +28,10 @@ SoapySDR::ConverterRegistry::ConverterFunction cvtCS16toCF32hs(const void *srcBu
       CS16toCF32(&src[i], &dst[i], sf);
     }
   std::cout << " sample copy with scaler" << std::endl;
-  
+
   return 0;
 }
 
-SoapySDR::ConverterRegistry::ConverterFunction cvtCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
-{
-  size_t elemDepth = 2;
-
-  std::cout << "converting CU16 to CF32" << std::endl;
-
-  float sf = float(1.0/scaler);
-  float *dst = (float*)dstBuff;
-  uint16_t *src = (uint16_t*)srcBuff;
-  for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
-    {
-      //dst[i] = src[i] - 0x7fff) * scaler;
-      CU16toCF32(src, dst, sf);
-    }
-  std::cout << " sample copy with scaler" << std::endl;
-  
-  return 0;
-}
-
-// ******************************
 void dumpTargets(std::string sourceFormat)
 {
   auto myConverter = new SoapySDR::ConverterRegistry();
@@ -131,6 +67,42 @@ void dumpSources(std::string targetFormat)
   
 }
 
+static int printInfo(void)
+{
+  std::cout << "API Version: v" << SoapySDR::getAPIVersion() << std::endl;
+  std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
+  std::cout << "Install root: " << SoapySDR::getRootPath() << std::endl;
+
+  std::vector<std::string> modules = SoapySDR::listModules();
+  for (size_t i = 0; i < modules.size(); i++)
+    {
+      std::cout << "Module found: " << modules[i] << std::endl;
+    }
+  if (modules.empty()) std::cout << "No modules found!" << std::endl;
+
+  std::cout << "Loading modules... " << std::flush;
+  SoapySDR::loadModules();
+
+  // std::cout << "Unloading modules... " << std::flush;
+  // for (size_t i = 0; i < modules.size(); i++)
+  //   {
+  //     SoapySDR::unloadModule(modules[i]);
+  //     std::cout << "Module " << modules[i] << " unloaded."  << std::endl;
+  //   }
+  
+  std::cout << "Available factories...";
+  const SoapySDR::FindFunctions factories = SoapySDR::Registry::listFindFunctions();
+  for (SoapySDR::FindFunctions::const_iterator it = factories.begin(); it != factories.end(); ++it)
+    {
+      std::cout << it->first << ", ";
+    }
+  if (factories.empty()) std::cout << "No factories found!" << std::endl;
+  else std::cout << std::endl;
+  
+  std::cout << std::endl;
+  return EXIT_SUCCESS;
+}
+
 int main(void)
 {
   const size_t numElems = 128;
@@ -138,46 +110,13 @@ int main(void)
   int32_t devBuffer[numElems * elemDepth];
   int32_t soapyBuffer[numElems * elemDepth];
 
-  std::vector<SoapySDR::ConverterRegistry> converters;
-
-  SoapySDR::ConverterRegistry::FunctionPriority priority;
-
-  priority = SoapySDR::ConverterRegistry::GENERIC;
-  std::cout << "registering priority " << std::to_string(priority) << " converters";
-  converters.emplace_back(SOAPY_SDR_CF32, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCF32toCF32);
-  converters.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCS16toCF32);
-  converters.emplace_back(SOAPY_SDR_CU16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCU16toCF32);
-  std::cout  << std::endl;
+  int stat = printInfo();
   
-  priority = SoapySDR::ConverterRegistry::VECTORIZED;
-  std::cout << "registering priority " << std::to_string(priority) << " converters";
-  converters.emplace_back(SOAPY_SDR_CF32, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCF32toCF32);
-  converters.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCS16toCF32);
-  converters.emplace_back(SOAPY_SDR_CU16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCU16toCF32);
-  std::cout  << std::endl;
-
-  priority = SoapySDR::ConverterRegistry::CUSTOM;
-  std::cout << "registering priority " << std::to_string(priority) << " converters";
-  converters.emplace_back(SOAPY_SDR_CF32, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCF32toCF32);
-  converters.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCS16toCF32);
-  converters.emplace_back(SOAPY_SDR_CU16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCU16toCF32);
-  std::cout  << std::endl;
-
-  std::cout << std::endl << "registering a duplicate converters..." << std::endl;
-  try
-    {
-      converters.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) cvtCU16toCF32);
-      if (!converters.rbegin()->isRegistered())
-	converters.pop_back();
-    }
-  catch (const std::exception &ex){
-    std::cout << " got exception '" << ex.what() << "' (thats good)" << std::endl;
-  }
-    
   auto myConverter = new SoapySDR::ConverterRegistry();
 
   std::string sourceFormat = SOAPY_SDR_CS16;
   std::string targetFormat = SOAPY_SDR_CF32;
+  SoapySDR::ConverterRegistry::FunctionPriority priority;
     
   dumpTargets(sourceFormat);
   dumpSources(targetFormat);
@@ -186,37 +125,52 @@ int main(void)
   fillBuffer((uint8_t*)devBuffer, numElems, sourceFormat);
   dumpBuffer((uint8_t*)devBuffer, numElems, sourceFormat);
 
-  std::cout << std::endl << "try a registered generic priority conversion..." << std::endl;
+  std::cout << std::endl << "try a registered GENERIC priority conversion..." << std::endl;
   priority = SoapySDR::ConverterRegistry::GENERIC;
-  SoapySDR::ConverterRegistry::ConverterFunction converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority); 
+  SoapySDR::ConverterRegistry::ConverterFunction converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority);
+  std::cout << "converting " << std::endl;
   converterFunction(devBuffer, soapyBuffer, numElems, 2);
 
   dumpBuffer((uint8_t*)soapyBuffer, numElems, targetFormat);
   
-  std::cout << std::endl << "try a registered unspecified priority conversion..." << std::endl;
-  priority = SoapySDR::ConverterRegistry::GENERIC;
+  std::cout << std::endl << "try a registered default priority conversion..." << std::endl;
   converterFunction = myConverter->getFunction(sourceFormat, targetFormat);
-  converterFunction(devBuffer, soapyBuffer, numElems, 2);
+  converterFunction(devBuffer, soapyBuffer, 8, 2);
 
-  dumpBuffer((uint8_t*)soapyBuffer, numElems, targetFormat);
+  dumpBuffer((uint8_t*)soapyBuffer, 8, targetFormat);
   
-  std::cout << std::endl << "try an unregistered conversion..." << std::endl;
+  sourceFormat = SOAPY_SDR_CS16;
+  targetFormat = SOAPY_SDR_CF32;
+  priority = SoapySDR::ConverterRegistry::CUSTOM;
+
+  std::cout << std::endl << "try an unregistered CUSTOM conversion..." << std::endl;
   try{
-    converterFunction = myConverter->getFunction(SOAPY_SDR_CU16, SOAPY_SDR_CS16, priority);
-    converterFunction(devBuffer, soapyBuffer, numElems, 0.1);
+    converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority);
+    std::cout << " no exception. (not good)" << std::endl;
   }
   catch (const std::exception &ex){
     std::cout << " got exception '" << ex.what() << "' (thats good)" << std::endl;
   }
 
-  std::cout << "unregistering converters";
-  while (!converters.empty())
-    {
-      converters.rbegin()->remove();
-      converters.pop_back();
-    }
-  std::cout  << std::endl;
+  auto myCustomConverter = new SoapySDR::ConverterRegistry(sourceFormat, targetFormat, priority, (SoapySDR::ConverterRegistry::ConverterFunction) customCS16toCF32hs);
+  
+  std::cout << std::endl << "try a registered CUSTOM conversion..." << std::endl;
+  converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority);
+  converterFunction(devBuffer, soapyBuffer, 8, 2);
+  dumpBuffer((uint8_t*)soapyBuffer, 8, targetFormat);
 
+  std::cout << std::endl << "removing CUSTOM conversion..." << std::endl;
+  myCustomConverter->remove();
+  delete(myCustomConverter);
+  std::cout << std::endl << "try a deleted CUSTOM conversion..." << std::endl;
+  try{
+    converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority);
+    std::cout << " no exception. (not good)" << std::endl;
+  }
+  catch (const std::exception &ex){
+    std::cout << " got exception '" << ex.what() << "'. (thats good)" << std::endl;
+  }
+  
   std::cout << "DONE!" << std::endl;
   return EXIT_SUCCESS;
 }
@@ -261,7 +215,7 @@ bool dumpBuffer(uint8_t* buffer, int numElems, std::string elemFormat){
     float* buff = (float*)buffer;
     for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
       {
-	if (i%16 == 0){
+	if (i%16 == 0 and i!=0){
 	  std::cout << std::endl << i << " > ";
 	} 
 	std::cout << ' ' << buff[i] << ":" << buff[i+1] << ", ";   
@@ -271,7 +225,7 @@ bool dumpBuffer(uint8_t* buffer, int numElems, std::string elemFormat){
     int32_t* buff = (int32_t*)buffer;
     for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
       {
-	if (i%16 == 0){
+	if (i%16 == 0 and i!=0){
 	  std::cout << std::endl << i << " > ";
 	} 
 	std::cout << ' ' << buff[i] << ":" << buff[i+1] << ", ";   
@@ -281,7 +235,7 @@ bool dumpBuffer(uint8_t* buffer, int numElems, std::string elemFormat){
     int16_t* buff = (int16_t*)buffer;
     for (size_t i = 0; i < numElems*elemDepth; i+=elemDepth)
       {
-	if (i%16 == 0){
+	if (i%16 == 0 and i!=0){
 	  std::cout << std::endl << i << " > ";
 	} 
 	std::cout << ' ' << buff[i] << ":" << buff[i+1] << ", ";   
@@ -293,6 +247,5 @@ bool dumpBuffer(uint8_t* buffer, int numElems, std::string elemFormat){
   }
 
   std::cout << std::endl;
-  
   return true;
 }
