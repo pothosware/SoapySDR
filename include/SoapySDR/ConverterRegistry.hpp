@@ -38,10 +38,16 @@ namespace SoapySDR
       CUSTOM = 5            // custom user re-implementation, max priority
     };
 
+    struct ConverterFunctionEntry{
+      ConverterFunction function;
+      size_t usageCount;
+    };
+    
     /*!
      * TargetFormatConverterPriority: a map of possible conversion functions for a given Priority.
      */
-    typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
+    //typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
+    typedef std::map<FunctionPriority, ConverterFunctionEntry> TargetFormatConverterPriority;
 
     /*!
      * TargetFormatConverters: a map of possible conversion functions for a given Target/Priority Format.
@@ -64,27 +70,23 @@ namespace SoapySDR
     ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &, ConverterFunction);
     
     /*!
-     * Class constructor for using the Converter Registry.
+     * Object constructor for using the Converter Registry.
      * \param none no parameters
      */
     ConverterRegistry(void);
     
+    /*!
+     * copy constructor.
+     * \param none no parameters
+     */
+    ConverterRegistry(const ConverterRegistry &);
+    
+    /*!
+     * Object destructor.
+     * \param none no parameters
+     */
     ~ConverterRegistry(void);
 
-    /*!
-     * did the constructor for this instance register a function.
-     * \param none
-     * \return true if a function has been registered
-     */    
-    bool isRegistered(void);
-
-    /*!
-     * Remove the converter registered by this object otherwise do nothing.
-     * \param none
-     * \return nothing
-     */
-    void remove(void);
-    
     /*!
      * Get a list of formats to which we can convert the source format into.
      * There is a registered conversion function from the specified source
@@ -130,7 +132,6 @@ namespace SoapySDR
     FunctionPriority _priority;
     
     bool _isRegistered;
-    
   };
   
 }

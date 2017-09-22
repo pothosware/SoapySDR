@@ -88,7 +88,6 @@ SoapySDR::DefaultConverters::~DefaultConverters()
   std::cout << "unregistering " << SoapySDR::DefaultConverters::registry.size() << " default converters" << std::endl;
   while (!SoapySDR::DefaultConverters::registry.empty())
     {
-      SoapySDR::DefaultConverters::registry.rbegin()->remove();
       SoapySDR::DefaultConverters::registry.pop_back();
     }
 }

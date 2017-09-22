@@ -152,7 +152,11 @@ int main(void)
     std::cout << " got exception '" << ex.what() << "' (thats good)" << std::endl;
   }
 
+  std::cout << std::endl << "register a CUSTOM conversion..." << std::endl;  
   auto myCustomConverter = new SoapySDR::ConverterRegistry(sourceFormat, targetFormat, priority, (SoapySDR::ConverterRegistry::ConverterFunction) customCS16toCF32hs);
+
+  dumpTargets(sourceFormat);
+  dumpSources(targetFormat);
   
   std::cout << std::endl << "try a registered CUSTOM conversion..." << std::endl;
   converterFunction = myConverter->getFunction(sourceFormat, targetFormat, priority);
@@ -160,7 +164,7 @@ int main(void)
   dumpBuffer((uint8_t*)soapyBuffer, 8, targetFormat);
 
   std::cout << std::endl << "removing CUSTOM conversion..." << std::endl;
-  myCustomConverter->remove();
+  //  myCustomConverter->remove();
   delete(myCustomConverter);
   std::cout << std::endl << "try a deleted CUSTOM conversion..." << std::endl;
   try{
@@ -170,7 +174,15 @@ int main(void)
   catch (const std::exception &ex){
     std::cout << " got exception '" << ex.what() << "'. (thats good)" << std::endl;
   }
-  
+
+  std::cout << std::endl << "Unloading modules... " << std::endl << std::flush;
+  std::vector<std::string> modules = SoapySDR::listModules();
+  for (size_t i = 0; i < modules.size(); i++)
+    {
+      SoapySDR::unloadModule(modules[i]);
+      std::cout << "Module " << modules[i] << " unloaded."  << std::endl;
+    }
+    
   std::cout << "DONE!" << std::endl;
   return EXIT_SUCCESS;
 }
