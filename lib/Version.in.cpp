@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -7,9 +7,10 @@
 std::string SoapySDR::getAPIVersion(void)
 {
     std::stringstream ss;
-    ss << int((SOAPY_SDR_API_VERSION >> 24) & 0xf) << "."
-       << int((SOAPY_SDR_API_VERSION >> 16) & 0xf) << "."
-       << int((SOAPY_SDR_API_VERSION >> 0) & 0xff);
+    ss << std::hex << int((SOAPY_SDR_API_VERSION >> 24) & 0xff) << "."
+       << std::hex << int((SOAPY_SDR_API_VERSION >> 16) & 0xff) << "."
+       << std::hex << int((SOAPY_SDR_API_VERSION >> 0) & 0xffff)
+       << std::dec;
     return ss.str();
 }
 
