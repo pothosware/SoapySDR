@@ -12,15 +12,13 @@
 //#include <SoapySDR/Convert.hpp>
 #include "ConvertPrimatives.hpp"
 #include <SoapySDR/ConverterRegistry.hpp>
-#include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Formats.hpp>
-#include <iostream>
-#include <cstdlib>
 #include <cstring> //memcpy
 #include <vector>
-#include <map>
 #include <string>
-#include <stdexcept>
+
+#include <iostream>
+#include <cstdlib>
 
 namespace SoapySDR
 {
@@ -31,13 +29,12 @@ namespace SoapySDR
     ~DefaultConverters(void);
 
   private:
+    static SoapySDR::ConverterRegistry::ConverterFunctionProto genericCF32toCF32;
+    //    static void genericCF32toCF32(const void *, void *, const size_t, const double);
+    static void genericCS16toCF32(const void *, void *, const size_t, const double);
+    static void genericCU16toCF32(const void *, void *, const size_t, const double);
 
-    static SoapySDR::ConverterRegistry::ConverterFunction genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler);
-    static SoapySDR::ConverterRegistry::ConverterFunction genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler);
-    static SoapySDR::ConverterRegistry::ConverterFunction genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler);
-
-    static std::vector<SoapySDR::ConverterRegistry> registry;
-    
+    static std::vector<SoapySDR::ConverterRegistry> registry;    
   };
-  
+
 }

@@ -13,8 +13,9 @@
 bool fillBuffer(uint8_t*, int, std::string);
 bool dumpBuffer(uint8_t*, int, std::string);
 
-SoapySDR::ConverterRegistry::ConverterFunction customCS16toCF32hs(const void *srcBuff, void *dstBuff, const size_t numElems,
-						     const double scaler)
+//SoapySDR::ConverterRegistry::ConverterFunctionProto customCS16toCF32hs;
+
+void customCS16toCF32hs(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -29,7 +30,7 @@ SoapySDR::ConverterRegistry::ConverterFunction customCS16toCF32hs(const void *sr
     }
   std::cout << " sample copy with scaler" << std::endl;
 
-  return 0;
+  // return 0;
 }
 
 void dumpTargets(std::string sourceFormat)
@@ -153,7 +154,7 @@ int main(void)
   }
 
   std::cout << std::endl << "register a CUSTOM conversion..." << std::endl;  
-  auto myCustomConverter = new SoapySDR::ConverterRegistry(sourceFormat, targetFormat, priority, (SoapySDR::ConverterRegistry::ConverterFunction) customCS16toCF32hs);
+  auto myCustomConverter = new SoapySDR::ConverterRegistry(sourceFormat, targetFormat, priority, customCS16toCF32hs);
 
   dumpTargets(sourceFormat);
   dumpSources(targetFormat);
@@ -163,8 +164,7 @@ int main(void)
   converterFunction(devBuffer, soapyBuffer, 8, 2);
   dumpBuffer((uint8_t*)soapyBuffer, 8, targetFormat);
 
-  std::cout << std::endl << "removing CUSTOM conversion..." << std::endl;
-  //  myCustomConverter->remove();
+  std::cout << std::endl << "deleting CUSTOM conversion..." << std::endl;
   delete(myCustomConverter);
   std::cout << std::endl << "try a deleted CUSTOM conversion..." << std::endl;
   try{

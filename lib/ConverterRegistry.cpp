@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/ConverterRegistry.hpp>
-#include <iostream>
+//#include <iostream>
 
 SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
 

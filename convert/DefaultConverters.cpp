@@ -3,8 +3,7 @@
 
 #include "DefaultConverters.hpp"
 
-
-SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+void SoapySDR::DefaultConverters::genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -29,10 +28,9 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::gene
 	}
       std::cout << " sample copy with scaler" << std::endl;
     }
-  return 0;
 }
 
-SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+void SoapySDR::DefaultConverters::genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -47,10 +45,9 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::gene
     }
   std::cout << " sample copy with scaler" << std::endl;
   
-  return 0;
 }
 
-SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+void SoapySDR::DefaultConverters::genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -64,9 +61,7 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::DefaultConverters::gene
       //dst[i] = src[i] - 0x7fff) * scaler;
       CU16toCF32(src, dst, sf);
     }
-  std::cout << " sample copy with scaler" << std::endl;
-  
-  return 0;
+  std::cout << " sample copy with scaler" << std::endl;  
 }
 
 std::vector<SoapySDR::ConverterRegistry> SoapySDR::DefaultConverters::registry;
@@ -78,9 +73,9 @@ SoapySDR::DefaultConverters::DefaultConverters(void)
   std::cout << "registering default converters"  << std::endl;
   
   priority = SoapySDR::ConverterRegistry::GENERIC;
-  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CF32, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) SoapySDR::DefaultConverters::genericCF32toCF32);
-  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) SoapySDR::DefaultConverters::genericCS16toCF32);
-  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CU16, SOAPY_SDR_CF32, priority, (SoapySDR::ConverterRegistry::ConverterFunction) SoapySDR::DefaultConverters::genericCU16toCF32);
+  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CF32, SOAPY_SDR_CF32, priority, SoapySDR::DefaultConverters::genericCF32toCF32);
+  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CS16, SOAPY_SDR_CF32, priority, SoapySDR::DefaultConverters::genericCS16toCF32);
+  SoapySDR::DefaultConverters::registry.emplace_back(SOAPY_SDR_CU16, SOAPY_SDR_CF32, priority, SoapySDR::DefaultConverters::genericCU16toCF32);
 }
 
 SoapySDR::DefaultConverters::~DefaultConverters()
