@@ -17,16 +17,10 @@ matrix:
   include:
     - os: linux
       compiler: gcc
-      env:
-        global:
-          - PYTHON_EXECUTABLE=/usr/bin/python
-          - PYTHON3_EXECUTABLE=/usr/bin/python3
+      env: PYTHON_EXECUTABLE=/usr/bin/python PYTHON3_EXECUTABLE=/usr/bin/python3
     - os: osx
       compiler: clang
-      env:
-        global:
-          - PYTHON_EXECUTABLE=/usr/local/bin/python
-          - PYTHON3_EXECUTABLE=/usr/local/bin/python3
+      env: PYTHON_EXECUTABLE=/usr/local/bin/python PYTHON3_EXECUTABLE=/usr/local/bin/python3
 
 env:
   global:
