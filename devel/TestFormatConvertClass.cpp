@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2017 Coburn Wightman
 // SPDX-License-Identifier: BSL-1.0
 
-#include "../convert/ConvertPrimatives.hpp"
 #include <SoapySDR/Version.hpp>
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
+#include <SoapySDR/ConverterPrimatives.hpp>
 #include <iostream>
 #include <cstdlib>
 #include <cstring> //memcpy
@@ -111,7 +111,7 @@ int main(void)
   int32_t devBuffer[numElems * elemDepth];
   int32_t soapyBuffer[numElems * elemDepth];
 
-  int stat = printInfo();
+  //  int stat = printInfo();
   
   auto myConverter = new SoapySDR::ConverterRegistry();
 

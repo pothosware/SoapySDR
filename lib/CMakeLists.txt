@@ -21,8 +21,9 @@ list(APPEND SOAPY_SDR_SOURCES
     Logger.cpp
     Errors.cpp
     Formats.cpp
-    Convert.cpp
+#    Convert.cpp
     ConverterRegistry.cpp
+    DefaultConverters.cpp
 )
 
 #dl libs used by dlopen in unix

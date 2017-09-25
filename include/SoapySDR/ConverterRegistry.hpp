@@ -23,19 +23,11 @@ namespace SoapySDR
   {
   public:
     /*!
-     * A typedef to aid declaring a prototype of a conversion function.
-     * A conversion function converts an input buffer into and output buffer.
-     * The parameters are (input pointer, output pointer, number of elements, optional scalar)
-     */
-    typedef void (ConverterFunctionProto)(const void *, void *, const size_t, const double);
-  
-    /*!
      * A typedef for a conversion function pointer.
-     * A conversion function converts an input buffer into and output buffer.
+     * A conversion function converts an input buffer into an output buffer.
      * The parameters are (input pointer, output pointer, number of elements, optional scalar)
      */
     typedef void (*ConverterFunction)(const void *, void *, const size_t, const double);
-    //typedef void (*ConverterFunction)(ConverterFunctionProto);
 
     /*!
      * FormatConverterPriority: allow selection of a converter function with a given source and target format
