@@ -996,19 +996,19 @@ public:
     /*!
      * Get meta-information about a sensor.
      * Example: displayable name, type, range.
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return meta-information about a sensor
      */
-    virtual ArgInfo getSensorInfo(const std::string &name) const;
+    virtual ArgInfo getSensorInfo(const std::string &key) const;
 
     /*!
      * Readback a global sensor given the name.
      * The value returned is a string which can represent
      * a boolean ("true"/"false"), an integer, or float.
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return the current value of the sensor
      */
-    virtual std::string readSensor(const std::string &name) const;
+    virtual std::string readSensor(const std::string &key) const;
 
     /*!
      * List the available channel readback sensors.
@@ -1024,10 +1024,10 @@ public:
      * Example: displayable name, type, range.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return meta-information about a sensor
      */
-    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &name) const;
+    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &key) const;
 
     /*!
      * Readback a channel sensor given the name.
@@ -1035,10 +1035,10 @@ public:
      * a boolean ("true"/"false"), an integer, or float.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return the current value of the sensor
      */
-    virtual std::string readSensor(const int direction, const size_t channel, const std::string &name) const;
+    virtual std::string readSensor(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * Register API

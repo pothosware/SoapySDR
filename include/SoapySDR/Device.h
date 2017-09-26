@@ -1138,20 +1138,20 @@ SOAPY_SDR_API char **SoapySDRDevice_listSensors(const SoapySDRDevice *device, si
  * Get meta-information about a sensor.
  * Example: displayable name, type, range.
  * \param device a pointer to a device instance
- * \param name the name of an available sensor
+ * \param key the ID name of an available sensor
  * \return meta-information about a sensor
  */
-SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getSensorInfo(const SoapySDRDevice *device, const char *name);
+SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getSensorInfo(const SoapySDRDevice *device, const char *key);
 
 /*!
  * Readback a global sensor given the name.
  * The value returned is a string which can represent
  * a boolean ("true"/"false"), an integer, or float.
  * \param device a pointer to a device instance
- * \param name the name of an available sensor
+ * \param key the ID name of an available sensor
  * \return the current value of the sensor
  */
-SOAPY_SDR_API char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *name);
+SOAPY_SDR_API char *SoapySDRDevice_readSensor(const SoapySDRDevice *device, const char *key);
 
 /*!
  * List the available channel readback sensors.
@@ -1170,10 +1170,10 @@ SOAPY_SDR_API char **SoapySDRDevice_listChannelSensors(const SoapySDRDevice *dev
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \param name the name of an available sensor
+ * \param key the ID name of an available sensor
  * \return meta-information about a sensor
  */
-SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
+SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key);
 
 /*!
  * Readback a channel sensor given the name.
@@ -1182,10 +1182,10 @@ SOAPY_SDR_API SoapySDRArgInfo SoapySDRDevice_getChannelSensorInfo(const SoapySDR
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \param name the name of an available sensor
+ * \param key the ID name of an available sensor
  * \return the current value of the sensor
  */
-SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
+SOAPY_SDR_API char *SoapySDRDevice_readChannelSensor(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key);
 
 /*******************************************************************
  * Register API
