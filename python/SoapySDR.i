@@ -160,6 +160,7 @@ class Device(Device):
 
 def extractBuffPointer(buff):
     if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
+    if hasattr(buff, 'buffer_info'): return buff.buffer_info()[0]
     if hasattr(buff, '__long__'): return long(buff)
     if hasattr(buff, '__int__'): return int(buff)
     raise Exception("Unrecognized data format: " + str(type(buff)))
