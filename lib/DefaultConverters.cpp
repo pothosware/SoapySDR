@@ -10,7 +10,7 @@
 #include <iostream>
 #include <cstdlib>
 
-void genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+static void genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -37,7 +37,7 @@ void genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems
     }
 }
 
-void genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+static void genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 
@@ -54,7 +54,7 @@ void genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems
   
 }
 
-void genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+static void genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   size_t elemDepth = 2;
 

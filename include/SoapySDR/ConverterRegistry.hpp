@@ -38,16 +38,11 @@ namespace SoapySDR
       CUSTOM = 5            // custom user re-implementation, max priority
     };
 
-    struct ConverterFunctionEntry{
-      ConverterFunction function;
-      size_t usageCount;
-    };
-    
     /*!
      * TargetFormatConverterPriority: a map of possible conversion functions for a given Priority.
      */
     //typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
-    typedef std::map<FunctionPriority, ConverterFunctionEntry> TargetFormatConverterPriority;
+    typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
 
     /*!
      * TargetFormatConverters: a map of possible conversion functions for a given Target/Priority Format.
@@ -70,18 +65,6 @@ namespace SoapySDR
     ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &, ConverterFunction);
     
     /*!
-     * Object constructor for using the Converter Registry.
-     * \param none no parameters
-     */
-    ConverterRegistry(void);
-    
-    /*!
-     * copy constructor.
-     * \param none no parameters
-     */
-    ConverterRegistry(const ConverterRegistry &);
-    
-    /*!
      * Object destructor.
      * \param none no parameters
      */
@@ -94,7 +77,7 @@ namespace SoapySDR
      * \param sourceFormat the source format markup string
      * \return a vector of target formats or an empty vector if none found
      */
-    std::vector<std::string> listTargetFormats(const std::string &sourceFormat);
+    static std::vector<std::string> listTargetFormats(const std::string &sourceFormat);
     
     /*!
      * Get a list of formats to which we can convert the target format from.
@@ -103,16 +86,15 @@ namespace SoapySDR
      * \param targetFormat the target format markup string
      * \return a vector of source formats or an empty vector if none found
      */
-    std::vector<std::string> listSourceFormats(const std::string &targetFormat);
+    static std::vector<std::string> listSourceFormats(const std::string &targetFormat);
     
     /*!
      * Get a list of available converter priorities for a given source and target format.
-     * \throws invalid_argument when the conversion does not exist and logs error
      * \param sourceFormat the source format markup string
      * \param targetFormat the target format markup string
-     * \return a vector of priorities
+     * \return a vector of priorities or an empty vector if none found
      */
-    std::vector<FunctionPriority> listPriorities(const std::string &sourceFormat, const std::string &targetFormat);
+    static std::vector<FunctionPriority> listPriorities(const std::string &sourceFormat, const std::string &targetFormat);
     
     /*!
      * Get a converter between a source and target format.
@@ -121,17 +103,17 @@ namespace SoapySDR
      * \param targetFormat the target format markup string
      * \return a conversion function pointer
      */
-    ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat);
-    ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority);
+    static ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat);
+    static ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority);
     
   private:
     static FormatConverters formatConverters;
     
+    bool _isRegistered;
     std::string _sourceFormat;
     std::string _targetFormat;
     FunctionPriority _priority;
     
-    bool _isRegistered;
   };
   
 }

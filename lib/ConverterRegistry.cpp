@@ -2,23 +2,26 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/ConverterRegistry.hpp>
-//#include <iostream>
 
 SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
 
 SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority, ConverterFunction converterFunction)
 {
-  if (formatConverters[sourceFormat][targetFormat].count(priority) != 0)
+  _isRegistered = false;
+  
+  if (formatConverters.count(sourceFormat) == 0)
+    ;
+  else if (formatConverters[sourceFormat].count(targetFormat) == 0)
+    ;
+  else if (formatConverters[sourceFormat][targetFormat].count(priority) != 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "converter already registered: " + sourceFormat + " to " + targetFormat + " priority " + std::to_string(priority));
+      SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::ConverterRegistry(%s, %s, %s) duplicate registration", sourceFormat.c_str(), targetFormat.c_str(), std::to_string(priority).c_str());
       return;
     }
   
-  formatConverters[sourceFormat][targetFormat][priority].usageCount = 1;
-  formatConverters[sourceFormat][targetFormat][priority].function = converterFunction;
-  //SoapySDR::log(SOAPY_SDR_NOTICE, "registered converter: " + sourceFormat + " to " + targetFormat + " priority " + std::to_string(priority));
-  _isRegistered = true;
+  formatConverters[sourceFormat][targetFormat][priority] = converterFunction;
 
+  _isRegistered = true;
   _sourceFormat = sourceFormat;
   _targetFormat = targetFormat;
   _priority = priority;
@@ -26,40 +29,11 @@ SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, 
   return;
 }
 
-SoapySDR::ConverterRegistry::ConverterRegistry(void)
-{
-  _isRegistered = false;
-  return;
-}
-
-SoapySDR::ConverterRegistry::ConverterRegistry(const SoapySDR::ConverterRegistry &old)
-{
-  _sourceFormat = old._sourceFormat;
-  _targetFormat = old._targetFormat;
-  _priority = old._priority;
-  _isRegistered = old._isRegistered;
-
-  if (_isRegistered)
-    ++formatConverters[_sourceFormat][_targetFormat][_priority].usageCount;
-  
-  //SoapySDR::log(SOAPY_SDR_NOTICE, "copied converter: " + _sourceFormat + " to " + _targetFormat + " priority " + std::to_string(_priority));
-  return;
-}
-
-
 SoapySDR::ConverterRegistry::~ConverterRegistry(void)
 {
   if (_isRegistered)
-    {
-      --formatConverters[_sourceFormat][_targetFormat][_priority].usageCount;
-      //std::cout << "destructor usageCount = " << std::to_string(formatConverters[_sourceFormat][_targetFormat][_priority].usageCount) << std::endl; 
-      if(formatConverters[_sourceFormat][_targetFormat][_priority].usageCount == 0)
-	{
-	  formatConverters[_sourceFormat][_targetFormat].erase(_priority);
-	  //SoapySDR::log(SOAPY_SDR_NOTICE, "deleted converter: " + _sourceFormat + " to " + _targetFormat + " priority " + std::to_string(_priority));
-	}
-    }
-  
+    formatConverters[_sourceFormat][_targetFormat].erase(_priority);
+
   return;
 }
 
@@ -98,21 +72,19 @@ std::vector<SoapySDR::ConverterRegistry::FunctionPriority> SoapySDR::ConverterRe
   std::vector<FunctionPriority> priorities;
   
   if (formatConverters.count(sourceFormat) == 0)
-    SoapySDR::log(SOAPY_SDR_WARNING, "unsupported converter source format: " + sourceFormat + " to " + targetFormat); 
-  
+    ;
   else if (formatConverters[sourceFormat].count(targetFormat) == 0)
-    SoapySDR::log(SOAPY_SDR_WARNING, "unsupported converter target format: " + sourceFormat + " to " + targetFormat); 
-
+    ;
   else if (formatConverters[sourceFormat][targetFormat].size() == 0)
-    SoapySDR::log(SOAPY_SDR_ERROR, "no registered converter functions for: " + sourceFormat + " to " + targetFormat); 
-
-  else{
-    for(const auto &it:formatConverters[sourceFormat][targetFormat])
-      {
-	FunctionPriority priority = it.first;
-	priorities.push_back(priority);
-      }
-  }
+    ;
+  else
+    {
+      for(const auto &it:formatConverters[sourceFormat][targetFormat])
+	{
+	  FunctionPriority priority = it.first;
+	  priorities.push_back(priority);
+	}
+    }
   
   return priorities;
   
@@ -122,38 +94,38 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getF
 {
   if (formatConverters.count(sourceFormat) == 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "unsupported converter source format: " + sourceFormat); 
-      throw std::invalid_argument("unsupported converter source format: " + sourceFormat); 
+      throw std::invalid_argument("no registered converters for source format: " + sourceFormat); 
     }
   
   if (formatConverters[sourceFormat].count(targetFormat) == 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "unsupported converter target format: " + targetFormat); 
-      throw std::invalid_argument("unsupported converter target format: " + targetFormat);
+      throw std::invalid_argument("no registered converters for target format: " + targetFormat);
     }
 
-  return formatConverters[sourceFormat][targetFormat].rbegin()->second.function;
+  if (formatConverters[sourceFormat][targetFormat].size() == 0)
+    {
+      throw std::invalid_argument("no registered converters of any priority: " + targetFormat);
+    }
+
+  return formatConverters[sourceFormat][targetFormat].rbegin()->second;
 }
 
 SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getFunction(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority)
 {
   if (formatConverters.count(sourceFormat) == 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "unsupported converter source format: " + sourceFormat);
-      throw std::invalid_argument("unsupported converter source format: " + sourceFormat);
+      throw std::invalid_argument("no registered converters for source format: " + sourceFormat);
     }
   
   if (formatConverters[sourceFormat].count(targetFormat) == 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "unsupported converter target format: " + targetFormat); 
-      throw std::invalid_argument("unsupported converter target format: " + targetFormat); 
+      throw std::invalid_argument("no registered converters for target format: " + targetFormat); 
     }
   
   if (formatConverters[sourceFormat][targetFormat].count(priority) == 0)
     {
-      SoapySDR::log(SOAPY_SDR_ERROR, "unsupported converter target priority: " + std::to_string(priority)); 
-      throw std::invalid_argument("unsupported converter target priority: " + std::to_string(priority)); 
+      throw std::invalid_argument("no registered converters for target priority: " + std::to_string(priority)); 
     }
   
-  return formatConverters[sourceFormat][targetFormat][priority].function;
+  return formatConverters[sourceFormat][targetFormat][priority];
 }
