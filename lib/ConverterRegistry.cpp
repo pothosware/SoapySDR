@@ -7,8 +7,6 @@ SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::forma
 
 SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority, ConverterFunction converterFunction)
 {
-  _isRegistered = false;
-  
   if (formatConverters.count(sourceFormat) == 0)
     ;
   else if (formatConverters[sourceFormat].count(targetFormat) == 0)
@@ -20,19 +18,6 @@ SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, 
     }
   
   formatConverters[sourceFormat][targetFormat][priority] = converterFunction;
-
-  _isRegistered = true;
-  _sourceFormat = sourceFormat;
-  _targetFormat = targetFormat;
-  _priority = priority;
-
-  return;
-}
-
-SoapySDR::ConverterRegistry::~ConverterRegistry(void)
-{
-  if (_isRegistered)
-    formatConverters[_sourceFormat][_targetFormat].erase(_priority);
 
   return;
 }

@@ -65,12 +65,6 @@ namespace SoapySDR
     ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &, ConverterFunction);
     
     /*!
-     * Object destructor.
-     * \param none no parameters
-     */
-    ~ConverterRegistry(void);
-
-    /*!
      * Get a list of formats to which we can convert the source format into.
      * There is a registered conversion function from the specified source
      * format to every target format returned in the result vector.
@@ -108,11 +102,6 @@ namespace SoapySDR
     
   private:
     static FormatConverters formatConverters;
-    
-    bool _isRegistered;
-    std::string _sourceFormat;
-    std::string _targetFormat;
-    FunctionPriority _priority;
     
   };
   
