@@ -9,16 +9,12 @@
 #include <SoapySDR/Formats.hpp>
 #include <cstring> //memcpy
 
-#include <iostream>
-
 // Copy Converters
 
 // CF32 <> CF32
 static void genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CF32 to CF32" << std::endl;
 
   if (scaler == 1.0)
     {
@@ -43,8 +39,6 @@ static void genericCS32toCS32(const void *srcBuff, void *dstBuff, const size_t n
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CS32 to CS32" << std::endl;
-
   if (scaler == 1.0)
     {
       const size_t elemSize = sizeof(int32_t);
@@ -68,8 +62,6 @@ static void genericCS16toCS16(const void *srcBuff, void *dstBuff, const size_t n
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CS16 to CS16" << std::endl;
-
   if (scaler == 1.0)
     {
       const size_t elemSize = sizeof(int16_t);
@@ -92,8 +84,6 @@ static SoapySDR::ConverterRegistry registerGenericCS16toCS16(SOAPY_SDR_CS16, SOA
 static void genericCS8toCS8(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CS8 to CS8" << std::endl;
 
   if (scaler == 1.0)
     {
@@ -121,8 +111,6 @@ static void genericCF32toCS16(const void *srcBuff, void *dstBuff, const size_t n
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CF32 to CS16" << std::endl;
-
   auto *src = (float*)srcBuff;
   auto *dst = (int16_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -134,8 +122,6 @@ static void genericCF32toCS16(const void *srcBuff, void *dstBuff, const size_t n
 static void genericCS16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CS16 to CF32" << std::endl;
 
   auto *src = (int16_t*)srcBuff;
   auto *dst = (float*)dstBuff;
@@ -154,8 +140,6 @@ static void genericCF32toCU16(const void *srcBuff, void *dstBuff, const size_t n
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CF32 to CU16" << std::endl;
-
   auto *src = (float*)srcBuff;
   auto *dst = (uint16_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -167,8 +151,6 @@ static void genericCF32toCU16(const void *srcBuff, void *dstBuff, const size_t n
 static void genericCU16toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CU16 to CF32" << std::endl;
 
   auto *src = (uint16_t*)srcBuff;
   auto *dst = (float*)dstBuff;
@@ -187,8 +169,6 @@ static void genericCF32toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CF32 to CS8" << std::endl;
-
   auto *src = (float*)srcBuff;
   auto *dst = (int8_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -200,8 +180,6 @@ static void genericCF32toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 static void genericCS8toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CS8 to CF32" << std::endl;
 
   auto *src = (int8_t*)srcBuff;
   auto *dst = (float*)dstBuff;
@@ -220,8 +198,6 @@ static void genericCF32toCU8(const void *srcBuff, void *dstBuff, const size_t nu
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CF32 to CU8" << std::endl;
-
   auto *src = (float*)srcBuff;
   auto *dst = (uint8_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -233,8 +209,6 @@ static void genericCF32toCU8(const void *srcBuff, void *dstBuff, const size_t nu
 static void genericCU8toCF32(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CU8 to CF32" << std::endl;
 
   auto *src = (uint8_t*)srcBuff;
   auto *dst = (float*)dstBuff;
@@ -252,8 +226,6 @@ static void genericCS16toCU16(const void *srcBuff, void *dstBuff, const size_t n
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CS16 to CU16" << std::endl;
-
   auto *src = (int16_t*)srcBuff;
   auto *dst = (uint16_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -265,8 +237,6 @@ static void genericCS16toCU16(const void *srcBuff, void *dstBuff, const size_t n
 static void genericCU16toCS16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CU16 to CS16" << std::endl;
 
   auto *src = (uint16_t*)srcBuff;
   auto *dst = (int16_t*)dstBuff;
@@ -285,8 +255,6 @@ static void genericCS16toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CS16 to CS8" << std::endl;
-
   auto *src = (int16_t*)srcBuff;
   auto *dst = (int8_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -298,8 +266,6 @@ static void genericCS16toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 static void genericCS8toCS16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CS8 to CS16" << std::endl;
 
   auto *src = (int8_t*)srcBuff;
   auto *dst = (int16_t*)dstBuff;
@@ -317,8 +283,6 @@ static void genericCS16toCU8(const void *srcBuff, void *dstBuff, const size_t nu
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CS16 to CU8" << std::endl;
-
   auto *src = (int16_t*)srcBuff;
   auto *dst = (uint8_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -330,8 +294,6 @@ static void genericCS16toCU8(const void *srcBuff, void *dstBuff, const size_t nu
 static void genericCU8toCS16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CU8 to CS16" << std::endl;
 
   auto *src = (uint8_t*)srcBuff;
   auto *dst = (int16_t*)dstBuff;
@@ -349,8 +311,6 @@ static void genericCU16toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 {
   const size_t elemDepth = 2;
 
-  std::cout << "converting CU16 to CS8" << std::endl;
-
   auto *src = (uint16_t*)srcBuff;
   auto *dst = (int8_t*)dstBuff;
   for (size_t i = 0; i < numElems*elemDepth; i++)
@@ -362,8 +322,6 @@ static void genericCU16toCS8(const void *srcBuff, void *dstBuff, const size_t nu
 static void genericCS8toCU16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
 {
   const size_t elemDepth = 2;
-
-  std::cout << "converting CS8 to CU16" << std::endl;
 
   auto *src = (int8_t*)srcBuff;
   auto *dst = (uint16_t*)dstBuff;
