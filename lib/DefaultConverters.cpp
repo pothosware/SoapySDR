@@ -192,8 +192,8 @@ static void genericS8toF32(const void *srcBuff, void *dstBuff, const size_t numE
     }
 }
 
-static SoapySDR::ConverterRegistry registerGenericF32toS8(SOAPY_SDR_F32, SOAPY_SDR_U8, SoapySDR::ConverterRegistry::GENERIC, &genericF32toS8);
-static SoapySDR::ConverterRegistry registerGenericS8toF32(SOAPY_SDR_U8, SOAPY_SDR_F32, SoapySDR::ConverterRegistry::GENERIC, &genericS8toF32);
+static SoapySDR::ConverterRegistry registerGenericF32toS8(SOAPY_SDR_F32, SOAPY_SDR_S8, SoapySDR::ConverterRegistry::GENERIC, &genericF32toS8);
+static SoapySDR::ConverterRegistry registerGenericS8toF32(SOAPY_SDR_S8, SOAPY_SDR_F32, SoapySDR::ConverterRegistry::GENERIC, &genericS8toF32);
 
 
 // F32 <> U8
@@ -221,8 +221,8 @@ static void genericU8toF32(const void *srcBuff, void *dstBuff, const size_t numE
     }
 }
 
-static SoapySDR::ConverterRegistry registerGenericF32toU8(SOAPY_SDR_F32, SOAPY_SDR_S8, SoapySDR::ConverterRegistry::GENERIC, &genericF32toU8);
-static SoapySDR::ConverterRegistry registerGenericU8toF32(SOAPY_SDR_S8, SOAPY_SDR_F32, SoapySDR::ConverterRegistry::GENERIC, &genericU8toF32);
+static SoapySDR::ConverterRegistry registerGenericF32toU8(SOAPY_SDR_F32, SOAPY_SDR_U8, SoapySDR::ConverterRegistry::GENERIC, &genericF32toU8);
+static SoapySDR::ConverterRegistry registerGenericU8toF32(SOAPY_SDR_U8, SOAPY_SDR_F32, SoapySDR::ConverterRegistry::GENERIC, &genericU8toF32);
 
 // S16 <> U16
 static void genericS16toU16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
@@ -336,6 +336,34 @@ static void genericS8toU16(const void *srcBuff, void *dstBuff, const size_t numE
 
 static SoapySDR::ConverterRegistry registerGenericU16toS8(SOAPY_SDR_U16, SOAPY_SDR_S8, SoapySDR::ConverterRegistry::GENERIC, &genericU16toS8);
 static SoapySDR::ConverterRegistry registerGenericS8toU16(SOAPY_SDR_S8, SOAPY_SDR_U16, SoapySDR::ConverterRegistry::GENERIC, &genericS8toU16);
+
+// S8 <> U8
+static void genericS8toU8(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  const size_t elemDepth = 1;
+
+  auto *src = (int8_t*)srcBuff;
+  auto *dst = (uint8_t*)dstBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i++)
+    {
+      dst[i] = SoapySDR::S8toU8(src[i] * scaler);
+    }
+}
+
+static void genericU8toS8(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  const size_t elemDepth = 1;
+
+  auto *src = (uint8_t*)srcBuff;
+  auto *dst = (int8_t*)dstBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i++)
+    {
+      dst[i] = SoapySDR::U8toS8(src[i]) * scaler;
+    }
+}
+
+static SoapySDR::ConverterRegistry registerGenericS8toU8(SOAPY_SDR_S8, SOAPY_SDR_U8, SoapySDR::ConverterRegistry::GENERIC, &genericS8toU8);
+static SoapySDR::ConverterRegistry registerGenericU8toS8(SOAPY_SDR_U8, SOAPY_SDR_S8, SoapySDR::ConverterRegistry::GENERIC, &genericU8toS8);
 
 
 // ********************************
@@ -521,8 +549,8 @@ static void genericCS8toCF32(const void *srcBuff, void *dstBuff, const size_t nu
     }
 }
 
-static SoapySDR::ConverterRegistry registerGenericCF32toCS8(SOAPY_SDR_CF32, SOAPY_SDR_CU8, SoapySDR::ConverterRegistry::GENERIC, &genericCF32toCS8);
-static SoapySDR::ConverterRegistry registerGenericCS8toCF32(SOAPY_SDR_CU8, SOAPY_SDR_CF32, SoapySDR::ConverterRegistry::GENERIC, &genericCS8toCF32);
+static SoapySDR::ConverterRegistry registerGenericCF32toCS8(SOAPY_SDR_CF32, SOAPY_SDR_CS8, SoapySDR::ConverterRegistry::GENERIC, &genericCF32toCS8);
+static SoapySDR::ConverterRegistry registerGenericCS8toCF32(SOAPY_SDR_CS8, SOAPY_SDR_CF32, SoapySDR::ConverterRegistry::GENERIC, &genericCS8toCF32);
 
 
 // CF32 <> CU8
@@ -550,8 +578,8 @@ static void genericCU8toCF32(const void *srcBuff, void *dstBuff, const size_t nu
     }
 }
 
-static SoapySDR::ConverterRegistry registerGenericCF32toCU8(SOAPY_SDR_CF32, SOAPY_SDR_CS8, SoapySDR::ConverterRegistry::GENERIC, &genericCF32toCU8);
-static SoapySDR::ConverterRegistry registerGenericCU8toCF32(SOAPY_SDR_CS8, SOAPY_SDR_CF32, SoapySDR::ConverterRegistry::GENERIC, &genericCU8toCF32);
+static SoapySDR::ConverterRegistry registerGenericCF32toCU8(SOAPY_SDR_CF32, SOAPY_SDR_CU8, SoapySDR::ConverterRegistry::GENERIC, &genericCF32toCU8);
+static SoapySDR::ConverterRegistry registerGenericCU8toCF32(SOAPY_SDR_CU8, SOAPY_SDR_CF32, SoapySDR::ConverterRegistry::GENERIC, &genericCU8toCF32);
 
 // CS16 <> CU16
 static void genericCS16toCU16(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
@@ -665,4 +693,32 @@ static void genericCS8toCU16(const void *srcBuff, void *dstBuff, const size_t nu
 
 static SoapySDR::ConverterRegistry registerGenericCU16toCS8(SOAPY_SDR_CU16, SOAPY_SDR_CS8, SoapySDR::ConverterRegistry::GENERIC, &genericCU16toCS8);
 static SoapySDR::ConverterRegistry registerGenericCS8toCU16(SOAPY_SDR_CS8, SOAPY_SDR_CU16, SoapySDR::ConverterRegistry::GENERIC, &genericCS8toCU16);
+
+// CS8 <> CU8
+static void genericCS8toCU8(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  const size_t elemDepth = 2;
+
+  auto *src = (int8_t*)srcBuff;
+  auto *dst = (uint8_t*)dstBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i++)
+    {
+      dst[i] = SoapySDR::S8toU8(src[i] * scaler);
+    }
+}
+
+static void genericCU8toCS8(const void *srcBuff, void *dstBuff, const size_t numElems, const double scaler)
+{
+  const size_t elemDepth = 2;
+
+  auto *src = (uint8_t*)srcBuff;
+  auto *dst = (int8_t*)dstBuff;
+  for (size_t i = 0; i < numElems*elemDepth; i++)
+    {
+      dst[i] = SoapySDR::U8toS8(src[i]) * scaler;
+    }
+}
+
+static SoapySDR::ConverterRegistry registerGenericCS8toCU8(SOAPY_SDR_CS8, SOAPY_SDR_CU8, SoapySDR::ConverterRegistry::GENERIC, &genericCS8toCU8);
+static SoapySDR::ConverterRegistry registerGenericCU8toCS8(SOAPY_SDR_CU8, SOAPY_SDR_CS8, SoapySDR::ConverterRegistry::GENERIC, &genericCU8toCS8);
 
