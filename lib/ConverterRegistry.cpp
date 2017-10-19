@@ -79,17 +79,20 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getF
 {
   if (formatConverters.count(sourceFormat) == 0)
     {
-      throw std::invalid_argument("no registered converters for source format: " + sourceFormat); 
+      throw std::runtime_error("ConverterRegistry::getFunction() conversion source not registered; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat);
     }
   
   if (formatConverters[sourceFormat].count(targetFormat) == 0)
     {
-      throw std::invalid_argument("no registered converters for target format: " + targetFormat);
+      throw std::runtime_error("ConverterRegistry::getFunction() conversion target not registered; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat);
     }
 
   if (formatConverters[sourceFormat][targetFormat].size() == 0)
     {
-      throw std::invalid_argument("no registered converters of any priority: " + targetFormat);
+      throw std::runtime_error("ConverterRegistry::getFunction() no functions found for registered conversion; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat);
     }
 
   return formatConverters[sourceFormat][targetFormat].rbegin()->second;
@@ -99,18 +102,21 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getF
 {
   if (formatConverters.count(sourceFormat) == 0)
     {
-      throw std::invalid_argument("no registered converters for source format: " + sourceFormat);
+      throw std::runtime_error("ConverterRegistry::getFunction() conversion source not registered; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat+", priority="+std::to_string(priority));
     }
-  
+
   if (formatConverters[sourceFormat].count(targetFormat) == 0)
     {
-      throw std::invalid_argument("no registered converters for target format: " + targetFormat); 
+      throw std::runtime_error("ConverterRegistry::getFunction() conversion target not registered; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat+", priority="+std::to_string(priority));
     }
-  
+
   if (formatConverters[sourceFormat][targetFormat].count(priority) == 0)
     {
-      throw std::invalid_argument("no registered converters for target priority: " + std::to_string(priority)); 
+      throw std::runtime_error("ConverterRegistry::getFunction() conversion priority not registered; "
+			       "sourceFormat="+sourceFormat+", targetFormat="+targetFormat+", priority="+std::to_string(priority));
     }
-  
+
   return formatConverters[sourceFormat][targetFormat][priority];
 }
