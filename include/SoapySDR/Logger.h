@@ -3,7 +3,7 @@
 ///
 /// Logger API for SoapySDR devices.
 /// Implementations should use the logger rather than stdio.
-/// The default log handler prints to the stdout and stderr.
+/// The default log handler prints to stderr.
 ///
 /// \copyright
 /// Copyright (c) 2014-2015 Josh Blum

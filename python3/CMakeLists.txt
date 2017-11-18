@@ -28,8 +28,9 @@ execute_process(
     COMMAND ${PYTHON3_EXECUTABLE} -c
     "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
     OUTPUT_STRIP_TRAILING_WHITESPACE
-    OUTPUT_VARIABLE PYTHON3_INSTALL_DIR
+    OUTPUT_VARIABLE PYTHON3_INSTALL_DIR_SYSCONF
 )
+set(PYTHON3_INSTALL_DIR "${PYTHON3_INSTALL_DIR_SYSCONF}" CACHE STRING "python3 install prefix")
 message(STATUS "PYTHON3_INSTALL_DIR: \${prefix}/${PYTHON3_INSTALL_DIR}")
 
 ########################################################################
@@ -54,7 +55,7 @@ endif()
 ########################################################################
 include(FeatureSummary)
 include(CMakeDependentOption)
-cmake_dependent_option(ENABLE_PYTHON3 "Enable python bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;PYTHON3INTERP_FOUND;PYTHON3LIBS_FOUND;PYTHON3_DEBUG_OK" OFF)
+cmake_dependent_option(ENABLE_PYTHON3 "Enable python bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;PYTHON3INTERP_FOUND;PYTHON3LIBS_FOUND;PYTHON3_DEBUG_OK;BUILD_PYTHON3" OFF)
 add_feature_info(Python3 ENABLE_PYTHON3 "python3 bindings")
 if (NOT ENABLE_PYTHON3)
     return()
@@ -72,7 +73,7 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i
 @ONLY)
 
-set(CMAKE_SWIG_FLAGS -c++)
+message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
 SWIG_ADD_MODULE(SoapySDR3 python ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)

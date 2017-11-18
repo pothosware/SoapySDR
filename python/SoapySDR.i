@@ -1,4 +1,5 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 %module SoapySDR
@@ -12,6 +13,8 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Errors.hpp>
 #include <SoapySDR/Formats.hpp>
+#include <SoapySDR/Time.hpp>
+#include <SoapySDR/Logger.hpp>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,6 +45,13 @@
 %include <std_map.i>
 %include <SoapySDR/Types.hpp>
 
+//handle arm 32-bit case where size_t and unsigned are the same
+#ifdef SIZE_T_IS_UNSIGNED_INT
+%typedef unsigned int size_t;
+#else
+%template(SoapySDRUnsignedList) std::vector<unsigned>;
+#endif
+
 %template(SoapySDRKwargs) std::map<std::string, std::string>;
 %template(SoapySDRKwargsList) std::vector<SoapySDR::Kwargs>;
 %template(SoapySDRArgInfoList) std::vector<SoapySDR::ArgInfo>;
@@ -67,7 +77,9 @@
     %insert("python")
     %{
         def __str__(self):
-            return "%s, %s"%(self.minimum(), self.maximum())
+            fields = [self.minimum(), self.maximum()]
+            if self.step() != 0.0: fields.append(self.step())
+            return ', '.join(['%g'%f for f in fields])
     %}
 };
 
@@ -79,10 +91,11 @@
     struct StreamResult
     {
         StreamResult(void):
-            ret(0), flags(0), timeNs(0){}
+            ret(0), flags(0), timeNs(0), chanMask(0){}
         int ret;
         int flags;
         long long timeNs;
+        size_t chanMask;
     };
 %}
 
@@ -103,6 +116,11 @@
 %include <SoapySDR/Version.h>
 %include <SoapySDR/Formats.h>
 
+%ignore SoapySDR_logf;
+%ignore SoapySDR_vlogf;
+%ignore SoapySDR_registerLogHandler;
+%include <SoapySDR/Logger.h>
+
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
 ////////////////////////////////////////////////////////////////////////
@@ -110,6 +128,12 @@
 %include <SoapySDR/Version.hpp>
 %include <SoapySDR/Modules.hpp>
 %include <SoapySDR/Formats.hpp>
+%include <SoapySDR/Time.hpp>
+
+%ignore SoapySDR::logf;
+%ignore SoapySDR::vlogf;
+%ignore SoapySDR::registerLogHandler;
+%include <SoapySDR/Logger.hpp>
 
 ////////////////////////////////////////////////////////////////////////
 // Device object
@@ -119,8 +143,6 @@
 
 //global factory lock support
 %pythoncode %{
-import threading
-device_factory_lock = threading.Lock()
 
 __all__ = list()
 for key in sorted(globals().keys()):
@@ -131,13 +153,14 @@ for key in sorted(globals().keys()):
 //make device a constructable class
 %insert("python")
 %{
+_Device = Device
 class Device(Device):
     def __new__(cls, *args, **kwargs):
-        with device_factory_lock:
-            return cls.make(*args, **kwargs)
+        return cls.make(*args, **kwargs)
 
 def extractBuffPointer(buff):
     if hasattr(buff, '__array_interface__'): return buff.__array_interface__['data'][0]
+    if hasattr(buff, 'buffer_info'): return buff.buffer_info()[0]
     if hasattr(buff, '__long__'): return long(buff)
     if hasattr(buff, '__int__'): return int(buff)
     raise Exception("Unrecognized data format: " + str(type(buff)))
@@ -165,12 +188,18 @@ def extractBuffPointer(buff):
         return sr;
     }
 
+    StreamResult readStreamStatus__(SoapySDR::Stream *stream, const long timeoutUs)
+    {
+        StreamResult sr;
+        sr.ret = self->readStreamStatus(stream, sr.chanMask, sr.flags, sr.timeNs, timeoutUs);
+        return sr;
+    }
+
     %insert("python")
     %{
         #call unmake from custom deleter
         def __del__(self):
-            with device_factory_lock:
-                Device.unmake(self)
+            Device.unmake(self)
 
         def __str__(self):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
@@ -182,5 +211,8 @@ def extractBuffPointer(buff):
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
             ptrs = [extractBuffPointer(b) for b in buffs]
             return self.writeStream__(stream, ptrs, numElems, flags, timeNs, timeoutUs)
+
+        def readStreamStatus(self, stream, timeoutUs = 100000):
+            return self.readStreamStatus__(stream, timeoutUs)
     %}
 };

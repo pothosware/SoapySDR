@@ -1,11 +1,22 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
+#include "TypeHelpers.hpp"
 #include <SoapySDR/Types.h>
 #include <cstdlib>
 #include <cstring>
 
 extern "C" {
+
+SoapySDRKwargs SoapySDRKwargs_fromString(const char *markup)
+{
+    return toKwargs(SoapySDR::KwargsFromString(markup));
+}
+
+char *SoapySDRKwargs_toString(const SoapySDRKwargs *args)
+{
+    return strdup(SoapySDR::KwargsToString(toKwargs(args)).c_str());
+}
 
 void SoapySDRStrings_clear(char ***elems, const size_t length)
 {

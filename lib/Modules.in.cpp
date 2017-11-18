@@ -1,8 +1,9 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2016 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Logger.hpp>
+#include <SoapySDR/Version.hpp>
 #include <vector>
 #include <string>
 #include <cstdlib> //getenv
@@ -38,8 +39,32 @@ std::string getEnvImpl(const char *name)
 
 std::string SoapySDR::getRootPath(void)
 {
-    const std::string rootPathEnv = getEnvImpl("SOAPY_SDR_ROOT");
+    const std::string rootPathEnv = getEnvImpl("@SOAPY_SDR_ROOT_ENV@");
     if (not rootPathEnv.empty()) return rootPathEnv;
+
+    // Get the path to the current dynamic linked library.
+    // The path to this library can be used to determine
+    // the installation root without prior knowledge.
+    #ifdef _MSC_VER
+    char path[MAX_PATH];
+    HMODULE hm = NULL;
+    if (GetModuleHandleExA(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+        GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        (LPCSTR) &SoapySDR::getRootPath, &hm))
+    {
+        const DWORD size = GetModuleFileNameA(hm, path, sizeof(path));
+        if (size != 0)
+        {
+            const std::string libPath(path, size);
+            const size_t slash0Pos = libPath.find_last_of("/\\");
+            const size_t slash1Pos = libPath.substr(0, slash0Pos).find_last_of("/\\");
+            if (slash0Pos != std::string::npos and slash1Pos != std::string::npos)
+                return libPath.substr(0, slash1Pos);
+        }
+    }
+    #endif
+
     return "@SOAPY_SDR_ROOT@";
 }
 
@@ -89,20 +114,20 @@ static std::vector<std::string> searchModulePath(const std::string &path)
     return modulePaths;
 }
 
-std::vector<std::string> SoapySDR::listModules(void)
+std::vector<std::string> SoapySDR::listSearchPaths(void)
 {
     //the default search path
     std::vector<std::string> searchPaths;
-    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules");
+    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
 
     //support /usr/local module installs when the install prefix is /usr
     if (SoapySDR::getRootPath() == "/usr")
     {
-        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules");
+        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
         //when using a multi-arch directory, support single-arch path as well
         static const std::string libsuffix("@LIB_SUFFIX@");
         if (not libsuffix.empty() and libsuffix.at(0) == '/')
-            searchPaths.push_back("/usr/local/lib/SoapySDR/modules");
+            searchPaths.push_back("/usr/local/lib/SoapySDR/modules" + SoapySDR::getABIVersion());
     }
 
     //separator for search paths
@@ -121,11 +146,16 @@ std::vector<std::string> SoapySDR::listModules(void)
         searchPaths.push_back(pluginPath);
     }
 
+    return searchPaths;
+}
+
+std::vector<std::string> SoapySDR::listModules(void)
+{
     //traverse the search paths
     std::vector<std::string> modules;
-    for (size_t i = 0; i < searchPaths.size(); i++)
+    for (const auto &searchPath : SoapySDR::listSearchPaths())
     {
-        const std::vector<std::string> subModules = SoapySDR::listModules(searchPaths.at(i));
+        const std::vector<std::string> subModules = SoapySDR::listModules(searchPath);
         modules.insert(modules.end(), subModules.begin(), subModules.end());
     }
     return modules;
@@ -191,7 +221,13 @@ std::string SoapySDR::loadModule(const std::string &path)
 
     //load the module
 #ifdef _MSC_VER
+
+    //SetThreadErrorMode() - disable error pop-ups when DLLs are not found
+    DWORD oldMode;
+    SetThreadErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX, &oldMode);
     HMODULE handle = LoadLibrary(path.c_str());
+    SetThreadErrorMode(oldMode, nullptr);
+
     getModuleLoading().clear();
     if (handle == NULL) return "LoadLibrary() failed: " + GetLastErrorMessage();
 #else
@@ -250,17 +286,16 @@ void SoapySDR::loadModules(void)
     loaded = true;
     lateLoadNullDevice();
 
-    const std::vector<std::string> paths = listModules();
+    const auto paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
         if (getModuleHandles().count(paths[i]) != 0) continue; //was manually loaded
         const std::string errorMsg = loadModule(paths[i]);
         if (not errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
-        const SoapySDR::Kwargs loaderResults = SoapySDR::getLoaderResult(paths[i]);
-        for (SoapySDR::Kwargs::const_iterator it = loaderResults.begin(); it != loaderResults.end(); ++it)
+        for (const auto &it : SoapySDR::getLoaderResult(paths[i]))
         {
-            if (it->second.empty()) continue;
-            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it->second.c_str());
+            if (it.second.empty()) continue;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it.second.c_str());
         }
     }
 }

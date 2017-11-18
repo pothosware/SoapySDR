@@ -1,10 +1,11 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <cstdlib>
-#include <algorithm> //min/max
+#include <algorithm> //min/max/find
 
 SoapySDR::Device::~Device(void)
 {
@@ -47,6 +48,11 @@ size_t SoapySDR::Device::getNumChannels(const int) const
     return 0;
 }
 
+SoapySDR::Kwargs SoapySDR::Device::getChannelInfo(const int, const size_t) const
+{
+    return SoapySDR::Kwargs();
+}
+
 bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
 {
     return true;
@@ -73,7 +79,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getStreamArgsInfo(const int, const size_
 
 SoapySDR::Stream *SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &)
 {
-    return NULL;
+    return nullptr;
 }
 
 void SoapySDR::Device::closeStream(Stream *)
@@ -212,6 +218,34 @@ std::complex<double> SoapySDR::Device::getIQBalance(const int, const size_t) con
     return std::complex<double>();
 }
 
+bool SoapySDR::Device::hasFrequencyCorrection(const int direction, const size_t channel) const
+{
+    //backwards compatibility with "CORR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    return (std::find(components.begin(), components.end(), "CORR") != components.end());
+}
+
+void SoapySDR::Device::setFrequencyCorrection(const int direction, const size_t channel, const double value)
+{
+    //backwards compatibility with "CORR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    if (std::find(components.begin(), components.end(), "CORR") != components.end())
+    {
+        this->setFrequency(direction, channel, "CORR", value);
+    }
+}
+
+double SoapySDR::Device::getFrequencyCorrection(const int direction, const size_t channel) const
+{
+    //backwards compatibility with "CORR" string arg
+    const auto components = this->listFrequencies(direction, channel);
+    if (std::find(components.begin(), components.end(), "CORR") != components.end())
+    {
+        return this->getFrequency(direction, channel, "CORR");
+    }
+    return 0.0;
+}
+
 /*******************************************************************
  * Gain API
  ******************************************************************/
@@ -238,12 +272,12 @@ bool SoapySDR::Device::getGainMode(const int, const size_t) const
 void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
 {
     //algorithm to distribute overall gain (TX gets BB first, RX gets RF first)
-    std::vector<std::string> names = this->listGains(dir, channel);
+    const auto names = this->listGains(dir, channel);
     if (dir == SOAPY_SDR_TX)
     {
         for (int i = names.size()-1; i >= 0; i--)
         {
-            const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+            const auto r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
             this->setGain(dir, channel, names[i], g+r.minimum());
             gain -= this->getGain(dir, channel, names[i])-r.minimum();
@@ -253,7 +287,7 @@ void SoapySDR::Device::setGain(const int dir, const size_t channel, double gain)
     {
         for (size_t i = 0; i < names.size(); i++)
         {
-            const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+            const auto r = this->getGainRange(dir, channel, names[i]);
             const double g = std::min(gain, r.maximum()-r.minimum());
             this->setGain(dir, channel, names[i], g+r.minimum());
             gain -= this->getGain(dir, channel, names[i])-r.minimum();
@@ -270,11 +304,10 @@ double SoapySDR::Device::getGain(const int dir, const size_t channel) const
 {
     //algorithm to return an overall gain (summing each normalized gain)
     double gain = 0.0;
-    std::vector<std::string> names = this->listGains(dir, channel);
-    for (size_t i = 0; i < names.size(); i++)
+    for (const auto &name : this->listGains(dir, channel))
     {
-        const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
-        gain += this->getGain(dir, channel, names[i])-r.minimum();
+        const auto r = this->getGainRange(dir, channel, name);
+        gain += this->getGain(dir, channel, name)-r.minimum();
     }
     return gain;
 }
@@ -293,10 +326,9 @@ SoapySDR::Range SoapySDR::Device::getGainRange(const int dir, const size_t chann
 {
     //algorithm to return an overall gain range (use 0 to max possible on each element)
     double gain = 0.0;
-    std::vector<std::string> names = this->listGains(dir, channel);
-    for (size_t i = 0; i < names.size(); i++)
+    for (const auto &name : this->listGains(dir, channel))
     {
-        const SoapySDR::Range r = this->getGainRange(dir, channel, names[i]);
+        const auto r = this->getGainRange(dir, channel, name);
         gain += r.maximum()-r.minimum();
     }
     return SoapySDR::Range(0.0, gain);
@@ -307,7 +339,7 @@ SoapySDR::Range SoapySDR::Device::getGainRange(const int dir, const size_t chann
  ******************************************************************/
 void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double freq, const Kwargs &args)
 {
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
     if (comps.empty()) return;
 
     //optional offset, use on RF element when specified
@@ -355,10 +387,9 @@ double SoapySDR::Device::getFrequency(const int dir, const size_t chan) const
     double freq = 0.0;
 
     //overall frequency is the sum of components
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
-    for (size_t comp_i = 0; comp_i < comps.size(); comp_i++)
+    for (const auto &comp : this->listFrequencies(dir, chan))
     {
-        const std::string &name = comps[comp_i];
+        const std::string &name = comp;
         freq += this->getFrequency(dir, chan, name);
     }
 
@@ -378,11 +409,11 @@ std::vector<std::string> SoapySDR::Device::listFrequencies(const int, const size
 SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const size_t chan) const
 {
     //get a list of tunable components
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
     if (comps.empty()) return SoapySDR::RangeList();
 
     //get the range list for the RF component
-    SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.front());
+    auto ranges = this->getFrequencyRange(dir, chan, comps.front());
 
     //use bandwidth setting to clip the range
     const double bw = this->getBandwidth(dir, chan);
@@ -390,7 +421,7 @@ SoapySDR::RangeList SoapySDR::Device::getFrequencyRange(const int dir, const siz
     //add to the range list given subsequent components
     for (size_t comp_i = 1; comp_i < comps.size(); comp_i++)
     {
-        SoapySDR::RangeList subRange = this->getFrequencyRange(dir, chan, comps[comp_i]);
+        const auto subRange = this->getFrequencyRange(dir, chan, comps[comp_i]);
         if (subRange.empty()) continue;
 
         double subRangeLow = subRange.front().minimum();
@@ -420,7 +451,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
 {
     SoapySDR::ArgInfoList args;
 
-    const std::vector<std::string> comps = this->listFrequencies(dir, chan);
+    const auto comps = this->listFrequencies(dir, chan);
 
     if (comps.size() < 2) return args; //no tuning options with single components
 
@@ -450,7 +481,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
         info.options.push_back("DEFAULT");
         info.optionNames.push_back("Default");
         info.options.push_back("IGNORE");
-        info.optionNames.push_back("Ingore");
+        info.optionNames.push_back("Ignore");
         SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(comp_i));
         if (not ranges.empty()) info.range = ranges.front();
         args.push_back(info);
@@ -477,6 +508,20 @@ std::vector<double> SoapySDR::Device::listSampleRates(const int, const size_t) c
     return std::vector<double>();
 }
 
+SoapySDR::RangeList SoapySDR::Device::getSampleRateRange(const int direction, const size_t channel) const
+{
+    SoapySDR::RangeList ranges;
+    //call into the older deprecated listSampleRates() call
+    for (auto &bw : this->listSampleRates(direction, channel))
+    {
+        ranges.push_back(SoapySDR::Range(bw, bw));
+    }
+    return ranges;
+}
+
+/*******************************************************************
+ * Bandwidth API
+ ******************************************************************/
 void SoapySDR::Device::setBandwidth(const int, const size_t, const double)
 {
     return;
@@ -490,6 +535,17 @@ double SoapySDR::Device::getBandwidth(const int, const size_t) const
 std::vector<double> SoapySDR::Device::listBandwidths(const int, const size_t) const
 {
     return std::vector<double>();
+}
+
+SoapySDR::RangeList SoapySDR::Device::getBandwidthRange(const int direction, const size_t channel) const
+{
+    SoapySDR::RangeList ranges;
+    //call into the older deprecated listBandwidths() call
+    for (auto &bw : this->listBandwidths(direction, channel))
+    {
+        ranges.push_back(SoapySDR::Range(bw, bw));
+    }
+    return ranges;
 }
 
 /*******************************************************************
@@ -525,6 +581,10 @@ std::string SoapySDR::Device::getClockSource(void) const
     return "";
 }
 
+/*******************************************************************
+ * Time API
+ ******************************************************************/
+
 std::vector<std::string> SoapySDR::Device::listTimeSources(void) const
 {
     return std::vector<std::string>();
@@ -540,9 +600,6 @@ std::string SoapySDR::Device::getTimeSource(void) const
     return "";
 }
 
-/*******************************************************************
- * Time API
- ******************************************************************/
 bool SoapySDR::Device::hasHardwareTime(const std::string &) const
 {
     return false;
@@ -553,9 +610,9 @@ long long SoapySDR::Device::getHardwareTime(const std::string &) const
     return 0;
 }
 
-void SoapySDR::Device::setHardwareTime(const long long, const std::string &)
+void SoapySDR::Device::setHardwareTime(const long long timeNs, const std::string &what)
 {
-    return;
+    if (what == "CMD") this->setCommandTime(timeNs, what);
 }
 
 void SoapySDR::Device::setCommandTime(const long long, const std::string &)
@@ -599,6 +656,21 @@ std::string SoapySDR::Device::readSensor(const int, const size_t, const std::str
 /*******************************************************************
  * Register API
  ******************************************************************/
+std::vector<std::string> SoapySDR::Device::listRegisterInterfaces(void) const
+{
+    return std::vector<std::string>();
+}
+
+void SoapySDR::Device::writeRegister(const std::string &, const unsigned addr, const unsigned value)
+{
+    this->writeRegister(addr, value);
+}
+
+unsigned SoapySDR::Device::readRegister(const std::string &, const unsigned addr) const
+{
+    return this->readRegister(addr);
+}
+
 void SoapySDR::Device::writeRegister(const unsigned, const unsigned)
 {
     return;
@@ -607,6 +679,16 @@ void SoapySDR::Device::writeRegister(const unsigned, const unsigned)
 unsigned SoapySDR::Device::readRegister(const unsigned) const
 {
     return 0;
+}
+
+void SoapySDR::Device::writeRegisters(const std::string &, const unsigned, const std::vector<unsigned> &)
+{
+    return;
+}
+
+std::vector<unsigned> SoapySDR::Device::readRegisters(const std::string &, const unsigned, size_t length) const
+{
+    return std::vector<unsigned>(length, 0);
 }
 
 /*******************************************************************
@@ -623,6 +705,21 @@ void SoapySDR::Device::writeSetting(const std::string &, const std::string &)
 }
 
 std::string SoapySDR::Device::readSetting(const std::string &) const
+{
+    return "";
+}
+
+SoapySDR::ArgInfoList SoapySDR::Device::getSettingInfo(const int, const size_t) const
+{
+    return SoapySDR::ArgInfoList();
+}
+
+void SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &)
+{
+    return;
+}
+
+std::string SoapySDR::Device::readSetting(const int, const size_t, const std::string &) const
 {
     return "";
 }

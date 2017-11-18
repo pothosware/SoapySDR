@@ -4,7 +4,7 @@
 /// Constants used in the device API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -57,3 +57,10 @@
  * on subsequent read stream calls to re-align with packet boundaries.
  */
 #define SOAPY_SDR_MORE_FRAGMENTS (1 << 5)
+
+/*!
+ * Indicate that the stream should wait for an external trigger event.
+ * This flag might be used with the flags argument in any of the
+ * stream API calls. The trigger implementation is hardware-specific.
+ */
+#define SOAPY_SDR_WAIT_TRIGGER (1 << 6)
