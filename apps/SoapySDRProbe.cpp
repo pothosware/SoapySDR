@@ -1,4 +1,5 @@
-// Copyright (c) 2015-2015 Josh Blum
+// Copyright (c) 2015-2017 Josh Blum
+// Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -20,17 +21,26 @@ std::string toString(const std::vector<Type> &options)
 std::string toString(const SoapySDR::Range &range)
 {
     std::stringstream ss;
-    ss << "[" << range.minimum() << ", " << range.maximum() << "]";
+    ss << "[" << range.minimum() << ", " << range.maximum();
+    if (range.step() != 0.0) ss << ", " << range.step();
+    ss << "]";
     return ss.str();
 }
 
 std::string toString(const SoapySDR::RangeList &range, const double scale)
 {
+    const size_t MAXRLEN = 10; //for abbreviating long lists
     std::stringstream ss;
     for (size_t i = 0; i < range.size(); i++)
     {
+        if (range.size() >= MAXRLEN and i >= MAXRLEN/2 and i < (range.size()-MAXRLEN/2))
+        {
+            if (i == MAXRLEN) ss << ", ...";
+            continue;
+        }
         if (not ss.str().empty()) ss << ", ";
-        ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
+        if (range[i].minimum() == range[i].maximum()) ss << (range[i].minimum()/scale);
+        else ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
     }
     return ss.str();
 }
@@ -63,7 +73,13 @@ std::string toString(const SoapySDR::ArgInfo &argInfo, const std::string indent 
     ss << indent << " * " << name;
 
     //optional description
-    if (not argInfo.description.empty()) ss << " - " << argInfo.description << std::endl << indent << "  ";
+    std::string desc = argInfo.description;
+    const std::string replace("\n"+indent+"   ");
+    for (size_t pos = 0; (pos=desc.find("\n", pos)) != std::string::npos; pos+=replace.size())
+    {
+        desc.replace(pos, 1, replace);
+    }
+    if (not desc.empty()) ss << " - " << desc << std::endl << indent << "  ";
 
     //other fields
     ss << " [key=" << argInfo.key;
@@ -110,6 +126,17 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     ss << "-- " << dirName << " Channel " << chan << std::endl;
     ss << "----------------------------------------------------" << std::endl;
 
+    // info
+    const auto info = device->getChannelInfo(dir, chan);
+    if (info.size() > 0)
+    {
+        ss << "  Channel Information:" << std::endl;
+        for (const auto &it : info)
+        {
+            ss << "    " << it.first << "=" << it.second << std::endl;
+        }
+    }
+
     ss << "  Full-duplex: " << (device->getFullDuplex(dir, chan)?"YES":"NO") << std::endl;
     ss << "  Supports AGC: " << (device->hasGainMode(dir, chan)?"YES":"NO") << std::endl;
 
@@ -120,7 +147,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     //native
     double fullScale = 0.0;
     std::string native = device->getNativeStreamFormat(dir, chan, fullScale);
-    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;
+    ss << "  Native format: " << native << " [full-scale=" << fullScale << "]" << std::endl;    
 
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
@@ -161,15 +188,19 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     if (not freqArgs.empty()) ss << "  Tune args:" << std::endl << freqArgs;
 
     //rates
-    ss << "  Sample rates: " << toString(device->listSampleRates(dir, chan), 1e6) << " MHz" << std::endl;
+    ss << "  Sample rates: " << toString(device->getSampleRateRange(dir, chan), 1e6) << " MSps" << std::endl;
 
     //bandwidths
-    const std::vector<double> bws = device->listBandwidths(dir, chan);
+    const auto bws = device->getBandwidthRange(dir, chan);
     if (not bws.empty()) ss << "  Filter bandwidths: " << toString(bws, 1e6) << " MHz" << std::endl;
 
     //sensors
     std::string sensors = toString(device->listSensors(dir, chan));
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+
+    //settings
+    std::string settings = toString(device->getSettingInfo(dir, chan));
+    if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
 
     return ss.str();
 }
@@ -188,10 +219,9 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     ss << "  driver=" << device->getDriverKey() << std::endl;
     ss << "  hardware=" << device->getHardwareKey() << std::endl;
-    SoapySDR::Kwargs info = device->getHardwareInfo();
-    for (SoapySDR::Kwargs::const_iterator it = info.begin(); it != info.end(); ++it)
+    for (const auto &it : device->getHardwareInfo())
     {
-        ss << "  " << it->first << "=" << it->second << std::endl;
+        ss << "  " << it.first << "=" << it.second << std::endl;
     }
 
     /*******************************************************************
@@ -216,6 +246,9 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     std::string sensors = toString(device->listSensors());
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+
+    std::string registers = toString(device->listRegisterInterfaces());
+    if (not registers.empty()) ss << "  Registers: " << registers << std::endl;
 
     std::string settings = toString(device->getSettingInfo());
     if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;

@@ -19,6 +19,8 @@ def measure_delay(
     args,
     rate,
     freq=None,
+    rxBw=None,
+    txBw=None,
     rxChan=0,
     txChan=0,
     rxAnt=None,
@@ -55,6 +57,10 @@ def measure_delay(
     if freq is not None: sdr.setFrequency(SOAPY_SDR_RX, rxChan, freq)
     if freq is not None: sdr.setFrequency(SOAPY_SDR_TX, txChan, freq)
 
+    #set bandwidth
+    if rxBw is not None: sdr.setBandwidth(SOAPY_SDR_RX, rxChan, rxBw)
+    if txBw is not None: sdr.setBandwidth(SOAPY_SDR_TX, txChan, txBw)
+
     #create rx and tx streams
     print("Create Rx and Tx streams")
     rxStream = sdr.setupStream(SOAPY_SDR_RX, "CF32", [rxChan])
@@ -82,7 +88,8 @@ def measure_delay(
     #accumulate receive buffer into large contiguous buffer
     while True:
         rxBuff = np.array([0]*1024, np.complex64)
-        sr = sdr.readStream(rxStream, [rxBuff], len(rxBuff))
+        timeoutUs = long(5e5) #500 ms >> stream time
+        sr = sdr.readStream(rxStream, [rxBuff], len(rxBuff), timeoutUs=timeoutUs)
 
         #stash time on first buffer
         if sr.ret > 0 and len(rxBuffs) == 0:
@@ -93,6 +100,12 @@ def measure_delay(
         #accumulate buffer or exit loop
         if sr.ret > 0: rxBuffs = np.concatenate((rxBuffs, rxBuff[:sr.ret]))
         else: break
+
+    #cleanup streams
+    print("Cleanup streams")
+    sdr.deactivateStream(txStream)
+    sdr.closeStream(rxStream)
+    sdr.closeStream(txStream)
 
     #check resulting buffer
     if len(rxBuffs) != numRxSamps:
@@ -136,13 +149,6 @@ def measure_delay(
     rxPeakTime = rxTime0 + long((rxArgmaxIndex/rate)*1e9)
     timeDelta = rxPeakTime - txPeakTime
     print('>>> Time delta %f us'%(timeDelta/1e3))
-
-    #cleanup streams
-    print("Cleanup streams")
-    sdr.deactivateStream(rxStream)
-    sdr.deactivateStream(txStream)
-    sdr.closeStream(rxStream)
-    sdr.closeStream(txStream)
     print("Done!")
 
 def main():
@@ -153,6 +159,8 @@ def main():
     parser.add_option("--txAnt", type="string", dest="txAnt", help="Optional Tx antenna", default=None)
     parser.add_option("--rxGain", type="float", dest="rxGain", help="Optional Rx gain (dB)", default=None)
     parser.add_option("--txGain", type="float", dest="txGain", help="Optional Tx gain (dB)", default=None)
+    parser.add_option("--rxBw", type="float", dest="rxBw", help="Optional Rx filter bw (Hz)", default=None)
+    parser.add_option("--txBw", type="float", dest="txBw", help="Optional Tx filter bw (Hz)", default=None)
     parser.add_option("--rxChan", type="int", dest="rxChan", help="Receiver channel (def=0)", default=0)
     parser.add_option("--txChan", type="int", dest="txChan", help="Transmitter channel (def=0)", default=0)
     parser.add_option("--freq", type="float", dest="freq", help="Optional Tx and Rx freq (Hz)", default=None)
@@ -163,6 +171,8 @@ def main():
         args=options.args,
         rate=options.rate,
         freq=options.freq,
+        rxBw=options.rxBw,
+        txBw=options.txBw,
         rxAnt=options.rxAnt,
         txAnt=options.txAnt,
         rxGain=options.rxGain,

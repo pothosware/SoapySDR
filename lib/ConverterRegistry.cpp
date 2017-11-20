@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/ConverterRegistry.hpp>
+#include <algorithm>
+#include <stdexcept>
 
 SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
 
@@ -35,6 +37,7 @@ std::vector<std::string> SoapySDR::ConverterRegistry::listTargetFormats(const st
       targets.push_back(targetFormat);
     }
   
+  std::sort(targets.begin(), targets.end());
   return targets;
 }
 
@@ -46,9 +49,10 @@ std::vector<std::string> SoapySDR::ConverterRegistry::listSourceFormats(const st
     {
       std::string sourceFormat = it.first;
       if (formatConverters[sourceFormat].count(targetFormat) > 0)
-	sources.push_back(sourceFormat);
+        sources.push_back(sourceFormat);
     }
   
+  std::sort(sources.begin(), sources.end());
   return sources;
 }
 
@@ -119,4 +123,18 @@ SoapySDR::ConverterRegistry::ConverterFunction SoapySDR::ConverterRegistry::getF
     }
 
   return formatConverters[sourceFormat][targetFormat][priority];
+}
+
+std::vector<std::string> SoapySDR::ConverterRegistry::listAvailableSourceFormats(void)
+{
+    std::vector<std::string> sources;
+    for (const auto &it : formatConverters)
+    {
+        if (std::find(sources.begin(), sources.end(), it.first) == sources.end())
+        {
+            sources.push_back(it.first);
+        }
+    }
+    std::sort(sources.begin(), sources.end());
+    return sources;
 }

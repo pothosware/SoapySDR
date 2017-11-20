@@ -71,7 +71,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
     #enable C++11 on older versions of cmake
     if (CMAKE_VERSION VERSION_LESS "3.1")
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
     endif()
 
     #force a compile-time error when symbols are missing
@@ -94,12 +94,37 @@ if(APPLE)
 endif()
 
 if(MSVC)
+    #C++11 is a required language feature for this project
+    if (${MSVC_VERSION} LESS 1700)
+        message(FATAL_ERROR "the build requires MSVC 2012 or newer for C++11 support")
+    endif()
+
+    #we always want to use multiple cores for compilation
+    add_compile_options(/MP)
+
     #suppress the following warnings which are commonly caused by project headers
     add_compile_options(/wd4251) #disable 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
     add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
 
+    #projects should be cross-platform and standard stl functions should work
     add_definitions(-DNOMINMAX) #enables std::min and std::max
 endif()
+
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+    add_compile_options(-stdlib=libc++)
+endif()
+
+########################################################################
+# extract the ABI version string from the Version.h header
+########################################################################
+function(_SOAPY_SDR_GET_ABI_VERSION VERSION SOAPY_SDR_INCLUDE_DIR)
+    file(READ "${SOAPY_SDR_INCLUDE_DIR}/SoapySDR/Version.h" version_h)
+    string(REGEX MATCH "\\#define SOAPY_SDR_ABI_VERSION \"([0-9]+\\.[0-9]+(-[A-Za-z0-9]+)?)\"" SOAPY_SDR_ABI_VERSION_MATCHES "${version_h}")
+    if(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
+        message(FATAL_ERROR "Failed to extract version number from Version.h")
+    endif(NOT SOAPY_SDR_ABI_VERSION_MATCHES)
+    set(${VERSION} "${CMAKE_MATCH_1}" PARENT_SCOPE)
+endfunction(_SOAPY_SDR_GET_ABI_VERSION)
 
 ########################################################################
 # In-tree settings
@@ -110,6 +135,7 @@ if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
     endif(NOT SOAPY_SDR_ROOT)
     set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_IN_TREE_SOURCE_DIR}/include)
     set(SoapySDR_LIBRARIES SoapySDR)
+    _SOAPY_SDR_GET_ABI_VERSION(SOAPY_SDR_ABI_VERSION ${SoapySDR_INCLUDE_DIRS})
     return()
 endif (SOAPY_SDR_IN_TREE_SOURCE_DIR)
 
@@ -148,3 +174,4 @@ if(NOT SOAPY_SDR_INCLUDE_DIR)
     message(FATAL_ERROR "cannot find SoapySDR includes in ${SOAPY_SDR_ROOT}/include")
 endif()
 set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_INCLUDE_DIR})
+_SOAPY_SDR_GET_ABI_VERSION(SOAPY_SDR_ABI_VERSION ${SoapySDR_INCLUDE_DIRS})

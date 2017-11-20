@@ -4,7 +4,8 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -55,9 +56,6 @@ public:
      * with the same arguments will produce the same device.
      * For every call to make, there should be a matched call to unmake.
      *
-     * \note This call is not thread safe. Implementations calling into make
-     * from multiple threads should protect this call with a mutex.
-     *
      * \param args device construction key/value argument map
      * \return a pointer to a new Device object
      */
@@ -69,9 +67,6 @@ public:
      * with the same arguments will produce the same device.
      * For every call to make, there should be a matched call to unmake.
      *
-     * \note This call is not thread safe. Implementations calling into make
-     * from multiple threads should protect this call with a mutex.
-     *
      * \param args a markup string of key/value arguments
      * \return a pointer to a new Device object
      */
@@ -79,9 +74,6 @@ public:
 
     /*!
      * Unmake or release a device object handle.
-     *
-     * \note This call is not thread safe. Implementations calling into unmake
-     * from multiple threads should protect this call with a mutex.
      *
      * \param device a pointer to a device object
      */
@@ -129,7 +121,7 @@ public:
     /*!
      * Get the mapping configuration string.
      * \param direction the channel direction RX or TX
-     * \param the vendor-specific mapping string
+     * \return the vendor-specific mapping string
      */
     virtual std::string getFrontendMapping(const int direction) const;
 
@@ -137,6 +129,18 @@ public:
      * Get a number of channels given the streaming direction
      */
     virtual size_t getNumChannels(const int direction) const;
+
+    /*!
+     * Query a dictionary of available channel information.
+     * This dictionary can any number of values like
+     * decoder type, version, available functions...
+     * This information can be displayed to the user
+     * to help identify the instantiated channel.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return channel information
+     */
+    virtual Kwargs getChannelInfo(const int direction, const size_t channel) const;
 
     /*!
      * Find out if the specified channel is full or half duplex.
@@ -154,7 +158,7 @@ public:
      * Query a list of the available stream formats.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \return a list of allowed format strings
+     * \return a list of allowed format strings. See setupStream() for the format syntax.
      */
     virtual std::vector<std::string> getStreamFormats(const int direction, const size_t channel) const;
 
@@ -183,29 +187,48 @@ public:
      * All stream API calls should be usable with the new stream object
      * after setupStream() is complete, regardless of the activity state.
      *
-     * Format string markup guidelines:
-     *  - C means complex
-     *  - F means floating point
-     *  - S means signed integer
-     *  - U means unsigned integer
-     *  - number float/int size in bytes (complex is 2x this size)
+     * The API allows any number of simultaneous TX and RX streams, but many dual-channel
+     * devices are limited to one stream in each direction, using either one or both channels.
+     * This call will throw an exception if an unsupported combination is requested,
+     * or if a requested channel in this direction is already in use by another stream.
      *
-     * Example format strings:
-     *  - CF32 complex float32 (8 bytes per element)
-     *  - CS16 complex int16 (4 bytes per element)
-     *  - CS12 complex int12 (3 bytes per element)
-     *  - CS4 complex int4 (1 byte per element)
-     *  - S32 int32 (4 bytes per element)
-     *  - U8 uint8 (1 byte per element)
+     * When multiple channels are added to a stream, they are typically expected to have
+     * the same sample rate. See setSampleRate().
      *
-     * Recommended keys to use in the args dictionary:
-     *  - "WIRE" - format of the samples between device and host
+     * \param direction the channel direction (`SOAPY_SDR_RX` or `SOAPY_SDR_TX`)
+     * \param format A string representing the desired buffer format in read/writeStream()
+     * \parblock
      *
-     * \param direction the channel direction RX or TX
-     * \param format the desired buffer format in read/writeStream()
-     * \param channels a list of channels for empty for automatic
-     * \param args stream args or empty for defaults
-     * \return an opaque pointer to a stream handle
+     * The first character selects the number type:
+     *   - "C" means complex
+     *   - "F" means floating point
+     *   - "S" means signed integer
+     *   - "U" means unsigned integer
+     *
+     * The type character is followed by the number of bits per number (complex is 2x this size per sample)
+     *
+     *  Example format strings:
+     *   - "CF32" -  complex float32 (8 bytes per element)
+     *   - "CS16" -  complex int16 (4 bytes per element)
+     *   - "CS12" -  complex int12 (3 bytes per element)
+     *   - "CS4" -  complex int4 (1 byte per element)
+     *   - "S32" -  int32 (4 bytes per element)
+     *   - "U8" -  uint8 (1 byte per element)
+     *
+     * \endparblock
+     * \param channels a list of channels or empty for automatic.
+     * \param args stream args or empty for defaults.
+     * \parblock
+     *
+     *   Recommended keys to use in the args dictionary:
+     *    - "WIRE" - format of the samples between device and host
+     * \endparblock
+     * \return an opaque pointer to a stream handle.
+     * \parblock
+     *
+     * The returned stream is not required to have internal locking, and may not be used
+     * concurrently from multiple threads.
+     * \endparblock
      */
     virtual Stream *setupStream(
         const int direction,
@@ -278,6 +301,7 @@ public:
      * This is a multi-channel call, and buffs should be an array of void *,
      * where each pointer will be filled with data from a different channel.
      *
+     * **Client code compatibility:**
      * The readStream() call should be well defined at all times,
      * including prior to activation and after deactivation.
      * When inactive, readStream() should implement the timeout
@@ -304,6 +328,12 @@ public:
      * This is a multi-channel call, and buffs should be an array of void *,
      * where each pointer will be filled with data for a different channel.
      *
+     * **Client code compatibility:**
+     * Client code relies on writeStream() for proper back-pressure.
+     * The writeStream() implementation must enforce the timeout
+     * such that the call blocks until space becomes available
+     * or timeout expiration.
+     *
      * \param stream the opaque pointer to a stream handle
      * \param buffs an array of void* buffers num chans in size
      * \param numElems the number of elements in each buffer
@@ -324,6 +354,14 @@ public:
      * Readback status information about a stream.
      * This call is typically used on a transmit stream
      * to report time errors, underflows, and burst completion.
+     *
+     * **Client code compatibility:**
+     * Client code may continually poll readStreamStatus() in a loop.
+     * Implementations of readStreamStatus() should wait in the call
+     * for a status change event or until the timeout expiration.
+     * When stream status is not implemented on a particular stream,
+     * readStreamStatus() should return SOAPY_SDR_NOT_SUPPORTED.
+     * Client code may use this indication to disable a polling loop.
      *
      * \param stream the opaque pointer to a stream handle
      * \param chanMask to which channels this status applies
@@ -423,8 +461,6 @@ public:
      * \param stream the opaque pointer to a stream handle
      * \param handle an index value used in the release() call
      * \param buffs an array of void* buffers num chans in size
-     * \param flags optional input flags and output flags
-     * \param timeNs the buffer's timestamp in nanoseconds
      * \param timeoutUs the timeout in microseconds
      * \return the number of available elements per buffer or error
      */
@@ -560,6 +596,30 @@ public:
      */
     virtual std::complex<double> getIQBalance(const int direction, const size_t channel) const;
 
+    /*!
+     * Does the device support frontend frequency correction?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true if frequency corrections are supported
+     */
+    virtual bool hasFrequencyCorrection(const int direction, const size_t channel) const;
+
+    /*!
+     * Fine tune the frontend frequency correction.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param value the correction in PPM
+     */
+    virtual void setFrequencyCorrection(const int direction, const size_t channel, const double value);
+
+    /*!
+     * Get the frontend frequency correction value.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return the correction value in PPM
+     */
+    virtual double getFrequencyCorrection(const int direction, const size_t channel) const;
+
     /*******************************************************************
      * Gain API
      ******************************************************************/
@@ -602,7 +662,6 @@ public:
      * The gain will be distributed automatically across available element.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an amplification element
      * \param value the new amplification value in dB
      */
     virtual void setGain(const int direction, const size_t channel, const double value);
@@ -776,11 +835,24 @@ public:
 
     /*!
      * Get the range of possible baseband sample rates.
+     * \deprecated replaced by getSampleRateRange()
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible rates in samples per second
      */
     virtual std::vector<double> listSampleRates(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the range of possible baseband sample rates.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of sample rate ranges in samples per second
+     */
+    virtual RangeList getSampleRateRange(const int direction, const size_t channel) const;
+
+    /*******************************************************************
+     * Bandwidth API
+     ******************************************************************/
 
     /*!
      * Set the baseband filter width of the chain.
@@ -800,11 +872,20 @@ public:
 
     /*!
      * Get the range of possible baseband filter widths.
+     * \deprecated replaced by getBandwidthRange()
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \return a list of possible bandwidths in Hz
      */
     virtual std::vector<double> listBandwidths(const int direction, const size_t channel) const;
+
+    /*!
+     * Get the range of possible baseband filter widths.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of bandwidth ranges in Hz
+     */
+    virtual RangeList getBandwidthRange(const int direction, const size_t channel) const;
 
     /*******************************************************************
      * Clocking API
@@ -846,6 +927,10 @@ public:
      */
     virtual std::string getClockSource(void) const;
 
+    /*******************************************************************
+     * Time API
+     ******************************************************************/
+
     /*!
      * Get the list of available time sources.
      * \return a list of time source names
@@ -863,10 +948,6 @@ public:
      * \return the name of a time source
      */
     virtual std::string getTimeSource(void) const;
-
-    /*******************************************************************
-     * Time API
-     ******************************************************************/
 
     /*!
      * Does this device have a hardware clock?
@@ -895,6 +976,7 @@ public:
      * Set the time of subsequent configuration calls.
      * The what argument can refer to a specific command queue.
      * Implementations may use a time of 0 to clear.
+     * \deprecated replaced by setHardwareTime()
      * \param timeNs time in nanoseconds
      * \param what optional argument
      */
@@ -914,19 +996,19 @@ public:
     /*!
      * Get meta-information about a sensor.
      * Example: displayable name, type, range.
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return meta-information about a sensor
      */
-    virtual ArgInfo getSensorInfo(const std::string &name) const;
+    virtual ArgInfo getSensorInfo(const std::string &key) const;
 
     /*!
      * Readback a global sensor given the name.
      * The value returned is a string which can represent
      * a boolean ("true"/"false"), an integer, or float.
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return the current value of the sensor
      */
-    virtual std::string readSensor(const std::string &name) const;
+    virtual std::string readSensor(const std::string &key) const;
 
     /*!
      * List the available channel readback sensors.
@@ -942,10 +1024,10 @@ public:
      * Example: displayable name, type, range.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return meta-information about a sensor
      */
-    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &name) const;
+    virtual ArgInfo getSensorInfo(const int direction, const size_t channel, const std::string &key) const;
 
     /*!
      * Readback a channel sensor given the name.
@@ -953,19 +1035,44 @@ public:
      * a boolean ("true"/"false"), an integer, or float.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
-     * \param name the name of an available sensor
+     * \param key the ID name of an available sensor
      * \return the current value of the sensor
      */
-    virtual std::string readSensor(const int direction, const size_t channel, const std::string &name) const;
+    virtual std::string readSensor(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * Register API
      ******************************************************************/
 
     /*!
+     * Get a list of available register interfaces by name.
+     * \return a list of available register interfaces
+     */
+    virtual std::vector<std::string> listRegisterInterfaces(void) const;
+
+    /*!
+     * Write a register on the device given the interface name.
+     * This can represent a register on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \param value the register value
+     */
+    virtual void writeRegister(const std::string &name, const unsigned addr, const unsigned value);
+
+    /*!
+     * Read a register on the device given the interface name.
+     * \param name the name of a available register interface
+     * \param addr the register address
+     * \return the register value
+     */
+    virtual unsigned readRegister(const std::string &name, const unsigned addr) const;
+
+    /*!
      * Write a register on the device.
      * This can represent a register on a soft CPU, FPGA, IC;
      * the interpretation is up the implementation to decide.
+     * \deprecated replaced by writeRegister(name)
      * \param addr the register address
      * \param value the register value
      */
@@ -973,10 +1080,30 @@ public:
 
     /*!
      * Read a register on the device.
+     * \deprecated replaced by readRegister(name)
      * \param addr the register address
      * \return the register value
      */
     virtual unsigned readRegister(const unsigned addr) const;
+
+    /*!
+     * Write a memory block on the device given the interface name.
+     * This can represent a memory block on a soft CPU, FPGA, IC;
+     * the interpretation is up the implementation to decide.
+     * \param name the name of a available memory block interface
+     * \param addr the memory block start address
+     * \param value the memory block content
+     */
+    virtual void writeRegisters(const std::string &name, const unsigned addr, const std::vector<unsigned> &value);
+
+    /*!
+     * Read a memory block on the device given the interface name.
+     * \param name the name of a available memory block interface
+     * \param addr the memory block start address
+     * \param length number of words to be read from memory block
+     * \return the memory block content
+     */
+    virtual std::vector<unsigned> readRegisters(const std::string &name, const unsigned addr, const size_t length) const;
 
     /*******************************************************************
      * Settings API
@@ -1002,6 +1129,33 @@ public:
      * \return the setting value
      */
     virtual std::string readSetting(const std::string &key) const;
+
+    /*!
+     * Describe the allowed keys and values used for channel settings.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return a list of argument info structures
+     */
+    virtual ArgInfoList getSettingInfo(const int direction, const size_t channel) const;
+
+    /*!
+     * Write an arbitrary channel setting on the device.
+     * The interpretation is up the implementation.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \param value the setting value
+     */
+    virtual void writeSetting(const int direction, const size_t channel, const std::string &key, const std::string &value);
+
+    /*!
+     * Read an arbitrary channel setting on the device.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \return the setting value
+     */
+    virtual std::string readSetting(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * GPIO API

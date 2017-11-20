@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -29,6 +29,7 @@ static inline SoapySDRRange toRange(const SoapySDR::Range &range)
     SoapySDRRange out;
     out.minimum = range.minimum();
     out.maximum = range.maximum();
+    out.step = range.step();
     return out;
 }
 
@@ -51,6 +52,7 @@ static inline double *toNumericList(const std::vector<double> &values, size_t *l
 static inline SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
 {
     SoapySDR::Kwargs out;
+    if (args == NULL) return out;
     for (size_t i = 0; i < args->size; i++)
     {
         out[args->keys[i]] = args->vals[i];
@@ -61,9 +63,10 @@ static inline SoapySDR::Kwargs toKwargs(const SoapySDRKwargs *args)
 static inline SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
 {
     SoapySDRKwargs out;
-    for (SoapySDR::Kwargs::const_iterator it = args.begin(); it != args.end(); ++it)
+    std::memset(&out, 0, sizeof(out));
+    for (const auto &it : args)
     {
-        SoapySDRKwargs_set(&out, it->first.c_str(), it->second.c_str());
+        SoapySDRKwargs_set(&out, it.first.c_str(), it.second.c_str());
     }
     return out;
 }
@@ -101,3 +104,19 @@ static inline SoapySDRArgInfo *toArgInfoList(const SoapySDR::ArgInfoList &infos,
     *length = infos.size();
     return out;
 }
+
+static inline std::vector<unsigned> toNumericVector(const unsigned *values, size_t length)
+{
+	std::vector<unsigned> out (length, 0);
+    for (size_t i = 0; i < length; i++) out[i] = values[i];
+    return out;
+}
+
+static inline unsigned *toNumericList(const std::vector<unsigned> &values, size_t *length)
+{
+	unsigned *out = (unsigned *)calloc(values.size(), sizeof(unsigned));
+    for (size_t i = 0; i < values.size(); i++) out[i] = values[i];
+    *length = values.size();
+    return out;
+}
+

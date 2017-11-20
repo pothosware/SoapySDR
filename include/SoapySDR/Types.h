@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2017 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -21,6 +21,7 @@ typedef struct
 {
     double minimum;
     double maximum;
+    double step;
 } SoapySDRRange;
 
 //! Definition for a key/value string map
@@ -30,6 +31,18 @@ typedef struct
     char **keys;
     char **vals;
 } SoapySDRKwargs;
+
+/*!
+ * Convert a markup string to a key-value map.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API SoapySDRKwargs SoapySDRKwargs_fromString(const char *markup);
+
+/*!
+ * Convert a key-value map to a markup string.
+ * The markup format is: "key0=value0, key1=value1"
+ */
+SOAPY_SDR_API char *SoapySDRKwargs_toString(const SoapySDRKwargs *args);
 
 //! Possible data types for argument info
 typedef enum

@@ -4,7 +4,7 @@
 /// Convert buffers between stream formats.
 ///
 /// \copyright
-/// Copyright (c) 2015-2015 Josh Blum
+/// Copyright (c) 2015-2017 Josh Blum
 /// Copyright (c) 2017-2017 Coburn Wightman
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -12,10 +12,10 @@
 #pragma once
 #include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Formats.hpp>
+#include <utility>
 #include <vector>
 #include <map>
 #include <string>
-#include <stdexcept>
 
 namespace SoapySDR
 {
@@ -41,7 +41,6 @@ namespace SoapySDR
     /*!
      * TargetFormatConverterPriority: a map of possible conversion functions for a given Priority.
      */
-    //typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
     typedef std::map<FunctionPriority, ConverterFunction> TargetFormatConverterPriority;
 
     /*!
@@ -99,7 +98,12 @@ namespace SoapySDR
      */
     static ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat);
     static ConverterFunction getFunction(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority);
-    
+
+    /*!
+     * Get a list of known source formats in the registry.
+     */
+    static std::vector<std::string> listAvailableSourceFormats(void);
+
   private:
     static FormatConverters formatConverters;
     

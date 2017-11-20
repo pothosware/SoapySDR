@@ -17,34 +17,37 @@ set(INCLUDED_SOAPY_SDR_UTIL_CMAKE TRUE)
 ## LIBRARIES - a list of libraries to link the module to
 ## The module will automatically link to SoapySDR library.
 ##
-## PREFIX - custom install prefix or unspecified for automatic
-## The automatic prefix defaults to the SoapySDR install root,
-## or CMAKE_INSTALL_PREFIX when the SoapySDR install root is /usr.
+## DESTINATION - override the default install path when specified
+## The default destination is a relative path (<lib>/SoapySDR/modules).
+## This argument specifies an alternative relative or absolute path,
+## and can be used standalone or in conjunction with PREFIX.
+##
+## PREFIX - override the default install prefix when specified
+## The prefix modifies the destination with an absolute path
+## to replace the typical CMAKE_INSTALL_PREFIX install rules.
 ##
 ########################################################################
 function(SOAPY_SDR_MODULE_UTIL)
 
     include(CMakeParseArguments)
-    CMAKE_PARSE_ARGUMENTS(MODULE "" "TARGET;PREFIX" "SOURCES;LIBRARIES" ${ARGN})
+    CMAKE_PARSE_ARGUMENTS(MODULE "" "TARGET;DESTINATION;PREFIX" "SOURCES;LIBRARIES" ${ARGN})
 
     include_directories(${SoapySDR_INCLUDE_DIRS})
     add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
     target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} ${SoapySDR_LIBRARIES})
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
 
-    #determine user-specified or automatic install prefix
+    if (NOT MODULE_DESTINATION)
+        set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)
+    endif()
+
     if (MODULE_PREFIX)
-    elseif (SOAPY_SDR_IN_TREE_SOURCE_DIR)
-        set(MODULE_PREFIX ${CMAKE_INSTALL_PREFIX})
-    elseif ("${SOAPY_SDR_ROOT}" STREQUAL "/usr")
-        set(MODULE_PREFIX ${CMAKE_INSTALL_PREFIX})
-    else()
-        set(MODULE_PREFIX ${SOAPY_SDR_ROOT})
+        set(MODULE_DESTINATION ${MODULE_PREFIX}/${MODULE_DESTINATION})
     endif()
 
     install(
         TARGETS ${MODULE_TARGET}
-        DESTINATION ${MODULE_PREFIX}/lib${LIB_SUFFIX}/SoapySDR/modules/
+        DESTINATION ${MODULE_DESTINATION}
     )
 
 endfunction(SOAPY_SDR_MODULE_UTIL)

@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2015 Josh Blum
+/// Copyright (c) 2014-2016 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -21,6 +21,13 @@ extern "C" {
 
 //! Query the root installation path
 SOAPY_SDR_API const char *SoapySDR_getRootPath(void);
+
+/*!
+ * The list of paths automatically searched by loadModules().
+ * \param [out] length the number of elements in the result.
+ * \return a list of automatically searched file paths
+ */
+SOAPY_SDR_API char **SoapySDR_listSearchPaths(size_t *length);
 
 /*!
  * List all modules found in default path.
@@ -43,7 +50,7 @@ SOAPY_SDR_API char **SoapySDR_listModulesPath(const char *path, size_t *length);
  * Load a single module given its file system path.
  * The caller must free the result error string.
  * \param path the path to a specific module file
- * \param return an error message, empty on success
+ * \return an error message, empty on success
  */
 SOAPY_SDR_API char *SoapySDR_loadModule(const char *path);
 
@@ -61,7 +68,7 @@ SOAPY_SDR_API SoapySDRKwargs SoapySDR_getLoaderResult(const char *path);
  * Unload a module that was loaded with loadModule().
  * The caller must free the result error string.
  * \param path the path to a specific module file
- * \param return an error message, empty on success
+ * \return an error message, empty on success
  */
 SOAPY_SDR_API char *SoapySDR_unloadModule(const char *path);
 
