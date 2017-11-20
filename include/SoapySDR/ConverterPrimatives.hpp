@@ -10,17 +10,28 @@
 
 #pragma once
 #include <stdint.h>
+#include <type_traits>
 
 namespace SoapySDR
 {
-  
-const uint32_t U32_ZERO_OFFSET = uint32_t(1<<31);
-const uint16_t U16_ZERO_OFFSET = uint16_t(1<<15);
-const uint8_t   U8_ZERO_OFFSET =  uint8_t(1<<7);
 
-const uint32_t S32_FULL_SCALE = (U32_ZERO_OFFSET-1);
-const uint16_t S16_FULL_SCALE = (U16_ZERO_OFFSET-1);
-const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
+  typedef int32_t S32;
+  typedef int16_t S16;
+  typedef int8_t  S8;
+
+  typedef uint32_t U32;
+  typedef uint16_t U16;
+  typedef uint8_t  U8;
+  
+  typedef float F32;
+
+  const uint32_t U32_ZERO_OFFSET = uint32_t(1<<31);
+  const uint16_t U16_ZERO_OFFSET = uint16_t(1<<15);
+  const uint8_t   U8_ZERO_OFFSET =  uint8_t(1<<7);
+
+  const uint32_t S32_FULL_SCALE = (U32_ZERO_OFFSET-1);
+  const uint16_t S16_FULL_SCALE = (U16_ZERO_OFFSET-1);
+  const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
   
 /*!
  * Conversion primatives for converting real values between Soapy Formats.
@@ -28,126 +39,184 @@ const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
  * \return the converted value
  */
 
-// type conversion: float <> signed integers
+  template <typename T_from, typename T_to>
+  inline static T_to convertSample(T_from from){
+    static_assert(std::is_same<T_from, T_to>::value, "convertSample() must be specialized for this type");
+    return from;
+  }
+  
+  // type conversion: float <> signed integers
 
-inline int32_t F32toS32(float from){
-  return int32_t(from * S32_FULL_SCALE);
-}
-inline float S32toF32(int32_t from){
-  return float(from) / S32_FULL_SCALE;
-}
+  template <>
+  inline S32 convertSample<F32, S32>(F32 from){
+    return S32(from * S32_FULL_SCALE);
+  }
+  template<>
+  inline F32 convertSample<S32, F32>(S32 from){
+    return F32(from) / S32_FULL_SCALE;
+  }
 
-inline int16_t F32toS16(float from){
-  return int16_t(from * S16_FULL_SCALE);
-}
-inline float S16toF32(int16_t from){
-  return float(from) / S16_FULL_SCALE;
-}
+  template<>
+  inline S16 convertSample<F32, S16>(F32 from){
+    return S16(from * S16_FULL_SCALE);
+  }
+  template<>
+  inline F32 convertSample<S16, F32>(S16 from){
+    return F32(from) / S16_FULL_SCALE;
+  }
 
-inline int8_t F32toS8(float from){
-  return int8_t(from * S8_FULL_SCALE);
-}
-inline float S8toF32(int8_t from){
-  return float(from) / S8_FULL_SCALE;
-}
+  template<>
+  inline S8 convertSample<F32, S8>(F32 from){
+    return S8(from * S8_FULL_SCALE);
+  }
+  template<>
+  inline F32 convertSample<S8, F32>(S8 from){
+    return F32(from) / S8_FULL_SCALE;
+  }
 
+  // type conversion: offset binary <> two's complement (signed) integers
 
-// type conversion: offset binary <> two's complement (signed) integers
+  template<>
+  inline S32 convertSample<U32, S32>(U32 from){
+    return S32(from - U32_ZERO_OFFSET);
+  }
+  template<>
+  inline U32 convertSample<S32, U32>(S32 from){
+    return U32(from) + U32_ZERO_OFFSET;
+  }
 
-inline int32_t U32toS32(uint32_t from){
-  return int32_t(from - U32_ZERO_OFFSET);
-}
+  template<>
+  inline S16 convertSample<U16, S16>(U16 from){
+    return S16(from - U16_ZERO_OFFSET);
+  }
+  template<>
+  inline U16 convertSample<S16, U16>(S16 from){
+    return U16(from) + U16_ZERO_OFFSET;
+  }
 
-inline uint32_t S32toU32(int32_t from){
-  return uint32_t(from) + U32_ZERO_OFFSET;
-}
-
-inline int16_t U16toS16(uint16_t from){
-  return int16_t(from - U16_ZERO_OFFSET);
-}
-
-inline uint16_t S16toU16(int16_t from){
-  return uint16_t(from) + U16_ZERO_OFFSET;
-}
-
-inline int8_t U8toS8(uint8_t from){
-  return int8_t(from - U8_ZERO_OFFSET);
-}
-
-inline uint8_t S8toU8(int8_t from){
-  return uint8_t(from) + U8_ZERO_OFFSET;
-}
+  template<>
+  inline S8 convertSample<U8, S8>(U8 from){
+    return S8(from - U8_ZERO_OFFSET);
+  }
+  template<>
+  inline U8 convertSample<S8, U8>(S8 from){
+    return U8(from) + U8_ZERO_OFFSET;
+  }
 
 // size conversion: signed <> signed
+  template<>
+  inline S16 convertSample<S32, S16>(S32 from){
+    return S16(from >> 16);
+  }
+  template<>
+  inline S32 convertSample<S16, S32>(S16 from){
+    return S32(from << 16);
+  }
 
-inline int16_t S32toS16(int32_t from){
-  return int16_t(from >> 16);
-}
-inline int32_t S16toS32(int16_t from){
-  return int32_t(from << 16);
-}
-
-inline int8_t S16toS8(int16_t from){
-  return int8_t(from >> 8);
-}
-inline int16_t S8toS16(int8_t from){
-  return int16_t(from << 8);
-}
+  template<>
+  inline S8 convertSample<S32, S8>(S32 from){
+    return S8(from >> 24);
+  }
+  template<>
+  inline S32 convertSample<S8, S32>(S8 from){
+    return S32(from << 24);
+  }
+  
+  template<>
+  inline S8 convertSample<S16, S8>(S16 from){
+    return S8(from >> 8);
+  }
+  template<>
+  inline S16 convertSample<S8, S16>(S8 from){
+    return S16(from << 8);
+  }
 
 // compound conversions
 
 // float <> unsigned (type and size)
 
-inline uint32_t F32toU32(float from){
-  return S32toU32(F32toS32(from));
-}
-inline float U32toF32(uint32_t from){
-  return S32toF32(U32toS32(from));
-}
+  template<>
+  inline U32 convertSample<F32, U32>(F32 from){
+    return convertSample<S32, U32>(convertSample<F32, S32>(from));
+  }
+  template<>
+  inline F32 convertSample<U32, F32>(U32 from){
+    return convertSample<S32, F32>(convertSample<U32, S32>(from));
+  }
 
-inline uint16_t F32toU16(float from){
-  return S16toU16(F32toS16(from));
-}
-inline float U16toF32(uint16_t from){
-  return S16toF32(U16toS16(from));
-}
+  template<>
+  inline U16 convertSample<F32, U16>(F32 from){
+    return convertSample<S16, U16>(convertSample<F32, S16>(from));
+  }
+  template<>
+  inline F32 convertSample<U16, F32>(U16 from){
+    return convertSample<S16, F32>(convertSample<U16, S16>(from));
+  }
 
-inline uint8_t F32toU8(float from){
-  return S8toU8(F32toS8(from));
-}
-inline float U8toF32(uint8_t from){
-  return S8toF32(U8toS8(from));
-}
+  template<>
+  inline U8 convertSample<F32, U8>(F32 from){
+    return convertSample<S8, U8>(convertSample<F32, S8>(from));
+  }
+  template<>
+  inline F32 convertSample<U8, F32>(U8 from){
+    return convertSample<S8, F32>(convertSample<U8, S8>(from));
+  }
 
 // signed <> unsigned (type and size)
 
-inline uint16_t S32toU16(int32_t from){
-  return S16toU16(S32toS16(from));
-}
-inline int32_t U16toS32(uint16_t from){
-  return S16toS32(U16toS16(from));
-}
+  template <>
+  inline U16 convertSample<S32, U16>(S32 from){
+    return convertSample<S16, U16>(convertSample<S32, S16>(from));
+  }
+  template <>
+  inline S32 convertSample<U16, S32>(U16 from){
+    return convertSample<S16, S32>(convertSample<U16, S16>(from));
+  }
+  
+  template <>
+  inline S16 convertSample<U32, S16>(U32 from){
+    return convertSample<S32, S16>(convertSample<U32, S32>(from));
+  }
+  template <>
+  inline U32 convertSample<S16, U32>(S16 from){
+    return convertSample<S32, U32>(convertSample<S16, S32>(from));
+  }
+  
+  template <>
+  inline U8 convertSample<S32, U8>(S32 from){
+    return convertSample<S8, U8>(convertSample<S32, S8>(from));
+  }
+  template <>
+  inline S32 convertSample<U8, S32>(U8 from){
+    return convertSample<S8, S32>(convertSample<U8, S8>(from));
+  }
+  
+  template <>
+  inline S8 convertSample<U32, S8>(U32 from){
+    return convertSample<S32, S8>(convertSample<U32, S32>(from));
+  }
+  template <>
+  inline U32 convertSample<S8, U32>(S8 from){
+    return convertSample<S32, U32>(convertSample<S8, S32>(from));
+  }
+  
+  template <>
+  inline U8 convertSample<S16, U8>(S16 from){
+    return convertSample<S8, U8>(convertSample<S16, S8>(from));
+  }
+  template <>
+  inline S16 convertSample<U8, S16>(U8 from){
+    return convertSample<S8, S16>(convertSample<U8, S8>(from));
+  }
+  
+  template <>
+  inline S8 convertSample<U16, S8>(U16 from){
+    return convertSample<S16, S8>(convertSample<U16, S16>(from));
+  }
 
-inline uint8_t S32toU8(int32_t from){
-  return S8toU8(S16toS8(S32toS16(from)));
-}
-inline int32_t U8toS32(uint8_t from){
-  return S16toS32(S8toS16(U8toS8(from)));
-}
-
-inline uint8_t S16toU8(int16_t from){
-  return S8toU8(S16toS8(from));
-}
-inline int16_t U8toS16(uint8_t from){
-  return S8toS16(U8toS8(from));
-}
-
-inline uint16_t S8toU16(int8_t from){
-  return S16toU16(S8toS16(from));
-}
-inline int8_t U16toS8(uint16_t from){
-  return S16toS8(U16toS16(from));
-}
-
+  template <>
+  inline U16 convertSample<S8, U16>(S8 from){
+    return convertSample<S16, U16>(convertSample<S8, S16>(from));
+  }
 
 }
