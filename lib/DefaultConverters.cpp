@@ -4,7 +4,7 @@
 // Copyright (c) 2015-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
-#include <SoapySDR/ConverterPrimatives.hpp>
+#include <SoapySDR/ConverterPrimitives.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <cstring> //memcpy

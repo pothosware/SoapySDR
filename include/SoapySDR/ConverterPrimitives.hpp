@@ -1,7 +1,7 @@
 ///
-/// \file SoapySDR/ConverterPrimatives.hpp
+/// \file SoapySDR/ConverterPrimitives.hpp
 ///
-/// inline Soapy real Format Converter primatives.
+/// inline Soapy real Format Converter primitives.
 ///
 /// \copyright
 /// Copyright (c) 2017-2017 Coburn Wightman
@@ -34,7 +34,7 @@ namespace SoapySDR
   const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
   
 /*!
- * Conversion primatives for converting real values between Soapy Formats.
+ * Conversion primitives for converting real values between Soapy Formats.
  * \param from the value to convert from
  * \return the converted value
  */
