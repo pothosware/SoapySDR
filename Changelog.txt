@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.6.1 (pending)
+Release 0.6.1 (2017-12-12)
 ==========================
 
 - Handle null pointer in SoapySDRDevice_makeStrArgs()
