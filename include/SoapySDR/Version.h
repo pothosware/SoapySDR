@@ -26,7 +26,7 @@
  * #endif
  * \endcode
  */
-#define SOAPY_SDR_API_VERSION 0x00060000
+#define SOAPY_SDR_API_VERSION 0x00070000
 
 /*!
  * ABI Version Information - incremented when the ABI is changed.

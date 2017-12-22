@@ -5,7 +5,7 @@ Release 0.7.0 (pending)
 
 - Added converter registry API for converting between sample types
 
-Release 0.6.1 (pending)
+Release 0.6.1 (2017-12-12)
 ==========================
 
 - Handle null pointer in SoapySDRDevice_makeStrArgs()
