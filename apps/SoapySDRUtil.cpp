@@ -1,13 +1,15 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2017 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Device.hpp>
+#include <SoapySDR/ConverterRegistry.hpp>
 #include <cstdlib>
 #include <cstddef>
 #include <iostream>
+#include <iomanip>
 #include <getopt.h>
 
 std::string SoapySDRDeviceProbe(SoapySDR::Device *);
@@ -62,11 +64,28 @@ static int printInfo(void)
     SoapySDR::loadModules();
     std::cout << "done" << std::endl;
 
-    std::cout << "Available factories...";
-    const auto factories = SoapySDR::Registry::listFindFunctions();
-    for (const auto &it : factories) std::cout << it.first << ", ";
-    if (factories.empty()) std::cout << "No factories found!" << std::endl;
-    std::cout << std::endl;
+    std::cout << "Available factories... ";
+    std::string factories;
+    for (const auto &it : SoapySDR::Registry::listFindFunctions())
+    {
+        if (not factories.empty()) factories += ", ";
+        factories += it.first;
+    }
+    if (factories.empty()) factories = "No factories found!";
+    std::cout << factories << std::endl;
+
+    std::cout << "Available converters..." << std::endl;
+    for (const auto &source : SoapySDR::ConverterRegistry::listAvailableSourceFormats())
+    {
+        std::string targets;
+        for (const auto &target : SoapySDR::ConverterRegistry::listTargetFormats(source))
+        {
+            if (not targets.empty()) targets += ", ";
+            targets += target;
+        }
+        std::cout << " - " << std::setw(5) << source << " -> [" << targets << "]" << std::endl;
+    }
+
     return EXIT_SUCCESS;
 }
 
