@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-SoapySDR::ConverterRegistry::FormatConverters SoapySDR::ConverterRegistry::formatConverters;
+static SoapySDR::ConverterRegistry::FormatConverters formatConverters;
 
 SoapySDR::ConverterRegistry::ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority, ConverterFunction converterFunction)
 {

@@ -10,6 +10,7 @@
 ///
 
 #pragma once
+#include <SoapySDR/Config.hpp>
 #include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <utility>
@@ -104,9 +105,6 @@ namespace SoapySDR
      */
     static std::vector<std::string> listAvailableSourceFormats(void);
 
-  private:
-    static FormatConverters formatConverters;
-    
   };
   
 }
