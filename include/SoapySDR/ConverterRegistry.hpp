@@ -1,10 +1,10 @@
 ///
-/// \file SoapySDR/RegisterConverters.hpp
+/// \file SoapySDR/ConverterRegistry.hpp
 ///
 /// Convert buffers between stream formats.
 ///
 /// \copyright
-/// Copyright (c) 2015-2017 Josh Blum
+/// Copyright (c) 2015-2018 Josh Blum
 /// Copyright (c) 2017-2017 Coburn Wightman
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -62,7 +62,7 @@ namespace SoapySDR
      * \param priority the FunctionPriority of the converter to register
      * \param converter function to register
      */
-    ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &, ConverterFunction);
+    ConverterRegistry(const std::string &sourceFormat, const std::string &targetFormat, const FunctionPriority &priority, ConverterFunction converter);
     
     /*!
      * Get a list of formats to which we can convert the source format into.
