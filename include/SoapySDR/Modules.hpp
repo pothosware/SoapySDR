@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2016 Josh Blum
+/// Copyright (c) 2014-2018 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -57,6 +57,14 @@ SOAPY_SDR_API std::string loadModule(const std::string &path);
  * \return a dictionary of registry names to error messages
  */
 SOAPY_SDR_API Kwargs getLoaderResult(const std::string &path);
+
+/*!
+ * Get a version string for the specified module.
+ * Modules may optionally provide version strings.
+ * \param path the path to a specific module file
+ * \return a version string or empty if no version provided
+ */
+SOAPY_SDR_API std::string getModuleVersion(const std::string &path);
 
 /*!
  * Unload a module that was loaded with loadModule().

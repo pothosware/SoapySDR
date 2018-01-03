@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
@@ -189,6 +189,12 @@ std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void)
     return results;
 }
 
+std::map<std::string, std::string> &getModuleVersions(void)
+{
+    static std::map<std::string, std::string> versions;
+    return versions;
+}
+
 #ifdef _MSC_VER
 static std::string GetLastErrorMessage(void)
 {
@@ -247,6 +253,12 @@ SoapySDR::Kwargs SoapySDR::getLoaderResult(const std::string &path)
     return getLoaderResults()[path];
 }
 
+std::string SoapySDR::getModuleVersion(const std::string &path)
+{
+    if (getModuleVersions().count(path) == 0) return "";
+    return getModuleVersions()[path];
+}
+
 std::string SoapySDR::unloadModule(const std::string &path)
 {
     //check if already loaded
@@ -269,6 +281,7 @@ std::string SoapySDR::unloadModule(const std::string &path)
 
     //clear the handle
     getLoaderResults().erase(path);
+    getModuleVersions().erase(path);
     getModuleHandles().erase(path);
     return "";
 }

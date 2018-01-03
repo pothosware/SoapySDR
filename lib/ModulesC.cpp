@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -38,6 +38,11 @@ char *SoapySDR_loadModule(const char *path)
 SoapySDRKwargs SoapySDR_getLoaderResult(const char *path)
 {
     return toKwargs(SoapySDR::getLoaderResult(path));
+}
+
+char *SoapySDR_getModuleVersion(const char *path)
+{
+    return strdup(SoapySDR::getModuleVersion(path).c_str());
 }
 
 char *SoapySDR_unloadModule(const char *path)

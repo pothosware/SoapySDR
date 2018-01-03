@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
@@ -27,6 +27,8 @@ static FunctionTable &getFunctionTable(void)
 std::string &getModuleLoading(void);
 
 std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void);
+
+std::map<std::string, std::string> &getModuleVersions(void);
 
 /***********************************************************************
  * Registry entry-point implementation
@@ -87,4 +89,9 @@ SoapySDR::MakeFunctions SoapySDR::Registry::listMakeFunctions(void)
         functions[it.first] = it.second.make;
     }
     return functions;
+}
+
+void SoapySDR::registerModuleVersion(const std::string &version)
+{
+    getModuleVersions()[getModuleLoading()] = version;
 }
