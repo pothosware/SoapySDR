@@ -195,6 +195,11 @@ std::map<std::string, std::string> &getModuleVersions(void)
     return versions;
 }
 
+SoapySDR::ModuleVersion::ModuleVersion(const std::string &version)
+{
+    getModuleVersions()[getModuleLoading()] = version;
+}
+
 #ifdef _MSC_VER
 static std::string GetLastErrorMessage(void)
 {

@@ -80,4 +80,13 @@ SOAPY_SDR_API std::string unloadModule(const std::string &path);
  */
 SOAPY_SDR_API void loadModules(void);
 
+//! \cond
+//! Internal call to register version with a module during load
+class SOAPY_SDR_API ModuleVersion
+{
+public:
+    ModuleVersion(const std::string &version);
+};
+//! \endcond
+
 }

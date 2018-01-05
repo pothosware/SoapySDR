@@ -4,7 +4,7 @@
 /// Device factory registration API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2015 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -68,10 +68,5 @@ public:
 private:
     std::string _name;
 };
-
-//! \cond
-//! Internal call to register version with a module during load
-SOAPY_SDR_API void registerModuleVersion(const std::string &version);
-//! \endcond
 
 }
