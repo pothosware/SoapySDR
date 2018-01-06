@@ -50,9 +50,27 @@ function(SOAPY_SDR_MODULE_UTIL)
         endif(CHANGELOG_MATCH)
     endif()
 
+    #add git hash when possible
+    if (EXISTS "${PROJECT_SOURCE_DIR}/.git")
+        find_package(Git)
+        if(GIT_FOUND)
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} -C "${PROJECT_SOURCE_DIR}" rev-parse --short HEAD
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                OUTPUT_VARIABLE GIT_HASH)
+            if (GIT_HASH)
+                if (MODULE_VERSION)
+                    set(MODULE_VERSION "${MODULE_VERSION}-${GIT_HASH}")
+                else()
+                    set(MODULE_VERSION "${GIT_HASH}")
+                endif()
+            endif()
+        endif(GIT_FOUND)
+    endif()
+
     #version specified, build into source file
     if (MODULE_VERSION)
-        set(version_file "${CMAKE_CURRENT_BINARY_DIR}/version.cpp")
+        set(version_file "${CMAKE_CURRENT_BINARY_DIR}/Version.cpp")
         file(WRITE "${version_file}" "#include <SoapySDR/Modules.hpp>
             static const SoapySDR::ModuleVersion register${MODULE_TARGET}Version(\"${MODULE_VERSION}\");
         ")
