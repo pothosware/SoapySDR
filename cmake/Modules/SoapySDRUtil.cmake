@@ -29,6 +29,7 @@ set(INCLUDED_SOAPY_SDR_UTIL_CMAKE TRUE)
 ## VERSION - specify a version string to build into this module
 ## When not specified, the util will fall-back to PROJECT_VERSION,
 ## and scanning the in-tree Changelog.txt file (if available).
+## Packagers can pass PROJECT_VERSION_EXTRA for additional version info.
 ##
 ########################################################################
 function(SOAPY_SDR_MODULE_UTIL)
@@ -48,6 +49,15 @@ function(SOAPY_SDR_MODULE_UTIL)
         if(CHANGELOG_MATCH)
             set(MODULE_VERSION "${CMAKE_MATCH_1}")
         endif(CHANGELOG_MATCH)
+    endif()
+
+    #additional version information when specified
+    if (PROJECT_VERSION_EXTRA)
+        if (MODULE_VERSION)
+            set(MODULE_VERSION "${MODULE_VERSION}-${PROJECT_VERSION_EXTRA}")
+        else()
+            set(MODULE_VERSION "${PROJECT_VERSION_EXTRA}")
+        endif()
     endif()
 
     #add git hash when possible
@@ -70,6 +80,7 @@ function(SOAPY_SDR_MODULE_UTIL)
 
     #version specified, build into source file
     if (MODULE_VERSION)
+        message(STATUS "Module ${MODULE_TARGET} configured with version: ${MODULE_VERSION}")
         set(version_file "${CMAKE_CURRENT_BINARY_DIR}/Version.cpp")
         file(WRITE "${version_file}" "#include <SoapySDR/Modules.hpp>
             static const SoapySDR::ModuleVersion register${MODULE_TARGET}Version(\"${MODULE_VERSION}\");
