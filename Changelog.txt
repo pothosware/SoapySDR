@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.7.0 (pending)
 ==========================
 
+- Version reporting API and build support for loadable modules
 - Added converter registry API for converting between sample types
 
 Release 0.6.1 (2017-12-12)
