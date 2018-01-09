@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -6,6 +6,7 @@
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
+#include <algorithm>
 #include <cstdlib>
 #include <cstddef>
 #include <iostream>
@@ -56,13 +57,22 @@ static int printInfo(void)
     for (const auto &path : SoapySDR::listSearchPaths())
         std::cout << "Search path: " << path << std::endl;
 
+    //get a list of module and calculate the max path length
     const auto modules = SoapySDR::listModules();
-    for (const auto &mod : modules) std::cout << "Module found: " << mod << std::endl;
-    if (modules.empty()) std::cout << "No modules found!" << std::endl;
+    size_t maxModulePathLen(0);
+    for (const auto &mod : modules) maxModulePathLen = std::max(maxModulePathLen, mod.size());
 
-    std::cout << "Loading modules... " << std::flush;
-    SoapySDR::loadModules();
-    std::cout << "done" << std::endl;
+    //load each module and print information
+    for (const auto &mod : modules)
+    {
+        std::cout << "Module found: " << mod;
+        const auto &errMsg = SoapySDR::loadModule(mod);
+        if (not errMsg.empty()) std::cout << "\n  " << errMsg;
+        const auto version = SoapySDR::getModuleVersion(mod);
+        if (not version.empty()) std::cout << std::string(maxModulePathLen-mod.size(), ' ') << " (" << version << ")";
+        std::cout << std::endl;
+    }
+    if (modules.empty()) std::cout << "No modules found!" << std::endl;
 
     std::cout << "Available factories... ";
     std::string factories;

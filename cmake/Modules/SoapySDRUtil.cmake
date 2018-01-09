@@ -26,11 +26,67 @@ set(INCLUDED_SOAPY_SDR_UTIL_CMAKE TRUE)
 ## The prefix modifies the destination with an absolute path
 ## to replace the typical CMAKE_INSTALL_PREFIX install rules.
 ##
+## VERSION - specify a version string to build into this module
+## When not specified, the util will fall-back to PROJECT_VERSION,
+## and scanning the in-tree Changelog.txt file (if available).
+## Packagers can pass PROJECT_VERSION_EXTRA for additional version info.
+##
 ########################################################################
 function(SOAPY_SDR_MODULE_UTIL)
 
     include(CMakeParseArguments)
-    CMAKE_PARSE_ARGUMENTS(MODULE "" "TARGET;DESTINATION;PREFIX" "SOURCES;LIBRARIES" ${ARGN})
+    CMAKE_PARSE_ARGUMENTS(MODULE "" "TARGET;DESTINATION;PREFIX;VERSION" "SOURCES;LIBRARIES" ${ARGN})
+
+    #version not specified, try to use project version
+    if (NOT MODULE_VERSION AND PROJECT_VERSION)
+        set(MODULE_VERSION "${PROJECT_VERSION}")
+    endif()
+
+    #version not specified, try to use changelog entry
+    if (NOT MODULE_VERSION AND EXISTS "${PROJECT_SOURCE_DIR}/Changelog.txt")
+        file(READ "${PROJECT_SOURCE_DIR}/Changelog.txt" changelog_txt)
+        string(REGEX MATCH "Release ([-\\._0-9a-zA-Z]*) \\(" CHANGELOG_MATCH "${changelog_txt}")
+        if(CHANGELOG_MATCH)
+            set(MODULE_VERSION "${CMAKE_MATCH_1}")
+        endif(CHANGELOG_MATCH)
+    endif()
+
+    #additional version information when specified
+    if (PROJECT_VERSION_EXTRA)
+        if (MODULE_VERSION)
+            set(MODULE_VERSION "${MODULE_VERSION}-${PROJECT_VERSION_EXTRA}")
+        else()
+            set(MODULE_VERSION "${PROJECT_VERSION_EXTRA}")
+        endif()
+    endif()
+
+    #add git hash when possible
+    if (EXISTS "${PROJECT_SOURCE_DIR}/.git")
+        find_package(Git)
+        if(GIT_FOUND)
+            execute_process(
+                COMMAND ${GIT_EXECUTABLE} -C "${PROJECT_SOURCE_DIR}" rev-parse --short HEAD
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                OUTPUT_VARIABLE GIT_HASH)
+            if (GIT_HASH)
+                if (MODULE_VERSION)
+                    set(MODULE_VERSION "${MODULE_VERSION}-${GIT_HASH}")
+                else()
+                    set(MODULE_VERSION "${GIT_HASH}")
+                endif()
+            endif()
+        endif(GIT_FOUND)
+    endif()
+
+    #version specified, build into source file
+    if (MODULE_VERSION)
+        message(STATUS "Module ${MODULE_TARGET} configured with version: ${MODULE_VERSION}")
+        set(version_file "${CMAKE_CURRENT_BINARY_DIR}/Version.cpp")
+        file(WRITE "${version_file}" "#include <SoapySDR/Modules.hpp>
+            static const SoapySDR::ModuleVersion register${MODULE_TARGET}Version(\"${MODULE_VERSION}\");
+        ")
+        list(APPEND MODULE_SOURCES "${version_file}")
+    endif()
 
     include_directories(${SoapySDR_INCLUDE_DIRS})
     add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
