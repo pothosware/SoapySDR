@@ -4,7 +4,7 @@
 /// Utility functions to query version information.
 ///
 /// \copyright
-/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2014-2018 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -35,7 +35,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.6"
+#define SOAPY_SDR_ABI_VERSION "0.7"
 
 /*!
  * Compatibility define for GPIO access API with masks
