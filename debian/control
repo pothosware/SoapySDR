@@ -41,8 +41,11 @@ Description: SoapySDR library development files
  .
  This package contains the development files for the library.
 
-Package: soapysdr
+Package: soapysdr-util
 Architecture: any
+Conflicts: soapysdr
+Replaces: soapysdr
+Provides: soapysdr
 Depends:
     libsoapysdr0.7 (= ${binary:Version}),
     ${shlibs:Depends},
