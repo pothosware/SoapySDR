@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g74f890ce</span>
+   &#160;<span id="projectnumber">0.7.0-g2a266d60</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -88,6 +88,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1dcfbb245eea3e73c7ad42b27e0f91f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25db70bd08f34f0700bc7355e20f9af0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a25db70bd08f34f0700bc7355e20f9af0">SoapySDR_getLoaderResult</a> (const char *path)</td></tr>
 <tr class="separator:a25db70bd08f34f0700bc7355e20f9af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae949a33f8d5d42145281a4710aa2b122"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#ae949a33f8d5d42145281a4710aa2b122">SoapySDR_getModuleVersion</a> (const char *path)</td></tr>
+<tr class="separator:ae949a33f8d5d42145281a4710aa2b122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49ab5a8cbb6455a1bae0d1ca03c11aed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a49ab5a8cbb6455a1bae0d1ca03c11aed">SoapySDR_unloadModule</a> (const char *path)</td></tr>
 <tr class="separator:a49ab5a8cbb6455a1bae0d1ca03c11aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a966a79cbd67b4ba4476a6fc29fe995"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Modules_8h.html#a3a966a79cbd67b4ba4476a6fc29fe995">SoapySDR_loadModules</a> (void)</td></tr>
@@ -95,7 +97,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utility functions to deal with modules. These utility functions are made available for advanced usage. For most use cases, the API will automatically load modules.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2016 Josh Blum SPDX-License-Identifier: BSL-1.0 </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2018 Josh Blum SPDX-License-Identifier: BSL-1.0 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a25db70bd08f34f0700bc7355e20f9af0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25db70bd08f34f0700bc7355e20f9af0">&#9670;&nbsp;</a></span>SoapySDR_getLoaderResult()</h2>
@@ -119,6 +121,31 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a dictionary of registry names to error messages </dd></dl>
+
+</div>
+</div>
+<a id="ae949a33f8d5d42145281a4710aa2b122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae949a33f8d5d42145281a4710aa2b122">&#9670;&nbsp;</a></span>SoapySDR_getModuleVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char* SoapySDR_getModuleVersion </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get a version string for the specified module. Modules may optionally provide version strings. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the path to a specific module file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a version string or empty if no version provided </dd></dl>
 
 </div>
 </div>
@@ -300,7 +327,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 1 2017 00:27:20 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 21 2018 15:54:13 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

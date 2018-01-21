@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g74f890ce</span>
+   &#160;<span id="projectnumber">0.7.0-g2a266d60</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -112,8 +112,8 @@ $(function() {
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#ac726e6103fca904ddad6519f4de1d742">getNumDirectAccessBuffers</a>(Stream *stream)</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a9f514aaebb09ededf52501157bd002fc">getSampleRate</a>(const int direction, const size_t channel) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a55a126c580dc309727f86a846c77b908">getSampleRateRange</a>(const int direction, const size_t channel) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#afe160e78a8bd9810f419abf9c9319ed7">getSensorInfo</a>(const std::string &amp;name) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#af1e3076fa200bdee481beee0fd9ff326">getSensorInfo</a>(const int direction, const size_t channel, const std::string &amp;name) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#ab712a73b723668ae8ffbe2c2377e6049">getSensorInfo</a>(const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a1633703a9bff94ee296d7c619ed0104f">getSensorInfo</a>(const int direction, const size_t channel, const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#aece5f6bbe0170f785ca6171a4a120e62">getSettingInfo</a>(void) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a8a1957452cf3b324061d4a741d98d100">getSettingInfo</a>(const int direction, const size_t channel) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a8583ef0bb642a552563a71122fdb5e4c">getStreamArgsInfo</a>(const int direction, const size_t channel) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
@@ -146,8 +146,8 @@ $(function() {
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#abdc7c09c966c3554f38e99bd91c1be60">readRegister</a>(const std::string &amp;name, const unsigned addr) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#af1a867298c61f8f8127982eb2084e798">readRegister</a>(const unsigned addr) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a5533d59843b4f01bcd591abd2be9b857">readRegisters</a>(const std::string &amp;name, const unsigned addr, const size_t length) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#acc5c11bb700185f3d63410d5dc60a968">readSensor</a>(const std::string &amp;name) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a956380ef8d3e87855dafa4df54362507">readSensor</a>(const int direction, const size_t channel, const std::string &amp;name) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a0b92ce565f9210c1679695abace91fbd">readSensor</a>(const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a4cbfbb8ca1abb51820ccb7291e386cd9">readSensor</a>(const int direction, const size_t channel, const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a84fcd2f18846349ab9928c8811c9bbe8">readSetting</a>(const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#afc3018652b735f9b79479638d8b05f11">readSetting</a>(const int direction, const size_t channel, const std::string &amp;key) const</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html#a872010f1eb64e259981cf31f2e726027">readStream</a>(Stream *stream, void *const *buffs, const size_t numElems, int &amp;flags, long long &amp;timeNs, const long timeoutUs=100000)</td><td class="entry"><a class="el" href="classSoapySDR_1_1Device.html">SoapySDR::Device</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
@@ -192,7 +192,7 @@ $(function() {
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 1 2017 00:27:20 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 21 2018 15:54:13 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['float',['FLOAT',['../classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aeda865a3ace9f9683e3d80652d7f85bc6b7',1,'SoapySDR::ArgInfo']]]
+  ['custom',['CUSTOM',['../classSoapySDR_1_1ConverterRegistry.html#a93a150b8e96ffd99ff6fa3da63e1c75da8b91af0b17d0ab8960829605e5fdd9e1',1,'SoapySDR::ConverterRegistry']]]
 ];

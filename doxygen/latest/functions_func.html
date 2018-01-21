@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.6.0-g74f890ce</span>
+   &#160;<span id="projectnumber">0.7.0-g2a266d60</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -82,6 +82,9 @@ $(function() {
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>closeStream()
 : <a class="el" href="classSoapySDR_1_1Device.html#a3af55b3e429765b8e057b2b8c2af009b">SoapySDR::Device</a>
+</li>
+<li>ConverterRegistry()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#adccc33d07d68ba9f6befdc17b0c97b88">SoapySDR::ConverterRegistry</a>
 </li>
 </ul>
 
@@ -146,6 +149,9 @@ $(function() {
 <li>getFullDuplex()
 : <a class="el" href="classSoapySDR_1_1Device.html#aa4b119a8d481c8e30ac64438ed78773b">SoapySDR::Device</a>
 </li>
+<li>getFunction()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#af741564d5d4c8aa44c55744802e4bc1f">SoapySDR::ConverterRegistry</a>
+</li>
 <li>getGain()
 : <a class="el" href="classSoapySDR_1_1Device.html#aeda40de3260e0d2533e124cbc8a30555">SoapySDR::Device</a>
 </li>
@@ -189,7 +195,7 @@ $(function() {
 : <a class="el" href="classSoapySDR_1_1Device.html#a55a126c580dc309727f86a846c77b908">SoapySDR::Device</a>
 </li>
 <li>getSensorInfo()
-: <a class="el" href="classSoapySDR_1_1Device.html#afe160e78a8bd9810f419abf9c9319ed7">SoapySDR::Device</a>
+: <a class="el" href="classSoapySDR_1_1Device.html#ab712a73b723668ae8ffbe2c2377e6049">SoapySDR::Device</a>
 </li>
 <li>getSettingInfo()
 : <a class="el" href="classSoapySDR_1_1Device.html#aece5f6bbe0170f785ca6171a4a120e62">SoapySDR::Device</a>
@@ -235,6 +241,9 @@ $(function() {
 <li>listAntennas()
 : <a class="el" href="classSoapySDR_1_1Device.html#afdca4ea2cef2976757eee9072b152820">SoapySDR::Device</a>
 </li>
+<li>listAvailableSourceFormats()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#a8cd768e5a1076fbac62ee508a2b0418e">SoapySDR::ConverterRegistry</a>
+</li>
 <li>listBandwidths()
 : <a class="el" href="classSoapySDR_1_1Device.html#a31c71e0acb27c1f81c4f07879320ae93">SoapySDR::Device</a>
 </li>
@@ -256,6 +265,9 @@ $(function() {
 <li>listMakeFunctions()
 : <a class="el" href="classSoapySDR_1_1Registry.html#a4ec20addecf005e4753719a33863811f">SoapySDR::Registry</a>
 </li>
+<li>listPriorities()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#abc8c452c8958e4155e81599699b1abf1">SoapySDR::ConverterRegistry</a>
+</li>
 <li>listRegisterInterfaces()
 : <a class="el" href="classSoapySDR_1_1Device.html#acdb9f45cc440be9522d31a4ad6e02f07">SoapySDR::Device</a>
 </li>
@@ -264,6 +276,12 @@ $(function() {
 </li>
 <li>listSensors()
 : <a class="el" href="classSoapySDR_1_1Device.html#a5581e39491f40c84d8b008f20bb5b0f7">SoapySDR::Device</a>
+</li>
+<li>listSourceFormats()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#a63658391115a0bd5ba95ae60e228e684">SoapySDR::ConverterRegistry</a>
+</li>
+<li>listTargetFormats()
+: <a class="el" href="classSoapySDR_1_1ConverterRegistry.html#a0c7fb9b07b4e96f02696dbc6cc17d532">SoapySDR::ConverterRegistry</a>
 </li>
 <li>listTimeSources()
 : <a class="el" href="classSoapySDR_1_1Device.html#a707d0ee052708304b2f26c4b4ce0134f">SoapySDR::Device</a>
@@ -307,7 +325,7 @@ $(function() {
 : <a class="el" href="classSoapySDR_1_1Device.html#a5533d59843b4f01bcd591abd2be9b857">SoapySDR::Device</a>
 </li>
 <li>readSensor()
-: <a class="el" href="classSoapySDR_1_1Device.html#acc5c11bb700185f3d63410d5dc60a968">SoapySDR::Device</a>
+: <a class="el" href="classSoapySDR_1_1Device.html#a0b92ce565f9210c1679695abace91fbd">SoapySDR::Device</a>
 </li>
 <li>readSetting()
 : <a class="el" href="classSoapySDR_1_1Device.html#a84fcd2f18846349ab9928c8811c9bbe8">SoapySDR::Device</a>
@@ -444,7 +462,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 1 2017 00:27:20 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jan 21 2018 15:54:13 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

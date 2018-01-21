@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['kwargs',['Kwargs',['../namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62',1,'SoapySDR']]],
-  ['kwargslist',['KwargsList',['../namespaceSoapySDR.html#adfeb27ccbf4f8840debd7c21757c72d6',1,'SoapySDR']]]
+  ['findfunction',['FindFunction',['../namespaceSoapySDR.html#aba00ba8d822a1d5a55b74805de1cef0a',1,'SoapySDR']]],
+  ['findfunctions',['FindFunctions',['../namespaceSoapySDR.html#a911d459c60a5a20ff9f517f2739db50b',1,'SoapySDR']]],
+  ['formatconverters',['FormatConverters',['../classSoapySDR_1_1ConverterRegistry.html#a818ebc51b1e57b0182098912abc444e7',1,'SoapySDR::ConverterRegistry']]]
 ];
