@@ -73,10 +73,10 @@ std::string SoapySDR::getRootPath(void)
  **********************************************************************/
 static std::vector<std::string> searchModulePath(const std::string &path)
 {
-    const std::string pattern = path + "*.*";
     std::vector<std::string> modulePaths;
 
 #ifdef _MSC_VER
+    const std::string pattern = path + "*.dll";
 
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
@@ -96,6 +96,7 @@ static std::vector<std::string> searchModulePath(const std::string &path)
     }
 
 #else
+    const std::string pattern = path + "*.so";
 
     glob_t globResults;
 
