@@ -6,7 +6,7 @@
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
-#include <algorithm>
+#include <algorithm> //sort, min, max
 #include <cstdlib>
 #include <cstddef>
 #include <iostream>
@@ -21,6 +21,17 @@ int SoapySDRRateTest(
     const std::string &directionStr);
 
 /***********************************************************************
+ * Print the banner
+ **********************************************************************/
+static void printBanner(void)
+{
+    std::cout << "######################################################" << std::endl;
+    std::cout << "##     Soapy SDR -- the SDR abstraction library     ##" << std::endl;
+    std::cout << "######################################################" << std::endl;
+    std::cout << std::endl;
+}
+
+/***********************************************************************
  * Print help message
  **********************************************************************/
 static int printHelp(void)
@@ -32,7 +43,11 @@ static int printHelp(void)
     std::cout << "    --find[=\"driver=foo,type=bar\"] \t Discover available devices" << std::endl;
     std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
     std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "  Advanced options:" << std::endl;
     std::cout << "    --check[=driverName] \t\t Check if driver is present" << std::endl;
+    std::cout << "    --sparse             \t\t Simplified output for --find" << std::endl;
     std::cout << std::endl;
 
     std::cout << "  Rate testing options:" << std::endl;
@@ -102,38 +117,46 @@ static int printInfo(void)
 /***********************************************************************
  * Find devices and print args
  **********************************************************************/
-static int findDevices(void)
+static int findDevices(const std::string &argStr, const bool sparse)
 {
-    std::string argStr;
-    if (optarg != NULL) argStr = optarg;
-
     const auto results = SoapySDR::Device::enumerate(argStr);
-    for (size_t i = 0; i < results.size(); i++)
+    if (sparse)
     {
-        std::cout << "Found device " << i << std::endl;
-        for (const auto &it : results[i])
+        std::vector<std::string> sparseResults;
+        for (size_t i = 0; i < results.size(); i++)
         {
-            std::cout << "  " << it.first << " = " << it.second << std::endl;
+            const auto it = results[i].find("label");
+            if (it != results[i].end()) sparseResults.push_back(it->second);
+            else sparseResults.push_back(SoapySDR::KwargsToString(results[i]));
         }
-        std::cout << std::endl;
+        std::sort(sparseResults.begin(), sparseResults.end());
+        for (size_t i = 0; i < sparseResults.size(); i++)
+        {
+            std::cout << i << ": " << sparseResults[i] << std::endl;
+        }
     }
-    if (results.empty())
+    else
     {
-        std::cerr << "No devices found!" << std::endl;
-        return EXIT_FAILURE;
+        for (size_t i = 0; i < results.size(); i++)
+        {
+            std::cout << "Found device " << i << std::endl;
+            for (const auto &it : results[i])
+            {
+                std::cout << "  " << it.first << " = " << it.second << std::endl;
+            }
+            std::cout << std::endl;
+        }
+        if (results.empty()) std::cerr << "No devices found!" << std::endl;
+        else std::cout << std::endl;
     }
-    std::cout << std::endl;
-    return EXIT_SUCCESS;
+    return results.empty()?EXIT_FAILURE:EXIT_SUCCESS;
 }
 
 /***********************************************************************
  * Make device and print hardware info
  **********************************************************************/
-static int makeDevice(void)
+static int makeDevice(const std::string &argStr)
 {
-    std::string argStr;
-    if (optarg != NULL) argStr = optarg;
-
     std::cout << "Make device " << argStr << std::endl;
     try
     {
@@ -158,11 +181,8 @@ static int makeDevice(void)
 /***********************************************************************
  * Make device and print detailed info
  **********************************************************************/
-static int probeDevice(void)
+static int probeDevice(const std::string &argStr)
 {
-    std::string argStr;
-    if (optarg != NULL) argStr = optarg;
-
     std::cout << "Probe device " << argStr << std::endl;
     try
     {
@@ -182,11 +202,8 @@ static int probeDevice(void)
 /***********************************************************************
  * Check the registry for a specific driver
  **********************************************************************/
-static int checkDriver(void)
+static int checkDriver(const std::string &driverName)
 {
-    std::string driverName;
-    if (optarg != NULL) driverName = optarg;
-
     std::cout << "Loading modules... " << std::flush;
     SoapySDR::loadModules();
     std::cout << "done" << std::endl;
@@ -211,15 +228,15 @@ static int checkDriver(void)
  **********************************************************************/
 int main(int argc, char *argv[])
 {
-    std::cout << "######################################################" << std::endl;
-    std::cout << "## Soapy SDR -- the SDR abstraction library" << std::endl;
-    std::cout << "######################################################" << std::endl;
-    std::cout << std::endl;
-
     std::string argStr;
     std::string chanStr;
     std::string dirStr;
     double sampleRate(0.0);
+    std::string driverName;
+    bool findDevicesFlag(false);
+    bool sparsePrintFlag(false);
+    bool makeDeviceFlag(false);
+    bool probeDeviceFlag(false);
 
     /*******************************************************************
      * parse command line options
@@ -230,7 +247,9 @@ int main(int argc, char *argv[])
         {"make", optional_argument, 0, 'm'},
         {"info", optional_argument, 0, 'i'},
         {"probe", optional_argument, 0, 'p'},
+
         {"check", optional_argument, 0, 'c'},
+        {"sparse", no_argument, 0, 's'},
 
         {"args", optional_argument, 0, 'a'},
         {"rate", optional_argument, 0, 'r'},
@@ -244,12 +263,30 @@ int main(int argc, char *argv[])
     {
         switch (option)
         {
-        case 'h': return printHelp();
-        case 'i': return printInfo();
-        case 'f': return findDevices();
-        case 'm': return makeDevice();
-        case 'p': return probeDevice();
-        case 'c': return checkDriver();
+        case 'h':
+            printBanner();
+            return printHelp();
+        case 'i':
+            printBanner();
+            return printInfo();
+        case 'f':
+            findDevicesFlag = true;
+            if (optarg != nullptr) argStr = optarg;
+            break;
+        case 'm':
+            makeDeviceFlag = true;
+            if (optarg != nullptr) argStr = optarg;
+            break;
+        case 'p':
+            probeDeviceFlag = true;
+            if (optarg != nullptr) argStr = optarg;
+            break;
+        case 'c':
+            if (optarg != nullptr) driverName = optarg;
+            break;
+        case 's':
+            sparsePrintFlag = true;
+            break;
         case 'a':
             if (optarg != nullptr) argStr = optarg;
             break;
@@ -264,6 +301,12 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
+    if (not sparsePrintFlag) printBanner();
+    if (not driverName.empty()) return checkDriver(driverName);
+    if (findDevicesFlag) return findDevices(argStr, sparsePrintFlag);
+    if (makeDeviceFlag)  return makeDevice(argStr);
+    if (probeDeviceFlag) return probeDevice(argStr);
 
     //invoke utilities that rely on multiple arguments
     if (sampleRate != 0.0)
