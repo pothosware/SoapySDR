@@ -137,7 +137,12 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
+if(${CMAKE_VERSION} VERSION_LESS "3.8")
 SWIG_ADD_MODULE(SoapySDR python SoapySDR.i)
+else()
+SWIG_ADD_LIBRARY(SoapySDR LANGUAGE python SOURCES SoapySDR.i)
+endif()
+
 SWIG_LINK_LIBRARIES(SoapySDR ${SoapySDR_LIBRARIES} ${PYTHON_LIBRARIES})
 
 ########################################################################
