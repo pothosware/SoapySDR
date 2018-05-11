@@ -34,7 +34,6 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
     std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
 
-    loadModules();
     SoapySDR::KwargsList results;
     for (const auto &it : Registry::listFindFunctions())
     {
