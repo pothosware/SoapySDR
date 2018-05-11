@@ -223,8 +223,13 @@ static std::string GetLastErrorMessage(void)
 }
 #endif
 
+static bool enableAutomaticLoadModules(true);
+
 std::string SoapySDR::loadModule(const std::string &path)
 {
+    //disable automatic load modules when individual modules are manually loaded
+    enableAutomaticLoadModules = false;
+
     //check if already loaded
     if (getModuleHandles().count(path) != 0) return path + " already loaded";
 
@@ -298,13 +303,23 @@ std::string SoapySDR::unloadModule(const std::string &path)
 
 void lateLoadNullDevice(void);
 
-void SoapySDR::loadModules(void)
+void automaticLoadModules(void)
 {
+    //loaded variable makes automatic load a one-shot
     static bool loaded = false;
     if (loaded) return;
     loaded = true;
+
+    //initialize any static units in the library
+    //rather than rely on static initialization
     lateLoadNullDevice();
 
+    //load the modules when not otherwise disabled
+    if (enableAutomaticLoadModules) SoapySDR::loadModules();
+}
+
+void SoapySDR::loadModules(void)
+{
     const auto paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
