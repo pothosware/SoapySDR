@@ -320,6 +320,10 @@ void automaticLoadModules(void)
 
 void SoapySDR::loadModules(void)
 {
+    //initialize any static units in the library
+    //rather than rely on static initialization
+    lateLoadNullDevice();
+
     const auto paths = listModules();
     for (size_t i = 0; i < paths.size(); i++)
     {
