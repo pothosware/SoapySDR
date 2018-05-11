@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2017 Coburn Wightman
 //
 // derived from SoapyRemote/client/ClientStreamData.cpp
-// Copyright (c) 2015-2017 Josh Blum
+// Copyright (c) 2015-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/ConverterPrimatives.hpp>
@@ -29,9 +29,9 @@ static void genericF32toF32(const void *srcBuff, void *dstBuff, const size_t num
       auto *src = (float*)srcBuff;
       auto *dst = (float*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = float(src[i]) * scaler;
-	}
+        {
+          dst[i] = float(src[i]) * scaler;
+        }
     }
 }
 
@@ -52,9 +52,9 @@ static void genericS32toS32(const void *srcBuff, void *dstBuff, const size_t num
       auto *src = (int32_t*)srcBuff;
       auto *dst = (int32_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int32_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int32_t(src[i]) * scaler;
+        }
     }
 }
 
@@ -75,9 +75,9 @@ static void genericS16toS16(const void *srcBuff, void *dstBuff, const size_t num
       auto *src = (int16_t*)srcBuff;
       auto *dst = (int16_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int16_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int16_t(src[i]) * scaler;
+        }
     }
 }
 
@@ -98,9 +98,9 @@ static void genericS8toS8(const void *srcBuff, void *dstBuff, const size_t numEl
       auto *src = (int8_t*)srcBuff;
       auto *dst = (int8_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int8_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int8_t(src[i]) * scaler;
+        }
     }
 }
 
@@ -386,9 +386,9 @@ static void genericCF32toCF32(const void *srcBuff, void *dstBuff, const size_t n
       auto *src = (float*)srcBuff;
       auto *dst = (float*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = float(src[i]) * scaler;
-	}
+        {
+          dst[i] = float(src[i]) * scaler;
+        }
     }
 }
 
@@ -409,9 +409,9 @@ static void genericCS32toCS32(const void *srcBuff, void *dstBuff, const size_t n
       auto *src = (int32_t*)srcBuff;
       auto *dst = (int32_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int32_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int32_t(src[i]) * scaler;
+        }
     }
 }
 
@@ -432,9 +432,9 @@ static void genericCS16toCS16(const void *srcBuff, void *dstBuff, const size_t n
       auto *src = (int16_t*)srcBuff;
       auto *dst = (int16_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int16_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int16_t(src[i]) * scaler;
+        }
     }
 }
 
@@ -455,9 +455,9 @@ static void genericCS8toCS8(const void *srcBuff, void *dstBuff, const size_t num
       auto *src = (int8_t*)srcBuff;
       auto *dst = (int8_t*)dstBuff;
       for (size_t i = 0; i < numElems*elemDepth; i++)
-	{
-	  dst[i] = int8_t(src[i]) * scaler;
-	}
+        {
+          dst[i] = int8_t(src[i]) * scaler;
+        }
     }
 }
 
