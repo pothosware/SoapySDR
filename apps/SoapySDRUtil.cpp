@@ -204,10 +204,6 @@ static int probeDevice(const std::string &argStr)
  **********************************************************************/
 static int checkDriver(const std::string &driverName)
 {
-    std::cout << "Loading modules... " << std::flush;
-    SoapySDR::loadModules();
-    std::cout << "done" << std::endl;
-
     std::cout << "Checking driver '" << driverName << "'... " << std::flush;
     const auto factories = SoapySDR::Registry::listFindFunctions();
 
@@ -303,6 +299,11 @@ int main(int argc, char *argv[])
     }
 
     if (not sparsePrintFlag) printBanner();
+
+    std::cout << "Loading modules... " << std::flush;
+    SoapySDR::loadModules();
+    std::cout << "done" << std::endl;
+
     if (not driverName.empty()) return checkDriver(driverName);
     if (findDevicesFlag) return findDevices(argStr, sparsePrintFlag);
     if (makeDeviceFlag)  return makeDevice(argStr);
