@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -30,11 +30,13 @@ static DeviceCounts &getDeviceCounts(void)
     return table;
 }
 
+void automaticLoadModules(void);
+
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
     std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
 
-    loadModules();
+    automaticLoadModules();
     SoapySDR::KwargsList results;
     for (const auto &it : Registry::listFindFunctions())
     {
