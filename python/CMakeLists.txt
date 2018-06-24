@@ -40,6 +40,7 @@ message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 ########################################################################
 # Find Python libs
 ########################################################################
+option(USE_PYTHON_CONFIG "use python-config to locate development files" TRUE)
 set(PYTHON_CONFIG_EXECUTABLE ${PYTHON_EXECUTABLE}-config
     CACHE FILEPATH "Path to python-config executable")
 if (USE_PYTHON_CONFIG AND EXISTS ${PYTHON_CONFIG_EXECUTABLE})
@@ -85,18 +86,6 @@ if (PYTHON_VERSION_STRING AND PYTHONLIBS_VERSION_STRING)
     endif()
 endif()
 
-#set once we know that executable and libs are found and match
-#this tells the parent scope to build python3 when this is python2
-if(PYTHON_VERSION_STRING AND "${PYTHON_VERSION_STRING}" VERSION_LESS "3.0")
-    set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
-endif()
-
-#or enable search for python3 when this directory failed to find
-#a full set of python interpreter and devel files of any version
-if(NOT PYTHONINTERP_FOUND OR NOT PYTHONLIBS_FOUND)
-    set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
-endif()
-
 ########################################################################
 ## set the swig flags - shared with python3 build
 ########################################################################
@@ -114,7 +103,33 @@ if (SIZE_T_IS_UNSIGNED_INT)
     list(APPEND CMAKE_SWIG_FLAGS -DSIZE_T_IS_UNSIGNED_INT)
 endif (SIZE_T_IS_UNSIGNED_INT)
 
-set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS} PARENT_SCOPE)
+########################################################################
+## Export variables for python3 subdirectory
+########################################################################
+
+#this directory used as a stand-alone build since the library is pulled in externally
+#set ENABLE_LIBRARY for cmake_dependent_option() used in the feature setup below
+if ("${PROJECT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
+    set(ENABLE_LIBRARY ${SoapySDR_FOUND})
+
+#otherwise export enable and swig variables used in the python3 directory
+else ()
+
+    #set once we know that executable and libs are found and match
+    #this tells the parent scope to build python3 when this is python2
+    if(PYTHON_VERSION_STRING AND "${PYTHON_VERSION_STRING}" VERSION_LESS "3.0")
+        set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
+    endif()
+
+    #or enable search for python3 when this directory failed to find
+    #a full set of python interpreter and devel files of any version
+    if(NOT PYTHONINTERP_FOUND OR NOT PYTHONLIBS_FOUND)
+        set(BUILD_PYTHON3 TRUE PARENT_SCOPE)
+    endif()
+
+    set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS} PARENT_SCOPE)
+
+endif ()
 
 ########################################################################
 ## Feature registration

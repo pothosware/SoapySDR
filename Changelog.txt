@@ -8,6 +8,11 @@ Release 0.7.0 (pending)
 - Version reporting API and build support for loadable modules
 - Added converter registry API for converting between sample types
 
+Python build changes:
+
+- Better support python subdirectory as a stand-alone project
+- Turn on USE_PYTHON_CONFIG by default to use python-config
+
 Release 0.6.1 (2017-12-12)
 ==========================
 
