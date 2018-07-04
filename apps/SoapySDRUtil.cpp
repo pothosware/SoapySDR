@@ -12,6 +12,8 @@
 #include <iostream>
 #include <iomanip>
 #include <getopt.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 std::string SoapySDRDeviceProbe(SoapySDR::Device *);
 int SoapySDRRateTest(
@@ -69,13 +71,22 @@ static int printInfo(void)
     std::cout << "ABI Version: v" << SoapySDR::getABIVersion() << std::endl;
     std::cout << "Install root: " << SoapySDR::getRootPath() << std::endl;
 
-    for (const auto &path : SoapySDR::listSearchPaths())
-        std::cout << "Search path: " << path << std::endl;
-
-    //get a list of module and calculate the max path length
+    //max path length for alignment
+    size_t maxPathLen(0);
+    const auto searchPaths = SoapySDR::listSearchPaths();
     const auto modules = SoapySDR::listModules();
-    size_t maxModulePathLen(0);
-    for (const auto &mod : modules) maxModulePathLen = std::max(maxModulePathLen, mod.size());
+    for (const auto &path : searchPaths) maxPathLen = std::max(maxPathLen, path.size());
+    for (const auto &mod : modules) maxPathLen = std::max(maxPathLen, mod.size());
+
+    //print search path information
+    for (const auto &path : searchPaths)
+    {
+        struct stat info;
+        const bool missing = (stat(path.c_str(), &info) != 0);
+        std::cout << "Search path:  " << path;
+        if (missing) std::cout << std::string(maxPathLen-path.size(), ' ') << " (missing)";
+        std::cout << std::endl;
+    }
 
     //load each module and print information
     for (const auto &mod : modules)
@@ -84,7 +95,7 @@ static int printInfo(void)
         const auto &errMsg = SoapySDR::loadModule(mod);
         if (not errMsg.empty()) std::cout << "\n  " << errMsg;
         const auto version = SoapySDR::getModuleVersion(mod);
-        if (not version.empty()) std::cout << std::string(maxModulePathLen-mod.size(), ' ') << " (" << version << ")";
+        if (not version.empty()) std::cout << std::string(maxPathLen-mod.size(), ' ') << " (" << version << ")";
         std::cout << std::endl;
     }
     if (modules.empty()) std::cout << "No modules found!" << std::endl;
