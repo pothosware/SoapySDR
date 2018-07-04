@@ -1,4 +1,15 @@
 ########################################################################
+## Feature registration
+########################################################################
+include(FeatureSummary)
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_APPS "Enable command line applications" ON "ENABLE_LIBRARY" OFF)
+add_feature_info(Apps ENABLE_APPS "command line applications")
+if (NOT ENABLE_APPS)
+    return()
+endif()
+
+########################################################################
 # Build utility executable
 ########################################################################
 find_package(SoapySDR NO_MODULE REQUIRED)
