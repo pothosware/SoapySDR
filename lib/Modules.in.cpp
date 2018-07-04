@@ -74,10 +74,9 @@ std::string SoapySDR::getRootPath(void)
 static std::vector<std::string> searchModulePath(const std::string &path)
 {
     std::vector<std::string> modulePaths;
+    const std::string pattern = path + "*@MODULE_EXT@";
 
 #ifdef _MSC_VER
-    const std::string pattern = path + "*.dll";
-
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
     HANDLE hFind = ::FindFirstFile(pattern.c_str(), &fd); 
@@ -96,8 +95,6 @@ static std::vector<std::string> searchModulePath(const std::string &path)
     }
 
 #else
-    const std::string pattern = path + "*.so";
-
     glob_t globResults;
 
     const int ret = glob(pattern.c_str(), 0/*no flags*/, NULL, &globResults);
@@ -164,6 +161,8 @@ std::vector<std::string> SoapySDR::listModules(void)
 
 std::vector<std::string> SoapySDR::listModules(const std::string &path)
 {
+    static const std::string suffix("@MODULE_EXT@");
+    if (path.rfind(suffix) == (path.size()-suffix.size())) return {path};
     return searchModulePath(path + "/"); //requires trailing slash
 }
 

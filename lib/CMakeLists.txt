@@ -30,6 +30,14 @@ list(APPEND SOAPY_SDR_LIBRARIES
     ${CMAKE_DL_LIBS}
 )
 
+if (WIN32)
+    set(MODULE_EXT "dll")
+elseif (UNIX)
+    set(MODULE_EXT "so")
+else()
+    message(FATAL_ERROR "not win32 or unix")
+endif()
+
 #support threaded client code
 #notice that -pthread is not the same as -lpthread
 if(CMAKE_COMPILER_IS_GNUCXX)

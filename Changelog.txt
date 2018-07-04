@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.7.0 (pending)
 ==========================
 
+- Support list of module files in the search path
 - Disable automatic module load when loadModule is used first
 - Added --sparse print option to command line SoapySDRUtil
 - Version reporting API and build support for loadable modules
