@@ -1,10 +1,6 @@
 ########################################################################
-# Project setup
+# Feature setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8)
-project(SoapySDRPython3 CXX)
-enable_testing()
-
 find_package(SoapySDR NO_MODULE REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
