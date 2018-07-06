@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -72,7 +72,7 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
     return 0;
 }
 
-const char *SoapySDRKwargs_get(SoapySDRKwargs *args, const char *key)
+const char *SoapySDRKwargs_get(const SoapySDRKwargs *args, const char *key)
 {
     for (size_t i = 0; i < args->size; i++)
     {
