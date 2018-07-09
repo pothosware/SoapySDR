@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "TypeHelpers.hpp"
@@ -28,27 +28,51 @@ void SoapySDRStrings_clear(char ***elems, const size_t length)
     *elems = NULL;
 }
 
-void SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
+int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 {
     for (size_t i = 0; i < args->size; i++)
     {
         if (strcmp(args->keys[i], key) == 0)
         {
+            auto new_val = strdup(val);
+            if (new_val == nullptr) return -1;
             free(args->vals[i]);
-            args->vals[i] = strdup(val);
-            return;
+            args->vals[i] = new_val;
+            return 0;
         }
     }
 
-    args->size++;
-    args->keys = (char **)realloc(args->keys, sizeof(char *)*args->size);
-    args->vals = (char **)realloc(args->vals, sizeof(char *)*args->size);
+    //increase the memory size by 1 element and assign the new pointer on success
+    //the container will continue to be in a good state even after realloc failure
+    auto new_keys = (char **)realloc(args->keys, sizeof(char *)*(args->size+1));
+    auto new_vals = (char **)realloc(args->vals, sizeof(char *)*(args->size+1));
+    if (new_keys != nullptr) args->keys = new_keys;
+    if (new_vals != nullptr) args->vals = new_vals;
 
-    args->keys[args->size-1] = strdup(key);
-    args->vals[args->size-1] = strdup(val);
+    //error: the current allocation has no space for the new element
+    if (new_keys == nullptr or new_vals == nullptr) return -1;
+
+    //make copies of the key and value to store
+    auto new_key = strdup(key);
+    auto new_val = strdup(val);
+
+    //error: could not make a copy of the key or value string
+    //free both pointers in case one of them was allocated
+    if (new_key == nullptr or new_val == nullptr)
+    {
+        free(new_key);
+        free(new_val);
+        return -1;
+    }
+
+    //assign the new entry
+    args->keys[args->size] = new_key;
+    args->vals[args->size] = new_val;
+    args->size++;
+    return 0;
 }
 
-const char *SoapySDRKwargs_get(SoapySDRKwargs *args, const char *key)
+const char *SoapySDRKwargs_get(const SoapySDRKwargs *args, const char *key)
 {
     for (size_t i = 0; i < args->size; i++)
     {

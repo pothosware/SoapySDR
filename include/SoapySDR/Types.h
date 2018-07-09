@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2014-2018 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -110,14 +110,20 @@ SOAPY_SDR_API void SoapySDRStrings_clear(char ***elems, const size_t length);
 
 /*!
  * Set a key/value pair in a kwargs structure.
+ * \post
+ * If the key exists, the existing entry will be modified;
+ * otherwise a new entry will be appended to args.
+ * On error, the elements of args will not be modified,
+ * and args is guaranteed to be in a good state.
+ * \return 0 for success, otherwise allocation error
  */
-SOAPY_SDR_API void SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val);
+SOAPY_SDR_API int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val);
 
 /*!
  * Get a value given a key in a kwargs structure.
  * \return the string or NULL if not found
  */
-SOAPY_SDR_API const char *SoapySDRKwargs_get(SoapySDRKwargs *args, const char *key);
+SOAPY_SDR_API const char *SoapySDRKwargs_get(const SoapySDRKwargs *args, const char *key);
 
 /*!
  * Clear the contents of a kwargs structure.
