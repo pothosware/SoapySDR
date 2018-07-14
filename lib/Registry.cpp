@@ -1,7 +1,8 @@
-// Copyright (c) 2014-2016 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Registry.hpp>
+#include <mutex>
 
 /***********************************************************************
  * Function table holds all registration entries by name
@@ -21,6 +22,12 @@ static FunctionTable &getFunctionTable(void)
     return table;
 }
 
+static std::recursive_mutex &getRegistryMutex(void)
+{
+    static std::recursive_mutex mutex;
+    return mutex;
+}
+
 /***********************************************************************
  * Module loader shared data structures
  **********************************************************************/
@@ -33,6 +40,8 @@ std::map<std::string, SoapySDR::Kwargs> &getLoaderResults(void);
  **********************************************************************/
 SoapySDR::Registry::Registry(const std::string &name, const FindFunction &find, const MakeFunction &make, const std::string &abi)
 {
+    std::lock_guard<std::recursive_mutex> lock(getRegistryMutex());
+
     //create an entry for the loader result
     std::string &errorMsg = getLoaderResults()[getModuleLoading()][name];
 
@@ -71,6 +80,8 @@ SoapySDR::Registry::~Registry(void)
  **********************************************************************/
 SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 {
+    std::lock_guard<std::recursive_mutex> lock(getRegistryMutex());
+
     FindFunctions functions;
     for (const auto &it : getFunctionTable())
     {
@@ -81,6 +92,8 @@ SoapySDR::FindFunctions SoapySDR::Registry::listFindFunctions(void)
 
 SoapySDR::MakeFunctions SoapySDR::Registry::listMakeFunctions(void)
 {
+    std::lock_guard<std::recursive_mutex> lock(getRegistryMutex());
+
     MakeFunctions functions;
     for (const auto &it : getFunctionTable())
     {
