@@ -8,6 +8,7 @@
 #include <string>
 #include <cstdlib> //getenv
 #include <sstream>
+#include <mutex>
 #include <map>
 
 #ifdef _MSC_VER
@@ -16,6 +17,12 @@
 #include <dlfcn.h>
 #include <glob.h>
 #endif
+
+static std::recursive_mutex &getModuleMutex(void)
+{
+    static std::recursive_mutex mutex;
+    return mutex;
+}
 
 /***********************************************************************
  * root installation path
@@ -226,6 +233,8 @@ static bool enableAutomaticLoadModules(true);
 
 std::string SoapySDR::loadModule(const std::string &path)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
+
     //disable automatic load modules when individual modules are manually loaded
     enableAutomaticLoadModules = false;
 
@@ -259,18 +268,22 @@ std::string SoapySDR::loadModule(const std::string &path)
 
 SoapySDR::Kwargs SoapySDR::getLoaderResult(const std::string &path)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
     if (getLoaderResults().count(path) == 0) return SoapySDR::Kwargs();
     return getLoaderResults()[path];
 }
 
 std::string SoapySDR::getModuleVersion(const std::string &path)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
     if (getModuleVersions().count(path) == 0) return "";
     return getModuleVersions()[path];
 }
 
 std::string SoapySDR::unloadModule(const std::string &path)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
+
     //check if already loaded
     if (getModuleHandles().count(path) == 0) return path + " never loaded";
 
@@ -304,6 +317,8 @@ void lateLoadNullDevice(void);
 
 void automaticLoadModules(void)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
+
     //loaded variable makes automatic load a one-shot
     static bool loaded = false;
     if (loaded) return;
@@ -319,6 +334,8 @@ void automaticLoadModules(void)
 
 void SoapySDR::loadModules(void)
 {
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
+
     //initialize any static units in the library
     //rather than rely on static initialization
     lateLoadNullDevice();
