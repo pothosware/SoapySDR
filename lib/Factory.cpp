@@ -6,6 +6,7 @@
 #include <SoapySDR/Modules.hpp>
 #include <stdexcept>
 #include <iostream>
+#include <future>
 #include <mutex>
 
 static std::recursive_mutex &getFactoryMutex(void)
@@ -34,16 +35,25 @@ void automaticLoadModules(void);
 
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+    automaticLoadModules(); //perform one-shot load
 
-    automaticLoadModules();
-    SoapySDR::KwargsList results;
+    //launch futures to enumerate devices for each module
+    std::map<std::string, std::future<SoapySDR::KwargsList>> futures;
     for (const auto &it : Registry::listFindFunctions())
     {
-        if (args.count("driver") != 0 and args.at("driver") != it.first) continue;
+        const bool specifiedDriver = args.count("driver") != 0;
+        if (specifiedDriver and args.at("driver") != it.first) continue;
+        const auto launchType = specifiedDriver?std::launch::deferred:std::launch::async;
+        futures[it.first] = std::async(launchType, it.second, args);
+    }
+
+    //collect the asynchronous results
+    SoapySDR::KwargsList results;
+    for (auto &it : futures)
+    {
         try
         {
-            SoapySDR::KwargsList results0 = it.second(args);
+            auto results0 = it.second.get();
             for (size_t i = 0; i < results0.size(); i++)
             {
                 results0[i]["driver"] = it.first;
