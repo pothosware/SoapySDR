@@ -152,12 +152,22 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
         if (hybridArgs.count(it.first) == 0) hybridArgs[it.first] = it.second;
     }
 
+    //dont continue when driver is unspecified,
+    //unless there is only one available driver option
+    const bool specifiedDriver = hybridArgs.count("driver") != 0;
+    const auto makeFunctions = Registry::listMakeFunctions();
+    if (not specifiedDriver and makeFunctions.size() > 2) //more than factory: null + one loaded driver
+    {
+        throw std::runtime_error("SoapySDR::Device::make() no driver specified and no enumeration results");
+    }
+
     //search for a cache entry or launch a future if not found
     std::map<Kwargs, std::shared_future<Device *>> cache;
     std::shared_future<Device *> deviceFuture;
-    for (const auto &it : Registry::listMakeFunctions())
+    for (const auto &it : makeFunctions)
     {
-        if (hybridArgs.count("driver") != 0 and hybridArgs.at("driver") != it.first) continue;
+        if (not specifiedDriver and it.first == "null") continue; //skip null unless explicitly specified
+        if (specifiedDriver and hybridArgs.at("driver") != it.first) continue; //filter for driver match
         auto &cacheEntry = cache[discoveredArgs];
         if (not cacheEntry.valid()) cacheEntry = std::async(std::launch::deferred, it.second, hybridArgs);
         deviceFuture = cacheEntry;
