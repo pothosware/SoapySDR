@@ -116,7 +116,6 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 static SoapySDR::Device* getDeviceFromTable(const SoapySDR::Kwargs &args)
 {
     if (args.empty()) return nullptr;
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
     if (getDeviceTable().count(args) != 0 and getDeviceCounts().count(getDeviceTable().at(args)) != 0)
     {
         auto device = getDeviceTable().at(args);
@@ -128,16 +127,19 @@ static SoapySDR::Device* getDeviceFromTable(const SoapySDR::Kwargs &args)
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
 {
-    Device *device = nullptr;
+    std::unique_lock<std::recursive_mutex> lock(getFactoryMutex());
 
     //the arguments may have already come from enumerate and been used to open a device
-    device = getDeviceFromTable(inputArgs);
+    auto device = getDeviceFromTable(inputArgs);
     if (device != nullptr) return device;
 
     //otherwise the args must always come from an enumeration result
+    //unlock the mutex to block on the enumeration call
     Kwargs discoveredArgs;
+    lock.unlock();
     const auto results = Device::enumerate(inputArgs);
     if (not results.empty()) discoveredArgs = results.front();
+    lock.lock();
 
     //check the device table for an already allocated device
     device = getDeviceFromTable(discoveredArgs);
@@ -150,21 +152,32 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
         if (hybridArgs.count(it.first) == 0) hybridArgs[it.first] = it.second;
     }
 
-    //lock during device construction
-    //make itself can be parallelized, but we need to keep track of in-process factories
-    //so that other calling threads with the same args can wait on the result
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
-
-    //loop through make functions and call on module match
+    //search for a cache entry or launch a future if not found
+    std::map<Kwargs, std::shared_future<Device *>> cache;
+    std::shared_future<Device *> deviceFuture;
     for (const auto &it : Registry::listMakeFunctions())
     {
         if (hybridArgs.count("driver") != 0 and hybridArgs.at("driver") != it.first) continue;
-        device = it.second(hybridArgs);
+        auto &cacheEntry = cache[discoveredArgs];
+        if (not cacheEntry.valid()) cacheEntry = std::async(std::launch::deferred, it.second, hybridArgs);
+        deviceFuture = cacheEntry;
         break;
     }
-    if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() no match");
+
+    //no match found for the arguments in the loop above
+    if (not deviceFuture.valid()) throw std::runtime_error("SoapySDR::Device::make() no match");
+
+    //unlock the mutex to block on the factory call
+    lock.unlock();
+    deviceFuture.wait();
+    lock.lock();
+
+    //the future is complete, erase the cache entry
+    //other callers have a copy of the shared future copy or a device table entry
+    cache.erase(discoveredArgs);
 
     //store into the table
+    device = deviceFuture.get(); //may throw
     getDeviceTable()[discoveredArgs] = device;
     getDeviceCounts()[device]++;
 
