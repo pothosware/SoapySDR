@@ -4,10 +4,14 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Modules.hpp>
+#include <SoapySDR/Logger.hpp>
 #include <stdexcept>
 #include <iostream>
 #include <future>
+#include <chrono>
 #include <mutex>
+
+static const auto CACHE_TIMEOUT = std::chrono::seconds(1);
 
 static std::recursive_mutex &getFactoryMutex(void)
 {
@@ -37,14 +41,48 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
     automaticLoadModules(); //perform one-shot load
 
+    //enumerate cache data structure
+    //(driver key, find args) -> (timeout, handles list)
+    static std::recursive_mutex cacheMutex;
+    static std::map<std::pair<std::string, Kwargs>,
+        std::pair<std::chrono::high_resolution_clock::time_point, std::shared_future<KwargsList>>
+    > cache;
+
+    //clean expired entries from the cache
+    {
+        const auto now = std::chrono::high_resolution_clock::now();
+        std::unique_lock<std::recursive_mutex> lock(cacheMutex);
+        for (auto it = cache.begin(); it != cache.end();)
+        {
+            if (it->second.first < now) cache.erase(it++);
+            else it++;
+        }
+    }
+
     //launch futures to enumerate devices for each module
-    std::map<std::string, std::future<SoapySDR::KwargsList>> futures;
+    std::map<std::string, std::shared_future<KwargsList>> futures;
     for (const auto &it : Registry::listFindFunctions())
     {
         const bool specifiedDriver = args.count("driver") != 0;
         if (specifiedDriver and args.at("driver") != it.first) continue;
-        const auto launchType = specifiedDriver?std::launch::deferred:std::launch::async;
-        futures[it.first] = std::async(launchType, it.second, args);
+
+        //protect the cache to search it for results and update it
+        std::unique_lock<std::recursive_mutex> lock(cacheMutex);
+        auto &cacheEntry = cache[std::make_pair(it.first, args)];
+
+        //use the cache entry if its been initialized (valid) and not expired
+        if (cacheEntry.second.valid() and cacheEntry.first > std::chrono::high_resolution_clock::now())
+        {
+            futures[it.first] = cacheEntry.second;
+        }
+
+        //otherwise create a new future and place it into the cache
+        else
+        {
+            const auto launchType = specifiedDriver?std::launch::deferred:std::launch::async;
+            futures[it.first] = std::async(launchType, it.second, args);
+            cacheEntry = std::make_pair(std::chrono::high_resolution_clock::now() + CACHE_TIMEOUT, futures[it.first]);
+        }
     }
 
     //collect the asynchronous results
