@@ -6,7 +6,6 @@
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Logger.hpp>
 #include <stdexcept>
-#include <iostream>
 #include <future>
 #include <chrono>
 #include <mutex>
@@ -91,20 +90,19 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
     {
         try
         {
-            auto results0 = it.second.get();
-            for (size_t i = 0; i < results0.size(); i++)
+            for (auto handle : it.second.get())
             {
-                results0[i]["driver"] = it.first;
-                results.push_back(results0[i]);
+                handle["driver"] = it.first;
+                results.push_back(handle);
             }
         }
         catch (const std::exception &ex)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << ex.what() << std::endl;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::Device::enumerate(%s) %s", it.first.c_str(), ex.what());
         }
         catch (...)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << "unknown error" << std::endl;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::Device::enumerate(%s) unknown error", it.first.c_str());
         }
     }
     return results;
