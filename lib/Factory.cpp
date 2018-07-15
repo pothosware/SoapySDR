@@ -50,7 +50,7 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
     //clean expired entries from the cache
     {
         const auto now = std::chrono::high_resolution_clock::now();
-        std::unique_lock<std::recursive_mutex> lock(cacheMutex);
+        std::lock_guard<std::recursive_mutex> lock(cacheMutex);
         for (auto it = cache.begin(); it != cache.end();)
         {
             if (it->second.first < now) cache.erase(it++);
@@ -66,7 +66,7 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
         if (specifiedDriver and args.at("driver") != it.first) continue;
 
         //protect the cache to search it for results and update it
-        std::unique_lock<std::recursive_mutex> lock(cacheMutex);
+        std::lock_guard<std::recursive_mutex> lock(cacheMutex);
         auto &cacheEntry = cache[std::make_pair(it.first, args)];
 
         //use the cache entry if its been initialized (valid) and not expired
