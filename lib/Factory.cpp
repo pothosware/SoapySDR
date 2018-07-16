@@ -116,13 +116,12 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 static SoapySDR::Device* getDeviceFromTable(const SoapySDR::Kwargs &args)
 {
     if (args.empty()) return nullptr;
-    if (getDeviceTable().count(args) != 0 and getDeviceCounts().count(getDeviceTable().at(args)) != 0)
-    {
-        auto device = getDeviceTable().at(args);
-        getDeviceCounts()[device]++;
-        return device;
-    }
-    return nullptr;
+    const auto it = getDeviceTable().find(args);
+    if (it == getDeviceTable().end()) return nullptr;
+    const auto device = it->second;
+    if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() device deletion in-progress");
+    getDeviceCounts()[device]++;
+    return device;
 }
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
@@ -201,27 +200,34 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 
 void SoapySDR::Device::unmake(Device *device)
 {
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+    std::unique_lock<std::recursive_mutex> lock(getFactoryMutex());
 
-    if (getDeviceCounts().count(device) == 0)
+    auto countIt = getDeviceCounts().find(device);
+    if (countIt == getDeviceCounts().end())
     {
         throw std::runtime_error("SoapySDR::Device::unmake() unknown device");
     }
 
-    getDeviceCounts()[device]--;
-    if (getDeviceCounts()[device] == 0)
-    {
-        getDeviceCounts().erase(device);
-        delete device;
+    if ((--countIt->second) != 0) return;
 
-        //cleanup the argument to device table
-        for (auto it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
-        {
-            if (it->second == device)
-            {
-                getDeviceTable().erase(it);
-                return;
-            }
-        }
+    //cleanup case for last instance of open device
+    getDeviceCounts().erase(countIt);
+
+    //nullify matching entries in the device table
+    //make throws if it matches handles which are being deleted
+    KwargsList argsList;
+    for (auto &it : getDeviceTable())
+    {
+        if (it.second != device) continue;
+        argsList.push_back(it.first);
+        it.second = nullptr;
     }
+
+    //do not block other callers while we wait on destructor
+    lock.unlock();
+    delete device;
+    lock.lock();
+
+    //now clean the device table to signal that deletion is complete
+    for (const auto &args : argsList) getDeviceTable().erase(args);
 }
