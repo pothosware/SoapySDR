@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -59,6 +59,7 @@
 %template(SoapySDRRangeList) std::vector<SoapySDR::Range>;
 %template(SoapySDRSizeList) std::vector<size_t>;
 %template(SoapySDRDoubleList) std::vector<double>;
+%template(SoapySDRDeviceList) std::vector<SoapySDR::Device *>;
 
 %extend std::map<std::string, std::string>
 {
@@ -153,7 +154,6 @@ for key in sorted(globals().keys()):
 //make device a constructable class
 %insert("python")
 %{
-_Device = Device
 class Device(Device):
     def __new__(cls, *args, **kwargs):
         return cls.make(*args, **kwargs)

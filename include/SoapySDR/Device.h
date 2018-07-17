@@ -8,7 +8,7 @@
 /// The caller must free non-const array results.
 ///
 /// \copyright
-/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2014-2018 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -95,6 +95,33 @@ SOAPY_SDR_API SoapySDRDevice *SoapySDRDevice_makeStrArgs(const char *args);
  * \return 0 for success or error code on failure
  */
 SOAPY_SDR_API int SoapySDRDevice_unmake(SoapySDRDevice *device);
+
+/*******************************************************************
+ * Parallel support
+ ******************************************************************/
+
+/*!
+ * Create a list of devices from a list of construction arguments.
+ * This is a convenience call to parallelize device construction,
+ * and is fundamentally a parallel for loop of make(Kwargs).
+ *
+ * \param argsList a list of device arguments per each device
+ * \param length the length of the argsList array
+ * \return a list of device pointers per each specified argument
+ */
+SOAPY_SDR_API SoapySDRDevice **SoapySDRDevice_make_list(SoapySDRKwargs *argsList, const size_t length);
+
+/*!
+ * Unmake or release a list of device handles
+ * and free the devices array memory as well.
+ * This is a convenience call to parallelize device destruction,
+ * and is fundamentally a parallel for loop of unmake(Device *).
+ *
+ * \param devices a list of pointers to device objects
+ * \param length the length of the devices array
+ * \return 0 for success or error code on failure
+ */
+SOAPY_SDR_API int SoapySDRDevice_unmake_list(SoapySDRDevice **devices, const size_t length);
 
 /*******************************************************************
  * Identification API

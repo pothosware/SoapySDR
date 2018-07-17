@@ -6,6 +6,7 @@
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Logger.hpp>
 #include <stdexcept>
+#include <exception>
 #include <future>
 #include <chrono>
 #include <mutex>
@@ -200,6 +201,8 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 
 void SoapySDR::Device::unmake(Device *device)
 {
+    if (device == nullptr) return; //safe to unmake a null device
+
     std::unique_lock<std::recursive_mutex> lock(getFactoryMutex());
 
     auto countIt = getDeviceCounts().find(device);
@@ -230,4 +233,52 @@ void SoapySDR::Device::unmake(Device *device)
 
     //now clean the device table to signal that deletion is complete
     for (const auto &args : argsList) getDeviceTable().erase(args);
+}
+
+/*******************************************************************
+ * Parallel support
+ ******************************************************************/
+std::vector<SoapySDR::Device *> SoapySDR::Device::make(const KwargsList &argsList)
+{
+    std::vector<std::future<Device *>> futures;
+    for (const auto &args : argsList)
+    {
+        futures.push_back(std::async(std::launch::async, [args]{return SoapySDR::Device::make(args);}));
+    }
+
+    std::vector<Device *> devices;
+    try
+    {
+        for (auto &future : futures) devices.push_back(future.get());
+    }
+    catch(...)
+    {
+        //cleanup all devices made so far, and squelch their errors
+        try{SoapySDR::Device::unmake(devices);}
+        catch(...){}
+
+        //and then rethrow the exception after cleanup
+        throw;
+    }
+    return devices;
+}
+
+void SoapySDR::Device::unmake(const std::vector<Device *> &devices)
+{
+    std::vector<std::future<void>> futures;
+    for (const auto &device : devices)
+    {
+        futures.push_back(std::async(std::launch::async, [device]{SoapySDR::Device::unmake(device);}));
+    }
+
+    //unmake will only throw the last exception
+    //Since unmake only throws for unknown handles, this is probably API misuse.
+    //The actual particular exception and its associated device is not important.
+    std::exception_ptr eptr;
+    for (auto &future : futures)
+    {
+        try {future.get();}
+        catch(...){eptr = std::current_exception();}
+    }
+    if (eptr) std::rethrow_exception(eptr);
 }
