@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2018 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
