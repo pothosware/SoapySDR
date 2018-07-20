@@ -15,7 +15,7 @@ SoapySDRKwargs SoapySDRKwargs_fromString(const char *markup)
 
 char *SoapySDRKwargs_toString(const SoapySDRKwargs *args)
 {
-    return strdup(SoapySDR::KwargsToString(toKwargs(args)).c_str());
+    return toCString(SoapySDR::KwargsToString(toKwargs(args)));
 }
 
 void SoapySDRStrings_clear(char ***elems, const size_t length)
