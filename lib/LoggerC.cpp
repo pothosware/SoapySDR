@@ -45,6 +45,7 @@ int vasprintf(char **strp, const char *fmt, va_list ap)
     int r = _vscprintf(fmt, ap);
     if (r < 0) return r;
     *strp = (char *)malloc(r+1);
+    if (*strp == nullptr) return -1;
     return vsprintf_s(*strp, r+1, fmt, ap);
 }
 #endif
