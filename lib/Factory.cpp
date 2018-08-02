@@ -4,8 +4,11 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Modules.hpp>
+#include <SoapySDR/Logger.hpp>
 #include <stdexcept>
-#include <iostream>
+#include <exception>
+#include <future>
+#include <chrono>
 #include <mutex>
 
 static std::recursive_mutex &getFactoryMutex(void)
@@ -34,29 +37,75 @@ void automaticLoadModules(void);
 
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 {
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+    automaticLoadModules(); //perform one-shot load
 
-    automaticLoadModules();
-    SoapySDR::KwargsList results;
+    //enumerate cache data structure
+    //(driver key, find args) -> (timestamp, handles list)
+    //Since available devices should not change rapidly,
+    //the cache allows the enumerate results to persist for some time
+    //across multiple concurrent callers or subsequent sequential calls.
+    static std::recursive_mutex cacheMutex;
+    static std::map<std::pair<std::string, Kwargs>,
+        std::pair<std::chrono::high_resolution_clock::time_point, std::shared_future<KwargsList>>
+    > cache;
+
+    //clean expired entries from the cache
+    {
+        static const auto CACHE_TIMEOUT = std::chrono::seconds(1);
+        std::lock_guard<std::recursive_mutex> lock(cacheMutex);
+        const auto now = std::chrono::high_resolution_clock::now();
+        for (auto it = cache.begin(); it != cache.end();)
+        {
+            if (it->second.first+CACHE_TIMEOUT < now) cache.erase(it++);
+            else it++;
+        }
+    }
+
+    //launch futures to enumerate devices for each module
+    std::map<std::string, std::shared_future<KwargsList>> futures;
     for (const auto &it : Registry::listFindFunctions())
     {
-        if (args.count("driver") != 0 and args.at("driver") != it.first) continue;
+        const bool specifiedDriver = args.count("driver") != 0;
+        if (specifiedDriver and args.at("driver") != it.first) continue;
+
+        //protect the cache to search it for results and update it
+        std::lock_guard<std::recursive_mutex> lock(cacheMutex);
+        auto &cacheEntry = cache[std::make_pair(it.first, args)];
+
+        //use the cache entry if its been initialized (valid) and not expired
+        if (cacheEntry.second.valid() and cacheEntry.first > std::chrono::high_resolution_clock::now())
+        {
+            futures[it.first] = cacheEntry.second;
+        }
+
+        //otherwise create a new future and place it into the cache
+        else
+        {
+            const auto launchType = specifiedDriver?std::launch::deferred:std::launch::async;
+            futures[it.first] = std::async(launchType, it.second, args);
+            cacheEntry = std::make_pair(std::chrono::high_resolution_clock::now(), futures[it.first]);
+        }
+    }
+
+    //collect the asynchronous results
+    SoapySDR::KwargsList results;
+    for (auto &it : futures)
+    {
         try
         {
-            SoapySDR::KwargsList results0 = it.second(args);
-            for (size_t i = 0; i < results0.size(); i++)
+            for (auto handle : it.second.get())
             {
-                results0[i]["driver"] = it.first;
-                results.push_back(results0[i]);
+                handle["driver"] = it.first;
+                results.push_back(handle);
             }
         }
         catch (const std::exception &ex)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << ex.what() << std::endl;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::Device::enumerate(%s) %s", it.first.c_str(), ex.what());
         }
         catch (...)
         {
-            std::cerr << "SoapySDR::Device::enumerate(" << it.first << ") " << "unknown error" << std::endl;
+            SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::Device::enumerate(%s) unknown error", it.first.c_str());
         }
     }
     return results;
@@ -70,28 +119,29 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const std::string &args)
 static SoapySDR::Device* getDeviceFromTable(const SoapySDR::Kwargs &args)
 {
     if (args.empty()) return nullptr;
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
-    if (getDeviceTable().count(args) != 0 and getDeviceCounts().count(getDeviceTable().at(args)) != 0)
-    {
-        auto device = getDeviceTable().at(args);
-        getDeviceCounts()[device]++;
-        return device;
-    }
-    return nullptr;
+    const auto it = getDeviceTable().find(args);
+    if (it == getDeviceTable().end()) return nullptr;
+    const auto device = it->second;
+    if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() device deletion in-progress");
+    getDeviceCounts()[device]++;
+    return device;
 }
 
 SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
 {
-    Device *device = nullptr;
+    std::unique_lock<std::recursive_mutex> lock(getFactoryMutex());
 
     //the arguments may have already come from enumerate and been used to open a device
-    device = getDeviceFromTable(inputArgs);
+    auto device = getDeviceFromTable(inputArgs);
     if (device != nullptr) return device;
 
     //otherwise the args must always come from an enumeration result
+    //unlock the mutex to block on the enumeration call
     Kwargs discoveredArgs;
+    lock.unlock();
     const auto results = Device::enumerate(inputArgs);
     if (not results.empty()) discoveredArgs = results.front();
+    lock.lock();
 
     //check the device table for an already allocated device
     device = getDeviceFromTable(discoveredArgs);
@@ -104,21 +154,42 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
         if (hybridArgs.count(it.first) == 0) hybridArgs[it.first] = it.second;
     }
 
-    //lock during device construction
-    //make itself can be parallelized, but we need to keep track of in-process factories
-    //so that other calling threads with the same args can wait on the result
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
-
-    //loop through make functions and call on module match
-    for (const auto &it : Registry::listMakeFunctions())
+    //dont continue when driver is unspecified,
+    //unless there is only one available driver option
+    const bool specifiedDriver = hybridArgs.count("driver") != 0;
+    const auto makeFunctions = Registry::listMakeFunctions();
+    if (not specifiedDriver and makeFunctions.size() > 2) //more than factory: null + one loaded driver
     {
-        if (hybridArgs.count("driver") != 0 and hybridArgs.at("driver") != it.first) continue;
-        device = it.second(hybridArgs);
+        throw std::runtime_error("SoapySDR::Device::make() no driver specified and no enumeration results");
+    }
+
+    //search for a cache entry or launch a future if not found
+    std::map<Kwargs, std::shared_future<Device *>> cache;
+    std::shared_future<Device *> deviceFuture;
+    for (const auto &it : makeFunctions)
+    {
+        if (not specifiedDriver and it.first == "null") continue; //skip null unless explicitly specified
+        if (specifiedDriver and hybridArgs.at("driver") != it.first) continue; //filter for driver match
+        auto &cacheEntry = cache[discoveredArgs];
+        if (not cacheEntry.valid()) cacheEntry = std::async(std::launch::deferred, it.second, hybridArgs);
+        deviceFuture = cacheEntry;
         break;
     }
-    if (device == nullptr) throw std::runtime_error("SoapySDR::Device::make() no match");
+
+    //no match found for the arguments in the loop above
+    if (not deviceFuture.valid()) throw std::runtime_error("SoapySDR::Device::make() no match");
+
+    //unlock the mutex to block on the factory call
+    lock.unlock();
+    deviceFuture.wait();
+    lock.lock();
+
+    //the future is complete, erase the cache entry
+    //other callers have a copy of the shared future copy or a device table entry
+    cache.erase(discoveredArgs);
 
     //store into the table
+    device = deviceFuture.get(); //may throw
     getDeviceTable()[discoveredArgs] = device;
     getDeviceCounts()[device]++;
 
@@ -132,27 +203,84 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
 
 void SoapySDR::Device::unmake(Device *device)
 {
-    std::lock_guard<std::recursive_mutex> lock(getFactoryMutex());
+    if (device == nullptr) return; //safe to unmake a null device
 
-    if (getDeviceCounts().count(device) == 0)
+    std::unique_lock<std::recursive_mutex> lock(getFactoryMutex());
+
+    auto countIt = getDeviceCounts().find(device);
+    if (countIt == getDeviceCounts().end())
     {
         throw std::runtime_error("SoapySDR::Device::unmake() unknown device");
     }
 
-    getDeviceCounts()[device]--;
-    if (getDeviceCounts()[device] == 0)
-    {
-        getDeviceCounts().erase(device);
-        delete device;
+    if ((--countIt->second) != 0) return;
 
-        //cleanup the argument to device table
-        for (auto it = getDeviceTable().begin(); it != getDeviceTable().end(); ++it)
-        {
-            if (it->second == device)
-            {
-                getDeviceTable().erase(it);
-                return;
-            }
-        }
+    //cleanup case for last instance of open device
+    getDeviceCounts().erase(countIt);
+
+    //nullify matching entries in the device table
+    //make throws if it matches handles which are being deleted
+    KwargsList argsList;
+    for (auto &it : getDeviceTable())
+    {
+        if (it.second != device) continue;
+        argsList.push_back(it.first);
+        it.second = nullptr;
     }
+
+    //do not block other callers while we wait on destructor
+    lock.unlock();
+    delete device;
+    lock.lock();
+
+    //now clean the device table to signal that deletion is complete
+    for (const auto &args : argsList) getDeviceTable().erase(args);
+}
+
+/*******************************************************************
+ * Parallel support
+ ******************************************************************/
+std::vector<SoapySDR::Device *> SoapySDR::Device::make(const KwargsList &argsList)
+{
+    std::vector<std::future<Device *>> futures;
+    for (const auto &args : argsList)
+    {
+        futures.push_back(std::async(std::launch::async, [args]{return SoapySDR::Device::make(args);}));
+    }
+
+    std::vector<Device *> devices;
+    try
+    {
+        for (auto &future : futures) devices.push_back(future.get());
+    }
+    catch(...)
+    {
+        //cleanup all devices made so far, and squelch their errors
+        try{SoapySDR::Device::unmake(devices);}
+        catch(...){}
+
+        //and then rethrow the exception after cleanup
+        throw;
+    }
+    return devices;
+}
+
+void SoapySDR::Device::unmake(const std::vector<Device *> &devices)
+{
+    std::vector<std::future<void>> futures;
+    for (const auto &device : devices)
+    {
+        futures.push_back(std::async(std::launch::async, [device]{SoapySDR::Device::unmake(device);}));
+    }
+
+    //unmake will only throw the last exception
+    //Since unmake only throws for unknown handles, this is probably API misuse.
+    //The actual particular exception and its associated device is not important.
+    std::exception_ptr eptr;
+    for (auto &future : futures)
+    {
+        try {future.get();}
+        catch(...){eptr = std::current_exception();}
+    }
+    if (eptr) std::rethrow_exception(eptr);
 }

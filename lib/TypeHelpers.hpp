@@ -104,6 +104,13 @@ static inline SoapySDRKwargs *toKwargsList(const SoapySDR::KwargsList &args, siz
     return outArgs;
 }
 
+static inline SoapySDR::KwargsList toKwargsList(const SoapySDRKwargs *args, const size_t length)
+{
+    SoapySDR::KwargsList outArgs(length);
+    for (size_t i = 0; i < length; i++) outArgs[i] = toKwargs(args+i);
+    return outArgs;
+}
+
 static inline SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
 {
     SoapySDRArgInfo out;

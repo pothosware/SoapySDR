@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2014-2018 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -78,6 +78,29 @@ public:
      * \param device a pointer to a device object
      */
     static void unmake(Device *device);
+
+    /*******************************************************************
+     * Parallel support
+     ******************************************************************/
+
+    /*!
+     * Create a list of devices from a list of construction arguments.
+     * This is a convenience call to parallelize device construction,
+     * and is fundamentally a parallel for loop of make(Kwargs).
+     *
+     * \param argsList a list of device arguments per each device
+     * \return a list of device pointers per each specified argument
+     */
+    static std::vector<Device *> make(const KwargsList &argsList);
+
+    /*!
+     * Unmake or release a list of device handles.
+     * This is a convenience call to parallelize device destruction,
+     * and is fundamentally a parallel for loop of unmake(Device *).
+     *
+     * \param devices a list of pointers to device objects
+     */
+    static void unmake(const std::vector<Device *> &devices);
 
     /*******************************************************************
      * Identification API
