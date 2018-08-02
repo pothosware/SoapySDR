@@ -11,8 +11,6 @@
 #include <chrono>
 #include <mutex>
 
-static const auto CACHE_TIMEOUT = std::chrono::seconds(1);
-
 static std::recursive_mutex &getFactoryMutex(void)
 {
     static std::recursive_mutex mutex;
@@ -42,7 +40,10 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
     automaticLoadModules(); //perform one-shot load
 
     //enumerate cache data structure
-    //(driver key, find args) -> (timeout, handles list)
+    //(driver key, find args) -> (timestamp, handles list)
+    //Since available devices should not change rapidly,
+    //the cache allows the enumerate results to persist for some time
+    //across multiple concurrent callers or subsequent sequential calls.
     static std::recursive_mutex cacheMutex;
     static std::map<std::pair<std::string, Kwargs>,
         std::pair<std::chrono::high_resolution_clock::time_point, std::shared_future<KwargsList>>
@@ -50,11 +51,12 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
 
     //clean expired entries from the cache
     {
-        const auto now = std::chrono::high_resolution_clock::now();
+        static const auto CACHE_TIMEOUT = std::chrono::seconds(1);
         std::lock_guard<std::recursive_mutex> lock(cacheMutex);
+        const auto now = std::chrono::high_resolution_clock::now();
         for (auto it = cache.begin(); it != cache.end();)
         {
-            if (it->second.first < now) cache.erase(it++);
+            if (it->second.first+CACHE_TIMEOUT < now) cache.erase(it++);
             else it++;
         }
     }
@@ -81,7 +83,7 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
         {
             const auto launchType = specifiedDriver?std::launch::deferred:std::launch::async;
             futures[it.first] = std::async(launchType, it.second, args);
-            cacheEntry = std::make_pair(std::chrono::high_resolution_clock::now() + CACHE_TIMEOUT, futures[it.first]);
+            cacheEntry = std::make_pair(std::chrono::high_resolution_clock::now(), futures[it.first]);
         }
     }
 
