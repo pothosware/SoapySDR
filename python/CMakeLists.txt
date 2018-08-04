@@ -29,11 +29,11 @@ endif()
 # Determine install directory
 ########################################################################
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c
-    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
+    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/get_python_lib.py" "${CMAKE_INSTALL_PREFIX}"
     OUTPUT_STRIP_TRAILING_WHITESPACE
     OUTPUT_VARIABLE PYTHON_INSTALL_DIR_SYSCONF
 )
+file(RELATIVE_PATH PYTHON_INSTALL_DIR_SYSCONF "${CMAKE_INSTALL_PREFIX}" "${PYTHON_INSTALL_DIR_SYSCONF}")
 set(PYTHON_INSTALL_DIR "${PYTHON_INSTALL_DIR_SYSCONF}" CACHE STRING "python install prefix")
 message(STATUS "PYTHON_INSTALL_DIR: \${prefix}/${PYTHON_INSTALL_DIR}")
 

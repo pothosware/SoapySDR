@@ -21,11 +21,11 @@ message(STATUS "PYTHON3_EXECUTABLE: ${PYTHON3_EXECUTABLE}")
 # Determine install directory
 ########################################################################
 execute_process(
-    COMMAND ${PYTHON3_EXECUTABLE} -c
-    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))"
+    COMMAND ${PYTHON3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/../python/get_python_lib.py" "${CMAKE_INSTALL_PREFIX}"
     OUTPUT_STRIP_TRAILING_WHITESPACE
     OUTPUT_VARIABLE PYTHON3_INSTALL_DIR_SYSCONF
 )
+file(RELATIVE_PATH PYTHON3_INSTALL_DIR_SYSCONF "${CMAKE_INSTALL_PREFIX}" "${PYTHON3_INSTALL_DIR_SYSCONF}")
 set(PYTHON3_INSTALL_DIR "${PYTHON3_INSTALL_DIR_SYSCONF}" CACHE STRING "python3 install prefix")
 message(STATUS "PYTHON3_INSTALL_DIR: \${prefix}/${PYTHON3_INSTALL_DIR}")
 
