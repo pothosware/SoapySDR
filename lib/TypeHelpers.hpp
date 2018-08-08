@@ -118,6 +118,7 @@ static inline SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
     try
     {
         out.key = toCString(info.key);
+        out.value = toCString(info.value);
         out.name = toCString(info.name);
         out.description = toCString(info.description);
         out.units = toCString(info.units);
