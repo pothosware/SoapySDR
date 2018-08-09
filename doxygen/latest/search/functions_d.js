@@ -11,5 +11,5 @@ var searchData=
   ['u8tos32',['U8toS32',['../namespaceSoapySDR.html#ac2b29f358f35ffb12635ed6561c38a33',1,'SoapySDR']]],
   ['u8tos8',['U8toS8',['../namespaceSoapySDR.html#afd682a97655f3a5b9f50e19940fd0ff6',1,'SoapySDR']]],
   ['unloadmodule',['unloadModule',['../namespaceSoapySDR.html#afd1fd337e716c119d441152d077fd807',1,'SoapySDR']]],
-  ['unmake',['unmake',['../classSoapySDR_1_1Device.html#a6747bfba4c369c333e0405ebe007ef29',1,'SoapySDR::Device']]]
+  ['unmake',['unmake',['../classSoapySDR_1_1Device.html#a6747bfba4c369c333e0405ebe007ef29',1,'SoapySDR::Device::unmake(Device *device)'],['../classSoapySDR_1_1Device.html#a7979eafd8d258d05851330069d3b08ab',1,'SoapySDR::Device::unmake(const std::vector&lt; Device *&gt; &amp;devices)']]]
 ];

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.7.0-g2a266d60</span>
+   &#160;<span id="projectnumber">0.7.0-g37429d89</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -101,6 +101,10 @@ Functions</h2></td></tr>
 <tr class="separator:a967c2a1c522f65df5299881ea7a63812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d7b135e49e9525f14a3ba4164ea5a81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a5d7b135e49e9525f14a3ba4164ea5a81">SoapySDRDevice_unmake</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device)</td></tr>
 <tr class="separator:a5d7b135e49e9525f14a3ba4164ea5a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87da1f584cf9fb54371775a0c832fbd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a87da1f584cf9fb54371775a0c832fbd2">SoapySDRDevice_make_list</a> (<a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *argsList, const size_t length)</td></tr>
+<tr class="separator:a87da1f584cf9fb54371775a0c832fbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a094e238f237d54dd3990f5418cb877b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a094e238f237d54dd3990f5418cb877b4">SoapySDRDevice_unmake_list</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> **devices, const size_t length)</td></tr>
+<tr class="separator:a094e238f237d54dd3990f5418cb877b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12ca97d255564373745e7926aeaf4f81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a12ca97d255564373745e7926aeaf4f81">SoapySDRDevice_getDriverKey</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device)</td></tr>
 <tr class="separator:a12ca97d255564373745e7926aeaf4f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30d93281ac23157b3515330e1939ce24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a30d93281ac23157b3515330e1939ce24">SoapySDRDevice_getHardwareKey</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device)</td></tr>
@@ -323,7 +327,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface definition for Soapy SDR devices. This is the C version of the Device interface.</p>
 <p>General design rules about the API: The caller must free non-const array results.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2017 Josh Blum Copyright (c) 2016-2016 Bastille Networks SPDX-License-Identifier: BSL-1.0 </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2014-2018 Josh Blum Copyright (c) 2016-2016 Bastille Networks SPDX-License-Identifier: BSL-1.0 </dd></dl>
 </div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="a600bfa542e6d6771d0872371191e57ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a600bfa542e6d6771d0872371191e57ea">&#9670;&nbsp;</a></span>SoapySDRDevice</h2>
@@ -3280,6 +3284,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a87da1f584cf9fb54371775a0c832fbd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87da1f584cf9fb54371775a0c832fbd2">&#9670;&nbsp;</a></span>SoapySDRDevice_make_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a>** SoapySDRDevice_make_list </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *&#160;</td>
+          <td class="paramname"><em>argsList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Create a list of devices from a list of construction arguments. This is a convenience call to parallelize device construction, and is fundamentally a parallel for loop of make(Kwargs).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argsList</td><td>a list of device arguments per each device </td></tr>
+    <tr><td class="paramname">length</td><td>the length of the argsList array </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of device pointers per each specified argument </dd></dl>
+
+</div>
+</div>
 <a id="a967c2a1c522f65df5299881ea7a63812"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a967c2a1c522f65df5299881ea7a63812">&#9670;&nbsp;</a></span>SoapySDRDevice_makeStrArgs()</h2>
 
@@ -5056,6 +5097,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a094e238f237d54dd3990f5418cb877b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a094e238f237d54dd3990f5418cb877b4">&#9670;&nbsp;</a></span>SoapySDRDevice_unmake_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int SoapySDRDevice_unmake_list </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> **&#160;</td>
+          <td class="paramname"><em>devices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Unmake or release a list of device handles and free the devices array memory as well. This is a convenience call to parallelize device destruction, and is fundamentally a parallel for loop of unmake(Device *).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">devices</td><td>a list of pointers to device objects </td></tr>
+    <tr><td class="paramname">length</td><td>the length of the devices array </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 for success or error code on failure </dd></dl>
+
+</div>
+</div>
 <a id="a1b8cc96055d3a67c18ea3ccc287192f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b8cc96055d3a67c18ea3ccc287192f5">&#9670;&nbsp;</a></span>SoapySDRDevice_writeChannelSetting()</h2>
 
@@ -5618,7 +5696,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jan 21 2018 15:54:13 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 9 2018 11:31:18 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
