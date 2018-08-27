@@ -18,9 +18,9 @@ const uint32_t U32_ZERO_OFFSET = uint32_t(1<<31);
 const uint16_t U16_ZERO_OFFSET = uint16_t(1<<15);
 const uint8_t   U8_ZERO_OFFSET =  uint8_t(1<<7);
 
-const uint32_t S32_FULL_SCALE = (U32_ZERO_OFFSET-1);
-const uint16_t S16_FULL_SCALE = (U16_ZERO_OFFSET-1);
-const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
+const uint32_t S32_FULL_SCALE = uint32_t(1<<31);
+const uint16_t S16_FULL_SCALE = uint16_t(1<<15);
+const uint8_t   S8_FULL_SCALE =  uint8_t(1<<7);
   
 /*!
  * Conversion primatives for converting real values between Soapy Formats.
