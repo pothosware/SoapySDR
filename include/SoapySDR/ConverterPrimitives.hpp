@@ -1,10 +1,10 @@
 ///
 /// \file SoapySDR/ConverterPrimatives.hpp
 ///
-/// inline Soapy real Format Converter primatives.
+/// inline Soapy real format Converter Primitives.
 ///
 /// \copyright
-/// Copyright (c) 2017-2017 Coburn Wightman
+/// Copyright (c) 2017-2018 Coburn Wightman
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -18,12 +18,12 @@ const uint32_t U32_ZERO_OFFSET = uint32_t(1<<31);
 const uint16_t U16_ZERO_OFFSET = uint16_t(1<<15);
 const uint8_t   U8_ZERO_OFFSET =  uint8_t(1<<7);
 
-const uint32_t S32_FULL_SCALE = (U32_ZERO_OFFSET-1);
-const uint16_t S16_FULL_SCALE = (U16_ZERO_OFFSET-1);
-const uint8_t   S8_FULL_SCALE =  (U8_ZERO_OFFSET-1);
+const uint32_t S32_FULL_SCALE = uint32_t(1<<31);
+const uint16_t S16_FULL_SCALE = uint16_t(1<<15);
+const uint8_t   S8_FULL_SCALE =  uint8_t(1<<7);
   
 /*!
- * Conversion primatives for converting real values between Soapy Formats.
+ * Conversion Primitives for converting real values between Soapy formats.
  * \param from the value to convert from
  * \return the converted value
  */

@@ -1,10 +1,10 @@
-// Copyright (c) 2017-2017 Coburn Wightman
+// Copyright (c) 2017-2018 Coburn Wightman
 //
 // derived from SoapyRemote/client/ClientStreamData.cpp
 // Copyright (c) 2015-2018 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
-#include <SoapySDR/ConverterPrimatives.hpp>
+#include <SoapySDR/ConverterPrimitives.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
 #include <SoapySDR/Formats.hpp>
 #include <cstring> //memcpy
