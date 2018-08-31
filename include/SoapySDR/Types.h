@@ -16,6 +16,12 @@
 extern "C" {
 #endif
 
+//! String definition for boolean true used in settings
+#define SOAPY_SDR_TRUE "true"
+
+//! String definition for boolean false used in settings
+#define SOAPY_SDR_FALSE "false"
+
 //! Definition for a min/max numeric range
 typedef struct
 {
