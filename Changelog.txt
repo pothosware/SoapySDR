@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.7.0 (pending)
+Release 0.7.0 (2018-10-24)
 ==========================
 
 - Support parallel device factory construction/destruction
