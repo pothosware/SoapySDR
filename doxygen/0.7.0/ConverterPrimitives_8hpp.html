@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoapySDR: ConverterPrimatives.hpp File Reference</title>
+<title>SoapySDR: ConverterPrimitives.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.7.0-g37429d89</span>
+   &#160;<span id="projectnumber">0.7.0-g6d21756e</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -66,12 +66,12 @@ $(function() {
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">ConverterPrimatives.hpp File Reference</div>  </div>
+<div class="title">ConverterPrimitives.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div>
-<p><a href="ConverterPrimatives_8hpp_source.html">Go to the source code of this file.</a></p>
+<p><a href="ConverterPrimitives_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -149,20 +149,17 @@ Variables</h2></td></tr>
 <tr class="separator:a5d1f34b37374ee3234365c04337d84ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b4a7c8dc3bc80499461af6f027c39e2"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a3b4a7c8dc3bc80499461af6f027c39e2">SoapySDR::U8_ZERO_OFFSET</a> = uint8_t(1&lt;&lt;7)</td></tr>
 <tr class="separator:a3b4a7c8dc3bc80499461af6f027c39e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accc6355fa09325695dc1aede764f485f"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#accc6355fa09325695dc1aede764f485f">SoapySDR::S32_FULL_SCALE</a> = (U32_ZERO_OFFSET-1)</td></tr>
+<tr class="memitem:accc6355fa09325695dc1aede764f485f"><td class="memItemLeft" align="right" valign="top">const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#accc6355fa09325695dc1aede764f485f">SoapySDR::S32_FULL_SCALE</a> = uint32_t(1&lt;&lt;31)</td></tr>
 <tr class="separator:accc6355fa09325695dc1aede764f485f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefea6f7629ca0d913896886191cab7c1"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#aefea6f7629ca0d913896886191cab7c1">SoapySDR::S16_FULL_SCALE</a> = (U16_ZERO_OFFSET-1)</td></tr>
+<tr class="memitem:aefea6f7629ca0d913896886191cab7c1"><td class="memItemLeft" align="right" valign="top">const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#aefea6f7629ca0d913896886191cab7c1">SoapySDR::S16_FULL_SCALE</a> = uint16_t(1&lt;&lt;15)</td></tr>
 <tr class="separator:aefea6f7629ca0d913896886191cab7c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a5acf32b7260dbd23391ece818d1b5d"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a8a5acf32b7260dbd23391ece818d1b5d">SoapySDR::S8_FULL_SCALE</a> = (U8_ZERO_OFFSET-1)</td></tr>
+<tr class="memitem:a8a5acf32b7260dbd23391ece818d1b5d"><td class="memItemLeft" align="right" valign="top">const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a8a5acf32b7260dbd23391ece818d1b5d">SoapySDR::S8_FULL_SCALE</a> = uint8_t(1&lt;&lt;7)</td></tr>
 <tr class="separator:a8a5acf32b7260dbd23391ece818d1b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>inline Soapy real Format Converter primatives.</p>
-<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2017-2017 Coburn Wightman SPDX-License-Identifier: BSL-1.0 </dd></dl>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 9 2018 11:31:18 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Nov 4 2018 18:51:24 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
