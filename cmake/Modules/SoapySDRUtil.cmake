@@ -88,10 +88,11 @@ function(SOAPY_SDR_MODULE_UTIL)
         list(APPEND MODULE_SOURCES "${version_file}")
     endif()
 
-    include_directories(${SoapySDR_INCLUDE_DIRS})
     add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
-    target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} ${SoapySDR_LIBRARIES})
+    target_include_directories(${MODULE_TARGET} PRIVATE SoapySDR)
+    target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} SoapySDR)
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
+    set_property(TARGET ${MODULE_TARGET} PROPERTY CXX_STANDARD 11)
 
     if (NOT MODULE_DESTINATION)
         set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)

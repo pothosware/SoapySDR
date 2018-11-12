@@ -10,9 +10,9 @@ if (NOT ENABLE_LIBRARY)
 endif()
 
 ########################################################################
-# Soapy SDR sources and dependencies
+# Setup the library
 ########################################################################
-list(APPEND SOAPY_SDR_SOURCES
+add_library(SoapySDR SHARED
     Device.cpp
     Factory.cpp
     Registry.cpp
@@ -23,12 +23,34 @@ list(APPEND SOAPY_SDR_SOURCES
     Formats.cpp
     ConverterRegistry.cpp
     DefaultConverters.cpp
+    #C API support sources
+    TypesC.cpp
+    ModulesC.cpp
+    VersionC.cpp
+    DeviceC.cpp
+    FactoryC.cpp
+    LoggerC.cpp
+    TimeC.cpp
+    ErrorsC.cpp
+    FormatsC.cpp
 )
+target_link_libraries(SoapySDR PUBLIC ${SoapySDR_LINKER_FLAGS})
+target_include_directories(SoapySDR PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(SoapySDR PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_compile_options(SoapySDR PUBLIC ${SoapySDR_COMPILE_OPTIONS})
+target_compile_definitions(SoapySDR PUBLIC ${SoapySDR_COMPILE_DEFINITIONS})
+set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_ABI_VERSION})
+set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
+set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
+
+########################################################################
+# compiler specifics
+########################################################################
 
 #dl libs used by dlopen in unix
-list(APPEND SOAPY_SDR_LIBRARIES
-    ${CMAKE_DL_LIBS}
-)
+if (CMAKE_DL_LIBS)
+    target_link_libraries(SoapySDR PRIVATE ${CMAKE_DL_LIBS})
+endif (CMAKE_DL_LIBS)
 
 if (WIN32)
     set(MODULE_EXT "dll")
@@ -41,55 +63,36 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX)
     #support threaded client code
     #notice that -pthread is not the same as -lpthread
-    list(APPEND SOAPY_SDR_LIBRARIES -pthread)
+    target_link_libraries(SoapySDR PRIVATE -pthread)
 
     #symbols are only exported from libraries/modules explicitly
-    add_compile_options(-fvisibility=hidden)
-    add_compile_options(-fvisibility-inlines-hidden)
+    target_compile_options(SoapySDR PRIVATE -fvisibility=hidden)
+    target_compile_options(SoapySDR PRIVATE -fvisibility-inlines-hidden)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+#disable MSVC warnings
+if (MSVC)
+    target_compile_definitions(SoapySDR PRIVATE -D_CRT_NONSTDC_NO_DEPRECATE) #strdup
+    target_compile_definitions(SoapySDR PRIVATE -D_CRT_SECURE_NO_WARNINGS) #strncpy
+endif ()
 
-list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp)
+########################################################################
+# Configure sources
+########################################################################
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Modules.in.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp
 @ONLY)
 
-list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp)
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.in.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp
 @ONLY)
 
-#C API support sources
-list(APPEND SOAPY_SDR_SOURCES
-    TypesC.cpp
-    ModulesC.cpp
-    VersionC.cpp
-    DeviceC.cpp
-    FactoryC.cpp
-    LoggerC.cpp
-    TimeC.cpp
-    ErrorsC.cpp
-    FormatsC.cpp
+target_sources(SoapySDR PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp
 )
-
-#disable MSVC warnings
-if (MSVC)
-    add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
-endif ()
-
-########################################################################
-# Build the library
-########################################################################
-add_library(SoapySDR SHARED ${SOAPY_SDR_SOURCES})
-if (SOAPY_SDR_LIBRARIES)
-    target_link_libraries(SoapySDR ${SOAPY_SDR_LIBRARIES})
-endif()
-set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_ABI_VERSION})
-set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
-set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
 
 ########################################################################
 # Install the library

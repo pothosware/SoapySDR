@@ -1,10 +1,13 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.1.0)
 project(SoapySDR)
 enable_language(CXX)
 enable_testing()
+
+#C++11 is a required language feature for this project
+set(CMAKE_CXX_STANDARD 11)
 
 ########################################################################
 # gather version information
@@ -85,8 +88,7 @@ endif()
 ########################################################################
 set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake/Modules)
 set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
-find_package(SoapySDR NO_MODULE REQUIRED)
-include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
+find_package(SoapySDR CONFIG REQUIRED)
 
 ########################################################################
 # Install cmake helper modules
