@@ -38,10 +38,14 @@ else()
     message(FATAL_ERROR "not win32 or unix")
 endif()
 
-#support threaded client code
-#notice that -pthread is not the same as -lpthread
 if(CMAKE_COMPILER_IS_GNUCXX)
+    #support threaded client code
+    #notice that -pthread is not the same as -lpthread
     list(APPEND SOAPY_SDR_LIBRARIES -pthread)
+
+    #symbols are only exported from libraries/modules explicitly
+    add_compile_options(-fvisibility=hidden)
+    add_compile_options(-fvisibility-inlines-hidden)
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
