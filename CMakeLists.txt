@@ -93,19 +93,22 @@ find_package(SoapySDR CONFIG REQUIRED)
 ########################################################################
 # Install cmake helper modules
 ########################################################################
+if (UNIX)
+    set(CMAKE_LIB_DEST share/cmake/${PROJECT_NAME})
+elseif (WIN32)
+    set(CMAKE_LIB_DEST cmake)
+endif ()
+
 configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfigVersion.in.cmake
     ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
 @ONLY)
-set(cmake_files
+
+install(FILES
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfig.cmake
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRUtil.cmake
-    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
-if (UNIX)
-    install(FILES ${cmake_files} DESTINATION share/cmake/${PROJECT_NAME})
-elseif (WIN32)
-    install(FILES ${cmake_files} DESTINATION cmake)
-endif ()
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
+    DESTINATION ${CMAKE_LIB_DEST})
 
 ########################################################################
 # Install headers
