@@ -1,10 +1,13 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.1.0)
 project(SoapySDR)
 enable_language(CXX)
 enable_testing()
+
+#C++11 is a required language feature for this project
+set(CMAKE_CXX_STANDARD 11)
 
 ########################################################################
 # gather version information
@@ -85,25 +88,27 @@ endif()
 ########################################################################
 set(SoapySDR_DIR ${PROJECT_SOURCE_DIR}/cmake/Modules)
 set(SOAPY_SDR_IN_TREE_SOURCE_DIR ${PROJECT_SOURCE_DIR})
-find_package(SoapySDR NO_MODULE REQUIRED)
-include_directories(${SoapySDR_INCLUDE_DIRS}) #local include precedence
+find_package(SoapySDR CONFIG REQUIRED)
 
 ########################################################################
 # Install cmake helper modules
 ########################################################################
+if (UNIX)
+    set(CMAKE_LIB_DEST share/cmake/${PROJECT_NAME})
+elseif (WIN32)
+    set(CMAKE_LIB_DEST cmake)
+endif ()
+
 configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfigVersion.in.cmake
     ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
 @ONLY)
-set(cmake_files
+
+install(FILES
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRConfig.cmake
     ${PROJECT_SOURCE_DIR}/cmake/Modules/SoapySDRUtil.cmake
-    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake)
-if (UNIX)
-    install(FILES ${cmake_files} DESTINATION share/cmake/${PROJECT_NAME})
-elseif (WIN32)
-    install(FILES ${cmake_files} DESTINATION cmake)
-endif ()
+    ${PROJECT_BINARY_DIR}/SoapySDRConfigVersion.cmake
+    DESTINATION ${CMAKE_LIB_DEST})
 
 ########################################################################
 # Install headers

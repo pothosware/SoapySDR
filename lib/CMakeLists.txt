@@ -10,9 +10,9 @@ if (NOT ENABLE_LIBRARY)
 endif()
 
 ########################################################################
-# Soapy SDR sources and dependencies
+# Setup the library
 ########################################################################
-list(APPEND SOAPY_SDR_SOURCES
+add_library(SoapySDR SHARED
     Device.cpp
     Factory.cpp
     Registry.cpp
@@ -23,12 +23,34 @@ list(APPEND SOAPY_SDR_SOURCES
     Formats.cpp
     ConverterRegistry.cpp
     DefaultConverters.cpp
+    #C API support sources
+    TypesC.cpp
+    ModulesC.cpp
+    VersionC.cpp
+    DeviceC.cpp
+    FactoryC.cpp
+    LoggerC.cpp
+    TimeC.cpp
+    ErrorsC.cpp
+    FormatsC.cpp
 )
+target_link_libraries(SoapySDR PUBLIC ${SoapySDR_LINKER_FLAGS})
+target_include_directories(SoapySDR PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(SoapySDR PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
+target_compile_options(SoapySDR PUBLIC ${SoapySDR_COMPILE_OPTIONS})
+target_compile_definitions(SoapySDR PUBLIC ${SoapySDR_COMPILE_DEFINITIONS})
+set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_ABI_VERSION})
+set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
+set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
+
+########################################################################
+# compiler specifics
+########################################################################
 
 #dl libs used by dlopen in unix
-list(APPEND SOAPY_SDR_LIBRARIES
-    ${CMAKE_DL_LIBS}
-)
+if (CMAKE_DL_LIBS)
+    target_link_libraries(SoapySDR PRIVATE ${CMAKE_DL_LIBS})
+endif (CMAKE_DL_LIBS)
 
 if (WIN32)
     set(MODULE_EXT "dll")
@@ -41,64 +63,76 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX)
     #support threaded client code
     #notice that -pthread is not the same as -lpthread
-    list(APPEND SOAPY_SDR_LIBRARIES -pthread)
+    target_link_libraries(SoapySDR PRIVATE -pthread)
 
     #symbols are only exported from libraries/modules explicitly
-    add_compile_options(-fvisibility=hidden)
-    add_compile_options(-fvisibility-inlines-hidden)
+    target_compile_options(SoapySDR PRIVATE -fvisibility=hidden)
+    target_compile_options(SoapySDR PRIVATE -fvisibility-inlines-hidden)
+
+    #force a compile-time error when symbols are missing
+    #otherwise modules will cause a runtime error on load
+    target_link_libraries(SoapySDR PUBLIC "-Wl,--no-undefined")
+
+    #common warnings to help encourage good coding practices
+    target_compile_options(SoapySDR PUBLIC -Wall)
+    target_compile_options(SoapySDR PUBLIC -Wextra)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+if (MSVC)
+    #we always want to use multiple cores for compilation
+    target_compile_options(SoapySDR PUBLIC /MP)
 
-list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp)
+    #disable MSVC warnings
+    target_compile_definitions(SoapySDR PRIVATE -D_CRT_NONSTDC_NO_DEPRECATE) #strdup
+    target_compile_definitions(SoapySDR PRIVATE -D_CRT_SECURE_NO_WARNINGS) #strncpy
+
+    #disable MSVC warnings that come from public API
+    target_compile_options(SoapySDR PUBLIC /wd4251) #disable 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
+    target_compile_options(SoapySDR PUBLIC /wd4503) #'identifier' : decorated name length exceeded, name was truncated
+
+    #projects should be cross-platform and standard stl functions should work
+    target_compile_definitions(SoapySDR PUBLIC -DNOMINMAX) #enables std::min and std::max
+endif ()
+
+if(APPLE)
+    #fixes issue with duplicate module registry when using application bundle
+    target_link_libraries(SoapySDR PUBLIC "-flat_namespace")
+endif()
+
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
+    target_compile_options(SoapySDR PUBLIC -stdlib=libc++)
+endif()
+
+########################################################################
+# Configure sources
+########################################################################
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Modules.in.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp
 @ONLY)
 
-list(APPEND SOAPY_SDR_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp)
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.in.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp
 @ONLY)
 
-#C API support sources
-list(APPEND SOAPY_SDR_SOURCES
-    TypesC.cpp
-    ModulesC.cpp
-    VersionC.cpp
-    DeviceC.cpp
-    FactoryC.cpp
-    LoggerC.cpp
-    TimeC.cpp
-    ErrorsC.cpp
-    FormatsC.cpp
+target_sources(SoapySDR PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/Version.cpp
 )
-
-#disable MSVC warnings
-if (MSVC)
-    add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE)
-endif ()
-
-########################################################################
-# Build the library
-########################################################################
-add_library(SoapySDR SHARED ${SOAPY_SDR_SOURCES})
-if (SOAPY_SDR_LIBRARIES)
-    target_link_libraries(SoapySDR ${SOAPY_SDR_LIBRARIES})
-endif()
-set_target_properties(SoapySDR PROPERTIES SOVERSION ${SOAPY_SDR_ABI_VERSION})
-set_target_properties(SoapySDR PROPERTIES VERSION ${SOAPY_SDR_LIBVER})
-set_target_properties(SoapySDR PROPERTIES DEFINE_SYMBOL "SOAPY_SDR_DLL_EXPORTS")
 
 ########################################################################
 # Install the library
 ########################################################################
 install(TARGETS SoapySDR
+    EXPORT SoapySDRExport
     LIBRARY DESTINATION lib${LIB_SUFFIX} # .so file
     ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
     RUNTIME DESTINATION bin              # .dll file
 )
+
+#export target to SoapySDR project config
+install(EXPORT SoapySDRExport DESTINATION ${CMAKE_LIB_DEST})
 
 ########################################################################
 # Build pkg config file

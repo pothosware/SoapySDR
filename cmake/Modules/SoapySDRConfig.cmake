@@ -10,6 +10,7 @@ set(INCLUDED_SOAPY_SDR_CONFIG_CMAKE TRUE)
 # SOAPY_SDR_MODULE_UTIL() - utility function to build modules
 # SoapySDR_LIBRARIES - SoapySDR development libraries
 # SoapySDR_INCLUDE_DIRS - SoapySDR development includes
+# An import target named SoapySDR (preferred for new development)
 ########################################################################
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR})
 include(SoapySDRUtil)
@@ -52,65 +53,6 @@ endif()
 set(LIB_SUFFIX ${LIB_SUFFIX} CACHE STRING "lib directory suffix")
 
 ########################################################################
-# Provide add_compile_options() when not available
-########################################################################
-if(CMAKE_VERSION VERSION_LESS "2.8.12")
-    function(add_compile_options)
-        add_definitions(${ARGN})
-    endfunction(add_compile_options)
-endif()
-
-########################################################################
-# Helpful compiler flags
-########################################################################
-
-#C++11 is a required language feature for this project
-set(CMAKE_CXX_STANDARD 11)
-
-if(CMAKE_COMPILER_IS_GNUCXX)
-
-    #enable C++11 on older versions of cmake
-    if (CMAKE_VERSION VERSION_LESS "3.1")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-    endif()
-
-    #force a compile-time error when symbols are missing
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,--no-undefined")
-
-    #common warnings to help encourage good coding practices
-    add_compile_options(-Wall)
-    add_compile_options(-Wextra)
-endif()
-
-if(APPLE)
-    #fixes issue with duplicate module registry when using application bundle
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flat_namespace")
-    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -flat_namespace")
-endif()
-
-if(MSVC)
-    #C++11 is a required language feature for this project
-    if (${MSVC_VERSION} LESS 1700)
-        message(FATAL_ERROR "the build requires MSVC 2012 or newer for C++11 support")
-    endif()
-
-    #we always want to use multiple cores for compilation
-    add_compile_options(/MP)
-
-    #suppress the following warnings which are commonly caused by project headers
-    add_compile_options(/wd4251) #disable 'identifier' : class 'type' needs to have dll-interface to be used by clients of class 'type2'
-    add_compile_options(/wd4503) #'identifier' : decorated name length exceeded, name was truncated
-
-    #projects should be cross-platform and standard stl functions should work
-    add_definitions(-DNOMINMAX) #enables std::min and std::max
-endif()
-
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-    add_compile_options(-stdlib=libc++)
-endif()
-
-########################################################################
 # extract the ABI version string from the Version.h header
 ########################################################################
 function(_SOAPY_SDR_GET_ABI_VERSION VERSION SOAPY_SDR_INCLUDE_DIR)
@@ -136,38 +78,10 @@ if (SOAPY_SDR_IN_TREE_SOURCE_DIR)
 endif (SOAPY_SDR_IN_TREE_SOURCE_DIR)
 
 ########################################################################
-## installation root
+## create import library target
 ########################################################################
-if (UNIX)
-    get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../.." ABSOLUTE)
-elseif (WIN32)
-    get_filename_component(SOAPY_SDR_ROOT "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
-endif ()
+include(SoapySDRExport)
 
-########################################################################
-## locate the library
-########################################################################
-find_library(
-    SOAPY_SDR_LIBRARY SoapySDR SoapySDRd
-    PATHS ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}
-    PATH_SUFFIXES ${CMAKE_LIBRARY_ARCHITECTURE}
-    NO_DEFAULT_PATH
-)
-if(NOT SOAPY_SDR_LIBRARY)
-    message(FATAL_ERROR "cannot find SoapySDR library in ${SOAPY_SDR_ROOT}/lib${LIB_SUFFIX}")
-endif()
-set(SoapySDR_LIBRARIES ${SOAPY_SDR_LIBRARY})
-
-########################################################################
-## locate the includes
-########################################################################
-find_path(
-    SOAPY_SDR_INCLUDE_DIR SoapySDR/Config.hpp
-    PATHS ${SOAPY_SDR_ROOT}/include
-    NO_DEFAULT_PATH
-)
-if(NOT SOAPY_SDR_INCLUDE_DIR)
-    message(FATAL_ERROR "cannot find SoapySDR includes in ${SOAPY_SDR_ROOT}/include")
-endif()
-set(SoapySDR_INCLUDE_DIRS ${SOAPY_SDR_INCLUDE_DIR})
-_SOAPY_SDR_GET_ABI_VERSION(SOAPY_SDR_ABI_VERSION ${SoapySDR_INCLUDE_DIRS})
+#set old-style variables: used in python swig flags and misc projects
+get_target_property(SoapySDR_INCLUDE_DIRS SoapySDR INTERFACE_INCLUDE_DIRECTORIES)
+set(SoapySDR_LIBRARIES SoapySDR)

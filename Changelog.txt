@@ -1,10 +1,5 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.7.1 (pending)
-==========================
-
-- Move visibility flags from project config to library scope
-
 Release 0.7.0 (2018-10-24)
 ==========================
 

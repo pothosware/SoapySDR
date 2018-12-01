@@ -1,7 +1,7 @@
 ########################################################################
 # Feature setup
 ########################################################################
-find_package(SoapySDR NO_MODULE REQUIRED)
+find_package(SoapySDR CONFIG REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 ########################################################################
@@ -60,8 +60,6 @@ endif()
 # Build Module
 ########################################################################
 include(UseSWIG)
-include_directories(${SoapySDR_INCLUDE_DIRS})
-include_directories(${PYTHON3_INCLUDE_DIRS})
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/../python/SoapySDR.i
@@ -77,7 +75,8 @@ else()
 SWIG_ADD_LIBRARY(SoapySDR3 LANGUAGE python SOURCES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)
 endif()
 
-SWIG_LINK_LIBRARIES(SoapySDR3 ${SoapySDR_LIBRARIES} ${PYTHON3_LIBRARIES})
+target_include_directories(${SWIG_MODULE_SoapySDR3_REAL_NAME} PRIVATE ${PYTHON3_INCLUDE_DIRS})
+SWIG_LINK_LIBRARIES(SoapySDR3 SoapySDR ${PYTHON3_LIBRARIES})
 
 set_target_properties(${SWIG_MODULE_SoapySDR3_REAL_NAME} PROPERTIES OUTPUT_NAME _SoapySDR)
 

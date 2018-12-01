@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 project(SoapySDRPython CXX)
 enable_testing()
 
-find_package(SoapySDR NO_MODULE REQUIRED)
+find_package(SoapySDR CONFIG REQUIRED)
 
 ########################################################################
 # Find SWIG
@@ -88,7 +88,7 @@ endif()
 ########################################################################
 ## set the swig flags - shared with python3 build
 ########################################################################
-set(CMAKE_SWIG_FLAGS -c++ -threads)
+set(CMAKE_SWIG_FLAGS -c++ -threads -I${SoapySDR_INCLUDE_DIRS})
 
 #check for size_t issue on arm 32-bit platforms
 include(CheckCXXSourceCompiles)
@@ -145,8 +145,6 @@ endif()
 # Build Module
 ########################################################################
 include(UseSWIG)
-include_directories(${SoapySDR_INCLUDE_DIRS})
-include_directories(${PYTHON_INCLUDE_DIRS})
 
 message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
 set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
@@ -157,7 +155,8 @@ else()
 SWIG_ADD_LIBRARY(SoapySDR LANGUAGE python SOURCES SoapySDR.i)
 endif()
 
-SWIG_LINK_LIBRARIES(SoapySDR ${SoapySDR_LIBRARIES} ${PYTHON_LIBRARIES})
+target_include_directories(${SWIG_MODULE_SoapySDR_REAL_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+SWIG_LINK_LIBRARIES(SoapySDR SoapySDR ${PYTHON_LIBRARIES})
 
 ########################################################################
 # Install Module
