@@ -90,7 +90,7 @@ function(SOAPY_SDR_MODULE_UTIL)
 
     add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
     target_include_directories(${MODULE_TARGET} PRIVATE SoapySDR)
-    target_link_libraries(${MODULE_TARGET} ${MODULE_LIBRARIES} SoapySDR)
+    target_link_libraries(${MODULE_TARGET} PRIVATE ${MODULE_LIBRARIES} SoapySDR)
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
     set_property(TARGET ${MODULE_TARGET} PROPERTY CXX_STANDARD 11)
 
