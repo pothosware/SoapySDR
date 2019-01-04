@@ -94,6 +94,7 @@ Package: soapysdr-modules-all
 Architecture: all
 Depends:
     soapysdr-module-airspy,
+    soapysdr-module-airspyhf,
     soapysdr-module-bladerf,
     soapysdr-module-hackrf,
     soapysdr-module-redpitaya,
@@ -102,7 +103,10 @@ Depends:
     soapysdr-module-rfspace,
     soapysdr-module-osmosdr,
     soapysdr-module-mirisdr,
+    soapysdr-module-iris,
+    soapysdr-module-lms7,
     soapysdr-module-uhd,
+    soapysdr-module-plutosdr,
     ${misc:Depends}
 Description: software defined radio hardware support modules
  SoapySDR is a library providing a common interface to SDR (software
