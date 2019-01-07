@@ -65,7 +65,7 @@ int vasprintf(char **strp, const char *fmt, va_list ap)
 /***********************************************************************
  * Default log message handler implementation
  **********************************************************************/
-void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
+static void defaultLogHandler(const SoapySDRLogLevel logLevel, const char *message)
 {
     switch (logLevel)
     {
@@ -103,9 +103,17 @@ void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list
     }
 }
 
+/***********************************************************************
+ * Replace the current registeredLogHandler with handler.
+ * If nullptr is passed then the default log handler is restored.
+ **********************************************************************/
 void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
 {
-    registeredLogHandler = handler;
+    if (handler) {
+        registeredLogHandler = handler;
+    } else {
+        registeredLogHandler = defaultLogHandler;
+    }
 }
 
 void SoapySDR_setLogLevel(const SoapySDRLogLevel logLevel)

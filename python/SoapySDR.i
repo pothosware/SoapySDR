@@ -155,6 +155,8 @@
         virtual ~SoapySDR_pythonLogHandlerBase(void)
         {
             globalHandle = nullptr;
+            // Restore the default, C coded, log handler.
+            SoapySDR::registerLogHandler(nullptr);
         }
         virtual void handle(const SoapySDR::LogLevel, const char *) = 0;
 
@@ -184,7 +186,10 @@ class SoapySDR_pythonLogHandler(SoapySDR_pythonLogHandlerBase):
     def handle(self, *args): self.handler(*args)
 
 def registerLogHandler(h):
-    SoapySDR_globalLogHandlers[0] = SoapySDR_pythonLogHandler(h)
+    if h is None:
+        SoapySDR_globalLogHandlers[0] = None
+    else:
+        SoapySDR_globalLogHandlers[0] = SoapySDR_pythonLogHandler(h)
 %}
 
 ////////////////////////////////////////////////////////////////////////
