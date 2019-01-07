@@ -22,9 +22,14 @@
 ////////////////////////////////////////////////////////////////////////
 %include <exception.i>
 
+// We only expect to throw DirectorExceptions from within
+// SoapySDR_pythonLogHandlerBase calls.  Catching them permits us to
+// propagate exceptions thrown in the Python log handler callback back to
+// Python.
 %exception
 {
     try{$action}
+    catch (Swig::DirectorException &e) { SWIG_fail; }
     catch (const std::exception &ex)
     {SWIG_exception(SWIG_RuntimeError, ex.what());}
     catch (...)
@@ -128,6 +133,13 @@
 %ignore SoapySDR::registerLogHandler;
 %include <SoapySDR/Logger.h>
 %include <SoapySDR/Logger.hpp>
+
+%feature("director:except") {
+    if ($error != NULL) {
+        throw Swig::DirectorMethodException("DAVE");
+    }
+}
+
 
 %feature("director") SoapySDR_pythonLogHandlerBase;
 
