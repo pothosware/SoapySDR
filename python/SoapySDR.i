@@ -194,7 +194,7 @@ _SoapySDR_globalLogHandlers = [None]
 class _SoapySDR_pythonLogHandler(_SoapySDR_pythonLogHandlerBase):
     def __init__(self, handler):
         self.handler = handler
-        getattr(SoapySDR_pythonLogHandlerBase, '__init__')(self)
+        getattr(_SoapySDR_pythonLogHandlerBase, '__init__')(self)
 
     def handle(self, *args): self.handler(*args)
 
