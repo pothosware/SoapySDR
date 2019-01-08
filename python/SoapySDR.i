@@ -29,7 +29,7 @@
 %exception
 {
     try{$action}
-    catch (Swig::DirectorException &e) { SWIG_fail; }
+    catch (const Swig::DirectorException &e) { SWIG_fail; }
     catch (const std::exception &ex)
     {SWIG_exception(SWIG_RuntimeError, ex.what());}
     catch (...)
@@ -136,7 +136,7 @@
 
 %feature("director:except") {
     if ($error != NULL) {
-        throw Swig::DirectorMethodException("DAVE");
+        throw Swig::DirectorMethodException();
     }
 }
 
