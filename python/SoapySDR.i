@@ -2,7 +2,7 @@
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
-%module SoapySDR
+%module(directors="1") SoapySDR
 
 ////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
@@ -22,9 +22,14 @@
 ////////////////////////////////////////////////////////////////////////
 %include <exception.i>
 
+// We only expect to throw DirectorExceptions from within
+// SoapySDR_pythonLogHandlerBase calls.  Catching them permits us to
+// propagate exceptions thrown in the Python log handler callback back to
+// Python.
 %exception
 {
     try{$action}
+    catch (const Swig::DirectorException &e) { SWIG_fail; }
     catch (const std::exception &ex)
     {SWIG_exception(SWIG_RuntimeError, ex.what());}
     catch (...)
@@ -117,10 +122,75 @@
 %include <SoapySDR/Version.h>
 %include <SoapySDR/Formats.h>
 
+////////////////////////////////////////////////////////////////////////
+// Logging tie-ins for python
+////////////////////////////////////////////////////////////////////////
 %ignore SoapySDR_logf;
 %ignore SoapySDR_vlogf;
 %ignore SoapySDR_registerLogHandler;
+%ignore SoapySD::logf;
+%ignore SoapySDR::vlogf;
+%ignore SoapySDR::registerLogHandler;
 %include <SoapySDR/Logger.h>
+%include <SoapySDR/Logger.hpp>
+
+%feature("director:except") {
+    if ($error != NULL) {
+        throw Swig::DirectorMethodException();
+    }
+}
+
+
+%feature("director") SoapySDR_pythonLogHandlerBase;
+
+%inline %{
+    class SoapySDR_pythonLogHandlerBase
+    {
+    public:
+        SoapySDR_pythonLogHandlerBase(void)
+        {
+            globalHandle = this;
+            SoapySDR::registerLogHandler(&globalHandler);
+        }
+        virtual ~SoapySDR_pythonLogHandlerBase(void)
+        {
+            globalHandle = nullptr;
+            // Restore the default, C coded, log handler.
+            SoapySDR::registerLogHandler(nullptr);
+        }
+        virtual void handle(const SoapySDR::LogLevel, const char *) = 0;
+
+    private:
+        static void globalHandler(const SoapySDR::LogLevel logLevel, const char *message)
+        {
+            if (globalHandle != nullptr) globalHandle->handle(logLevel, message);
+        }
+
+        static SoapySDR_pythonLogHandlerBase *globalHandle;
+    };
+%}
+
+%{
+    SoapySDR_pythonLogHandlerBase *SoapySDR_pythonLogHandlerBase::globalHandle = nullptr;
+%}
+
+%insert("python")
+%{
+SoapySDR_globalLogHandlers = [None]
+
+class SoapySDR_pythonLogHandler(SoapySDR_pythonLogHandlerBase):
+    def __init__(self, handler):
+        self.handler = handler
+        getattr(SoapySDR_pythonLogHandlerBase, '__init__')(self)
+
+    def handle(self, *args): self.handler(*args)
+
+def registerLogHandler(h):
+    if h is None:
+        SoapySDR_globalLogHandlers[0] = None
+    else:
+        SoapySDR_globalLogHandlers[0] = SoapySDR_pythonLogHandler(h)
+%}
 
 ////////////////////////////////////////////////////////////////////////
 // Utility functions
