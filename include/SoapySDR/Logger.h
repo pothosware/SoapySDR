@@ -82,6 +82,7 @@ typedef void (*SoapySDRLogHandler)(const SoapySDRLogLevel logLevel, const char *
 /*!
  * Register a new system log handler.
  * Platforms should call this to replace the default stdio handler.
+ * Passing `NULL` restores the default.
  */
 SOAPY_SDR_API void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler);
 
