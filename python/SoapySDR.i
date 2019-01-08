@@ -2,7 +2,20 @@
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
-%module(directors="1") SoapySDR
+%define DOCSTRING
+"SoapySDR API.
+
+SoapySDR is an open-source generalized API and runtime library for interfacing
+with Software Defined Radio devices. With SoapySDR, you can instantiate,
+configure, and stream with an SDR device in a variety of environments.
+Refer to https://github.com/pothosware/SoapySDR/wiki
+
+This Python interface closely maps to the C/C++ one.
+See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
+"
+%enddef
+
+%module(directors="1", docstring=DOCSTRING) SoapySDR
 
 ////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
@@ -128,7 +141,7 @@
 %ignore SoapySDR_logf;
 %ignore SoapySDR_vlogf;
 %ignore SoapySDR_registerLogHandler;
-%ignore SoapySD::logf;
+%ignore SoapySDR::logf;
 %ignore SoapySDR::vlogf;
 %ignore SoapySDR::registerLogHandler;
 %include <SoapySDR/Logger.h>
@@ -141,18 +154,18 @@
 }
 
 
-%feature("director") SoapySDR_pythonLogHandlerBase;
+%feature("director") _SoapySDR_pythonLogHandlerBase;
 
 %inline %{
-    class SoapySDR_pythonLogHandlerBase
+    class _SoapySDR_pythonLogHandlerBase
     {
     public:
-        SoapySDR_pythonLogHandlerBase(void)
+        _SoapySDR_pythonLogHandlerBase(void)
         {
             globalHandle = this;
             SoapySDR::registerLogHandler(&globalHandler);
         }
-        virtual ~SoapySDR_pythonLogHandlerBase(void)
+        virtual ~_SoapySDR_pythonLogHandlerBase(void)
         {
             globalHandle = nullptr;
             // Restore the default, C coded, log handler.
@@ -166,30 +179,44 @@
             if (globalHandle != nullptr) globalHandle->handle(logLevel, message);
         }
 
-        static SoapySDR_pythonLogHandlerBase *globalHandle;
+        static _SoapySDR_pythonLogHandlerBase *globalHandle;
     };
 %}
 
 %{
-    SoapySDR_pythonLogHandlerBase *SoapySDR_pythonLogHandlerBase::globalHandle = nullptr;
+    _SoapySDR_pythonLogHandlerBase *_SoapySDR_pythonLogHandlerBase::globalHandle = nullptr;
 %}
 
 %insert("python")
 %{
-SoapySDR_globalLogHandlers = [None]
+_SoapySDR_globalLogHandlers = [None]
 
-class SoapySDR_pythonLogHandler(SoapySDR_pythonLogHandlerBase):
+class _SoapySDR_pythonLogHandler(_SoapySDR_pythonLogHandlerBase):
     def __init__(self, handler):
         self.handler = handler
         getattr(SoapySDR_pythonLogHandlerBase, '__init__')(self)
 
     def handle(self, *args): self.handler(*args)
 
-def registerLogHandler(h):
-    if h is None:
-        SoapySDR_globalLogHandlers[0] = None
+def registerLogHandler(handler):
+    """Register a new system log handler.
+
+    Platforms should call this to replace the default stdio handler.
+
+    :param handler: is a callback function that's called each time an event is
+    to be logged by the SoapySDR module.  It is passed the log level and the
+    the log message.  The callback shouldn't return anything, but may throw
+    exceptions which can be handled in turn in the Python client code.
+    Alternately, setting handler to None restores the default.
+
+    :type handler: Callable[[int, str], None] or None
+
+    :returns: None
+    """
+    if handler is None:
+        _SoapySDR_globalLogHandlers[0] = None
     else:
-        SoapySDR_globalLogHandlers[0] = SoapySDR_pythonLogHandler(h)
+        _SoapySDR_globalLogHandlers[0] = _SoapySDR_pythonLogHandler(handler)
 %}
 
 ////////////////////////////////////////////////////////////////////////
