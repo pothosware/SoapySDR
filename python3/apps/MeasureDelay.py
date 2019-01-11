@@ -13,6 +13,7 @@ from scipy import signal
 import SoapySDR
 from SoapySDR import * #SOAPY_SDR_ constants
 
+import soapy_log_handle
 
 def generate_cf32_pulse(numSamps, width=5, scaleFactor=0.3):
     x = np.linspace(-width, width, numSamps)
@@ -184,9 +185,15 @@ def main():
     parser.add_argument("--clock-rate", type=float, help="Optional clock rate (Hz)")
     parser.add_argument("--dump-dir", type=str, help="Optional directory to dump debug samples")
     parser.add_argument("--debug", action='store_true', help="Output debug messages")
+    parser.add_argument("--abort-on-error", action='store_true', help="Halts operations if the SDR logs an error")
 
     options = parser.parse_args()
 
+    if options.abort_on_error:
+        exception_level=SOAPY_SDR_ERROR
+    else:
+        exception_level=None
+    soapy_log_handle.set_python_log_handler(exception_level=exception_level)
     if options.debug:
         SoapySDR.setLogLevel(SOAPY_SDR_DEBUG)
 
