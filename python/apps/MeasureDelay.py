@@ -72,7 +72,7 @@ def measure_delay(
     #transmit a pulse in the near future
     sdr.activateStream(txStream)
     txPulse = generate_cf32_pulse(numTxSamps)
-    txTime0 = sdr.getHardwareTime() + long(0.1e9) #100ms
+    txTime0 = int(sdr.getHardwareTime() + 0.1e9) #100ms
     txFlags = SOAPY_SDR_HAS_TIME | SOAPY_SDR_END_BURST
     sr = sdr.writeStream(txStream, [txPulse], len(txPulse), txFlags, txTime0)
     if sr.ret != len(txPulse): raise Exception('transmit failed %s'%str(sr))
@@ -81,14 +81,14 @@ def measure_delay(
     rxBuffs = np.array([], np.complex64)
     rxFlags = SOAPY_SDR_HAS_TIME | SOAPY_SDR_END_BURST
     #half of the samples come before the transmit time
-    receiveTime = txTime0 - long((numRxSamps/rate)*1e9)/2
+    receiveTime = int(txTime0 - (numRxSamps/rate) * 1e9 / 2)
     sdr.activateStream(rxStream, rxFlags, receiveTime, numRxSamps)
     rxTime0 = None
 
     #accumulate receive buffer into large contiguous buffer
     while True:
         rxBuff = np.array([0]*1024, np.complex64)
-        timeoutUs = long(5e5) #500 ms >> stream time
+        timeoutUs = int(5e5) #500 ms >> stream time
         sr = sdr.readStream(rxStream, [rxBuff], len(rxBuff), timeoutUs=timeoutUs)
 
         #stash time on first buffer
@@ -115,7 +115,7 @@ def measure_delay(
 
     #clear initial samples because transients
     rxMean = np.mean(rxBuffs)
-    for i in range(len(rxBuffs)/100): rxBuffs[i] = rxMean
+    for i in range(len(rxBuffs) // 100): rxBuffs[i] = rxMean
 
     #normalize the samples
     def normalize(samps):
@@ -140,13 +140,13 @@ def measure_delay(
     txArgmaxIndex = np.argmax(txPulseNorm)
 
     #check goodness of peak by comparing argmax and correlation
-    rxCoorIndex = np.argmax(np.correlate(rxBuffsNorm, txPulseNorm))+len(txPulseNorm)/2
+    rxCoorIndex = np.argmax(np.correlate(rxBuffsNorm, txPulseNorm)) + len(txPulseNorm) // 2
     if abs(rxCoorIndex-rxArgmaxIndex) > len(txPulseNorm)/4:
         raise Exception('correlation(%d) does not match argmax(%d), probably bad data'%(rxCoorIndex, rxArgmaxIndex))
 
     #calculate time offset
-    txPeakTime = txTime0 + long((txArgmaxIndex/rate)*1e9)
-    rxPeakTime = rxTime0 + long((rxArgmaxIndex/rate)*1e9)
+    txPeakTime = int(txTime0 + (txArgmaxIndex / rate) * 1e9)
+    rxPeakTime = int(rxTime0 + (rxArgmaxIndex / rate) * 1e9)
     timeDelta = rxPeakTime - txPeakTime
     print('>>> Time delta %f us'%(timeDelta/1e3))
     print("Done!")
