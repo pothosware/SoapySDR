@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Simple signal generator for testing transmit
 
 Continuously output a carrier with single sideband sinusoid amplitude

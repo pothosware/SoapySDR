@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """Measure round trip delay through RF loopback/leakage
 
 """
