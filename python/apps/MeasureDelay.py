@@ -1,14 +1,18 @@
-########################################################################
-## Measure round trip delay through RF loopback/leakage
-########################################################################
+#!/usr/bin/env python3
+"""Measure round trip delay through RF loopback/leakage
+
+"""
+
+import argparse
+import os
+import time
+
+import numpy as np
+from scipy import signal
 
 import SoapySDR
 from SoapySDR import * #SOAPY_SDR_ constants
-import numpy as np
-from scipy import signal
-from optparse import OptionParser
-import time
-import os
+
 
 def generate_cf32_pulse(numSamps, width=5, scaleFactor=0.3):
     x = np.linspace(-width, width, numSamps)
@@ -42,24 +46,32 @@ def measure_delay(
     #set sample rate
     sdr.setSampleRate(SOAPY_SDR_RX, rxChan, rate)
     sdr.setSampleRate(SOAPY_SDR_TX, txChan, rate)
-    print("Actual Rx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_RX, rxChan)/1e6))
-    print("Actual Tx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_TX, txChan)/1e6))
+    print("Actual Rx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_RX, rxChan) / 1e6))
+    print("Actual Tx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_TX, txChan) / 1e6))
 
     #set antenna
-    if rxAnt is not None: sdr.setAntenna(SOAPY_SDR_RX, rxChan, rxAnt)
-    if txAnt is not None: sdr.setAntenna(SOAPY_SDR_TX, txChan, txAnt)
+    if rxAnt is not None:
+        sdr.setAntenna(SOAPY_SDR_RX, rxChan, rxAnt)
+    if txAnt is not None:
+        sdr.setAntenna(SOAPY_SDR_TX, txChan, txAnt)
 
     #set overall gain
-    if rxGain is not None: sdr.setGain(SOAPY_SDR_RX, rxChan, rxGain)
-    if txGain is not None: sdr.setGain(SOAPY_SDR_TX, txChan, txGain)
+    if rxGain is not None:
+        sdr.setGain(SOAPY_SDR_RX, rxChan, rxGain)
+    if txGain is not None:
+        sdr.setGain(SOAPY_SDR_TX, txChan, txGain)
 
     #tune frontends
-    if freq is not None: sdr.setFrequency(SOAPY_SDR_RX, rxChan, freq)
-    if freq is not None: sdr.setFrequency(SOAPY_SDR_TX, txChan, freq)
+    if freq is not None:
+        sdr.setFrequency(SOAPY_SDR_RX, rxChan, freq)
+    if freq is not None:
+        sdr.setFrequency(SOAPY_SDR_TX, txChan, freq)
 
     #set bandwidth
-    if rxBw is not None: sdr.setBandwidth(SOAPY_SDR_RX, rxChan, rxBw)
-    if txBw is not None: sdr.setBandwidth(SOAPY_SDR_TX, txChan, txBw)
+    if rxBw is not None:
+        sdr.setBandwidth(SOAPY_SDR_RX, rxChan, rxBw)
+    if txBw is not None:
+        sdr.setBandwidth(SOAPY_SDR_TX, txChan, txBw)
 
     #create rx and tx streams
     print("Create Rx and Tx streams")
@@ -75,7 +87,8 @@ def measure_delay(
     txTime0 = int(sdr.getHardwareTime() + 0.1e9) #100ms
     txFlags = SOAPY_SDR_HAS_TIME | SOAPY_SDR_END_BURST
     sr = sdr.writeStream(txStream, [txPulse], len(txPulse), txFlags, txTime0)
-    if sr.ret != len(txPulse): raise Exception('transmit failed %s'%str(sr))
+    if sr.ret != len(txPulse):
+        raise Exception('transmit failed %s'%str(sr))
 
     #receive slightly before transmit time
     rxBuffs = np.array([], np.complex64)
@@ -98,8 +111,10 @@ def measure_delay(
                 raise Exception('receive fail - no timestamp on first readStream %s'%(str(sr)))
 
         #accumulate buffer or exit loop
-        if sr.ret > 0: rxBuffs = np.concatenate((rxBuffs, rxBuff[:sr.ret]))
-        else: break
+        if sr.ret > 0:
+            rxBuffs = np.concatenate((rxBuffs, rxBuff[:sr.ret]))
+        else:
+            break
 
     #cleanup streams
     print("Cleanup streams")
@@ -121,7 +136,7 @@ def measure_delay(
     def normalize(samps):
         samps = samps - np.mean(samps) #remove dc
         samps = np.absolute(samps) #magnitude
-        samps = samps/max(samps) #norm ampl to peak
+        samps = samps / max(samps) #norm ampl to peak
         #print samps[:100]
         return samps
 
@@ -130,10 +145,10 @@ def measure_delay(
 
     #dump debug samples
     if dumpDir is not None:
-        txPulseNorm.tofile(os.path.join(dumpDir, 'txNorm.dat'))
-        rxBuffsNorm.tofile(os.path.join(dumpDir, 'rxNorm.dat'))
-        np.real(rxBuffs).tofile(os.path.join(dumpDir, 'rxRawI.dat'))
-        np.imag(rxBuffs).tofile(os.path.join(dumpDir, 'rxRawQ.dat'))
+        np.save(os.path.join(dumpDir, 'txNorm.npy'), txPulseNorm)
+        np.save(os.path.join(dumpDir, 'rxNorm.npy'), rxBuffsNorm)
+        np.save(os.path.join(dumpDir, 'rxRawI.npy'), np.real(rxBuffs))
+        np.save(os.path.join(dumpDir, 'rxRawQ.npy'), np.imag(rxBuffs))
 
     #look for the for peak index for time offsets
     rxArgmaxIndex = np.argmax(rxBuffsNorm)
@@ -148,39 +163,48 @@ def measure_delay(
     txPeakTime = int(txTime0 + (txArgmaxIndex / rate) * 1e9)
     rxPeakTime = int(rxTime0 + (rxArgmaxIndex / rate) * 1e9)
     timeDelta = rxPeakTime - txPeakTime
-    print('>>> Time delta %f us'%(timeDelta/1e3))
+    print('>>> Time delta %f us'%(timeDelta / 1e3))
     print("Done!")
 
 def main():
-    parser = OptionParser()
-    parser.add_option("--args", type="string", dest="args", help="device factor arguments", default="")
-    parser.add_option("--rate", type="float", dest="rate", help="Tx and Rx sample rate", default=1e6)
-    parser.add_option("--rxAnt", type="string", dest="rxAnt", help="Optional Rx antenna", default=None)
-    parser.add_option("--txAnt", type="string", dest="txAnt", help="Optional Tx antenna", default=None)
-    parser.add_option("--rxGain", type="float", dest="rxGain", help="Optional Rx gain (dB)", default=None)
-    parser.add_option("--txGain", type="float", dest="txGain", help="Optional Tx gain (dB)", default=None)
-    parser.add_option("--rxBw", type="float", dest="rxBw", help="Optional Rx filter bw (Hz)", default=None)
-    parser.add_option("--txBw", type="float", dest="txBw", help="Optional Tx filter bw (Hz)", default=None)
-    parser.add_option("--rxChan", type="int", dest="rxChan", help="Receiver channel (def=0)", default=0)
-    parser.add_option("--txChan", type="int", dest="txChan", help="Transmitter channel (def=0)", default=0)
-    parser.add_option("--freq", type="float", dest="freq", help="Optional Tx and Rx freq (Hz)", default=None)
-    parser.add_option("--clockRate", type="float", dest="clockRate", help="Optional clock rate (Hz)", default=None)
-    parser.add_option("--dumpDir", type="string", dest="dumpDir", help="Optional directory to dump debug samples", default=None)
-    (options, args) = parser.parse_args()
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--args", type=str, help="device factor arguments", default="")
+    parser.add_argument("--rate", type=float, help="Tx and Rx sample rate", default=1e6)
+    parser.add_argument("--rx-ant", type=str, help="Optional Rx antenna")
+    parser.add_argument("--tx-ant", type=str, help="Optional Tx antenna")
+    parser.add_argument("--rx-gain", type=float, help="Optional Rx gain (dB)")
+    parser.add_argument("--tx-gain", type=float, help="Optional Tx gain (dB)")
+    parser.add_argument("--rx-bw", type=float, help="Optional Rx filter bw (Hz)")
+    parser.add_argument("--tx-bw", type=float, help="Optional Tx filter bw (Hz)")
+    parser.add_argument("--rx-chan", type=int, help="Receiver channel (def=0)", default=0)
+    parser.add_argument("--tx-chan", type=int, help="Transmitter channel (def=0)", default=0)
+    parser.add_argument("--freq", type=float, help="Optional Tx and Rx freq (Hz)")
+    parser.add_argument("--clock-rate", type=float, help="Optional clock rate (Hz)")
+    parser.add_argument("--dump-dir", type=str, help="Optional directory to dump debug samples")
+    parser.add_argument("--debug", action='store_true', help="Output debug messages")
+
+    options = parser.parse_args()
+
+    if options.debug:
+        SoapySDR.setLogLevel(SOAPY_SDR_DEBUG)
+
     measure_delay(
         args=options.args,
         rate=options.rate,
         freq=options.freq,
-        rxBw=options.rxBw,
-        txBw=options.txBw,
-        rxAnt=options.rxAnt,
-        txAnt=options.txAnt,
-        rxGain=options.rxGain,
-        txGain=options.txGain,
-        rxChan=options.rxChan,
-        txChan=options.txChan,
-        clockRate=options.clockRate,
-        dumpDir=options.dumpDir,
+        rxBw=options.rx_bw,
+        txBw=options.tx_bw,
+        rxAnt=options.rx_ant,
+        txAnt=options.tx_ant,
+        rxGain=options.rx_gain,
+        txGain=options.tx_gain,
+        rxChan=options.rx_chan,
+        txChan=options.tx_chan,
+        clockRate=options.clock_rate,
+        dumpDir=options.dump_dir,
     )
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    main()
