@@ -20,13 +20,14 @@ from optparse import OptionParser
 import SoapySDR
 from SoapySDR import * #SOAPY_SDR_ constants
 
+import soapy_log_handle
+
 stop_running = False
 
 def signal_handler(signum, frame):
     global stop_running
     print('Signal handler called with signal {}'.format(signum))
     stop_running = True
-
 
 def siggen_app(
     args,
@@ -73,8 +74,7 @@ def siggen_app(
     if freq is not None:
         sdr.setFrequency(SOAPY_SDR_TX, txChan, freq)
 
-    #tx loop
-    #create tx stream
+
     print("Create Tx stream")
     txStream = sdr.setupStream(SOAPY_SDR_TX, "CF32", [txChan])
     print("Activate Tx Stream")
@@ -120,13 +120,19 @@ def main():
     parser.add_argument("--tx-gain", type=float, help="Optional Tx gain (dB)")
     parser.add_argument("--tx-chan", type=int, help="Transmitter channel (def=0)", default=0)
     parser.add_argument("--freq", type=float, help="Optional Tx and Rx freq (Hz)")
-    parser.add_argument("--tx-bw", type=float, help="Optional Tx filter bw (Hz)")
+    parser.add_argument("--tx-bw", type=float, help="Optional Tx filter bw (Hz)", default=5e6)
     parser.add_argument("--wave-freq", type=float, help="Baseband waveform freq (Hz)")
     parser.add_argument("--clock-rate", type=float, help="Optional clock rate (Hz)")
     parser.add_argument("--debug", action='store_true', help="Output debug messages")
+    parser.add_argument("--abort-on-error", action='store_true', help="Halts operations if the SDR logs an error")
 
     options = parser.parse_args()
 
+    if options.abort_on_error:
+        exception_level=SOAPY_SDR_WARNING
+    else:
+        exception_level=None
+    soapy_log_handle.set_python_log_handler(exception_level=exception_level)
     if options.debug:
         SoapySDR.setLogLevel(SOAPY_SDR_DEBUG)
 
