@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.7.1 (pending)
 ==========================
 
+- Fix for C API call SoapySDRDevice_setIQBalance()
 - Default logger can be restored by setting NULL handler
   - Bumped API version to 0.7.1 for the NULL log handler option
 - Add missing registerLogHandler() to python bindings

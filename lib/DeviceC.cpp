@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Josh Blum
+// Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -364,7 +364,7 @@ bool SoapySDRDevice_hasIQBalance(const SoapySDRDevice *device, const int directi
 int SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)
 {
     __SOAPY_SDR_C_TRY
-    device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
+    device->setIQBalance(direction, channel, std::complex<double>(balanceI, balanceQ));
     __SOAPY_SDR_C_CATCH
 }
 
