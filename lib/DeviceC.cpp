@@ -364,7 +364,7 @@ bool SoapySDRDevice_hasIQBalance(const SoapySDRDevice *device, const int directi
 int SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int direction, const size_t channel, const double balanceI, const double balanceQ)
 {
     __SOAPY_SDR_C_TRY
-    device->setDCOffset(direction, channel, std::complex<double>(balanceI, balanceQ));
+    device->setIQBalance(direction, channel, std::complex<double>(balanceI, balanceQ));
     __SOAPY_SDR_C_CATCH
 }
 
@@ -374,6 +374,13 @@ int SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int directio
     std::complex<double> ret = device->getIQBalance(direction, channel);
     *balanceI = ret.real();
     *balanceQ = ret.imag();
+    __SOAPY_SDR_C_CATCH
+}
+
+int SoapySDRDevice_setIQBalanceMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
+{
+    __SOAPY_SDR_C_TRY
+    device->setIQBalance(direction, channel, automatic);
     __SOAPY_SDR_C_CATCH
 }
 
