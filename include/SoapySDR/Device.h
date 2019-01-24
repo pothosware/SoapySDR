@@ -253,7 +253,7 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
  * the same sample rate. See SoapySDRDevice_setSampleRate().
  *
  * \param device a pointer to a device instance
- * \param [out] stream the opaque pointer to a stream handle.
+ * \return the opaque pointer to a stream handle.
  * \parblock
  *
  * The returned stream is not required to have internal locking, and may not be used
@@ -289,15 +289,32 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
  *   Recommended keys to use in the args dictionary:
  *    - "WIRE" - format of the samples between device and host
  * \endparblock
- * \return 0 for success or error code on failure
+ * \return the stream pointer or nullptr for failure
  */
-SOAPY_SDR_API int SoapySDRDevice_setupStream(SoapySDRDevice *device,
-    SoapySDRStream **stream,
+SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
     const int direction,
     const char *format,
     const size_t *channels,
     const size_t numChans,
     const SoapySDRKwargs *args);
+
+///@cond INTERNAL
+//! Old setupStream invoked by compatibility macro
+inline int SoapySDRDevice_setupStream_(SoapySDRDevice *device,
+    SoapySDRStream **stream,
+    const int direction,
+    const char *format,
+    const size_t *channels,
+    const size_t numChans,
+    const SoapySDRKwargs *args)
+{
+    *stream = SoapySDRDevice_setupStream(device, direction, format, channels, numChans, args);
+    return (stream == NULL)?0:-1;
+}
+
+#define SoapySDR_getMacro(_1,_2,_3,_4,_5,_6,_7,NAME,...) NAME
+#define SoapySDRDevice_setupStream(...) SoapySDR_getMacro(__VA_ARGS__, SoapySDRDevice_setupStream_, SoapySDRDevice_setupStream)(__VA_ARGS__)
+///@endcond
 
 /*!
  * Close an open stream created by setupStream
