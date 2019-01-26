@@ -10,9 +10,8 @@ import time
 import numpy as np
 
 import SoapySDR
+from SoapySDR import * #SOAPY_SDR_ constants
 import soapy_log_handle
-
-RX_DIR, TX_DIR = SoapySDR.SOAPY_SDR_RX, SoapySDR.SOAPY_SDR_TX
 
 def generate_cf32_pulse(num_samps, width=5, scale_factor=0.3):
     """Create a sinc pulse."""
@@ -48,39 +47,39 @@ def measure_delay(
         sdr.setMasterClockRate(clock_rate)
 
     #set sample rate
-    sdr.setSampleRate(RX_DIR, rx_chan, rate)
-    sdr.setSampleRate(TX_DIR, tx_chan, rate)
-    print("Actual Rx Rate %f Msps"%(sdr.getSampleRate(RX_DIR, rx_chan) / 1e6))
-    print("Actual Tx Rate %f Msps"%(sdr.getSampleRate(TX_DIR, tx_chan) / 1e6))
+    sdr.setSampleRate(SOAPY_SDR_RX, rx_chan, rate)
+    sdr.setSampleRate(SOAPY_SDR_TX, tx_chan, rate)
+    print("Actual Rx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_RX, rx_chan) / 1e6))
+    print("Actual Tx Rate %f Msps"%(sdr.getSampleRate(SOAPY_SDR_TX, tx_chan) / 1e6))
 
     #set antenna
     if rx_ant is not None:
-        sdr.setAntenna(RX_DIR, rx_chan, rx_ant)
+        sdr.setAntenna(SOAPY_SDR_RX, rx_chan, rx_ant)
     if tx_ant is not None:
-        sdr.setAntenna(TX_DIR, tx_chan, tx_ant)
+        sdr.setAntenna(SOAPY_SDR_TX, tx_chan, tx_ant)
 
     #set overall gain
     if rx_gain is not None:
-        sdr.setGain(RX_DIR, rx_chan, rx_gain)
+        sdr.setGain(SOAPY_SDR_RX, rx_chan, rx_gain)
     if tx_gain is not None:
-        sdr.setGain(TX_DIR, tx_chan, tx_gain)
+        sdr.setGain(SOAPY_SDR_TX, tx_chan, tx_gain)
 
     #tune frontends
     if freq is not None:
-        sdr.setFrequency(RX_DIR, rx_chan, freq)
+        sdr.setFrequency(SOAPY_SDR_RX, rx_chan, freq)
     if freq is not None:
-        sdr.setFrequency(TX_DIR, tx_chan, freq)
+        sdr.setFrequency(SOAPY_SDR_TX, tx_chan, freq)
 
     #set bandwidth
     if rx_bw is not None:
-        sdr.setBandwidth(RX_DIR, rx_chan, rx_bw)
+        sdr.setBandwidth(SOAPY_SDR_RX, rx_chan, rx_bw)
     if tx_bw is not None:
-        sdr.setBandwidth(TX_DIR, tx_chan, tx_bw)
+        sdr.setBandwidth(SOAPY_SDR_TX, tx_chan, tx_bw)
 
     #create rx and tx streams
     print("Create Rx and Tx streams")
-    rx_stream = sdr.setupStream(RX_DIR, "CF32", [rx_chan])
-    tx_stream = sdr.setupStream(TX_DIR, "CF32", [tx_chan])
+    rx_stream = sdr.setupStream(SOAPY_SDR_RX, SOAPY_SDR_CF32, [rx_chan])
+    tx_stream = sdr.setupStream(SOAPY_SDR_TX, SOAPY_SDR_CF32, [tx_chan])
 
     #let things settle
     time.sleep(1)
@@ -89,14 +88,14 @@ def measure_delay(
     sdr.activateStream(tx_stream)
     tx_pulse = generate_cf32_pulse(num_tx_samps)
     tx_time_0 = int(sdr.getHardwareTime() + 0.1e9) #100ms
-    tx_flags = SoapySDR.SOAPY_SDR_HAS_TIME | SoapySDR.SOAPY_SDR_END_BURST
+    tx_flags = SOAPY_SDR_HAS_TIME | SOAPY_SDR_END_BURST
     status = sdr.writeStream(tx_stream, [tx_pulse], len(tx_pulse), tx_flags, tx_time_0)
     if status.ret != len(tx_pulse):
         raise Exception('transmit failed %s'%str(status))
 
     #receive slightly before transmit time
     rx_buffs = np.array([], np.complex64)
-    rx_flags = SoapySDR.SOAPY_SDR_HAS_TIME | SoapySDR.SOAPY_SDR_END_BURST
+    rx_flags = SOAPY_SDR_HAS_TIME | SOAPY_SDR_END_BURST
     #half of the samples come before the transmit time
     receive_time = int(tx_time_0 - (num_rx_samps/rate) * 1e9 / 2)
     sdr.activateStream(rx_stream, rx_flags, receive_time, num_rx_samps)
@@ -111,7 +110,7 @@ def measure_delay(
         #stash time on first buffer
         if status.ret > 0 and rx_buffs.size:
             rx_time_0 = status.timeNs
-            if (status.flags & SoapySDR.SOAPY_SDR_HAS_TIME) == 0:
+            if (status.flags & SOAPY_SDR_HAS_TIME) == 0:
                 raise Exception('receive fail - no timestamp on first readStream %s'%(str(status)))
 
         #accumulate buffer or exit loop
@@ -200,12 +199,12 @@ def main():
     options = parser.parse_args()
 
     if options.abort_on_error:
-        exception_level = SoapySDR.SOAPY_SDR_ERROR
+        exception_level = SOAPY_SDR_ERROR
     else:
         exception_level = None
     soapy_log_handle.set_python_log_handler(exception_level=exception_level)
     if options.debug:
-        SoapySDR.setLogLevel(SoapySDR.SOAPY_SDR_DEBUG)
+        SoapySDR.setLogLevel(SOAPY_SDR_DEBUG)
 
     measure_delay(
         args=options.args,

@@ -14,13 +14,10 @@ import time
 
 import numpy as np
 
-
 import SoapySDR
-from SoapySDR import SOAPY_SDR_TX, SOAPY_SDR_DEBUG, SOAPY_SDR_WARNING
+from SoapySDR import * #SOAPY_SDR_ constants
 
 import soapy_log_handle
-
-
 
 def siggen_app(
         args,
@@ -69,7 +66,7 @@ def siggen_app(
 
 
     print("Create Tx stream")
-    tx_stream = sdr.setupStream(SOAPY_SDR_TX, "CF32", [tx_chan])
+    tx_stream = sdr.setupStream(SOAPY_SDR_TX, SOAPY_SDR_CF32, [tx_chan])
     print("Activate Tx Stream")
     sdr.activateStream(tx_stream)
     phase_acc = 0
