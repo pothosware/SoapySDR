@@ -107,6 +107,7 @@ Depends:
     soapysdr-module-lms7,
     soapysdr-module-uhd,
     soapysdr-module-plutosdr,
+    soapysdr-module-fcdpp,
     ${misc:Depends}
 Description: software defined radio hardware support modules
  SoapySDR is a library providing a common interface to SDR (software
