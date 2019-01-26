@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.7.1 (pending)
+Release 0.7.1 (2019-01-26)
 ==========================
 
 - Fix for C API call SoapySDRDevice_setIQBalance()

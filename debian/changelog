@@ -1,3 +1,9 @@
+soapysdr (0.7.1-1) unstable; urgency=low
+
+  * Release 0.7.1 (2019-01-26)
+
+ -- Josh Blum <josh@pothosware.com>  Sat, 26 Jan 2019 12:14:39 -0000
+
 soapysdr (0.7.0-1) unstable; urgency=low
 
   * Release 0.7.0 (2018-10-24)
