@@ -155,6 +155,8 @@ SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, 
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+#undef SoapySDRDevice_setupStream
+
 SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
     __SOAPY_SDR_C_TRY
