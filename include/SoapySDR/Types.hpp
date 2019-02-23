@@ -186,13 +186,13 @@ typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSet
 }
 
 template <typename Type>
-typename std::enable_if<std::is_integral<Type>::value and std::is_signed<Type>::value, Type>::type StringToSetting(const std::string &s)
+typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_signed<Type>::value, Type>::type StringToSetting(const std::string &s)
 {
     return Type(std::stoll(s));
 }
 
 template <typename Type>
-typename std::enable_if<std::is_integral<Type>::value and std::is_unsigned<Type>::value, Type>::type StringToSetting(const std::string &s)
+typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_unsigned<Type>::value, Type>::type StringToSetting(const std::string &s)
 {
     return Type(std::stoull(s));
 }
