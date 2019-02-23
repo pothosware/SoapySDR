@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2019 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -1375,35 +1375,35 @@ public:
 template <typename Type>
 Type SoapySDR::Device::readSensor(const std::string &key) const
 {
-    return SoapySDR::StringToSetting<Type>(SoapySDR::Device::readSensor(key));
+    return SoapySDR::StringToSetting<Type>(this->readSensor(key));
 }
 
 template <typename Type>
 Type SoapySDR::Device::readSensor(const int direction, const size_t channel, const std::string &key) const
 {
-    return SoapySDR::StringToSetting<Type>(SoapySDR::Device::readSensor(direction, channel, key));
+    return SoapySDR::StringToSetting<Type>(this->readSensor(direction, channel, key));
 }
 
 template <typename Type>
 void SoapySDR::Device::writeSetting(const std::string &key, const Type &value)
 {
-    SoapySDR::Device::writeSetting(key, SoapySDR::SettingToString(value));
+    this->writeSetting(key, SoapySDR::SettingToString(value));
 }
 
 template <typename Type>
 Type SoapySDR::Device::readSetting(const std::string &key)
 {
-    return SoapySDR::StringToSetting<Type>(SoapySDR::Device::readSetting(key));
+    return SoapySDR::StringToSetting<Type>(this->readSetting(key));
 }
 
 template <typename Type>
 void SoapySDR::Device::writeSetting(const int direction, const size_t channel, const std::string &key, const Type &value)
 {
-    SoapySDR::Device::writeSetting(direction, channel, key, SoapySDR::SettingToString(value));
+    this->writeSetting(direction, channel, key, SoapySDR::SettingToString(value));
 }
 
 template <typename Type>
 Type SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &key)
 {
-    return SoapySDR::StringToSetting<Type>(SoapySDR::Device::readSetting(direction, channel, key));
+    return SoapySDR::StringToSetting<Type>(this->readSetting(direction, channel, key));
 }
