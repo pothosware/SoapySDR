@@ -155,13 +155,13 @@ SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDevice *device, 
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
-int SoapySDRDevice_setupStream(SoapySDRDevice *device, SoapySDRStream **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
+#undef SoapySDRDevice_setupStream
+
+SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device, const int direction, const char *format, const size_t *channels, const size_t numChans, const SoapySDRKwargs *args)
 {
     __SOAPY_SDR_C_TRY
-    *stream = reinterpret_cast<SoapySDRStream *>(device->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
-    __SOAPY_SDR_C_CATCH
-    //TODO this would be a better design to return the stream
-    //__SOAPY_SDR_C_CATCH_RET(nullptr);
+    return reinterpret_cast<SoapySDRStream *>(device->setupStream(direction, format, std::vector<size_t>(channels, channels+numChans), toKwargs(args)));
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
 int SoapySDRDevice_closeStream(SoapySDRDevice *device, SoapySDRStream *stream)
