@@ -4,7 +4,7 @@
 /// Interface definition for Soapy SDR devices.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2019 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -1034,6 +1034,15 @@ public:
     virtual std::string readSensor(const std::string &key) const;
 
     /*!
+     * Readback a global sensor given the name.
+     * \tparam Type the return type for the sensor value
+     * \param key the ID name of an available sensor
+     * \return the current value of the sensor as the specified type
+     */
+    template <typename Type>
+    Type readSensor(const std::string &key) const;
+
+    /*!
      * List the available channel readback sensors.
      * A sensor can represent a reference lock, RSSI, temperature.
      * \param direction the channel direction RX or TX
@@ -1062,6 +1071,17 @@ public:
      * \return the current value of the sensor
      */
     virtual std::string readSensor(const int direction, const size_t channel, const std::string &key) const;
+
+    /*!
+     * Readback a channel sensor given the name.
+     * \tparam Type the return type for the sensor value
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the ID name of an available sensor
+     * \return the current value of the sensor as the specified type
+     */
+    template <typename Type>
+    Type readSensor(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * Register API
@@ -1147,11 +1167,29 @@ public:
     virtual void writeSetting(const std::string &key, const std::string &value);
 
     /*!
+     * Write a setting with an arbitrary value type.
+     * \tparam Type the data type of the value
+     * \param key the setting identifier
+     * \param value the setting value
+     */
+    template <typename Type>
+    void writeSetting(const std::string &key, const Type &value);
+
+    /*!
      * Read an arbitrary setting on the device.
      * \param key the setting identifier
      * \return the setting value
      */
     virtual std::string readSetting(const std::string &key) const;
+
+    /*!
+     * Read an arbitrary setting on the device.
+     * \tparam Type the return type for the sensor value
+     * \param key the setting identifier
+     * \return the setting value
+     */
+    template <typename Type>
+    Type readSetting(const std::string &key);
 
     /*!
      * Describe the allowed keys and values used for channel settings.
@@ -1172,6 +1210,17 @@ public:
     virtual void writeSetting(const int direction, const size_t channel, const std::string &key, const std::string &value);
 
     /*!
+     * Write an arbitrary channel setting on the device.
+     * \tparam Type the data type of the value
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \param value the setting value
+     */
+    template <typename Type>
+    void writeSetting(const int direction, const size_t channel, const std::string &key, const Type &value);
+
+    /*!
      * Read an arbitrary channel setting on the device.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
@@ -1179,6 +1228,17 @@ public:
      * \return the setting value
      */
     virtual std::string readSetting(const int direction, const size_t channel, const std::string &key) const;
+
+    /*!
+     * Read an arbitrary channel setting on the device.
+     * \tparam Type the return type for the sensor value
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \return the setting value
+     */
+    template <typename Type>
+    Type readSetting(const int direction, const size_t channel, const std::string &key);
 
     /*******************************************************************
      * GPIO API
@@ -1311,3 +1371,39 @@ public:
 };
 
 };
+
+template <typename Type>
+Type SoapySDR::Device::readSensor(const std::string &key) const
+{
+    return SoapySDR::StringToSetting<Type>(this->readSensor(key));
+}
+
+template <typename Type>
+Type SoapySDR::Device::readSensor(const int direction, const size_t channel, const std::string &key) const
+{
+    return SoapySDR::StringToSetting<Type>(this->readSensor(direction, channel, key));
+}
+
+template <typename Type>
+void SoapySDR::Device::writeSetting(const std::string &key, const Type &value)
+{
+    this->writeSetting(key, SoapySDR::SettingToString(value));
+}
+
+template <typename Type>
+Type SoapySDR::Device::readSetting(const std::string &key)
+{
+    return SoapySDR::StringToSetting<Type>(this->readSetting(key));
+}
+
+template <typename Type>
+void SoapySDR::Device::writeSetting(const int direction, const size_t channel, const std::string &key, const Type &value)
+{
+    this->writeSetting(direction, channel, key, SoapySDR::SettingToString(value));
+}
+
+template <typename Type>
+Type SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &key)
+{
+    return SoapySDR::StringToSetting<Type>(this->readSetting(direction, channel, key));
+}

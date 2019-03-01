@@ -23,3 +23,7 @@ add_test(TestFormatParser TestFormatParser)
 add_executable(TestKwargsMarkup TestKwargsMarkup.cpp)
 target_link_libraries(TestKwargsMarkup SoapySDR)
 add_test(TestKwargsMarkup TestKwargsMarkup)
+
+add_executable(TestConvertTypes TestConvertTypes.cpp)
+target_link_libraries(TestConvertTypes SoapySDR)
+add_test(TestConvertTypes TestConvertTypes)

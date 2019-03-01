@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Josh Blum
+// Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -61,6 +61,7 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 %include <std_string.i>
 %include <std_vector.i>
 %include <std_map.i>
+%ignore SoapySDR::Detail::StringToSetting; //ignore SFINAE overloads
 %include <SoapySDR/Types.hpp>
 
 //handle arm 32-bit case where size_t and unsigned are the same
@@ -131,6 +132,13 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 // Constants SOAPY_SDR_*
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Constants.h>
+//import types.h for the defines
+//these ignores are C++ functions that were taken by %template() above
+%ignore SoapySDRKwargs;
+%ignore SoapySDRKwargs_clear;
+%ignore SoapySDRKwargsList_clear;
+%ignore SoapySDRArgInfoList_clear;
+%include <SoapySDR/Types.h>
 %include <SoapySDR/Errors.h>
 %include <SoapySDR/Version.h>
 %include <SoapySDR/Formats.h>
@@ -239,7 +247,7 @@ def registerLogHandler(handler):
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>
 
-//global factory lock support
+//narrow import * to SOAPY_SDR_ constants
 %pythoncode %{
 
 __all__ = list()
@@ -261,10 +269,28 @@ def extractBuffPointer(buff):
     if hasattr(buff, '__long__'): return long(buff)
     if hasattr(buff, '__int__'): return int(buff)
     raise Exception("Unrecognized data format: " + str(type(buff)))
+
+def StringToSetting(s):
+    if s == SOAPY_SDR_TRUE: return True
+    if s == SOAPY_SDR_FALSE: return False
+    try: return int(s) #try integer type
+    except ValueError: pass
+    try: return float(s) #try floating point type
+    except ValueError: pass
+    return s #assume string
 %}
 
 %extend SoapySDR::Device
 {
+    //additional overloads for writeSetting for basic types
+    %template(writeSetting) SoapySDR::Device::writeSetting<bool>;
+    %template(writeSetting) SoapySDR::Device::writeSetting<double>;
+    %template(writeSetting) SoapySDR::Device::writeSetting<long long>;
+
+    //just overload the string types, let python handle conversions
+    %template(readSensor__) SoapySDR::Device::readSensor<std::string>;
+    %template(readSetting__) SoapySDR::Device::readSetting<std::string>;
+
     StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
         StreamResult sr;
@@ -311,5 +337,11 @@ def extractBuffPointer(buff):
 
         def readStreamStatus(self, stream, timeoutUs = 100000):
             return self.readStreamStatus__(stream, timeoutUs)
+
+        def readSensor(self, *args):
+            return StringToSetting(self.readSensor__(*args))
+
+        def readSetting(self, *args):
+            return StringToSetting(self.readSetting__(*args))
     %}
 };

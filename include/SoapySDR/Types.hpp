@@ -11,6 +11,7 @@
 #pragma once
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.h>
+#include <type_traits>
 #include <vector>
 #include <string>
 #include <map>
@@ -35,6 +36,26 @@ SOAPY_SDR_API std::string KwargsToString(const Kwargs &args);
 
 //! Typedef for a list of key-word dictionaries
 typedef std::vector<Kwargs> KwargsList;
+
+/*!
+ * Convert a string to the specified type.
+ * Supports bools, integers, floats, and strings
+ * \tparam Type the specified output type
+ * \param s the setting value as a string
+ * \return the value converted to Type
+ */
+template <typename Type>
+Type StringToSetting(const std::string &s);
+
+/*!
+ * Convert an arbitrary type to a string.
+ * Supports bools, integers, floats, and strings
+ * \tparam Type the type of the input argument
+ * \param s the setting value as the specified type
+ * \return the value converted to a string
+ */
+template <typename Type>
+std::string SettingToString(const Type &s);
 
 /*!
  * A simple min/max numeric range pair
@@ -141,4 +162,84 @@ inline double SoapySDR::Range::maximum(void) const
 inline double SoapySDR::Range::step(void) const
 {
     return _step;
+}
+
+namespace SoapySDR {
+namespace Detail {
+
+
+//private implementation details for settings converters
+
+template <typename Type>
+typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSetting(const std::string &s)
+{
+    if (s == SOAPY_SDR_TRUE) return true;
+    if (s == SOAPY_SDR_FALSE) return false;
+
+    //zeros and empty strings are false
+    if (s == "0") return false;
+    if (s == "0.0") return false;
+    if (s == "") return false;
+
+    //other values are true
+    return "true";
+}
+
+template <typename Type>
+typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_signed<Type>::value, Type>::type StringToSetting(const std::string &s)
+{
+    return Type(std::stoll(s));
+}
+
+template <typename Type>
+typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_unsigned<Type>::value, Type>::type StringToSetting(const std::string &s)
+{
+    return Type(std::stoull(s));
+}
+
+template <typename Type>
+typename std::enable_if<std::is_floating_point<Type>::value, Type>::type StringToSetting(const std::string &s)
+{
+    return Type(std::stod(s));
+}
+
+template <typename Type>
+typename std::enable_if<std::is_same<typename std::decay<Type>::type, std::string>::value, Type>::type StringToSetting(const std::string &s)
+{
+    return s;
+}
+
+inline std::string SettingToString(const bool &s)
+{
+    return s?SOAPY_SDR_TRUE:SOAPY_SDR_FALSE;
+}
+
+inline std::string SettingToString(const char *s)
+{
+    return s;
+}
+
+inline std::string SettingToString(const std::string &s)
+{
+    return s;
+}
+
+template <typename Type>
+std::string SettingToString(const Type &s)
+{
+    return std::to_string(s);
+}
+
+}}
+
+template <typename Type>
+Type SoapySDR::StringToSetting(const std::string &s)
+{
+    return SoapySDR::Detail::StringToSetting<Type>(s);
+}
+
+template <typename Type>
+std::string SoapySDR::SettingToString(const Type &s)
+{
+    return SoapySDR::Detail::SettingToString(s);
 }
