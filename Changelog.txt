@@ -1,5 +1,20 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.8.0 (pending)
+==========================
+
+Build:
+- Update to CMake 3.0 style and project config generation
+- Increase the CMake build requirement to version 3.1.0
+
+API:
+- Constants for boolean setting strings SOAPY_SDR_TRUE/FALSE
+- Templated read/writeSetting()/readSensor() for SoapySDR::Device
+- Added Templated StringToSetting() and SettingToString() helpers
+- Python bindings duck typing for read/writeSetting()/readSensor()
+- Changed SoapySDRDevice_setupStream() to return the stream pointer
+  - Backwards compatibility macro maintains compilation for the old API
+
 Release 0.7.1 (2019-01-26)
 ==========================
 
