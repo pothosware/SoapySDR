@@ -269,15 +269,6 @@ def extractBuffPointer(buff):
     if hasattr(buff, '__long__'): return long(buff)
     if hasattr(buff, '__int__'): return int(buff)
     raise Exception("Unrecognized data format: " + str(type(buff)))
-
-def StringToSetting(s):
-    if s == SOAPY_SDR_TRUE: return True
-    if s == SOAPY_SDR_FALSE: return False
-    try: return int(s) #try integer type
-    except ValueError: pass
-    try: return float(s) #try floating point type
-    except ValueError: pass
-    return s #assume string
 %}
 
 %extend SoapySDR::Device
@@ -286,10 +277,12 @@ def StringToSetting(s):
     %template(writeSetting) SoapySDR::Device::writeSetting<bool>;
     %template(writeSetting) SoapySDR::Device::writeSetting<double>;
     %template(writeSetting) SoapySDR::Device::writeSetting<long long>;
-
-    //just overload the string types, let python handle conversions
-    %template(readSensor__) SoapySDR::Device::readSensor<std::string>;
-    %template(readSetting__) SoapySDR::Device::readSetting<std::string>;
+    %template(readSensorBool) SoapySDR::Device::readSensor<bool>;
+    %template(readSensorInt) SoapySDR::Device::readSensor<long long>;
+    %template(readSensorFloat) SoapySDR::Device::readSensor<double>;
+    %template(readSettingBool) SoapySDR::Device::readSetting<bool>;
+    %template(readSettingInt) SoapySDR::Device::readSetting<long long>;
+    %template(readSettingFloat) SoapySDR::Device::readSetting<double>;
 
     StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
@@ -337,11 +330,5 @@ def StringToSetting(s):
 
         def readStreamStatus(self, stream, timeoutUs = 100000):
             return self.readStreamStatus__(stream, timeoutUs)
-
-        def readSensor(self, *args):
-            return StringToSetting(self.readSensor__(*args))
-
-        def readSetting(self, *args):
-            return StringToSetting(self.readSetting__(*args))
     %}
 };
