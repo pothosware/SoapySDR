@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['detail',['Detail',['../namespaceSoapySDR_1_1Detail.html',1,'SoapySDR']]],
   ['s16_5ffull_5fscale',['S16_FULL_SCALE',['../namespaceSoapySDR.html#aefea6f7629ca0d913896886191cab7c1',1,'SoapySDR']]],
   ['s16tof32',['S16toF32',['../namespaceSoapySDR.html#a7267676c5f4340dae3964734b7587fed',1,'SoapySDR']]],
   ['s16tos32',['S16toS32',['../namespaceSoapySDR.html#ada637d01f568a665e1027d0efa1026f3',1,'SoapySDR']]],
@@ -34,6 +35,7 @@ var searchData=
   ['setmasterclockrate',['setMasterClockRate',['../classSoapySDR_1_1Device.html#ad0bbb977eab02b1c6827e354c0c5a7bc',1,'SoapySDR::Device']]],
   ['setsamplerate',['setSampleRate',['../classSoapySDR_1_1Device.html#a799369d79133698e5f1233902eefb914',1,'SoapySDR::Device']]],
   ['settimesource',['setTimeSource',['../classSoapySDR_1_1Device.html#a5188c168e24e8b4de374667af67966a8',1,'SoapySDR::Device']]],
+  ['settingtostring',['SettingToString',['../namespaceSoapySDR.html#aee92ccb418e8e10f43ff98a11490bdad',1,'SoapySDR::SettingToString()'],['../namespaceSoapySDR_1_1Detail.html#aafcb8786c7eea17d8eaeb593b24aaac0',1,'SoapySDR::Detail::SettingToString(const bool &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a2e8f59b6b8713db4400a066f84890a94',1,'SoapySDR::Detail::SettingToString(const char *s)'],['../namespaceSoapySDR_1_1Detail.html#a6e8527bf002d45e4b3ce299d551ca0e5',1,'SoapySDR::Detail::SettingToString(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#ac96d69ed406098ca749aa5ec3a72779b',1,'SoapySDR::Detail::SettingToString(const Type &amp;s)']]],
   ['setupstream',['setupStream',['../classSoapySDR_1_1Device.html#a8a64e7fef972e9c24bbc2f1b4811a38f',1,'SoapySDR::Device']]],
   ['size',['size',['../structSoapySDRKwargs.html#a76226fa23921cbbb41f0f2179697fd41',1,'SoapySDRKwargs']]],
   ['soapy_5fsdr_5fabi_5fversion',['SOAPY_SDR_ABI_VERSION',['../Version_8h.html#ac37ad2e558bce396b003326f10d27633',1,'Version.h']]],
@@ -86,6 +88,7 @@ var searchData=
   ['soapy_5fsdr_5fextern',['SOAPY_SDR_EXTERN',['../Config_8h.html#a9029e97c1effdd3ee3e2525d8084c375',1,'Config.h']]],
   ['soapy_5fsdr_5ff32',['SOAPY_SDR_F32',['../Formats_8h.html#a20025b52551864e9b96b613b0e4a74d1',1,'Formats.h']]],
   ['soapy_5fsdr_5ff64',['SOAPY_SDR_F64',['../Formats_8h.html#a00bfa30c2e908485fcb41c7619d64eba',1,'Formats.h']]],
+  ['soapy_5fsdr_5ffalse',['SOAPY_SDR_FALSE',['../Types_8h.html#a3034ea7600496ba2ac7ed82e418e69ff',1,'Types.h']]],
   ['soapy_5fsdr_5ffatal',['SOAPY_SDR_FATAL',['../Logger_8h.html#acca12132060bee17ae201b1c9604f7f0ada5d1fb7f2b331f0d96eb580c0277b35',1,'Logger.h']]],
   ['soapy_5fsdr_5fhas_5ftime',['SOAPY_SDR_HAS_TIME',['../Constants_8h.html#a67027b65f63dffe851594c2df4a9d034',1,'Constants.h']]],
   ['soapy_5fsdr_5fhelper_5fdll_5fexport',['SOAPY_SDR_HELPER_DLL_EXPORT',['../Config_8h.html#ac8662ac8dc438edaad68cd190c0125d0',1,'Config.h']]],
@@ -107,6 +110,7 @@ var searchData=
   ['soapy_5fsdr_5ftime_5ferror',['SOAPY_SDR_TIME_ERROR',['../Errors_8h.html#a45163ebd048c7a285ca22ed64b518771',1,'Errors.h']]],
   ['soapy_5fsdr_5ftimeout',['SOAPY_SDR_TIMEOUT',['../Errors_8h.html#af1bdb0e88cd7e4e118d22ad72501b668',1,'Errors.h']]],
   ['soapy_5fsdr_5ftrace',['SOAPY_SDR_TRACE',['../Logger_8h.html#acca12132060bee17ae201b1c9604f7f0ae9731acb67a5a4c49730c2e191324e76',1,'Logger.h']]],
+  ['soapy_5fsdr_5ftrue',['SOAPY_SDR_TRUE',['../Types_8h.html#abe609d386e21df612d883c1a6b1802a7',1,'Types.h']]],
   ['soapy_5fsdr_5ftx',['SOAPY_SDR_TX',['../Constants_8h.html#a02507340cdc4a2bb99d2f5ce698ea21f',1,'Constants.h']]],
   ['soapy_5fsdr_5fu16',['SOAPY_SDR_U16',['../Formats_8h.html#a2298a2edd13a4a1d2ba99288e937680a',1,'Formats.h']]],
   ['soapy_5fsdr_5fu32',['SOAPY_SDR_U32',['../Formats_8h.html#a5a7d56384e6600e0a6d99806fc398f6e',1,'Formats.h']]],
@@ -244,7 +248,7 @@ var searchData=
   ['soapysdrdevice_5fsetmasterclockrate',['SoapySDRDevice_setMasterClockRate',['../Device_8h.html#a0f58df7dccd44662faf3fe8b0ceac263',1,'Device.h']]],
   ['soapysdrdevice_5fsetsamplerate',['SoapySDRDevice_setSampleRate',['../Device_8h.html#a3897cb502d9db3c02c77b8b19ea40934',1,'Device.h']]],
   ['soapysdrdevice_5fsettimesource',['SoapySDRDevice_setTimeSource',['../Device_8h.html#ae522cec405def4c688ae5317f34ee09c',1,'Device.h']]],
-  ['soapysdrdevice_5fsetupstream',['SoapySDRDevice_setupStream',['../Device_8h.html#ad644d43043680b812094a8f82228b925',1,'Device.h']]],
+  ['soapysdrdevice_5fsetupstream',['SoapySDRDevice_setupStream',['../Device_8h.html#a363c9a64c549be610c5a26c7ad99ec20',1,'Device.h']]],
   ['soapysdrdevice_5ftransactspi',['SoapySDRDevice_transactSPI',['../Device_8h.html#a74d1ef7c9e7dd2bcd9b8c84621ca165a',1,'Device.h']]],
   ['soapysdrdevice_5funmake',['SoapySDRDevice_unmake',['../Device_8h.html#a5d7b135e49e9525f14a3ba4164ea5a81',1,'Device.h']]],
   ['soapysdrdevice_5funmake_5flist',['SoapySDRDevice_unmake_list',['../Device_8h.html#a094e238f237d54dd3990f5418cb877b4',1,'Device.h']]],
@@ -272,5 +276,6 @@ var searchData=
   ['soapysdrstream',['SoapySDRStream',['../Device_8h.html#ac87081be1a377032bbba408c37254450',1,'Device.h']]],
   ['soapysdrstrings_5fclear',['SoapySDRStrings_clear',['../Types_8h.html#a6b2f720f65ba9637e0e3da7eb907feb5',1,'Types.h']]],
   ['step',['step',['../structSoapySDRRange.html#ae76acbec09a395ac862c370fde4edaaf',1,'SoapySDRRange::step()'],['../classSoapySDR_1_1Range.html#adc4b2197ac33c5f97bcde0dececc4d03',1,'SoapySDR::Range::step()']]],
-  ['string',['STRING',['../classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aeda91dd0c1b5d2222bf60a8975fe24a0551',1,'SoapySDR::ArgInfo']]]
+  ['string',['STRING',['../classSoapySDR_1_1ArgInfo.html#acf2322d6142ab0ae1f137730b6b54aeda91dd0c1b5d2222bf60a8975fe24a0551',1,'SoapySDR::ArgInfo']]],
+  ['stringtosetting',['StringToSetting',['../namespaceSoapySDR.html#a9edc17d55c7cba1d1742db5f431459c4',1,'SoapySDR::StringToSetting()'],['../namespaceSoapySDR_1_1Detail.html#a5d458ae0c808066035cfcdb17b5d89fb',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#ac48a49e7d15c07265fbafefa1a0a5329',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a6c166532dddf7e7242442a01b0d8e01d',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a8a087769e383ccfba8fca15151cf12cd',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a07cdb1fd69f3e065fa0190f614b0106a',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)']]]
 ];

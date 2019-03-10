@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.7.0-g6d21756e</span>
+   &#160;<span id="projectnumber">0.8.0-g4bfcbc74</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -62,6 +62,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -71,6 +72,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceSoapySDR_1_1Detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR_1_1Detail.html">Detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a></td></tr>
@@ -216,6 +222,12 @@ Functions</h2></td></tr>
 <tr class="separator:a2f1e0ae253a68264f8960a4c564aff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac34383e854babcc3fa4d23f0f4d71f5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#ac34383e854babcc3fa4d23f0f4d71f5c">KwargsToString</a> (const <a class="el" href="namespaceSoapySDR.html#ac7c038598fa1a11acee1b0194f9dad62">Kwargs</a> &amp;args)</td></tr>
 <tr class="separator:ac34383e854babcc3fa4d23f0f4d71f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9edc17d55c7cba1d1742db5f431459c4"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a9edc17d55c7cba1d1742db5f431459c4"><td class="memTemplItemLeft" align="right" valign="top">Type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a9edc17d55c7cba1d1742db5f431459c4">StringToSetting</a> (const std::string &amp;s)</td></tr>
+<tr class="separator:a9edc17d55c7cba1d1742db5f431459c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee92ccb418e8e10f43ff98a11490bdad"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:aee92ccb418e8e10f43ff98a11490bdad"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#aee92ccb418e8e10f43ff98a11490bdad">SettingToString</a> (const Type &amp;s)</td></tr>
+<tr class="separator:aee92ccb418e8e10f43ff98a11490bdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75bf4af8d1d795099f1c4229648df4ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a75bf4af8d1d795099f1c4229648df4ae">getAPIVersion</a> (void)</td></tr>
 <tr class="separator:a75bf4af8d1d795099f1c4229648df4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6807cd72d68f421d16824f05928cc0c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSoapySDR.html#a6807cd72d68f421d16824f05928cc0c0">getABIVersion</a> (void)</td></tr>
@@ -979,7 +991,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Register a new system log handler. Platforms should call this to replace the default stdio handler. </p>
+<p>Register a new system log handler. Platforms should call this to replace the default stdio handler. Passing <code>nullptr</code> restores the default. </p>
 
 </div>
 </div>
@@ -1363,6 +1375,72 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Set the log level threshold. Log messages with lower priority are dropped. </p>
+
+</div>
+</div>
+<a id="aee92ccb418e8e10f43ff98a11490bdad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee92ccb418e8e10f43ff98a11490bdad">&#9670;&nbsp;</a></span>SettingToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string SoapySDR::SettingToString </td>
+          <td>(</td>
+          <td class="paramtype">const Type &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert an arbitrary type to a string. Supports bools, integers, floats, and strings </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the type of the input argument </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the setting value as the specified type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the value converted to a string </dd></dl>
+
+</div>
+</div>
+<a id="a9edc17d55c7cba1d1742db5f431459c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9edc17d55c7cba1d1742db5f431459c4">&#9670;&nbsp;</a></span>StringToSetting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Type SoapySDR::StringToSetting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert a string to the specified type. Supports bools, integers, floats, and strings </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the specified output type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the setting value as a string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the value converted to Type </dd></dl>
 
 </div>
 </div>
@@ -1869,7 +1947,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 4 2018 18:51:24 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 9 2019 18:01:10 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

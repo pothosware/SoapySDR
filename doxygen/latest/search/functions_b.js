@@ -31,6 +31,7 @@ var searchData=
   ['setmasterclockrate',['setMasterClockRate',['../classSoapySDR_1_1Device.html#ad0bbb977eab02b1c6827e354c0c5a7bc',1,'SoapySDR::Device']]],
   ['setsamplerate',['setSampleRate',['../classSoapySDR_1_1Device.html#a799369d79133698e5f1233902eefb914',1,'SoapySDR::Device']]],
   ['settimesource',['setTimeSource',['../classSoapySDR_1_1Device.html#a5188c168e24e8b4de374667af67966a8',1,'SoapySDR::Device']]],
+  ['settingtostring',['SettingToString',['../namespaceSoapySDR.html#aee92ccb418e8e10f43ff98a11490bdad',1,'SoapySDR::SettingToString()'],['../namespaceSoapySDR_1_1Detail.html#aafcb8786c7eea17d8eaeb593b24aaac0',1,'SoapySDR::Detail::SettingToString(const bool &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a2e8f59b6b8713db4400a066f84890a94',1,'SoapySDR::Detail::SettingToString(const char *s)'],['../namespaceSoapySDR_1_1Detail.html#a6e8527bf002d45e4b3ce299d551ca0e5',1,'SoapySDR::Detail::SettingToString(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#ac96d69ed406098ca749aa5ec3a72779b',1,'SoapySDR::Detail::SettingToString(const Type &amp;s)']]],
   ['setupstream',['setupStream',['../classSoapySDR_1_1Device.html#a8a64e7fef972e9c24bbc2f1b4811a38f',1,'SoapySDR::Device']]],
   ['soapysdr_5ferrtostr',['SoapySDR_errToStr',['../Errors_8h.html#a7efcb582843c5cbe8dd9770ff46dbe7e',1,'Errors.h']]],
   ['soapysdr_5fformattosize',['SoapySDR_formatToSize',['../Formats_8h.html#a981ed3921fa0ea316e4fa1ddb94e078a',1,'Formats.h']]],
@@ -158,7 +159,7 @@ var searchData=
   ['soapysdrdevice_5fsetmasterclockrate',['SoapySDRDevice_setMasterClockRate',['../Device_8h.html#a0f58df7dccd44662faf3fe8b0ceac263',1,'Device.h']]],
   ['soapysdrdevice_5fsetsamplerate',['SoapySDRDevice_setSampleRate',['../Device_8h.html#a3897cb502d9db3c02c77b8b19ea40934',1,'Device.h']]],
   ['soapysdrdevice_5fsettimesource',['SoapySDRDevice_setTimeSource',['../Device_8h.html#ae522cec405def4c688ae5317f34ee09c',1,'Device.h']]],
-  ['soapysdrdevice_5fsetupstream',['SoapySDRDevice_setupStream',['../Device_8h.html#ad644d43043680b812094a8f82228b925',1,'Device.h']]],
+  ['soapysdrdevice_5fsetupstream',['SoapySDRDevice_setupStream',['../Device_8h.html#a363c9a64c549be610c5a26c7ad99ec20',1,'Device.h']]],
   ['soapysdrdevice_5ftransactspi',['SoapySDRDevice_transactSPI',['../Device_8h.html#a74d1ef7c9e7dd2bcd9b8c84621ca165a',1,'Device.h']]],
   ['soapysdrdevice_5funmake',['SoapySDRDevice_unmake',['../Device_8h.html#a5d7b135e49e9525f14a3ba4164ea5a81',1,'Device.h']]],
   ['soapysdrdevice_5funmake_5flist',['SoapySDRDevice_unmake_list',['../Device_8h.html#a094e238f237d54dd3990f5418cb877b4',1,'Device.h']]],
@@ -180,5 +181,6 @@ var searchData=
   ['soapysdrkwargs_5ftostring',['SoapySDRKwargs_toString',['../Types_8h.html#ab5147b2e18e4a7fc4bf6b9dd8dfb83f0',1,'Types.h']]],
   ['soapysdrkwargslist_5fclear',['SoapySDRKwargsList_clear',['../Types_8h.html#ace9edce1d903d891a2e83fda646ba6ff',1,'Types.h']]],
   ['soapysdrstrings_5fclear',['SoapySDRStrings_clear',['../Types_8h.html#a6b2f720f65ba9637e0e3da7eb907feb5',1,'Types.h']]],
-  ['step',['step',['../classSoapySDR_1_1Range.html#adc4b2197ac33c5f97bcde0dececc4d03',1,'SoapySDR::Range']]]
+  ['step',['step',['../classSoapySDR_1_1Range.html#adc4b2197ac33c5f97bcde0dececc4d03',1,'SoapySDR::Range']]],
+  ['stringtosetting',['StringToSetting',['../namespaceSoapySDR.html#a9edc17d55c7cba1d1742db5f431459c4',1,'SoapySDR::StringToSetting()'],['../namespaceSoapySDR_1_1Detail.html#a5d458ae0c808066035cfcdb17b5d89fb',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#ac48a49e7d15c07265fbafefa1a0a5329',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a6c166532dddf7e7242442a01b0d8e01d',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a8a087769e383ccfba8fca15151cf12cd',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)'],['../namespaceSoapySDR_1_1Detail.html#a07cdb1fd69f3e065fa0190f614b0106a',1,'SoapySDR::Detail::StringToSetting(const std::string &amp;s)']]]
 ];

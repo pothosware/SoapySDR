@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.7.0-g6d21756e</span>
+   &#160;<span id="projectnumber">0.8.0-g4bfcbc74</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -245,12 +245,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab712a73b723668ae8ffbe2c2377e6049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b92ce565f9210c1679695abace91fbd"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a0b92ce565f9210c1679695abace91fbd">readSensor</a> (const std::string &amp;key) const</td></tr>
 <tr class="separator:a0b92ce565f9210c1679695abace91fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60b7f6b164f60dd8370c269fd220d1b6"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a60b7f6b164f60dd8370c269fd220d1b6"><td class="memTemplItemLeft" align="right" valign="top">Type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a60b7f6b164f60dd8370c269fd220d1b6">readSensor</a> (const std::string &amp;key) const</td></tr>
+<tr class="separator:a60b7f6b164f60dd8370c269fd220d1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2fc833aa591b60817ed1b0bac20b72e"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ad2fc833aa591b60817ed1b0bac20b72e">listSensors</a> (const int direction, const size_t channel) const</td></tr>
 <tr class="separator:ad2fc833aa591b60817ed1b0bac20b72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1633703a9bff94ee296d7c619ed0104f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoapySDR_1_1ArgInfo.html">ArgInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a1633703a9bff94ee296d7c619ed0104f">getSensorInfo</a> (const int direction, const size_t channel, const std::string &amp;key) const</td></tr>
 <tr class="separator:a1633703a9bff94ee296d7c619ed0104f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cbfbb8ca1abb51820ccb7291e386cd9"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a4cbfbb8ca1abb51820ccb7291e386cd9">readSensor</a> (const int direction, const size_t channel, const std::string &amp;key) const</td></tr>
 <tr class="separator:a4cbfbb8ca1abb51820ccb7291e386cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad91f8b582791ab9df6dcf8e4edc451fc"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:ad91f8b582791ab9df6dcf8e4edc451fc"><td class="memTemplItemLeft" align="right" valign="top">Type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ad91f8b582791ab9df6dcf8e4edc451fc">readSensor</a> (const int direction, const size_t channel, const std::string &amp;key) const</td></tr>
+<tr class="separator:ad91f8b582791ab9df6dcf8e4edc451fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb9f45cc440be9522d31a4ad6e02f07"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#acdb9f45cc440be9522d31a4ad6e02f07">listRegisterInterfaces</a> (void) const</td></tr>
 <tr class="separator:acdb9f45cc440be9522d31a4ad6e02f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2bbe12a2ca468019bd6f93d27b12f65"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#af2bbe12a2ca468019bd6f93d27b12f65">writeRegister</a> (const std::string &amp;name, const unsigned addr, const unsigned value)</td></tr>
@@ -269,14 +275,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aece5f6bbe0170f785ca6171a4a120e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a8e4f0b6253aabb31f0cdbd2e98f40114">writeSetting</a> (const std::string &amp;key, const std::string &amp;value)</td></tr>
 <tr class="separator:a8e4f0b6253aabb31f0cdbd2e98f40114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a811c3224a78f5cfdc4312cc2392a3eb8"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a811c3224a78f5cfdc4312cc2392a3eb8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a811c3224a78f5cfdc4312cc2392a3eb8">writeSetting</a> (const std::string &amp;key, const Type &amp;value)</td></tr>
+<tr class="separator:a811c3224a78f5cfdc4312cc2392a3eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84fcd2f18846349ab9928c8811c9bbe8"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a84fcd2f18846349ab9928c8811c9bbe8">readSetting</a> (const std::string &amp;key) const</td></tr>
 <tr class="separator:a84fcd2f18846349ab9928c8811c9bbe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b6483184b35b7cfd7b508164bc1d72"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a58b6483184b35b7cfd7b508164bc1d72"><td class="memTemplItemLeft" align="right" valign="top">Type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a58b6483184b35b7cfd7b508164bc1d72">readSetting</a> (const std::string &amp;key)</td></tr>
+<tr class="separator:a58b6483184b35b7cfd7b508164bc1d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a1957452cf3b324061d4a741d98d100"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceSoapySDR.html#a95e03ef3609c4efd972b1178cf0b5370">ArgInfoList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a8a1957452cf3b324061d4a741d98d100">getSettingInfo</a> (const int direction, const size_t channel) const</td></tr>
 <tr class="separator:a8a1957452cf3b324061d4a741d98d100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e4221fb3945b0d92204b74c7bc16500"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a9e4221fb3945b0d92204b74c7bc16500">writeSetting</a> (const int direction, const size_t channel, const std::string &amp;key, const std::string &amp;value)</td></tr>
 <tr class="separator:a9e4221fb3945b0d92204b74c7bc16500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6280f7a064ca74c51a4f1295e7b24e5e"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a6280f7a064ca74c51a4f1295e7b24e5e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a6280f7a064ca74c51a4f1295e7b24e5e">writeSetting</a> (const int direction, const size_t channel, const std::string &amp;key, const Type &amp;value)</td></tr>
+<tr class="separator:a6280f7a064ca74c51a4f1295e7b24e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc3018652b735f9b79479638d8b05f11"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#afc3018652b735f9b79479638d8b05f11">readSetting</a> (const int direction, const size_t channel, const std::string &amp;key) const</td></tr>
 <tr class="separator:afc3018652b735f9b79479638d8b05f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac584adb3f3e810f56b4bab5572a3f774"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:ac584adb3f3e810f56b4bab5572a3f774"><td class="memTemplItemLeft" align="right" valign="top">Type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ac584adb3f3e810f56b4bab5572a3f774">readSetting</a> (const int direction, const size_t channel, const std::string &amp;key)</td></tr>
+<tr class="separator:ac584adb3f3e810f56b4bab5572a3f774"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99733c3dc8792e8feb573f547d3c31ce"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#a99733c3dc8792e8feb573f547d3c31ce">listGPIOBanks</a> (void) const</td></tr>
 <tr class="separator:a99733c3dc8792e8feb573f547d3c31ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab71d1b3880f6614fb61a65286903f8d2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoapySDR_1_1Device.html#ab71d1b3880f6614fb61a65286903f8d2">writeGPIO</a> (const std::string &amp;bank, const unsigned value)</td></tr>
@@ -3376,7 +3394,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a0b92ce565f9210c1679695abace91fbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b92ce565f9210c1679695abace91fbd">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b92ce565f9210c1679695abace91fbd">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3408,8 +3426,41 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a60b7f6b164f60dd8370c269fd220d1b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60b7f6b164f60dd8370c269fd220d1b6">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Type SoapySDR::Device::readSensor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Readback a global sensor given the name. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the return type for the sensor value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the ID name of an available sensor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of the sensor as the specified type </dd></dl>
+
+</div>
+</div>
 <a id="a4cbfbb8ca1abb51820ccb7291e386cd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cbfbb8ca1abb51820ccb7291e386cd9">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cbfbb8ca1abb51820ccb7291e386cd9">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3459,8 +3510,59 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad91f8b582791ab9df6dcf8e4edc451fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad91f8b582791ab9df6dcf8e4edc451fc">&#9670;&nbsp;</a></span>readSensor() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Type SoapySDR::Device::readSensor </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Readback a channel sensor given the name. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the return type for the sensor value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+    <tr><td class="paramname">key</td><td>the ID name of an available sensor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the current value of the sensor as the specified type </dd></dl>
+
+</div>
+</div>
 <a id="a84fcd2f18846349ab9928c8811c9bbe8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84fcd2f18846349ab9928c8811c9bbe8">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a84fcd2f18846349ab9928c8811c9bbe8">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3492,8 +3594,41 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a58b6483184b35b7cfd7b508164bc1d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58b6483184b35b7cfd7b508164bc1d72">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Type SoapySDR::Device::readSetting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read an arbitrary setting on the device. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the return type for the sensor value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the setting value </dd></dl>
+
+</div>
+</div>
 <a id="afc3018652b735f9b79479638d8b05f11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc3018652b735f9b79479638d8b05f11">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afc3018652b735f9b79479638d8b05f11">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3532,6 +3667,57 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Read an arbitrary channel setting on the device. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the setting value </dd></dl>
+
+</div>
+</div>
+<a id="ac584adb3f3e810f56b4bab5572a3f774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac584adb3f3e810f56b4bab5572a3f774">&#9670;&nbsp;</a></span>readSetting() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Type SoapySDR::Device::readSetting </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read an arbitrary channel setting on the device. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the return type for the sensor value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
     <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
@@ -5289,7 +5475,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a8e4f0b6253aabb31f0cdbd2e98f40114"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e4f0b6253aabb31f0cdbd2e98f40114">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e4f0b6253aabb31f0cdbd2e98f40114">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5331,8 +5517,51 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a811c3224a78f5cfdc4312cc2392a3eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a811c3224a78f5cfdc4312cc2392a3eb8">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoapySDR::Device::writeSetting </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Type &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write a setting with an arbitrary value type. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the data type of the value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+    <tr><td class="paramname">value</td><td>the setting value </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9e4221fb3945b0d92204b74c7bc16500"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e4221fb3945b0d92204b74c7bc16500">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e4221fb3945b0d92204b74c7bc16500">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5377,6 +5606,63 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Write an arbitrary channel setting on the device. The interpretation is up the implementation. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
+    <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
+    <tr><td class="paramname">key</td><td>the setting identifier </td></tr>
+    <tr><td class="paramname">value</td><td>the setting value </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6280f7a064ca74c51a4f1295e7b24e5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6280f7a064ca74c51a4f1295e7b24e5e">&#9670;&nbsp;</a></span>writeSetting() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoapySDR::Device::writeSetting </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Type &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write an arbitrary channel setting on the device. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>the data type of the value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction RX or TX </td></tr>
     <tr><td class="paramname">channel</td><td>an available channel on the device </td></tr>
@@ -5511,7 +5797,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 4 2018 18:51:24 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 9 2019 18:01:10 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

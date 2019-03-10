@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="soapy_sdr_logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoapySDR
-   &#160;<span id="projectnumber">0.7.0-g6d21756e</span>
+   &#160;<span id="projectnumber">0.8.0-g4bfcbc74</span>
    </div>
    <div id="projectbrief">Vendor and platform neutral SDR interface library</div>
   </td>
@@ -127,8 +127,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7dea60bb1885742a30a3016ac1c5a2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab99cfba4b3234861e04d9077cc8e3729"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="structSoapySDRArgInfo.html">SoapySDRArgInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#ab99cfba4b3234861e04d9077cc8e3729">SoapySDRDevice_getStreamArgsInfo</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const size_t channel, size_t *length)</td></tr>
 <tr class="separator:ab99cfba4b3234861e04d9077cc8e3729"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad644d43043680b812094a8f82228b925"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#ad644d43043680b812094a8f82228b925">SoapySDRDevice_setupStream</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, <a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a> **stream, const int direction, const char *format, const size_t *channels, const size_t numChans, const <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args)</td></tr>
-<tr class="separator:ad644d43043680b812094a8f82228b925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363c9a64c549be610c5a26c7ad99ec20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a363c9a64c549be610c5a26c7ad99ec20">SoapySDRDevice_setupStream</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, const int direction, const char *format, const size_t *channels, const size_t numChans, const <a class="el" href="structSoapySDRKwargs.html">SoapySDRKwargs</a> *args)</td></tr>
+<tr class="separator:a363c9a64c549be610c5a26c7ad99ec20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72f30c94537d232ac1ae112b65388930"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a72f30c94537d232ac1ae112b65388930">SoapySDRDevice_closeStream</a> (<a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, <a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a> *stream)</td></tr>
 <tr class="separator:a72f30c94537d232ac1ae112b65388930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1554bc570351fb38da1c8be293791567"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Device_8h.html#a1554bc570351fb38da1c8be293791567">SoapySDRDevice_getStreamMTU</a> (const <a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *device, <a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a> *stream)</td></tr>
@@ -2386,7 +2386,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a list of allowed format strings. See <a class="el" href="Device_8h.html#ad644d43043680b812094a8f82228b925">SoapySDRDevice_setupStream()</a> for the format syntax. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a list of allowed format strings. See <a class="el" href="Device_8h.html#a363c9a64c549be610c5a26c7ad99ec20">SoapySDRDevice_setupStream()</a> for the format syntax. </dd></dl>
 
 </div>
 </div>
@@ -4917,23 +4917,17 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad644d43043680b812094a8f82228b925"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad644d43043680b812094a8f82228b925">&#9670;&nbsp;</a></span>SoapySDRDevice_setupStream()</h2>
+<a id="a363c9a64c549be610c5a26c7ad99ec20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a363c9a64c549be610c5a26c7ad99ec20">&#9670;&nbsp;</a></span>SoapySDRDevice_setupStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> int SoapySDRDevice_setupStream </td>
+          <td class="memname"><a class="el" href="Config_8h.html#ae741d098469b68e36cc8238ca2005026">SOAPY_SDR_API</a> <a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a>* SoapySDRDevice_setupStream </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="Device_8h.html#a600bfa542e6d6771d0872371191e57ea">SoapySDRDevice</a> *&#160;</td>
           <td class="paramname"><em>device</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="Device_8h.html#ac87081be1a377032bbba408c37254450">SoapySDRStream</a> **&#160;</td>
-          <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -4977,13 +4971,13 @@ Functions</h2></td></tr>
 <p>When multiple channels are added to a stream, they are typically expected to have the same sample rate. See <a class="el" href="Device_8h.html#a3897cb502d9db3c02c77b8b19ea40934">SoapySDRDevice_setSampleRate()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">stream</td><td>the opaque pointer to a stream handle. <p class="starttd"></p>
-<p class="endtd">The returned stream is not required to have internal locking, and may not be used concurrently from multiple threads. </p>
-</td></tr>
+    <tr><td class="paramname">device</td><td>a pointer to a device instance </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>the opaque pointer to a stream handle. <p class="startdd"></p>
+<p class="enddd">The returned stream is not required to have internal locking, and may not be used concurrently from multiple threads. </p>
+</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>the channel direction (<code>SOAPY_SDR_RX</code> or <code>SOAPY_SDR_TX</code>) </td></tr>
@@ -5015,7 +5009,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 for success or error code on failure </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the stream pointer or nullptr for failure </dd></dl>
 
 </div>
 </div>
@@ -5696,7 +5690,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 4 2018 18:51:24 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 9 2019 18:01:10 for SoapySDR by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>
