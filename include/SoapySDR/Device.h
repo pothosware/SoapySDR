@@ -309,7 +309,7 @@ inline int SoapySDRDevice_setupStream_(SoapySDRDevice *device,
     const SoapySDRKwargs *args)
 {
     *stream = SoapySDRDevice_setupStream(device, direction, format, channels, numChans, args);
-    return (stream == NULL)?0:-1;
+    return (stream == NULL)?-1:0;
 }
 
 #define SoapySDR_getMacro(_1,_2,_3,_4,_5,_6,_7,NAME,...) NAME
