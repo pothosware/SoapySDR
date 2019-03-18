@@ -38,22 +38,36 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-FIND_PROGRAM(PYTHON3_EXECUTABLE
-  NAMES python3.2mu python3.2m python3.2u python3.2 python3.1 python3.0 python3
-  PATHS
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.2\\InstallPath]
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.1\\InstallPath]
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.0\\InstallPath]
-  )
+FOREACH(_CURRENT_VERSION 3.6 3.5 3.4 3.3 3.2 3.1 3.0 3)
+  IF(_CURRENT_VERSION GREATER 3.1)
+      SET(_32FLAGS "m" "u" "mu" "dm" "du" "dmu" "")
+  ELSE()
+      SET(_32FLAGS "")
+  ENDIF()
+  FOREACH(_COMPILATION_FLAGS ${_32FLAGS})
 
-FIND_PROGRAM(PYTHON3_DBG_EXECUTABLE
-  NAMES python3.2dmu python3.2dm python3.2du python3.2d python3.1-dbg python3.0-dbg python3-dbg
-  PATHS
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.2\\InstallPath]
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.1\\InstallPath]
-  [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\3.0\\InstallPath]
-  )
+    FIND_PROGRAM(PYTHON3_EXECUTABLE
+      NAMES python${_CURRENT_VERSION}${_COMPILATION_FLAGS}
+      PATHS
+      [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_CURRENT_VERSION}\\InstallPath]
+      )
 
+    IF(_CURRENT_VERSION GREATER 3.1)
+      FIND_PROGRAM(PYTHON3_DBG_EXECUTABLE
+        NAMES python${_CURRENT_VERSION}d${_COMPILATION_FLAGS}
+        PATHS
+        [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_CURRENT_VERSION}\\InstallPath]
+        )
+    ELSE()
+      FIND_PROGRAM(PYTHON3_DBG_EXECUTABLE
+        NAMES python${_CURRENT_VERSION}-dbg
+        PATHS
+        [HKEY_LOCAL_MACHINE\\SOFTWARE\\Python\\PythonCore\\${_CURRENT_VERSION}\\InstallPath]
+        )
+    ENDIF()
+
+  ENDFOREACH(_COMPILATION_FLAGS)
+ENDFOREACH(_CURRENT_VERSION)
 
 # handle the QUIETLY and REQUIRED arguments and set PYTHONINTERP_FOUND to TRUE if
 # all listed variables are TRUE
