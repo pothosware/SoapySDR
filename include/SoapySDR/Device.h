@@ -109,7 +109,7 @@ SOAPY_SDR_API int SoapySDRDevice_unmake(SoapySDRDevice *device);
  * \param length the length of the argsList array
  * \return a list of device pointers per each specified argument
  */
-SOAPY_SDR_API SoapySDRDevice **SoapySDRDevice_make_list(SoapySDRKwargs *argsList, const size_t length);
+SOAPY_SDR_API SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const size_t length);
 
 /*!
  * Unmake or release a list of device handles
