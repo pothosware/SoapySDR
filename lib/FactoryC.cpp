@@ -50,7 +50,7 @@ int SoapySDRDevice_unmake(SoapySDRDevice *device)
 /*******************************************************************
  * Parallel support
  ******************************************************************/
-SoapySDRDevice **SoapySDRDevice_make_each(SoapySDRKwargs *argsList, const size_t length)
+SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const size_t length)
 {
     __SOAPY_SDR_C_TRY
     const auto devices = SoapySDR::Device::make(toKwargsList(argsList, length));
@@ -60,7 +60,7 @@ SoapySDRDevice **SoapySDRDevice_make_each(SoapySDRKwargs *argsList, const size_t
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
-int SoapySDRDevice_unmake_each(SoapySDRDevice **devices, const size_t length)
+int SoapySDRDevice_unmake_list(SoapySDRDevice **devices, const size_t length)
 {
     __SOAPY_SDR_C_TRY
     std::vector<SoapySDR::Device *> devicesVector(length);

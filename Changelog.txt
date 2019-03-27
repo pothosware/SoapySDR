@@ -15,6 +15,13 @@ API:
 - Changed SoapySDRDevice_setupStream() to return the stream pointer
   - Backwards compatibility macro maintains compilation for the old API
 
+Release 0.7.2 (pending)
+==========================
+
+- Fixed C bindings for parallel make and unmake
+  - pointer for argument inputs should be const
+  - wrong name for functions in FactoryC.cpp
+
 Release 0.7.1 (2019-01-26)
 ==========================
 
