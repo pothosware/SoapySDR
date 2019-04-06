@@ -60,7 +60,7 @@ else()
     message(FATAL_ERROR "not win32 or unix")
 endif()
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     #support threaded client code
     #notice that -pthread is not the same as -lpthread
     target_link_libraries(SoapySDR PRIVATE -pthread)
