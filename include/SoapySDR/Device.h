@@ -300,7 +300,7 @@ SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
 
 ///@cond INTERNAL
 //! Old setupStream invoked by compatibility macro
-inline int SoapySDRDevice_setupStream_(SoapySDRDevice *device,
+static inline int SoapySDRDevice_setupStream_(SoapySDRDevice *device,
     SoapySDRStream **stream,
     const int direction,
     const char *format,
