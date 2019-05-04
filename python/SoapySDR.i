@@ -313,9 +313,13 @@ def extractBuffPointer(buff):
 
     %insert("python")
     %{
-        #call unmake from custom deleter
-        def __del__(self):
-            Device.unmake(self)
+        #manually unmake and flag for future calls and the deleter
+        def close(self):
+            try: getattr(self, '__closed__')
+            except AttributeError: Device.unmake(self)
+            setattr(self, '__closed__', True)
+
+        def __del__(self): self.close()
 
         def __str__(self):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
