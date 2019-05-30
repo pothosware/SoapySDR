@@ -4,6 +4,7 @@
 
 #include <SoapySDR/Device.hpp>
 #include <sstream>
+#include <limits>
 
 template <typename Type>
 std::string toString(const std::vector<Type> &options)

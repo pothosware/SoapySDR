@@ -6,16 +6,23 @@
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
-#include <chrono>
-#include <thread>
 #include <algorithm> //sort, min, max
 #include <cstdlib>
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
+#include <csignal>
+#include <chrono>
+#include <thread>
 #include <getopt.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+static sig_atomic_t loopDone = false;
+static void sigIntHandler(const int)
+{
+    loopDone = true;
+}
 
 std::string SoapySDRDeviceProbe(SoapySDR::Device *);
 std::string sensorReadings(SoapySDR::Device *);
@@ -219,11 +226,13 @@ static int probeDevice(const std::string &argStr)
  **********************************************************************/
 static int watchDevice(const std::string &argStr)
 {
-    std::cout << "Watch device " << argStr << std::endl;
+    signal(SIGINT, sigIntHandler);
+
+    std::cout << "Watch device " << argStr << ", press Ctrl+C to exit..." << std::endl;
     try
     {
         auto device = SoapySDR::Device::make(argStr);
-        for (;;)
+        while (not loopDone)
         {
             std::cout << sensorReadings(device) << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(1));
