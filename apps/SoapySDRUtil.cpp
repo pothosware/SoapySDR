@@ -6,6 +6,8 @@
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/ConverterRegistry.hpp>
+#include <chrono>
+#include <thread>
 #include <algorithm> //sort, min, max
 #include <cstdlib>
 #include <cstddef>
@@ -224,7 +226,7 @@ static int watchDevice(const std::string &argStr)
         for (;;)
         {
             std::cout << sensorReadings(device) << std::endl;
-            sleep(1);
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         SoapySDR::Device::unmake(device);
     }
