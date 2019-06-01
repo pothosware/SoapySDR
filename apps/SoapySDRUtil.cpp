@@ -11,11 +11,21 @@
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
+#include <csignal>
+#include <chrono>
+#include <thread>
 #include <getopt.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
+static sig_atomic_t loopDone = false;
+static void sigIntHandler(const int)
+{
+    loopDone = true;
+}
+
 std::string SoapySDRDeviceProbe(SoapySDR::Device *);
+std::string sensorReadings(SoapySDR::Device *);
 int SoapySDRRateTest(
     const std::string &argStr,
     const double sampleRate,
@@ -45,6 +55,7 @@ static int printHelp(void)
     std::cout << "    --find[=\"driver=foo,type=bar\"] \t Discover available devices" << std::endl;
     std::cout << "    --make[=\"driver=foo,type=bar\"] \t Create a device instance" << std::endl;
     std::cout << "    --probe[=\"driver=foo,type=bar\"] \t Print detailed information" << std::endl;
+    std::cout << "    --watch[=\"driver=foo,type=bar\"] \t Watch device sensor information" << std::endl;
     std::cout << std::endl;
 
     std::cout << "  Advanced options:" << std::endl;
@@ -211,6 +222,33 @@ static int probeDevice(const std::string &argStr)
 }
 
 /***********************************************************************
+ * Make device and watch sensor info
+ **********************************************************************/
+static int watchDevice(const std::string &argStr)
+{
+    signal(SIGINT, sigIntHandler);
+
+    std::cout << "Watch device " << argStr << ", press Ctrl+C to exit..." << std::endl;
+    try
+    {
+        auto device = SoapySDR::Device::make(argStr);
+        while (not loopDone)
+        {
+            std::cout << sensorReadings(device) << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+        SoapySDR::Device::unmake(device);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << "Error watching device: " << ex.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+    std::cout << std::endl;
+    return EXIT_SUCCESS;
+}
+
+/***********************************************************************
  * Check the registry for a specific driver
  **********************************************************************/
 static int checkDriver(const std::string &driverName)
@@ -248,6 +286,7 @@ int main(int argc, char *argv[])
     bool sparsePrintFlag(false);
     bool makeDeviceFlag(false);
     bool probeDeviceFlag(false);
+    bool watchDeviceFlag(false);
 
     /*******************************************************************
      * parse command line options
@@ -258,6 +297,7 @@ int main(int argc, char *argv[])
         {"make", optional_argument, 0, 'm'},
         {"info", optional_argument, 0, 'i'},
         {"probe", optional_argument, 0, 'p'},
+        {"watch", optional_argument, 0, 'w'},
 
         {"check", optional_argument, 0, 'c'},
         {"sparse", no_argument, 0, 's'},
@@ -292,6 +332,10 @@ int main(int argc, char *argv[])
             probeDeviceFlag = true;
             if (optarg != nullptr) argStr = optarg;
             break;
+        case 'w':
+            watchDeviceFlag = true;
+            if (optarg != nullptr) argStr = optarg;
+            break;
         case 'c':
             if (optarg != nullptr) driverName = optarg;
             break;
@@ -318,6 +362,7 @@ int main(int argc, char *argv[])
     if (findDevicesFlag) return findDevices(argStr, sparsePrintFlag);
     if (makeDeviceFlag)  return makeDevice(argStr);
     if (probeDeviceFlag) return probeDevice(argStr);
+    if (watchDeviceFlag) return watchDevice(argStr);
 
     //invoke utilities that rely on multiple arguments
     if (sampleRate != 0.0)

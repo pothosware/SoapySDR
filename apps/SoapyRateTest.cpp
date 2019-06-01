@@ -13,7 +13,7 @@
 #include <cstdio>
 
 static sig_atomic_t loopDone = false;
-void sigIntHandler(const int)
+static void sigIntHandler(const int)
 {
     loopDone = true;
 }

@@ -4,6 +4,7 @@
 
 #include <SoapySDR/Device.hpp>
 #include <sstream>
+#include <limits>
 
 template <typename Type>
 std::string toString(const std::vector<Type> &options)
@@ -116,6 +117,64 @@ std::string toString(const SoapySDR::ArgInfoList &argInfos)
     return ss.str();
 }
 
+std::string sensorReadings(SoapySDR::Device *device)
+{
+    std::stringstream ss;
+
+    /*******************************************************************
+     * Sensor readings
+     ******************************************************************/
+    std::vector<std::string> sensors = device->listSensors();
+
+    for (size_t i = 0; i < sensors.size(); i++)
+    {
+        std::string key = sensors[i];
+        SoapySDR::ArgInfo info = device->getSensorInfo(key);
+        std::string reading = device->readSensor(key);
+
+        ss << "     * " << sensors[i];
+        if (not info.name.empty()) ss << " (" << info.name << ")";
+        ss << ":";
+        if (info.range.maximum() > std::numeric_limits<double>::min()) ss << toString(info.range);
+        ss << toString(info.options);
+        ss << " " << reading;
+        if (not info.units.empty()) ss << " " << info.units;
+        ss << std::endl;
+        if (not info.description.empty()) ss << "        " << info.description << std::endl;
+    }
+
+    return ss.str();
+}
+
+std::string channelSensorReadings(SoapySDR::Device *device, const int dir, const size_t chan)
+{
+    std::stringstream ss;
+
+    /*******************************************************************
+     * Channel sensor readings
+     ******************************************************************/
+    std::vector<std::string> sensors = device->listSensors(dir, chan);
+
+    for (size_t i = 0; i < sensors.size(); i++)
+    {
+        std::string key = sensors[i];
+        SoapySDR::ArgInfo info = device->getSensorInfo(dir, chan, key);
+        std::string reading = device->readSensor(dir, chan, key);
+
+        ss << "     * " << sensors[i];
+        if (not info.name.empty()) ss << " (" << info.name << ")";
+        ss << ":";
+        if (info.range.maximum() > std::numeric_limits<double>::min()) ss << toString(info.range);
+        ss << toString(info.options);
+        ss << " " << reading;
+        if (not info.units.empty()) ss << " " << info.units;
+        ss << std::endl;
+        if (not info.description.empty()) ss << "        " << info.description << std::endl;
+    }
+
+    return ss.str();
+}
+
 static std::string probeChannel(SoapySDR::Device *device, const int dir, const size_t chan)
 {
     std::stringstream ss;
@@ -197,6 +256,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     //sensors
     std::string sensors = toString(device->listSensors(dir, chan));
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+    ss << channelSensorReadings(device, dir, chan);
 
     //settings
     std::string settings = toString(device->getSettingInfo(dir, chan));
@@ -246,6 +306,7 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
 
     std::string sensors = toString(device->listSensors());
     if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+    ss << sensorReadings(device);
 
     std::string registers = toString(device->listRegisterInterfaces());
     if (not registers.empty()) ss << "  Registers: " << registers << std::endl;
