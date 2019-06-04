@@ -94,6 +94,12 @@ function(SOAPY_SDR_MODULE_UTIL)
     set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
     set_property(TARGET ${MODULE_TARGET} PROPERTY CXX_STANDARD 11)
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        #force a compile-time error when symbols are missing
+        #otherwise modules will cause a runtime error on load
+        target_link_libraries(${MODULE_TARGET} PRIVATE "-Wl,--no-undefined")
+    endif()
+
     if (NOT MODULE_DESTINATION)
         set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)
     endif()

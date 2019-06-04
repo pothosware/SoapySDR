@@ -75,10 +75,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     target_compile_options(SoapySDR PRIVATE -fvisibility=hidden)
     target_compile_options(SoapySDR PRIVATE -fvisibility-inlines-hidden)
 
-    #force a compile-time error when symbols are missing
-    #otherwise modules will cause a runtime error on load
-    target_link_libraries(SoapySDR PUBLIC "-Wl,--no-undefined")
-
     #common warnings to help encourage good coding practices
     target_compile_options(SoapySDR PUBLIC -Wall)
     target_compile_options(SoapySDR PUBLIC -Wextra)
