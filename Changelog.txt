@@ -3,6 +3,7 @@ This this the changelog file for the SoapySDR project.
 Release 0.7.2 (pending)
 ==========================
 
+- Remove --no-undefined linker flag for python 3.8
 - Fixed C bindings for parallel make and unmake
   - pointer for argument inputs should be const
   - wrong name for functions in FactoryC.cpp
