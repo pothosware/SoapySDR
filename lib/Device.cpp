@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -55,7 +55,11 @@ SoapySDR::Kwargs SoapySDR::Device::getChannelInfo(const int, const size_t) const
 
 bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
 {
-    return true;
+    auto numRxChs = this->getNumChannels(SOAPY_SDR_RX);
+    auto numTxChs = this->getNumChannels(SOAPY_SDR_TX);
+    if (numRxChs > 0 and numTxChs == 0) return false; //no tx channels
+    if (numRxChs == 0 and numTxChs > 0) return false; //no rx channels
+    return true; //assume full duplex (usually true minus some tdd devices)
 }
 
 /*******************************************************************
