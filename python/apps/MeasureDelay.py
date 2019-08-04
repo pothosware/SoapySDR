@@ -108,7 +108,7 @@ def measure_delay(
         status = sdr.readStream(rx_stream, [rx_buff], len(rx_buff), timeoutUs=timeout_us)
 
         #stash time on first buffer
-        if status.ret > 0 and rx_buffs.size:
+        if status.ret > 0 and rx_buffs.size == 0:
             rx_time_0 = status.timeNs
             if (status.flags & SOAPY_SDR_HAS_TIME) == 0:
                 raise Exception('receive fail - no timestamp on first readStream %s'%(str(status)))
