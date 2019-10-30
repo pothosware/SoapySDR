@@ -377,6 +377,13 @@ int SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int directio
     __SOAPY_SDR_C_CATCH
 }
 
+int SoapySDRDevice_setIQBalanceMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic)
+{
+    __SOAPY_SDR_C_TRY
+    device->setIQBalance(direction, channel, automatic);
+    __SOAPY_SDR_C_CATCH
+}
+
 bool SoapySDRDevice_hasFrequencyCorrection(const SoapySDRDevice *device, const int direction, const size_t channel)
 {
     __SOAPY_SDR_C_TRY

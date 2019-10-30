@@ -222,6 +222,11 @@ std::complex<double> SoapySDR::Device::getIQBalance(const int, const size_t) con
     return std::complex<double>();
 }
 
+void SoapySDR::Device::setIQBalanceMode(const int, const size_t, const bool)
+{
+    return;
+}
+
 bool SoapySDR::Device::hasFrequencyCorrection(const int direction, const size_t channel) const
 {
     //backwards compatibility with "CORR" string arg
