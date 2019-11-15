@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Josh Blum
+// Copyright (c) 2014-2019 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -61,6 +61,7 @@ static int printHelp(void)
     std::cout << "  Advanced options:" << std::endl;
     std::cout << "    --check[=driverName] \t\t Check if driver is present" << std::endl;
     std::cout << "    --sparse             \t\t Simplified output for --find" << std::endl;
+    std::cout << "    --serial=ABCD123456  \t\t Specify device serial number" << std::endl;
     std::cout << std::endl;
 
     std::cout << "  Rate testing options:" << std::endl;
@@ -168,7 +169,7 @@ static int findDevices(const std::string &argStr, const bool sparse)
             }
             std::cout << std::endl;
         }
-        if (results.empty()) std::cerr << "No devices found!" << std::endl;
+        if (results.empty()) std::cerr << "No devices found! " << argStr << std::endl;
         else std::cout << std::endl;
     }
     return results.empty()?EXIT_FAILURE:EXIT_SUCCESS;
@@ -277,6 +278,7 @@ static int checkDriver(const std::string &driverName)
  **********************************************************************/
 int main(int argc, char *argv[])
 {
+    std::string serial;
     std::string argStr;
     std::string chanStr;
     std::string dirStr;
@@ -292,21 +294,22 @@ int main(int argc, char *argv[])
      * parse command line options
      ******************************************************************/
     static struct option long_options[] = {
-        {"help", no_argument, 0, 'h'},
-        {"find", optional_argument, 0, 'f'},
-        {"make", optional_argument, 0, 'm'},
-        {"info", optional_argument, 0, 'i'},
-        {"probe", optional_argument, 0, 'p'},
-        {"watch", optional_argument, 0, 'w'},
+        {"help", no_argument, nullptr, 'h'},
+        {"find", optional_argument, nullptr, 'f'},
+        {"make", optional_argument, nullptr, 'm'},
+        {"info", optional_argument, nullptr, 'i'},
+        {"probe", optional_argument, nullptr, 'p'},
+        {"watch", optional_argument, nullptr, 'w'},
 
-        {"check", optional_argument, 0, 'c'},
-        {"sparse", no_argument, 0, 's'},
+        {"check", optional_argument, nullptr, 'c'},
+        {"sparse", no_argument, nullptr, 's'},
+        {"serial", required_argument, nullptr, 'S'},
 
-        {"args", optional_argument, 0, 'a'},
-        {"rate", optional_argument, 0, 'r'},
-        {"channels", optional_argument, 0, 'n'},
-        {"direction", optional_argument, 0, 'd'},
-        {0, 0, 0,  0}
+        {"args", optional_argument, nullptr, 'a'},
+        {"rate", optional_argument, nullptr, 'r'},
+        {"channels", optional_argument, nullptr, 'n'},
+        {"direction", optional_argument, nullptr, 'd'},
+        {nullptr, no_argument, nullptr, '\0'}
     };
     int long_index = 0;
     int option = 0;
@@ -342,6 +345,9 @@ int main(int argc, char *argv[])
         case 's':
             sparsePrintFlag = true;
             break;
+        case 'S':
+            serial = optarg;
+            break;
         case 'a':
             if (optarg != nullptr) argStr = optarg;
             break;
@@ -355,6 +361,14 @@ int main(int argc, char *argv[])
             if (optarg != nullptr) dirStr = optarg;
             break;
         }
+    }
+
+    //use serial if provided
+    if (not serial.empty())
+    {
+        auto args = SoapySDR::KwargsFromString(argStr);
+        args["serial"] = serial;
+        argStr = SoapySDR::KwargsToString(args);
     }
 
     if (not sparsePrintFlag) printBanner();
