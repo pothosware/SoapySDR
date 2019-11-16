@@ -101,7 +101,7 @@ function(SOAPY_SDR_MODULE_UTIL)
     endif()
 
     if (NOT MODULE_DESTINATION)
-        set(MODULE_DESTINATION lib${LIB_SUFFIX}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)
+        set(MODULE_DESTINATION ${CMAKE_INSTALL_LIBDIR}/SoapySDR/modules${SOAPY_SDR_ABI_VERSION}/)
     endif()
 
     if (MODULE_PREFIX)

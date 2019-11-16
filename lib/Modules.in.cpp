@@ -123,15 +123,15 @@ std::vector<std::string> SoapySDR::listSearchPaths(void)
 {
     //the default search path
     std::vector<std::string> searchPaths;
-    searchPaths.push_back(SoapySDR::getRootPath() + "/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
+    searchPaths.push_back(SoapySDR::getRootPath() + "/@CMAKE_INSTALL_LIBDIR@/SoapySDR/modules" + SoapySDR::getABIVersion());
 
     //support /usr/local module installs when the install prefix is /usr
     if (SoapySDR::getRootPath() == "/usr")
     {
-        searchPaths.push_back("/usr/local/lib@LIB_SUFFIX@/SoapySDR/modules" + SoapySDR::getABIVersion());
+        searchPaths.push_back("/usr/local/@CMAKE_INSTALL_LIBDIR@/SoapySDR/modules" + SoapySDR::getABIVersion());
         //when using a multi-arch directory, support single-arch path as well
-        static const std::string libsuffix("@LIB_SUFFIX@");
-        if (not libsuffix.empty() and libsuffix.at(0) == '/')
+        static const std::string libdir("@CMAKE_INSTALL_LIBDIR@");
+        if (libdir.find("lib/") == 0) //startswith lib/ indicating multi-arch
             searchPaths.push_back("/usr/local/lib/SoapySDR/modules" + SoapySDR::getABIVersion());
     }
 

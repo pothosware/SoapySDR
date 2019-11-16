@@ -69,9 +69,9 @@ option(CMAKE_BUILD_WITH_INSTALL_RPATH "build with install rpath" FALSE)
 # the RPATH to be used when installing, but only if it's not a system directory
 option(CMAKE_AUTOSET_INSTALL_RPATH TRUE)
 if(CMAKE_AUTOSET_INSTALL_RPATH)
-LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" isSystemDir)
+LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
 IF("${isSystemDir}" STREQUAL "-1")
-    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 ENDIF("${isSystemDir}" STREQUAL "-1")
 endif(CMAKE_AUTOSET_INSTALL_RPATH)
 
@@ -94,7 +94,7 @@ find_package(SoapySDR CONFIG REQUIRED)
 # Install cmake helper modules
 ########################################################################
 if (UNIX)
-    set(CMAKE_LIB_DEST share/cmake/${PROJECT_NAME})
+    set(CMAKE_LIB_DEST ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME})
 elseif (WIN32)
     set(CMAKE_LIB_DEST cmake)
 endif ()
@@ -113,7 +113,7 @@ install(FILES
 ########################################################################
 # Install headers
 ########################################################################
-install(DIRECTORY include/SoapySDR DESTINATION include)
+install(DIRECTORY include/SoapySDR DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 ########################################################################
 # Build subdirs
