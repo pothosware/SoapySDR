@@ -1,9 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-# extract the architecture for setting the library path suffix
-DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
-
 # extract the last section of the changelog version for extra info
 DEB_VERSION ?= $(shell dpkg-parsechangelog -S Version)
 DEB_VERSION_EXTRA := $(lastword $(subst -, ,$(DEB_VERSION)))
@@ -17,7 +14,6 @@ DEB_VERSION_EXTRA := $(lastword $(subst -, ,$(DEB_VERSION)))
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		-DCMAKE_AUTOSET_INSTALL_RPATH=FALSE \
-		-DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)" \
 		-DSOAPY_SDR_EXTVER="$(DEB_VERSION_EXTRA)"
 
 override_dh_installchangelogs:

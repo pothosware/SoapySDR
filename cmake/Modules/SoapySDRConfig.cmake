@@ -25,36 +25,12 @@ endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
 ########################################################################
-# Automatic LIB_SUFFIX detection + configuration option
+# Use GNU Install Dirs, but support LIB_SUFFIX if specified
 ########################################################################
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(LINUX TRUE)
-endif()
-
-if(LINUX AND EXISTS "/etc/debian_version")
-    set(DEBIAN TRUE)
-endif()
-
-if(LINUX AND EXISTS "/etc/redhat-release")
-    set(REDHAT TRUE)
-endif()
-
-if(LINUX AND EXISTS "/etc/SuSE-release")
-    set(SUSE TRUE)
-endif()
-
-if(LINUX AND EXISTS "/etc/slackware-version")
-    set(SLACKWARE TRUE)
-endif()
-
-if(LINUX AND EXISTS "/etc/gentoo-release")
-	set(GENTOO TRUE)
-endif()
-
-if(NOT DEFINED LIB_SUFFIX AND (REDHAT OR SUSE OR SLACKWARE OR GENTOO) AND CMAKE_SYSTEM_PROCESSOR MATCHES "64$")
-    SET(LIB_SUFFIX 64)
-endif()
-set(LIB_SUFFIX ${LIB_SUFFIX} CACHE STRING "lib directory suffix")
+include(GNUInstallDirs)
+if(LIB_SUFFIX)
+    set(CMAKE_INSTALL_LIBDIR "lib${LIB_SUFFIX}") #support old lib suffix
+endif(LIB_SUFFIX)
 
 ########################################################################
 # extract the ABI version string from the Version.h header

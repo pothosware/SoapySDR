@@ -128,9 +128,9 @@ target_sources(SoapySDR PRIVATE
 ########################################################################
 install(TARGETS SoapySDR
     EXPORT SoapySDRExport
-    LIBRARY DESTINATION lib${LIB_SUFFIX} # .so file
-    ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
-    RUNTIME DESTINATION bin              # .dll file
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # .so file
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # .lib file
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # .dll file
 )
 
 #export target to SoapySDR project config
@@ -146,5 +146,5 @@ configure_file(
 
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.pc
-    DESTINATION lib${LIB_SUFFIX}/pkgconfig
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
