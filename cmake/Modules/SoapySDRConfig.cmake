@@ -29,7 +29,7 @@ set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 ########################################################################
 include(GNUInstallDirs)
 if(LIB_SUFFIX)
-    set(CMAKE_INSTALL_LIBDIR "lib/${LIB_SUFFIX}") #support old lib suffix
+    set(CMAKE_INSTALL_LIBDIR "lib${LIB_SUFFIX}") #support old lib suffix
 endif(LIB_SUFFIX)
 
 ########################################################################
