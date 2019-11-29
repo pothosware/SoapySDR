@@ -620,12 +620,28 @@ public:
     virtual std::complex<double> getIQBalance(const int direction, const size_t channel) const;
 
     /*!
+     * Does the device support automatic frontend IQ balance correction?
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true if IQ balance corrections are supported
+     */
+    virtual bool hasIQBalanceMode(const int direction, const size_t channel) const;
+
+    /*!
      * Set the automatic frontend IQ balance correction.
      * \param direction the channel direction RX or TX
      * \param channel an available channel on the device
      * \param automatic true for automatic correction
      */
     virtual void setIQBalanceMode(const int direction, const size_t channel, const bool automatic);
+
+    /*!
+     * Set the automatic IQ balance corrections mode.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \return true for automatic correction
+     */
+    virtual bool getIQBalanceMode(const int direction, const size_t channel) const;
 
     /*!
      * Does the device support frontend frequency correction?
