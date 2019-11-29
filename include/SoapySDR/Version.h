@@ -142,6 +142,11 @@
  */
 #define SOAPY_SDR_API_HAS_FREQUENCY_CORRECTION_API
 
+/*!
+ * Compatibility define for IQ balance mode API
+ */
+#define SOAPY_SDR_API_HAS_IQ_BALANCE_MODE
+
 #ifdef __cplusplus
 extern "C" {
 #endif
