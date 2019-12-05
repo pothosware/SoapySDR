@@ -10,6 +10,7 @@
 /// \copyright
 /// Copyright (c) 2014-2018 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
+///                    2019 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -713,6 +714,15 @@ SOAPY_SDR_API int SoapySDRDevice_setIQBalance(SoapySDRDevice *device, const int 
 SOAPY_SDR_API int SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, const int direction, const size_t channel, double *balanceI, double *balanceQ);
 
 /*!
+ * Does the device support automatic frontend IQ balance correction?
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true if automatic IQ balance corrections are supported
+ */
+SOAPY_SDR_API bool SoapySDRDevice_hasIQBalanceMode(const SoapySDRDevice *device, const int direction, const size_t channel);
+
+/*!
  * Set the automatic frontend IQ balance correction.
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
@@ -721,6 +731,15 @@ SOAPY_SDR_API int SoapySDRDevice_getIQBalance(const SoapySDRDevice *device, cons
  * \return 0 for success or error code on failure
  */
 SOAPY_SDR_API int SoapySDRDevice_setIQBalanceMode(SoapySDRDevice *device, const int direction, const size_t channel, const bool automatic);
+
+/*!
+ * Get the automatic frontend IQ balance corrections mode.
+ * \param device a pointer to a device instance
+ * \param direction the channel direction RX or TX
+ * \param channel an available channel on the device
+ * \return true for automatic correction
+ */
+SOAPY_SDR_API bool SoapySDRDevice_getIQBalanceMode(const SoapySDRDevice *device, const int direction, const size_t channel);
 
 /*!
  * Does the device support frontend frequency correction?

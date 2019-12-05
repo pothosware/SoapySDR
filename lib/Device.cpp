@@ -1,5 +1,6 @@
 // Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
+//                    2019 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
@@ -222,9 +223,19 @@ std::complex<double> SoapySDR::Device::getIQBalance(const int, const size_t) con
     return std::complex<double>();
 }
 
+bool SoapySDR::Device::hasIQBalanceMode(const int, const size_t) const
+{
+    return false;
+}
+
 void SoapySDR::Device::setIQBalanceMode(const int, const size_t, const bool)
 {
     return;
+}
+
+bool SoapySDR::Device::getIQBalanceMode(const int, const size_t) const
+{
+    return false;
 }
 
 bool SoapySDR::Device::hasFrequencyCorrection(const int direction, const size_t channel) const
