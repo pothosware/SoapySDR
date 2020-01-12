@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.7.2 (pending)
+Release 0.7.2 (2020-01-12)
 ==========================
 
 - Remove --no-undefined linker flag for python 3.8
