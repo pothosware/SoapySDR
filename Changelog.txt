@@ -15,7 +15,7 @@ API:
 - Changed SoapySDRDevice_setupStream() to return the stream pointer
   - Backwards compatibility macro maintains compilation for the old API
 
-Release 0.7.2 (pending)
+Release 0.7.2 (2020-01-12)
 ==========================
 
 - Remove --no-undefined linker flag for python 3.8
