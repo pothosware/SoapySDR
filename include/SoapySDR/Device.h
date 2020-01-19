@@ -299,24 +299,6 @@ SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
     const size_t numChans,
     const SoapySDRKwargs *args);
 
-///@cond INTERNAL
-//! Old setupStream invoked by compatibility macro
-static inline int SoapySDRDevice_setupStream_(SoapySDRDevice *device,
-    SoapySDRStream **stream,
-    const int direction,
-    const char *format,
-    const size_t *channels,
-    const size_t numChans,
-    const SoapySDRKwargs *args)
-{
-    *stream = SoapySDRDevice_setupStream(device, direction, format, channels, numChans, args);
-    return (*stream == NULL)?-1:0;
-}
-
-#define SoapySDR_getMacro(_1,_2,_3,_4,_5,_6,_7,NAME,...) NAME
-#define SoapySDRDevice_setupStream(...) SoapySDR_getMacro(__VA_ARGS__, SoapySDRDevice_setupStream_, SoapySDRDevice_setupStream)(__VA_ARGS__)
-///@endcond
-
 /*!
  * Close an open stream created by setupStream
  * \param device a pointer to a device instance
