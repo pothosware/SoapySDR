@@ -63,13 +63,13 @@ endif()
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     #support threaded client code
     #notice that -pthread is not the same as -lpthread
-    target_link_libraries(SoapySDR PRIVATE -pthread)
+    target_link_libraries(SoapySDR PUBLIC -pthread)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     #support threaded client code
     #notice that -pthread is not the same as -lpthread
-    target_link_libraries(SoapySDR PRIVATE -pthread)
+    target_link_libraries(SoapySDR PUBLIC -pthread)
 
     #symbols are only exported from libraries/modules explicitly
     target_compile_options(SoapySDR PRIVATE -fvisibility=hidden)
