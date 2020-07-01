@@ -42,7 +42,7 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 {
     for (size_t i = 0; i < args->size; i++)
     {
-        if (strcmp(args->keys[i], key) == 0)
+        if (std::strcmp(args->keys[i], key) == 0)
         {
             auto new_val = strdup(val);
             if (new_val == nullptr) return -1;
@@ -54,8 +54,8 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 
     //increase the memory size by 1 element and assign the new pointer on success
     //the container will continue to be in a good state even after realloc failure
-    auto new_keys = (char **)realloc(args->keys, sizeof(char *)*(args->size+1));
-    auto new_vals = (char **)realloc(args->vals, sizeof(char *)*(args->size+1));
+    auto new_keys = (char **)std::realloc(args->keys, sizeof(char *)*(args->size+1));
+    auto new_vals = (char **)std::realloc(args->vals, sizeof(char *)*(args->size+1));
     if (new_keys != nullptr) args->keys = new_keys;
     if (new_vals != nullptr) args->vals = new_vals;
 
