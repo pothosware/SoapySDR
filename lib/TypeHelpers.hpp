@@ -18,13 +18,14 @@
 template <typename T>
 T *callocArrayType(const size_t length)
 {
-    return (T *)std::calloc(length, sizeof(T));
+    auto out = (T *)std::calloc(length, sizeof(T));
+    if (out == nullptr) throw std::bad_alloc();
+    return out;
 }
 
 static inline char *toCString(const std::string &s)
 {
     auto out = callocArrayType<char>(s.size()+1);
-    if (out == nullptr) throw std::bad_alloc();
     std::copy(s.begin(), s.end(), out);
     return out;
 }
@@ -32,7 +33,6 @@ static inline char *toCString(const std::string &s)
 static inline char **toStrArray(const std::vector<std::string> &strs, size_t *length)
 {
     auto out = callocArrayType<char *>(strs.size());
-    if (out == nullptr) throw std::bad_alloc();
     for (size_t i = 0; i < strs.size(); i++)
     {
         try
@@ -61,7 +61,6 @@ static inline SoapySDRRange toRange(const SoapySDR::Range &range)
 static inline SoapySDRRange *toRangeList(const SoapySDR::RangeList &ranges, size_t *length)
 {
     auto out = callocArrayType<SoapySDRRange>(ranges.size());
-    if (out == nullptr) throw std::bad_alloc();
     for (size_t i = 0; i < ranges.size(); i++) out[i] = toRange(ranges[i]);
     *length = ranges.size();
     return out;
@@ -70,7 +69,6 @@ static inline SoapySDRRange *toRangeList(const SoapySDR::RangeList &ranges, size
 static inline double *toNumericList(const std::vector<double> &values, size_t *length)
 {
     auto out = callocArrayType<double>(values.size());
-    if (out == nullptr) throw std::bad_alloc();
     std::copy(values.begin(), values.end(), out);
     *length = values.size();
     return out;
@@ -104,7 +102,6 @@ static inline SoapySDRKwargs toKwargs(const SoapySDR::Kwargs &args)
 static inline SoapySDRKwargs *toKwargsList(const SoapySDR::KwargsList &args, size_t *length)
 {
     auto outArgs = callocArrayType<SoapySDRKwargs>(args.size());
-    if (outArgs == nullptr) throw std::bad_alloc();
     for (size_t i = 0; i < args.size(); i++) outArgs[i] = toKwargs(args[i]);
     *length = args.size();
     return outArgs;
@@ -145,7 +142,6 @@ static inline SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
 static inline SoapySDRArgInfo *toArgInfoList(const SoapySDR::ArgInfoList &infos, size_t *length)
 {
     auto out = callocArrayType<SoapySDRArgInfo>(infos.size());
-    if (out == nullptr) throw std::bad_alloc();
     for (size_t i = 0; i < infos.size(); i++)
     {
         out[i] = toArgInfo(infos[i]);
@@ -164,7 +160,6 @@ static inline std::vector<unsigned> toNumericVector(const unsigned *values, size
 static inline unsigned *toNumericList(const std::vector<unsigned> &values, size_t *length)
 {
     auto out = callocArrayType<unsigned>(values.size());
-    if (out == nullptr) throw std::bad_alloc();
     std::copy(values.begin(), values.end(), out);
     *length = values.size();
     return out;

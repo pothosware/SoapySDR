@@ -930,7 +930,6 @@ char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, size_t *num
     __SOAPY_SDR_C_TRY
     const auto bytes = device->readI2C(addr, inputNumBytes);
     char *buff = callocArrayType<char>(bytes.size());
-    if (buff == nullptr) throw std::bad_alloc();
     std::copy(bytes.begin(), bytes.end(), buff);
     *numBytes = bytes.size();
     return buff;

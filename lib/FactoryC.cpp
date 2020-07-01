@@ -54,7 +54,6 @@ SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const 
 {
     __SOAPY_SDR_C_TRY
     auto outDevices = callocArrayType<SoapySDRDevice *>(length);
-    if (outDevices == nullptr) throw std::bad_alloc();
     const auto devices = SoapySDR::Device::make(toKwargsList(argsList, length));
     for (size_t i = 0; i < length; i++) outDevices[i] = (SoapySDRDevice *)devices[i];
     return outDevices;
