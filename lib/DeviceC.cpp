@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019 Josh Blum
+// Copyright (c) 2014-2020 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
 // SPDX-License-Identifier: BSL-1.0
 
@@ -929,7 +929,8 @@ char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, size_t *num
 
     __SOAPY_SDR_C_TRY
     const auto bytes = device->readI2C(addr, inputNumBytes);
-    char *buff = (char *)std::malloc(bytes.size());
+    char *buff = callocArrayType<char>(bytes.size());
+    if (buff == nullptr) throw std::bad_alloc();
     std::copy(bytes.begin(), bytes.end(), buff);
     *numBytes = bytes.size();
     return buff;
