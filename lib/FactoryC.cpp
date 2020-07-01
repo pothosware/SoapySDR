@@ -53,8 +53,9 @@ int SoapySDRDevice_unmake(SoapySDRDevice *device)
 SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const size_t length)
 {
     __SOAPY_SDR_C_TRY
-    const auto devices = SoapySDR::Device::make(toKwargsList(argsList, length));
     auto outDevices = callocArrayType<SoapySDRDevice *>(length);
+    if (outDevices == nullptr) throw std::bad_alloc();
+    const auto devices = SoapySDR::Device::make(toKwargsList(argsList, length));
     for (size_t i = 0; i < length; i++) outDevices[i] = (SoapySDRDevice *)devices[i];
     return outDevices;
     __SOAPY_SDR_C_CATCH_RET(nullptr);

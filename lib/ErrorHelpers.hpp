@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 Josh Blum
+// Copyright (c) 2016-2020 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -22,7 +22,7 @@
 #define __SOAPY_SDR_C_CATCH \
     __SOAPY_SDR_C_CATCH_RET(-1) return 0;
 
-//! Padd into __SOAPY_SDR_C_CATCH_RET for void return calls
+//! Pass into __SOAPY_SDR_C_CATCH_RET for void return calls
 #define SoapySDRVoidRet
 
 //! Clear the error on try macro entry
