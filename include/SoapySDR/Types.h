@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2020 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -107,6 +107,12 @@ typedef struct
     char **optionNames;
 
 } SoapySDRArgInfo;
+
+/*!
+ * Free a pointer allocated by SoapySDR.
+ * For most platforms this is a simple call around free()
+ */
+SOAPY_SDR_API void SoapySDR_free(void *ptr);
 
 /*!
  * Clear the contents of a list of string

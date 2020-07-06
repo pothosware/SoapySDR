@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Josh Blum
+// Copyright (c) 2014-2020 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include "ErrorHelpers.hpp"
@@ -23,13 +23,18 @@ char *SoapySDRKwargs_toString(const SoapySDRKwargs *args)
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+void SoapySDR_free(void *ptr)
+{
+    std::free(ptr);
+}
+
 void SoapySDRStrings_clear(char ***elems, const size_t length)
 {
     for (size_t i = 0; i < length; i++)
     {
-        free((*elems)[i]);
+        SoapySDR_free((*elems)[i]);
     }
-    free(*elems);
+    SoapySDR_free(*elems);
     *elems = NULL;
 }
 
@@ -37,11 +42,11 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 {
     for (size_t i = 0; i < args->size; i++)
     {
-        if (strcmp(args->keys[i], key) == 0)
+        if (std::strcmp(args->keys[i], key) == 0)
         {
             auto new_val = strdup(val);
             if (new_val == nullptr) return -1;
-            free(args->vals[i]);
+            SoapySDR_free(args->vals[i]);
             args->vals[i] = new_val;
             return 0;
         }
@@ -49,8 +54,8 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 
     //increase the memory size by 1 element and assign the new pointer on success
     //the container will continue to be in a good state even after realloc failure
-    auto new_keys = (char **)realloc(args->keys, sizeof(char *)*(args->size+1));
-    auto new_vals = (char **)realloc(args->vals, sizeof(char *)*(args->size+1));
+    auto new_keys = (char **)std::realloc(args->keys, sizeof(char *)*(args->size+1));
+    auto new_vals = (char **)std::realloc(args->vals, sizeof(char *)*(args->size+1));
     if (new_keys != nullptr) args->keys = new_keys;
     if (new_vals != nullptr) args->vals = new_vals;
 
@@ -65,8 +70,8 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
     //free both pointers in case one of them was allocated
     if (new_key == nullptr or new_val == nullptr)
     {
-        free(new_key);
-        free(new_val);
+        SoapySDR_free(new_key);
+        SoapySDR_free(new_val);
         return -1;
     }
 
@@ -99,25 +104,25 @@ void SoapySDRKwargs_clear(SoapySDRKwargs *args)
 void SoapySDRKwargsList_clear(SoapySDRKwargs *args, const size_t length)
 {
     for (size_t i = 0; i < length; i++) SoapySDRKwargs_clear(args+i);
-    free(args);
+    SoapySDR_free(args);
 }
 
 void SoapySDRArgInfo_clear(SoapySDRArgInfo *info)
 {
     //clear strings
-    free(info->key);
+    SoapySDR_free(info->key);
     info->key = NULL;
 
-    free(info->value);
+    SoapySDR_free(info->value);
     info->value = NULL;
 
-    free(info->name);
+    SoapySDR_free(info->name);
     info->name = NULL;
 
-    free(info->description);
+    SoapySDR_free(info->description);
     info->description = NULL;
 
-    free(info->units);
+    SoapySDR_free(info->units);
     info->units = NULL;
 
     //clear options
@@ -129,7 +134,7 @@ void SoapySDRArgInfo_clear(SoapySDRArgInfo *info)
 void SoapySDRArgInfoList_clear(SoapySDRArgInfo *info, const size_t length)
 {
     for (size_t i = 0; i < length; i++) SoapySDRArgInfo_clear(info+i);
-    free(info);
+    SoapySDR_free(info);
 }
 
 }
