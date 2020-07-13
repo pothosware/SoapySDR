@@ -75,6 +75,10 @@ else()
 SWIG_ADD_LIBRARY(SoapySDR3 LANGUAGE python SOURCES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)
 endif()
 
+if(APPLE)
+    list(APPEND PYTHON3_LIBRARIES "-undefined dynamic_lookup")
+endif()
+
 target_include_directories(${SWIG_MODULE_SoapySDR3_REAL_NAME} PRIVATE ${PYTHON3_INCLUDE_DIRS})
 SWIG_LINK_LIBRARIES(SoapySDR3 SoapySDR ${PYTHON3_LIBRARIES})
 

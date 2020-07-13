@@ -155,6 +155,10 @@ else()
 SWIG_ADD_LIBRARY(SoapySDR LANGUAGE python SOURCES SoapySDR.i)
 endif()
 
+if(APPLE)
+    list(APPEND PYTHON_LIBRARIES "-undefined dynamic_lookup")
+endif()
+
 target_include_directories(${SWIG_MODULE_SoapySDR_REAL_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
 SWIG_LINK_LIBRARIES(SoapySDR SoapySDR ${PYTHON_LIBRARIES})
 
