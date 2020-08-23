@@ -1394,7 +1394,7 @@ public:
 
 };
 
-};
+}
 
 template <typename Type>
 Type SoapySDR::Device::readSensor(const std::string &key) const
