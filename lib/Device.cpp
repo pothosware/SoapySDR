@@ -827,3 +827,11 @@ std::string SoapySDR::Device::readUART(const std::string &, const long) const
 {
     return "";
 }
+
+/*******************************************************************
+ * Native Access API
+ ******************************************************************/
+void* SoapySDR::Device::getNativeDeviceHandle(void) const
+{
+    return nullptr;
+}
