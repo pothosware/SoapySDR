@@ -1088,10 +1088,80 @@ SOAPY_SDR_API double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *dev
 SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getMasterClockRates(const SoapySDRDevice *device, size_t *length);
 
 /*!
+ * Get the list of available master clock sources.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sources
+ * \return a list of clock source names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listMasterClockSources(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Set the master clock source on the device
+ * \param device a pointer to a device instance
+ * \param source the name of a clock source
+ * \return an error code or 0 for success
+ */
+SOAPY_SDR_API int SoapySDRDevice_setMasterClockSource(SoapySDRDevice *device, const char *source);
+
+/*!
+ * Get the master clock source of the device
+ * \param device a pointer to a device instance
+ * \return the name of a clock source
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getMasterClockSource(const SoapySDRDevice *device);
+
+/*!
+ * Set the reference clock rate of the device.
+ * \param device a pointer to a device instance
+ * \param rate the clock rate in Hz
+ * \return an error code or 0 for success
+ */
+SOAPY_SDR_API int SoapySDRDevice_setReferenceClockRate(SoapySDRDevice *device, const double rate);
+
+/*!
+ * Get the reference clock rate of the device.
+ * \param device a pointer to a device instance
+ * \return the clock rate in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getReferenceClockRate(const SoapySDRDevice *device);
+
+/*!
+ * Get the range of available reference clock rates.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sources
+ * \return a list of clock rate ranges in Hz
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getReferenceClockRates(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Get the list of available reference clock sources.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sources
+ * \return a list of clock source names
+ */
+SOAPY_SDR_API char **SoapySDRDevice_listReferenceClockSources(const SoapySDRDevice *device, size_t *length);
+
+/*!
+ * Set the reference clock source on the device
+ * \param device a pointer to a device instance
+ * \param source the name of a clock source
+ * \return an error code or 0 for success
+ */
+SOAPY_SDR_API int SoapySDRDevice_setReferenceClockSource(SoapySDRDevice *device, const char *source);
+
+/*!
+ * Get the reference clock source of the device
+ * \param device a pointer to a device instance
+ * \return the name of a clock source
+ */
+SOAPY_SDR_API char *SoapySDRDevice_getReferenceClockSource(const SoapySDRDevice *device);
+
+/*!
  * Get the list of available clock sources.
  * \param device a pointer to a device instance
  * \param [out] length the number of sources
  * \return a list of clock source names
+ * \deprecated see listMasterClockSources and listReferenceClockSources
  */
 SOAPY_SDR_API char **SoapySDRDevice_listClockSources(const SoapySDRDevice *device, size_t *length);
 
@@ -1100,6 +1170,7 @@ SOAPY_SDR_API char **SoapySDRDevice_listClockSources(const SoapySDRDevice *devic
  * \param device a pointer to a device instance
  * \param source the name of a clock source
  * \return an error code or 0 for success
+ * \deprecated see setMasterClockSource and setReferenceClockSource
  */
 SOAPY_SDR_API int SoapySDRDevice_setClockSource(SoapySDRDevice *device, const char *source);
 
@@ -1107,6 +1178,7 @@ SOAPY_SDR_API int SoapySDRDevice_setClockSource(SoapySDRDevice *device, const ch
  * Get the clock source of the device
  * \param device a pointer to a device instance
  * \return the name of a clock source
+ * \deprecated see getMasterClockSource and getReferenceClockSource
  */
 SOAPY_SDR_API char *SoapySDRDevice_getClockSource(const SoapySDRDevice *device);
 

@@ -957,20 +957,77 @@ public:
     virtual RangeList getMasterClockRates(void) const;
 
     /*!
+     * Get the list of available master clock sources.
+     * \return a list of clock source names
+     */
+    virtual std::vector<std::string> listMasterClockSources(void) const;
+
+    /*!
+     * Set the master clock source on the device
+     * \param source the name of a clock source
+     */
+    virtual void setMasterClockSource(const std::string &source);
+
+    /*!
+     * Get the master clock source of the device
+     * \return the name of a clock source
+     */
+    virtual std::string getMasterClockSource(void) const;
+
+    /*!
+     * Set the reference clock rate of the device.
+     * \param rate the clock rate in Hz
+     */
+    virtual void setReferenceClockRate(const double rate);
+
+    /*!
+     * Get the reference clock rate of the device.
+     * \return the clock rate in Hz
+     */
+    virtual double getReferenceClockRate(void) const;
+
+    /*!
+     * Get the range of available reference clock rates.
+     * \return a list of clock rate ranges in Hz
+     */
+    virtual RangeList getReferenceClockRates(void) const;
+
+    /*!
+     * Get the list of available reference clock sources.
+     * \return a list of clock source names
+     */
+    virtual std::vector<std::string> listReferenceClockSources(void) const;
+
+    /*!
+     * Set the reference clock source on the device
+     * \param source the name of a clock source
+     */
+    virtual void setReferenceClockSource(const std::string &source);
+
+    /*!
+     * Get the reference clock source of the device
+     * \return the name of a clock source
+     */
+    virtual std::string getReferenceClockSource(void) const;
+
+    /*!
      * Get the list of available clock sources.
      * \return a list of clock source names
+     * \deprecated see listMasterClockSources and listReferenceClockSources
      */
     virtual std::vector<std::string> listClockSources(void) const;
 
     /*!
      * Set the clock source on the device
      * \param source the name of a clock source
+     * \deprecated see setMasterClockSource and setReferenceClockSource
      */
     virtual void setClockSource(const std::string &source);
 
     /*!
      * Get the clock source of the device
      * \return the name of a clock source
+     * \deprecated see getMasterClockSource and getReferenceClockSource
      */
     virtual std::string getClockSource(void) const;
 

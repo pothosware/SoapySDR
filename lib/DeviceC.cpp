@@ -647,6 +647,72 @@ SoapySDRRange *SoapySDRDevice_getMasterClockRates(const SoapySDRDevice *device, 
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+char **SoapySDRDevice_listMasterClockSources(const SoapySDRDevice *device, size_t *length)
+{
+    *length = 0;
+    __SOAPY_SDR_C_TRY
+    return toStrArray(device->listMasterClockSources(), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
+int SoapySDRDevice_setMasterClockSource(SoapySDRDevice *device, const char *source)
+{
+    __SOAPY_SDR_C_TRY
+    device->setMasterClockSource(source);
+    __SOAPY_SDR_C_CATCH
+}
+
+char *SoapySDRDevice_getMasterClockSource(const SoapySDRDevice *device)
+{
+    __SOAPY_SDR_C_TRY
+    return toCString(device->getMasterClockSource());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
+int SoapySDRDevice_setReferenceClockRate(SoapySDRDevice *device, const double rate)
+{
+    __SOAPY_SDR_C_TRY
+    device->setReferenceClockRate(rate);
+    __SOAPY_SDR_C_CATCH
+}
+
+double SoapySDRDevice_getReferenceClockRate(const SoapySDRDevice *device)
+{
+    __SOAPY_SDR_C_TRY
+    return device->getReferenceClockRate();
+    __SOAPY_SDR_C_CATCH_RET(NAN);
+}
+
+SoapySDRRange *SoapySDRDevice_getReferenceClockRates(const SoapySDRDevice *device, size_t *length)
+{
+    *length = 0;
+    __SOAPY_SDR_C_TRY
+    return toRangeList(device->getReferenceClockRates(), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
+char **SoapySDRDevice_listReferenceClockSources(const SoapySDRDevice *device, size_t *length)
+{
+    *length = 0;
+    __SOAPY_SDR_C_TRY
+    return toStrArray(device->listReferenceClockSources(), length);
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
+int SoapySDRDevice_setReferenceClockSource(SoapySDRDevice *device, const char *source)
+{
+    __SOAPY_SDR_C_TRY
+    device->setReferenceClockSource(source);
+    __SOAPY_SDR_C_CATCH
+}
+
+char *SoapySDRDevice_getReferenceClockSource(const SoapySDRDevice *device)
+{
+    __SOAPY_SDR_C_TRY
+    return toCString(device->getReferenceClockSource());
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
 char **SoapySDRDevice_listClockSources(const SoapySDRDevice *device, size_t *length)
 {
     *length = 0;
