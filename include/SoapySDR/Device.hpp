@@ -1392,6 +1392,17 @@ public:
      */
     virtual std::string readUART(const std::string &which, const long timeoutUs = 100000) const;
 
+    /*******************************************************************
+     * Native Access API
+     ******************************************************************/
+
+    /*!
+     * A handle to the native device used by the driver.
+     * The implementation may return a null value if it does not support
+     * or does not wish to provide access to the native handle.
+     * \return a handle to the native device or null
+     */
+    virtual void* getNativeDeviceHandle(void) const;
 };
 
 }

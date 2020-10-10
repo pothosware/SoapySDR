@@ -1514,6 +1514,20 @@ SOAPY_SDR_API int SoapySDRDevice_writeUART(SoapySDRDevice *device, const char *w
  */
 SOAPY_SDR_API char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, const long timeoutUs);
 
+
+/*******************************************************************
+ * Native Access API
+ ******************************************************************/
+
+/*!
+ * A handle to the native device used by the driver.
+ * The implementation may return a null value if it does not support
+ * or does not wish to provide access to the native handle.
+ * \param device a pointer to a device instance
+ * \return a handle to the native device or null
+ */
+SOAPY_SDR_API void* SoapySDRDevice_getNativeDeviceHandle(const SoapySDRDevice *device);
+
 #ifdef __cplusplus
 }
 #endif

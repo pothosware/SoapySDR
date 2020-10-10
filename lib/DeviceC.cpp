@@ -971,4 +971,14 @@ char *SoapySDRDevice_readUART(const SoapySDRDevice *device, const char *which, c
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+/*******************************************************************
+ * Native Access API
+ ******************************************************************/
+void* SoapySDRDevice_getNativeDeviceHandle(const SoapySDRDevice *device)
+{
+    __SOAPY_SDR_C_TRY
+    return device->getNativeDeviceHandle();
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
 } //extern "C"
