@@ -586,6 +586,21 @@ SoapySDR::RangeList SoapySDR::Device::getMasterClockRates(void) const
     return SoapySDR::RangeList();
 }
 
+void SoapySDR::Device::setReferenceClockRate(const double rate)
+{
+    return;
+}
+
+double SoapySDR::Device::getReferenceClockRate(void) const
+{
+    return 0.0;
+}
+
+SoapySDR::RangeList SoapySDR::Device::getReferenceClockRates(void) const
+{
+    return SoapySDR::RangeList();
+}
+
 std::vector<std::string> SoapySDR::Device::listClockSources(void) const
 {
     return std::vector<std::string>();
