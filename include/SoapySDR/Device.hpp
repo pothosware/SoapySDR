@@ -957,6 +957,24 @@ public:
     virtual RangeList getMasterClockRates(void) const;
 
     /*!
+     * Set the reference clock rate of the device.
+     * \param rate the clock rate in Hz
+     */
+    virtual void setReferenceClockRate(const double rate);
+
+    /*!
+     * Get the reference clock rate of the device.
+     * \return the clock rate in Hz
+     */
+    virtual double getReferenceClockRate(void) const;
+
+    /*!
+     * Get the range of available reference clock rates.
+     * \return a list of clock rate ranges in Hz
+     */
+    virtual RangeList getReferenceClockRates(void) const;
+
+    /*!
      * Get the list of available clock sources.
      * \return a list of clock source names
      */

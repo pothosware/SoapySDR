@@ -1088,6 +1088,29 @@ SOAPY_SDR_API double SoapySDRDevice_getMasterClockRate(const SoapySDRDevice *dev
 SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getMasterClockRates(const SoapySDRDevice *device, size_t *length);
 
 /*!
+ * Set the reference clock rate of the device.
+ * \param device a pointer to a device instance
+ * \param rate the clock rate in Hz
+ * \return an error code or 0 for success
+ */
+SOAPY_SDR_API int SoapySDRDevice_setReferenceClockRate(SoapySDRDevice *device, const double rate);
+
+/*!
+ * Get the reference clock rate of the device.
+ * \param device a pointer to a device instance
+ * \return the clock rate in Hz
+ */
+SOAPY_SDR_API double SoapySDRDevice_getReferenceClockRate(const SoapySDRDevice *device);
+
+/*!
+ * Get the range of available reference clock rates.
+ * \param device a pointer to a device instance
+ * \param [out] length the number of sources
+ * \return a list of clock rate ranges in Hz
+ */
+SOAPY_SDR_API SoapySDRRange *SoapySDRDevice_getReferenceClockRates(const SoapySDRDevice *device, size_t *length);
+
+/*!
  * Get the list of available clock sources.
  * \param device a pointer to a device instance
  * \param [out] length the number of sources
