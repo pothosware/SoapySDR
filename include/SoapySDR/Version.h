@@ -4,7 +4,7 @@
 /// Utility functions to query version information.
 ///
 /// \copyright
-/// Copyright (c) 2014-2019 Josh Blum
+/// Copyright (c) 2014-2020 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
 /// SPDX-License-Identifier: BSL-1.0
 ///
@@ -146,6 +146,11 @@
  * Compatibility define for IQ balance mode API
  */
 #define SOAPY_SDR_API_HAS_IQ_BALANCE_MODE
+
+/*!
+ * Compatibility define for ref clock rate API
+ */
+#define SOAPY_SDR_API_HAS_REF_CLOCK_RATE_API
 
 #ifdef __cplusplus
 extern "C" {

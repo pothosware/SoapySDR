@@ -8,6 +8,7 @@ Build:
 - Increase the CMake build requirement to version 3.1.0
 
 API:
+- Added API calls for configuring an external reference clock rate
 - Constants for boolean setting strings SOAPY_SDR_TRUE/FALSE
 - Templated read/writeSetting()/readSensor() for SoapySDR::Device
 - Added Templated StringToSetting() and SettingToString() helpers
