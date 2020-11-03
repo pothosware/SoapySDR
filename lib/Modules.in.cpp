@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 Josh Blum
+// Copyright (c) 2014-2020 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
@@ -351,5 +351,18 @@ void SoapySDR::loadModules(void)
             if (it.second.empty()) continue;
             SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), it.second.c_str());
         }
+    }
+}
+
+void SoapySDR::unloadModules(void)
+{
+    std::lock_guard<std::recursive_mutex> lock(getModuleMutex());
+    for (auto it = getModuleHandles().begin(); it != getModuleHandles().end();)
+    {
+        auto path = it->first; //save path
+        it++; //advance iterator
+        auto msg = unloadModule(path);
+        if (msg.empty()) continue;
+        SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::unloadModule(%s)\n  %s", path.c_str(), msg.c_str());
     }
 }

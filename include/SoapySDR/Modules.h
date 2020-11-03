@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2020 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -86,6 +86,11 @@ SOAPY_SDR_API char *SoapySDR_unloadModule(const char *path);
  * Subsequent calls are a NOP.
  */
 SOAPY_SDR_API void SoapySDR_loadModules(void);
+
+/*!
+ * Unload all currently loaded support modules.
+ */
+SOAPY_SDR_API void SoapySDR_unloadModules(void);
 
 #ifdef __cplusplus
 }
