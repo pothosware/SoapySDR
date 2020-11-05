@@ -43,8 +43,7 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 {
     try{$action}
     catch (const Swig::DirectorException &e) { SWIG_fail; }
-    catch (const std::exception &ex)
-    {SWIG_exception(SWIG_RuntimeError, ex.what());}
+    SWIG_CATCH_STDEXCEPT
     catch (...)
     {SWIG_exception(SWIG_RuntimeError, "unknown");}
 }
