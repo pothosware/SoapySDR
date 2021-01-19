@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019 Josh Blum
+// Copyright (c) 2014-2021 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Version.hpp>
@@ -278,6 +278,15 @@ static int checkDriver(const std::string &driverName)
  **********************************************************************/
 int main(int argc, char *argv[])
 {
+    //unload any loaded modules when main() scope unwinds
+    struct UnloadModulesScopeExit
+    {
+        ~UnloadModulesScopeExit(void)
+        {
+            SoapySDR::unloadModules();
+        }
+    } unloadModulesInstance;
+
     std::string serial;
     std::string argStr;
     std::string chanStr;
