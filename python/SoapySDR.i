@@ -18,6 +18,25 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 %module(directors="1", docstring=DOCSTRING) SoapySDR
 
 ////////////////////////////////////////////////////////////////////////
+// python3.8 and up need to have the dll search path set
+// https://docs.python.org/3/whatsnew/3.8.html#bpo-36085-whatsnew
+////////////////////////////////////////////////////////////////////////
+%pythonbegin %{
+import os
+
+if os.name == 'nt':
+    root_dir = __file__
+    for i in range(5): #limit search depth
+        root_dir = os.path.dirname(root_dir)
+        bin_dir = os.path.join(root_dir, 'bin')
+        if os.path.exists(bin_dir):
+            try: os.add_dll_directory(bin_dir)
+            except Exception as ex:
+                print('add_dll_directory(%s): %s'%(bin_dir, ex))
+            break
+%}
+
+////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
 ////////////////////////////////////////////////////////////////////////
 %{
