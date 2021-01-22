@@ -24,7 +24,7 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 %pythonbegin %{
 import os
 
-if os.name == 'nt':
+if os.name == 'nt' and hasattr(os, 'add_dll_directory'):
     root_dir = __file__
     for i in range(5): #limit search depth
         root_dir = os.path.dirname(root_dir)
