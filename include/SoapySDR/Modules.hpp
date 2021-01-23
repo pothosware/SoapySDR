@@ -6,7 +6,7 @@
 /// For most use cases, the API will automatically load modules.
 ///
 /// \copyright
-/// Copyright (c) 2014-2018 Josh Blum
+/// Copyright (c) 2014-2020 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -79,6 +79,32 @@ SOAPY_SDR_API std::string unloadModule(const std::string &path);
  * Subsequent calls are a NOP.
  */
 SOAPY_SDR_API void loadModules(void);
+
+/*!
+ * Unload all currently loaded support modules.
+ */
+SOAPY_SDR_API void unloadModules(void);
+
+/*!
+ * Manage the lifetime of loadable modules
+ * by unloading modules on scope exit.
+ */
+class SOAPY_SDR_API ModuleManager
+{
+public:
+    /*!
+     * Create an instance of the module manager.
+     * Loading modules on creation can be disabled.
+     * \param load false to skip loading modules
+     */
+    ModuleManager(const bool load = true);
+
+    /*!
+     * Module manager destructor.
+     * Unload modules on cleanup.
+     */
+    ~ModuleManager(void);
+};
 
 //! \cond
 //! Internal call to register version with a module during load

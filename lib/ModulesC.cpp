@@ -70,4 +70,9 @@ void SoapySDR_loadModules(void)
     SoapySDR::loadModules();
 }
 
+void SoapySDR_unloadModules(void)
+{
+    SoapySDR::unloadModules();
+}
+
 }

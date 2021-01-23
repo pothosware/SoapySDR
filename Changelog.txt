@@ -14,6 +14,7 @@ API:
 - Added Templated StringToSetting() and SettingToString() helpers
 - Python bindings duck typing for read/writeSetting()/readSensor()
 - Changed SoapySDRDevice_setupStream() to return the stream pointer
+- Added unloadModules() API call to manually cleanup modules on exit
 
 Release 0.7.2 (2020-01-12)
 ==========================
