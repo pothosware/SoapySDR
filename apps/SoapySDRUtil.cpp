@@ -279,13 +279,7 @@ static int checkDriver(const std::string &driverName)
 int main(int argc, char *argv[])
 {
     //unload any loaded modules when main() scope unwinds
-    struct UnloadModulesScopeExit
-    {
-        ~UnloadModulesScopeExit(void)
-        {
-            SoapySDR::unloadModules();
-        }
-    } unloadModulesInstance;
+    SoapySDR::ModuleManager mm(false);
 
     std::string serial;
     std::string argStr;

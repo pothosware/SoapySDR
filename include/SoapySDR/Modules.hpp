@@ -85,6 +85,27 @@ SOAPY_SDR_API void loadModules(void);
  */
 SOAPY_SDR_API void unloadModules(void);
 
+/*!
+ * Manage the lifetime of loadable modules
+ * by unloading modules on scope exit.
+ */
+class SOAPY_SDR_API ModuleManager
+{
+public:
+    /*!
+     * Create an instance of the module manager.
+     * Loading modules on creation can be disabled.
+     * \param load false to skip loading modules
+     */
+    ModuleManager(const bool load = true);
+
+    /*!
+     * Module manager destructor.
+     * Unload modules on cleanup.
+     */
+    ~ModuleManager(void);
+};
+
 //! \cond
 //! Internal call to register version with a module during load
 class SOAPY_SDR_API ModuleVersion

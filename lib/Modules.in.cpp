@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Josh Blum
+// Copyright (c) 2014-2021 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Modules.hpp>
@@ -365,4 +365,14 @@ void SoapySDR::unloadModules(void)
         if (msg.empty()) continue;
         SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::unloadModule(%s)\n  %s", path.c_str(), msg.c_str());
     }
+}
+
+SoapySDR::ModuleManager::ModuleManager(const bool load)
+{
+    if (load) SoapySDR::loadModules();
+}
+
+SoapySDR::ModuleManager::~ModuleManager(void)
+{
+    SoapySDR::unloadModules();
 }
