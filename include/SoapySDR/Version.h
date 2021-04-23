@@ -6,6 +6,7 @@
 /// \copyright
 /// Copyright (c) 2014-2021 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
+///                    2021 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -156,6 +157,11 @@
  * Compatibility define for unloading modules
  */
 #define SOAPY_SDR_API_HAS_UNLOAD_MODULES_API
+
+/*!
+ * Compatibility define for initializing devices in parallel with string arguments
+ */
+#define SOAPY_SDR_API_HAS_PARALLEL_STRING_MAKE
 
 #ifdef __cplusplus
 extern "C" {

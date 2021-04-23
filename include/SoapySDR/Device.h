@@ -10,7 +10,7 @@
 /// \copyright
 /// Copyright (c) 2014-2018 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
-///                    2019 Nicholas Corgan
+///               2019-2021 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -111,6 +111,17 @@ SOAPY_SDR_API int SoapySDRDevice_unmake(SoapySDRDevice *device);
  * \return a list of device pointers per each specified argument
  */
 SOAPY_SDR_API SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const size_t length);
+
+/*!
+ * Create a list of devices from a list of construction arguments.
+ * This is a convenience call to parallelize device construction,
+ * and is fundamentally a parallel for loop of makeStrArgs(args).
+ *
+ * \param argsList a list of device arguments per each device
+ * \param length the length of the argsList array
+ * \return a list of device pointers per each specified argument
+ */
+SOAPY_SDR_API SoapySDRDevice **SoapySDRDevice_make_listStrArgs(const char* const *argsList, const size_t length);
 
 /*!
  * Unmake or release a list of device handles

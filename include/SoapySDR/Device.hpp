@@ -6,6 +6,7 @@
 /// \copyright
 /// Copyright (c) 2014-2019 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
+///                    2021 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -92,6 +93,16 @@ public:
      * \return a list of device pointers per each specified argument
      */
     static std::vector<Device *> make(const KwargsList &argsList);
+
+    /*!
+     * Create a list of devices from a list of construction arguments.
+     * This is a convenience call to parallelize device construction,
+     * and is fundamentally a parallel for loop of make(args).
+     *
+     * \param argsList a list of device arguments per each device
+     * \return a list of device pointers per each specified argument
+     */
+    static std::vector<Device *> make(const std::vector<std::string> &argsList);
 
     /*!
      * Unmake or release a list of device handles.
