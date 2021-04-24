@@ -1,10 +1,12 @@
 // Copyright (c) 2014-2018 Josh Blum
+//                    2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Registry.hpp>
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Logger.hpp>
+#include <algorithm>
 #include <stdexcept>
 #include <exception>
 #include <future>
@@ -263,6 +265,18 @@ std::vector<SoapySDR::Device *> SoapySDR::Device::make(const KwargsList &argsLis
         throw;
     }
     return devices;
+}
+
+std::vector<SoapySDR::Device *> SoapySDR::Device::make(const std::vector<std::string> &argsList)
+{
+    SoapySDR::KwargsList kwargsList;
+    std::transform(
+        argsList.begin(),
+        argsList.end(),
+        std::back_inserter(kwargsList),
+        SoapySDR::KwargsFromString);
+
+    return make(kwargsList);
 }
 
 void SoapySDR::Device::unmake(const std::vector<Device *> &devices)

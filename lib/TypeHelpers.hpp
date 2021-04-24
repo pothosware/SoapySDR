@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2020 Josh Blum
+//                    2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
@@ -46,6 +47,14 @@ static inline char **toStrArray(const std::vector<std::string> &strs, size_t *le
         }
     }
     *length = strs.size();
+    return out;
+}
+
+static inline std::vector<std::string> toStringVector(const char * const *strs, size_t length)
+{
+    std::vector<std::string> out;
+    for(size_t i = 0; i < length; ++i) out.emplace_back(strs[i]);
+
     return out;
 }
 

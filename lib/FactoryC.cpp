@@ -60,6 +60,16 @@ SoapySDRDevice **SoapySDRDevice_make_list(const SoapySDRKwargs *argsList, const 
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+SoapySDRDevice **SoapySDRDevice_make_listStrArgs(const char* const *argsList, const size_t length)
+{
+    __SOAPY_SDR_C_TRY
+    auto outDevices = callocArrayType<SoapySDRDevice *>(length);
+    const auto devices = SoapySDR::Device::make(toStringVector(argsList, length));
+    for (size_t i = 0; i < length; i++) outDevices[i] = (SoapySDRDevice *)devices[i];
+    return outDevices;
+    __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
 int SoapySDRDevice_unmake_list(SoapySDRDevice **devices, const size_t length)
 {
     __SOAPY_SDR_C_TRY
