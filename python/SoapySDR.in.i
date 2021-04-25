@@ -1,5 +1,6 @@
 // Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
+// Copyright (c)      2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %define DOCSTRING
@@ -40,7 +41,6 @@ if os.name == 'nt' and hasattr(os, 'add_dll_directory'):
 // Include all major headers to compile against
 ////////////////////////////////////////////////////////////////////////
 %{
-#include <SoapySDR/Version.hpp>
 #include <SoapySDR/Modules.hpp>
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Errors.hpp>
@@ -73,10 +73,33 @@ if os.name == 'nt' and hasattr(os, 'add_dll_directory'):
 %include <SoapySDR/Config.h>
 
 ////////////////////////////////////////////////////////////////////////
+// Check ABI before attempting to use Python module
+////////////////////////////////////////////////////////////////////////
+%include <std_string.i>
+
+%{
+#include <SoapySDR/Version.hpp>
+%}
+%include <SoapySDR/Version.hpp>
+
+%insert("python")
+%{
+
+COMPILE_ABI_VERSION = "@SOAPY_SDR_ABI_VERSION@"
+PYTHONLIB_ABI_VERSION = _SoapySDR.SOAPY_SDR_ABI_VERSION
+CORELIB_ABI_VERSION = getABIVersion()
+
+if (COMPILE_ABI_VERSION != PYTHONLIB_ABI_VERSION) or (COMPILE_ABI_VERSION != CORELIB_ABI_VERSION):
+    raise Exception("""Failed ABI check.
+Import script:    {0}
+Python module:    {1}
+SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORELIB_ABI_VERSION))
+%}
+
+////////////////////////////////////////////////////////////////////////
 // Commonly used data types
 ////////////////////////////////////////////////////////////////////////
 %include <std_complex.i>
-%include <std_string.i>
 %include <std_vector.i>
 %include <std_map.i>
 %ignore SoapySDR::Detail::StringToSetting; //ignore SFINAE overloads
@@ -249,7 +272,6 @@ def registerLogHandler(handler):
 // Utility functions
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Errors.hpp>
-%include <SoapySDR/Version.hpp>
 %include <SoapySDR/Modules.hpp>
 %include <SoapySDR/Formats.hpp>
 %include <SoapySDR/Time.hpp>

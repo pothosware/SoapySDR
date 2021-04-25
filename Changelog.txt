@@ -16,6 +16,7 @@ API:
 - Changed SoapySDRDevice_setupStream() to return the stream pointer
 - Added unloadModules() API call to manually cleanup modules on exit
 - Device: added parallel make() function with string arguments
+- Added ABI check to Python module
 
 Release 0.7.2 (2020-01-12)
 ==========================

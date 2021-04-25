@@ -62,7 +62,7 @@ endif()
 include(UseSWIG)
 
 configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/../python/SoapySDR.i
+    ${CMAKE_CURRENT_SOURCE_DIR}/../python/SoapySDR.in.i
     ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i
 @ONLY)
 

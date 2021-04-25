@@ -146,13 +146,18 @@ endif()
 ########################################################################
 include(UseSWIG)
 
+configure_file(
+    SoapySDR.in.i
+    ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i
+@ONLY)
+
 message(STATUS "CMAKE_SWIG_FLAGS=${CMAKE_SWIG_FLAGS}")
-set_source_files_properties(SoapySDR.i PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i PROPERTIES CPLUSPLUS ON)
 
 if(${CMAKE_VERSION} VERSION_LESS "3.8")
-SWIG_ADD_MODULE(SoapySDR python SoapySDR.i)
+SWIG_ADD_MODULE(SoapySDR python ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)
 else()
-SWIG_ADD_LIBRARY(SoapySDR LANGUAGE python SOURCES SoapySDR.i)
+SWIG_ADD_LIBRARY(SoapySDR LANGUAGE python SOURCES ${CMAKE_CURRENT_BINARY_DIR}/SoapySDR.i)
 endif()
 
 if(APPLE)
