@@ -1,5 +1,6 @@
 // Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
+// Copyright (c)      2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %define DOCSTRING
@@ -34,6 +35,23 @@ if os.name == 'nt' and hasattr(os, 'add_dll_directory'):
             except Exception as ex:
                 print('add_dll_directory(%s): %s'%(bin_dir, ex))
             break
+%}
+
+////////////////////////////////////////////////////////////////////////
+// Check ABI before attempting to use Python module
+////////////////////////////////////////////////////////////////////////
+%insert("python")
+%{
+
+COMPILE_ABI_VERSION = "@SOAPY_SDR_ABI_VERSION@"
+PYTHONLIB_ABI_VERSION = _SoapySDR.SOAPY_SDR_ABI_VERSION
+CORELIB_ABI_VERSION = _SoapySDR.getABIVersion()
+
+if not (COMPILE_ABI_VERSION == PYTHONLIB_ABI_VERSION == CORELIB_ABI_VERSION):
+    raise Exception("""Failed ABI check.
+Import script:    {0}
+Python module:    {1}
+SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORELIB_ABI_VERSION))
 %}
 
 ////////////////////////////////////////////////////////////////////////
