@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.8.0 (pending)
+Release 0.8.0 (2021-04-25)
 ==========================
 
 Build:
