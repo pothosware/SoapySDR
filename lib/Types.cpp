@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2017 Josh Blum
+//                    2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Types.hpp>
@@ -60,7 +61,8 @@ std::string SoapySDR::KwargsToString(const SoapySDR::Kwargs &args)
 
 SoapySDR::Range::Range(void):
     _min(0.0),
-    _max(0.0)
+    _max(0.0),
+    _step(0.0)
 {
     return;
 }
