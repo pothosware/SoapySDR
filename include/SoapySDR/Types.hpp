@@ -4,7 +4,7 @@
 /// Misc data type definitions used in the API.
 ///
 /// \copyright
-/// Copyright (c) 2014-2017 Josh Blum
+/// Copyright (c) 2014-2021 Josh Blum
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -182,7 +182,7 @@ typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSet
     if (s == "") return false;
 
     //other values are true
-    return "true";
+    return true;
 }
 
 template <typename Type>

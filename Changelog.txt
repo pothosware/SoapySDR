@@ -1,5 +1,11 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.8.1 (pending)
+==========================
+
+- Type.hpp: fixed templated StringToSetting return true
+- Range: fixed default constructor not initializing step
+
 Release 0.8.0 (2021-04-25)
 ==========================
 
