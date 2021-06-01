@@ -6,6 +6,20 @@ project(SoapySDR)
 enable_language(CXX)
 enable_testing()
 
+# Enable newer CMake policies if available
+if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW) # option() honors normal variables
+endif()
+if(POLICY CMP0078)
+    cmake_policy(SET CMP0078 NEW) # UseSWIG generates standard target names
+endif()
+if(POLICY CMP0086)
+    cmake_policy(SET CMP0086 NEW) # UseSWIG honors SWIG_MODULE_NAME via -module flag
+endif()
+if(POLICY CMP0068)
+    cmake_policy(SET CMP0068 NEW) # RPATH settings on macOS do not affect install_name
+endif()
+
 #C++11 is a required language feature for this project
 set(CMAKE_CXX_STANDARD 11)
 
