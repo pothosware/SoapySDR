@@ -22,7 +22,7 @@
 #
 set -eo pipefail
 
-echo "--- Enviroment."
+echo "--- Environment."
 env
 
 #

@@ -27,7 +27,7 @@ namespace SoapySDR
 class Stream;
 
 /*!
- * Abstraction for an SDR tranceiver device - configuration and streaming.
+ * Abstraction for an SDR transceiver device - configuration and streaming.
  */
 class SOAPY_SDR_API Device
 {
@@ -120,7 +120,7 @@ public:
     /*!
      * A key that uniquely identifies the device driver.
      * This key identifies the underlying implementation.
-     * Serveral variants of a product may share a driver.
+     * Several variants of a product may share a driver.
      */
     virtual std::string getDriverKey(void) const;
 

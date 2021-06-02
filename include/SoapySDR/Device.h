@@ -142,7 +142,7 @@ SOAPY_SDR_API int SoapySDRDevice_unmake_list(SoapySDRDevice **devices, const siz
 /*!
  * A key that uniquely identifies the device driver.
  * This key identifies the underlying implementation.
- * Serveral variants of a product may share a driver.
+ * Several variants of a product may share a driver.
  * \param device a pointer to a device instance
  */
 SOAPY_SDR_API char *SoapySDRDevice_getDriverKey(const SoapySDRDevice *device);
