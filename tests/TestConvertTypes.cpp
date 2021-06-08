@@ -23,6 +23,19 @@ int main(void)
     check_equal(SoapySDR::SettingToString(false), SOAPY_SDR_FALSE);
     check_equal(SoapySDR::StringToSetting<bool>(SOAPY_SDR_TRUE), true);
     check_equal(SoapySDR::StringToSetting<bool>(SOAPY_SDR_FALSE), false);
+    check_equal(SoapySDR::StringToSetting<bool>("one-headed donkey"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("+"), true);
+    check_equal(SoapySDR::StringToSetting<bool>(""), false);
+    check_equal(SoapySDR::StringToSetting<bool>("0"), false);
+    check_equal(SoapySDR::StringToSetting<bool>("0.2"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("1"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("-42"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("0.0"), false);
+    check_equal(SoapySDR::StringToSetting<bool>("1.0"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("0e12"), false);
+    check_equal(SoapySDR::StringToSetting<bool>("0.2e12"), true);
+    check_equal(SoapySDR::StringToSetting<bool>("000"), false);
+    check_equal(SoapySDR::StringToSetting<bool>("001"), true);
 
     printf("Check integer types:\n");
     check_equal(SoapySDR::SettingToString(0), "0");
