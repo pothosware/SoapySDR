@@ -82,7 +82,13 @@ endif()
 target_include_directories(${SWIG_MODULE_SoapySDR3_REAL_NAME} PRIVATE ${PYTHON3_INCLUDE_DIRS})
 SWIG_LINK_LIBRARIES(SoapySDR3 SoapySDR ${PYTHON3_LIBRARIES})
 
-set_target_properties(${SWIG_MODULE_SoapySDR3_REAL_NAME} PROPERTIES OUTPUT_NAME _SoapySDR)
+#Changed in version 3.15: Alternate library name (set with the OUTPUT_NAME property, for example)
+#will be passed on to Python and CSharp wrapper libraries.
+if(${CMAKE_VERSION} VERSION_LESS "3.15")
+    set_target_properties(${SWIG_MODULE_SoapySDR3_REAL_NAME} PROPERTIES OUTPUT_NAME _SoapySDR)
+else()
+    set_target_properties(${SWIG_MODULE_SoapySDR3_REAL_NAME} PROPERTIES OUTPUT_NAME SoapySDR)
+endif()
 
 ########################################################################
 # Install Module
