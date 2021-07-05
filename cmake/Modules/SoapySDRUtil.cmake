@@ -78,6 +78,15 @@ function(SOAPY_SDR_MODULE_UTIL)
         endif(GIT_FOUND)
     endif()
 
+    add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
+    target_link_libraries(${MODULE_TARGET} PRIVATE ${MODULE_LIBRARIES} SoapySDR)
+    set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
+
+    #symbols are only exported from the module explicitly
+    set_property(TARGET ${MODULE_TARGET} PROPERTY C_VISIBILITY_PRESET hidden)
+    set_property(TARGET ${MODULE_TARGET} PROPERTY CXX_VISIBILITY_PRESET hidden)
+    set_property(TARGET ${MODULE_TARGET} PROPERTY VISIBILITY_INLINES_HIDDEN ON)
+
     #version specified, build into source file
     if (MODULE_VERSION)
         message(STATUS "Module ${MODULE_TARGET} configured with version: ${MODULE_VERSION}")
@@ -85,14 +94,8 @@ function(SOAPY_SDR_MODULE_UTIL)
         file(WRITE "${version_file}" "#include <SoapySDR/Modules.hpp>
             static const SoapySDR::ModuleVersion register${MODULE_TARGET}Version(\"${MODULE_VERSION}\");
         ")
-        list(APPEND MODULE_SOURCES "${version_file}")
+        target_sources(${MODULE_TARGET} PRIVATE "${version_file}")
     endif()
-
-    add_library(${MODULE_TARGET} MODULE ${MODULE_SOURCES})
-    target_include_directories(${MODULE_TARGET} PRIVATE SoapySDR)
-    target_link_libraries(${MODULE_TARGET} PRIVATE ${MODULE_LIBRARIES} SoapySDR)
-    set_target_properties(${MODULE_TARGET} PROPERTIES DEBUG_POSTFIX "") #same name in debug mode
-    set_property(TARGET ${MODULE_TARGET} PROPERTY CXX_STANDARD 11)
 
     if(CMAKE_COMPILER_IS_GNUCXX)
         #force a compile-time error when symbols are missing
