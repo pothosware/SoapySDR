@@ -37,9 +37,9 @@ static SoapySDRLogLevel getDefaultLogLevel(void)
 }
 
 /***********************************************************************
- * Compatibility for vasprintf under MSVC
+ * Compatibility for vasprintf on Windows
  **********************************************************************/
-#ifdef _MSC_VER
+#ifdef _WIN32
 int vasprintf(char **strp, const char *fmt, va_list ap)
 {
     int r = _vscprintf(fmt, ap);
