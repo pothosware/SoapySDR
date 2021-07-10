@@ -851,7 +851,7 @@ SOAPY_SDR_API double SoapySDRDevice_getGainElement(const SoapySDRDevice *device,
  * \param device a pointer to a device instance
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
- * \return a list of gain ranges in dB
+ * \return the range of possible gain values for this channel in dB
  */
 SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainRange(const SoapySDRDevice *device, const int direction, const size_t channel);
 
@@ -861,7 +861,7 @@ SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainRange(const SoapySDRDevice *de
  * \param direction the channel direction RX or TX
  * \param channel an available channel on the device
  * \param name the name of an amplification element
- * \return a list of gain ranges in dB
+ * \return the range of possible gain values for the specified amplification element in dB
  */
 SOAPY_SDR_API SoapySDRRange SoapySDRDevice_getGainElementRange(const SoapySDRDevice *device, const int direction, const size_t channel, const char *name);
 
