@@ -11,7 +11,7 @@
 #include <mutex>
 #include <map>
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include <windows.h>
 #else
 #include <dlfcn.h>
@@ -29,7 +29,7 @@ static std::recursive_mutex &getModuleMutex(void)
  **********************************************************************/
 std::string getEnvImpl(const char *name)
 {
-    #ifdef _MSC_VER
+    #ifdef _WIN32
     const DWORD len = GetEnvironmentVariableA(name, 0, 0);
     if (len == 0) return "";
     char* buffer = new char[len];
@@ -52,7 +52,7 @@ std::string SoapySDR::getRootPath(void)
     // Get the path to the current dynamic linked library.
     // The path to this library can be used to determine
     // the installation root without prior knowledge.
-    #ifdef _MSC_VER
+    #ifdef _WIN32
     char path[MAX_PATH];
     HMODULE hm = NULL;
     if (GetModuleHandleExA(
@@ -83,7 +83,7 @@ static std::vector<std::string> searchModulePath(const std::string &path)
     std::vector<std::string> modulePaths;
     const std::string pattern = path + "*@MODULE_EXT@";
 
-#ifdef _MSC_VER
+#ifdef _WIN32
     //http://stackoverflow.com/questions/612097/how-can-i-get-a-list-of-files-in-a-directory-using-c-or-c
     WIN32_FIND_DATA fd; 
     HANDLE hFind = ::FindFirstFile(pattern.c_str(), &fd); 
@@ -136,7 +136,7 @@ std::vector<std::string> SoapySDR::listSearchPaths(void)
     }
 
     //separator for search paths
-    #ifdef _MSC_VER
+    #ifdef _WIN32
     static const char sep = ';';
     #else
     static const char sep = ':';
@@ -207,7 +207,7 @@ SoapySDR::ModuleVersion::ModuleVersion(const std::string &version)
     getModuleVersions()[getModuleLoading()] = version;
 }
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 static std::string GetLastErrorMessage(void)
 {
     LPVOID lpMsgBuf;
@@ -245,7 +245,7 @@ std::string SoapySDR::loadModule(const std::string &path)
     getModuleLoading().assign(path);
 
     //load the module
-#ifdef _MSC_VER
+#ifdef _WIN32
 
     //SetThreadErrorMode() - disable error pop-ups when DLLs are not found
     DWORD oldMode;
@@ -292,7 +292,7 @@ std::string SoapySDR::unloadModule(const std::string &path)
 
     //unload the module
     void *handle = getModuleHandles()[path];
-#ifdef _MSC_VER
+#ifdef _WIN32
     BOOL success = FreeLibrary((HMODULE)handle);
     getModuleLoading().clear();
     if (not success) return "FreeLibrary() failed: " + GetLastErrorMessage();

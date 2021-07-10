@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Josh Blum
+// Copyright (c) 2014-2021 Josh Blum
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Logger.h>
@@ -35,20 +35,6 @@ static SoapySDRLogLevel getDefaultLogLevel(void)
     if (logLevelInt > SOAPY_SDR_TRACE) return SOAPY_SDR_TRACE;
     return SoapySDRLogLevel(logLevelInt);
 }
-
-/***********************************************************************
- * Compatibility for vasprintf under MSVC
- **********************************************************************/
-#ifdef _MSC_VER
-int vasprintf(char **strp, const char *fmt, va_list ap)
-{
-    int r = _vscprintf(fmt, ap);
-    if (r < 0) return r;
-    *strp = (char *)malloc(r+1);
-    if (*strp == nullptr) return -1;
-    return vsprintf_s(*strp, r+1, fmt, ap);
-}
-#endif
 
 /***********************************************************************
  * ANSI terminal colors for default logger
@@ -95,11 +81,10 @@ void SoapySDR_log(const SoapySDRLogLevel logLevel, const char *message)
 void SoapySDR_vlogf(const SoapySDRLogLevel logLevel, const char *format, va_list argList)
 {
     if (logLevel > registeredLogLevel) return;
-    char *message = NULL;
-    if (vasprintf(&message, format, argList) != -1)
+    char message[8*1024];
+    if (std::vsnprintf(message, sizeof(message), format, argList) > 0)
     {
         SoapySDR_log(logLevel, message);
-        free(message);
     }
 }
 
