@@ -111,6 +111,10 @@ endif()
 ########################################################################
 # Configure sources
 ########################################################################
+
+#get a relative CMAKE_INSTALL_LIBDIR for the the module loader logic
+file(RELATIVE_PATH CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_FULL_LIBDIR}")
+
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Modules.in.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Modules.cpp
