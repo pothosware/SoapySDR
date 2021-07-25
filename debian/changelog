@@ -1,3 +1,9 @@
+soapysdr (0.8.1-1) unstable; urgency=low
+
+  * Release 0.8.1 (2021-07-25)
+
+ -- Josh Blum <josh@pothosware.com>  Sun, 25 Jul 2021 18:01:51 -0000
+
 soapysdr (0.8.0-1) unstable; urgency=low
 
   * Release 0.8.0 (2021-04-25)

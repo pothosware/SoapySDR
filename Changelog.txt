@@ -1,6 +1,6 @@
 This this the changelog file for the SoapySDR project.
 
-Release 0.8.1 (pending)
+Release 0.8.1 (2021-07-25)
 ==========================
 
 - cmake: fix use of CMAKE_INSTALL_LIB_DIR when absolute
