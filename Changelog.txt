@@ -3,9 +3,11 @@ This this the changelog file for the SoapySDR project.
 Release 0.8.1 (pending)
 ==========================
 
-- cmake version policies for subproject compatibility
+- cmake: fix use of CMAKE_INSTALL_LIB_DIR when absolute
+- windows: Fix compatibility with non-MSVC compilers
+- cmake: version policies for subproject compatibility
 - docs: fixed spelling mistakes in doxygen comments
-- python3 - change OUTPUT_NAME in newer versions of cmake
+- python3: change OUTPUT_NAME in newer versions of cmake
 - Types: consistency changes converting strings to bool
 - Type.hpp: fixed templated StringToSetting return true
 - Range: fixed default constructor not initializing step
