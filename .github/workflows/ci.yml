@@ -1,0 +1,224 @@
+name: CI
+on: [push, pull_request]
+jobs:
+    linux-ci:
+        name: Linux
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Release
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Debug
+
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Release
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Debug
+
+                    - cc: clang-10
+                      cxx: clang++-10
+                      build_type: Release
+                    - cc: clang-10
+                      cxx: clang++-10
+                      build_type: Debug
+
+                    - cc: clang-11
+                      cxx: clang++-11
+                      build_type: Release
+                    - cc: clang-11
+                      cxx: clang++-11
+                      build_type: Debug
+
+                    - cc: clang-12
+                      cxx: clang++-12
+                      build_type: Release
+                    - cc: clang-12
+                      cxx: clang++-12
+                      build_type: Debug
+        env:
+            CC: ${{matrix.cc}}
+            CXX: ${{matrix.cxx}}
+            PYTHON_EXECUTABLE: /usr/bin/python
+            PYTHON3_EXECUTABLE: /usr/bin/python3
+            INSTALL_PREFIX: /usr/local
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install dependencies
+            run: |
+                sudo apt install -y libpython2-dev libpython3-dev python-numpy python3-numpy doxygen
+          - name: Build SoapySDR
+            run: |
+                mkdir -p ${{github.workspace}}/build
+                cd ${{github.workspace}}/build
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} ${{github.workspace}}
+                make
+          - name: Install
+            run: |
+                cd ${{github.workspace}}/build
+                sudo make install
+                sudo ldconfig
+          - name: Run unit tests
+            run: |
+                cd ${{github.workspace}}/build
+                ctest --output-on-failure
+          - name: Test SoapySDRUtil
+            run: |
+                SoapySDRUtil --info
+                SoapySDRUtil --check=null
+                SoapySDRUtil --make="driver=null"
+          - name: Test Python bindings
+            run: |
+                export PYTHONPATH=$(${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
+                echo ${PYTHONPATH}
+                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+          - name: Test Python3 bindings
+            run: |
+                export PYTHONPATH=$(${PYTHON3_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
+                echo ${PYTHONPATH}
+                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+    osx-ci:
+        name: OS X
+        runs-on: macos-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Release
+                    - cc: gcc-9
+                      cxx: g++-9
+                      build_type: Debug
+
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Release
+                    - cc: gcc-10
+                      cxx: g++-10
+                      build_type: Debug
+
+                    - cc: gcc-11
+                      cxx: g++-11
+                      build_type: Release
+                    - cc: gcc-11
+                      cxx: g++-11
+                      build_type: Debug
+
+                    - cc: clang
+                      cxx: clang++
+                      build_type: Release
+                    - cc: clang
+                      cxx: clang++
+                      build_type: Debug
+        env:
+            CC: ${{matrix.cc}}
+            CXX: ${{matrix.cxx}}
+            PYTHON_EXECUTABLE: /usr/bin/python
+            PYTHON3_EXECUTABLE: /usr/bin/python3
+            INSTALL_PREFIX: /usr/local
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install dependencies
+            run: |
+                brew install doxygen
+                pip install numpy
+                pip3 install numpy
+          - name: Build SoapySDR
+            run: |
+                mkdir -p ${{github.workspace}}/build
+                cd ${{github.workspace}}/build
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} ${{github.workspace}}
+                make
+          - name: Install
+            run: |
+                cd ${{github.workspace}}/build
+                sudo make install
+          - name: Run unit tests
+            run: |
+                cd ${{github.workspace}}/build
+                ctest --output-on-failure
+          - name: Test SoapySDRUtil
+            run: |
+                SoapySDRUtil --info
+                SoapySDRUtil --check=null
+                SoapySDRUtil --make="driver=null"
+    windows-ci:
+        name: Windows
+        runs-on: windows-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                # Note: keeping cmake_config general enough for non-MSVC later
+                include:
+                    - cmake_config: -G "Visual Studio 14 2015" -A "Win32"
+                      arch: win32
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 14 2015" -A "Win32"
+                      arch: win32
+                      build_type: Debug
+
+                    - cmake_config: -G "Visual Studio 14 2015" -A "x64"
+                      arch: x64
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 14 2015" -A "x64"
+                      arch: x64
+                      build_type: Debug
+
+                      # Note: skipping VS2017, possible bugginess in parallel installs
+
+                    - cmake_config: -G "Visual Studio 16 2019" -A "Win32"
+                      arch: win32
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 16 2019" -A "Win32"
+                      arch: win32
+                      build_type: Debug
+
+                    - cmake_config: -G "Visual Studio 16 2019" -A "x64"
+                      arch: x64
+                      build_type: Release
+                    - cmake_config: -G "Visual Studio 16 2019" -A "x64"
+                      arch: x64
+                      build_type: Release
+        env:
+            INSTALL_PREFIX: 'C:\Program Files\SoapySDR'
+        steps:
+          - uses: actions/checkout@v2
+          - uses: ilammy/msvc-dev-cmd@v1
+            with:
+                arch: ${{matrix.arch}}
+          - name: Build SoapySDR
+            run: |
+                mkdir ${{github.workspace}}\build
+                cd ${{github.workspace}}\build
+                cmake ${{matrix.cmake_config}} -DENABLE_PYTHON=OFF -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
+                cmake --build . --config ${{matrix.build_type}}
+          - name: Install
+            run: |
+                cd ${{github.workspace}}\build
+                cmake --install . --config ${{matrix.build_type}}
+          - name: Run unit tests
+            run: |
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
+                cd ${{github.workspace}}\build
+                ctest --output-on-failure -C ${{matrix.build_type}}
+          - name: Test SoapySDRUtil
+            run: |
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
+                SoapySDRUtil --info
+                SoapySDRUtil --check=null
+                SoapySDRUtil --make="driver=null"
