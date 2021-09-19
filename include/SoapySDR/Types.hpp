@@ -5,12 +5,14 @@
 ///
 /// \copyright
 /// Copyright (c) 2014-2021 Josh Blum
+///                    2021 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
 #pragma once
 #include <SoapySDR/Config.hpp>
 #include <SoapySDR/Types.h>
+#include <cstring>
 #include <type_traits>
 #include <vector>
 #include <stdexcept>
@@ -182,7 +184,12 @@ typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSet
   }
   try {
     // C++: Float conversion to bool is unambiguous
-    return std::stod(s);
+    char *str_end = nullptr;
+    double d = std::strtod(s.c_str(), &str_end);
+
+    // Either the input wasn't numeric, so str_end should point to the front of the string,
+    // or the whole string was consumed and the resulting number is non-zero.
+    return (s == str_end) or ((d != 0.0) and (std::strlen(str_end) == 0));
   } catch (std::invalid_argument&) {
   }
   // other values are true

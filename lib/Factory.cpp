@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <exception>
 #include <future>
+#include <iterator>
 #include <chrono>
 #include <mutex>
 
