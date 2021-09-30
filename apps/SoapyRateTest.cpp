@@ -117,6 +117,7 @@ void runRateTestStreamLoop(
 int SoapySDRRateTest(
     const std::string &argStr,
     const double sampleRate,
+    const std::string &formatStr,
     const std::string &channelStr,
     const std::string &directionStr)
 {
@@ -148,7 +149,7 @@ int SoapySDRRateTest(
 
         //create the stream, use the native format
         double fullScale(0.0);
-        const auto format = device->getNativeStreamFormat(direction, channels.front(), fullScale);
+        const auto format = formatStr.empty() ? device->getNativeStreamFormat(direction, channels.front(), fullScale) : formatStr;
         const size_t elemSize = SoapySDR::formatToSize(format);
         auto stream = device->setupStream(direction, format, channels);
 
