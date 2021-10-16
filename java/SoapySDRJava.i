@@ -35,6 +35,7 @@
     try{$action}
     catch(const Swig::DirectorException &e) {
         SWIG_JavaException(jenv, SWIG_RuntimeError, e.what());
+        return $null;
     }
     SWIG_CATCH_STDEXCEPT
     catch (...)

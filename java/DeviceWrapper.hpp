@@ -13,7 +13,7 @@
 #include <memory>
 #include <utility>
 
-using StreamResultPair = std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
+// TODO: consistency in const parameters
 
 // We're separately using a separate thin wrapper because: 
 // * To abstract away the make() and unmake() calls, which SWIG won't
@@ -42,17 +42,17 @@ namespace SoapySDR { namespace Java {
             Device(const std::string& args): _deviceSPtr(SoapySDR::Device::make(args), DeviceDeleter())
             {}
 
-            static inline SoapySDR::KwargsList Enumerate()
+            static inline SoapySDR::KwargsList enumerate()
             {
                 return SoapySDR::Device::enumerate();
             }
 
-            static inline SoapySDR::KwargsList Enumerate(const std::string& args)
+            static inline SoapySDR::KwargsList enumerate(const std::string& args)
             {
                 return SoapySDR::Device::enumerate(args);
             }
 
-            static inline SoapySDR::KwargsList Enumerate(const SoapySDR::Kwargs& args)
+            static inline SoapySDR::KwargsList enumerate(const SoapySDR::Kwargs& args)
             {
                 return SoapySDR::Device::enumerate(args);
             }
@@ -61,21 +61,21 @@ namespace SoapySDR { namespace Java {
             // Identification API
             //
 
-            inline std::string GetDriverKey() const
+            inline std::string getDriverKey() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getDriverKey();
             }
 
-            inline std::string GetHardwareKey() const
+            inline std::string getHardwareKey() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getHardwareKey();
             }
 
-            inline SoapySDR::Kwargs GetHardwareInfo() const
+            inline SoapySDR::Kwargs getHardwareInfo() const
             {
                 assert(_deviceSPtr);
 
@@ -86,7 +86,7 @@ namespace SoapySDR { namespace Java {
             // Channels API
             //
 
-            inline void SetFrontendMapping(
+            inline void setFrontendMapping(
                 const SoapySDR::Java::Direction direction,
                 const std::string& mapping)
             {
@@ -95,21 +95,21 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->setFrontendMapping(int(direction), mapping);
             }
 
-            inline std::string GetFrontendMapping(SoapySDR::Java::Direction direction) const
+            inline std::string getFrontendMapping(SoapySDR::Java::Direction direction) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getFrontendMapping(int(direction));
             }
 
-            inline size_t GetNumChannels(SoapySDR::Java::Direction direction) const
+            inline size_t getNumChannels(SoapySDR::Java::Direction direction) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getNumChannels(int(direction));
             }
 
-            inline SoapySDR::Kwargs GetChannelInfo(
+            inline SoapySDR::Kwargs getChannelInfo(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -118,7 +118,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getChannelInfo(int(direction), channel);
             }
 
-            inline bool GetFullDuplex(
+            inline bool getFullDuplex(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -131,7 +131,7 @@ namespace SoapySDR { namespace Java {
             // Stream API
             //
 
-            inline std::vector<std::string> GetStreamFormats(
+            inline std::vector<std::string> getStreamFormats(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -140,7 +140,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getStreamFormats(int(direction), channel);
             }
 
-            inline std::string GetNativeStreamFormat(
+            inline std::string getNativeStreamFormat(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 double &fullScaleOut) const
@@ -150,7 +150,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getNativeStreamFormat(int(direction), channel, fullScaleOut);
             }
 
-            inline SoapySDR::ArgInfoList GetStreamArgsInfo(
+            inline SoapySDR::ArgInfoList getStreamArgsInfo(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -161,7 +161,7 @@ namespace SoapySDR { namespace Java {
 
             // TODO: this needs custom JNI stuff, figure out later
 /*
-            SoapySDR::Java::StreamHandle SetupStream(
+            SoapySDR::Java::StreamHandle setupStream(
                 const SoapySDR::Java::Direction direction,
                 const std::string& format,
                 const SizeVector& channels,
@@ -183,7 +183,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->closeStream(streamHandle.stream);
             }
 
-            inline size_t GetStreamMTU(const SoapySDR::Java::StreamHandle& streamHandle)
+            inline size_t getStreamMTU(const SoapySDR::Java::StreamHandle& streamHandle)
             {
                 assert(_deviceSPtr);
 
@@ -218,7 +218,7 @@ namespace SoapySDR { namespace Java {
                     timeNs));
             }
 
-            StreamResultPair ReadStream(
+            StreamResultPair readStream(
                 const SoapySDR::Java::StreamHandle& streamHandle,
                 const SizeVector& buffs,
                 const size_t numElems,
@@ -250,7 +250,7 @@ namespace SoapySDR { namespace Java {
                 return resultPair;
             }
 
-            StreamResultPair WriteStream(
+            StreamResultPair writeStream(
                 const SoapySDR::Java::StreamHandle& streamHandle,
                 const SizeVector& buffs,
                 const size_t numElems,
@@ -281,7 +281,7 @@ namespace SoapySDR { namespace Java {
                 return resultPair;
             }
 
-            StreamResultPair ReadStreamStatus(
+            StreamResultPair readStreamStatus(
                 const SoapySDR::Java::StreamHandle& streamHandle,
                 const long timeoutUs)
             {
@@ -308,7 +308,7 @@ namespace SoapySDR { namespace Java {
             // Antenna API
             //
 
-            inline std::vector<std::string> ListAntennas(
+            inline std::vector<std::string> listAntennas(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -317,7 +317,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->listAntennas(int(direction), channel);
             }
 
-            inline void SetAntenna(
+            inline void setAntenna(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& name)
@@ -327,7 +327,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setAntenna(int(direction), channel, name);
             }
 
-            inline std::string GetAntenna(
+            inline std::string getAntenna(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -340,7 +340,7 @@ namespace SoapySDR { namespace Java {
             // Frontend corrections API
             //
 
-            inline bool HasDCOffsetMode(
+            inline bool hasDCOffsetMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -349,7 +349,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasDCOffsetMode(int(direction), channel);
             }
 
-            inline void SetDCOffsetMode(
+            inline void setDCOffsetMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const bool automatic)
@@ -359,16 +359,16 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->setDCOffsetMode(int(direction), channel, automatic);
             }
 
-            inline bool GetDCOffsetMode(
+            inline bool getDCOffsetMode(
                 const SoapySDR::Java::Direction direction,
-                const size_t channel)
+                const size_t channel) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getDCOffsetMode(int(direction), channel);
             }
 
-            inline bool HasDCOffset(
+            inline bool hasDCOffset(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -378,7 +378,7 @@ namespace SoapySDR { namespace Java {
             }
 
             /*
-            inline void SetDCOffset(
+            inline void setDCOffset(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::complex<double>& offset)
@@ -388,7 +388,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setDCOffset(int(direction), channel, offset);
             }
 
-            inline std::complex<double> GetDCOffset(
+            inline std::complex<double> getDCOffset(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -398,7 +398,7 @@ namespace SoapySDR { namespace Java {
             }
             */
 
-            inline bool HasIQBalance(
+            inline bool hasIQBalance(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -408,7 +408,7 @@ namespace SoapySDR { namespace Java {
             }
 
             /*
-            inline void SetIQBalance(
+            inline void setIQBalance(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::complex<double>& balance)
@@ -418,7 +418,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setIQBalance(int(direction), channel, balance);
             }
 
-            inline std::complex<double> GetIQBalance(
+            inline std::complex<double> getIQBalance(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -428,7 +428,7 @@ namespace SoapySDR { namespace Java {
             }
             */
 
-            inline bool HasIQBalanceMode(
+            inline bool hasIQBalanceMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -437,7 +437,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasIQBalanceMode(int(direction), channel);
             }
 
-            inline void SetIQBalanceMode(
+            inline void setIQBalanceMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const bool automatic)
@@ -447,7 +447,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setIQBalanceMode(int(direction), channel, automatic);
             }
 
-            inline bool GetIQBalanceMode(
+            inline bool getIQBalanceMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -456,7 +456,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getIQBalanceMode(int(direction), channel);
             }
 
-            inline bool HasFrequencyCorrection(
+            inline bool hasFrequencyCorrection(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -465,7 +465,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasFrequencyCorrection(int(direction), channel);
             }
 
-            inline void SetFrequencyCorrection(
+            inline void setFrequencyCorrection(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const double value)
@@ -475,7 +475,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setFrequencyCorrection(int(direction), channel, value);
             }
 
-            inline double GetFrequencyCorrection(
+            inline double getFrequencyCorrection(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -488,16 +488,16 @@ namespace SoapySDR { namespace Java {
             // Gain API
             //
 
-            inline std::vector<std::string> ListGains(
+            inline std::vector<std::string> listGains(
                 const SoapySDR::Java::Direction direction,
-                const size_t channel)
+                const size_t channel) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listGains(int(direction), channel);
             }
 
-            inline bool HasGainMode(
+            inline bool hasGainMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -506,7 +506,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasGainMode(int(direction), channel);
             }
 
-            inline void SetGainMode(
+            inline void setGainMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const bool automatic)
@@ -516,7 +516,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setGainMode(int(direction), channel, automatic);
             }
 
-            inline bool GetGainMode(
+            inline bool getGainMode(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -525,7 +525,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getGainMode(int(direction), channel);
             }
 
-            inline void SetGain(
+            inline void setGain(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const double value)
@@ -535,7 +535,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setGain(int(direction), channel, value);
             }
 
-            inline void SetGain(
+            inline void setGain(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& name,
@@ -546,38 +546,38 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setGain(int(direction), channel, name, value);
             }
 
-            inline double GetGain(
+            inline double getGain(
                 const SoapySDR::Java::Direction direction,
-                const size_t channel)
+                const size_t channel) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getGain(int(direction), channel);
             }
 
-            inline double GetGain(
+            inline double getGain(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
-                const std::string& name)
+                const std::string& name) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getGain(int(direction), channel, name);
             }
 
-            inline SoapySDR::Range GetGainRange(
+            inline SoapySDR::Range getGainRange(
                 const SoapySDR::Java::Direction direction,
-                const size_t channel)
+                const size_t channel) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getGainRange(int(direction), channel);
             }
 
-            inline SoapySDR::Range GetGainRange(
+            inline SoapySDR::Range getGainRange(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
-                const std::string& name)
+                const std::string& name) const
             {
                 assert(_deviceSPtr);
 
@@ -588,7 +588,7 @@ namespace SoapySDR { namespace Java {
             // Frequency API
             //
 
-            inline void SetFrequency(
+            inline void setFrequency(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const double frequency,
@@ -599,7 +599,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setFrequency(int(direction), channel, frequency, args);
             }
 
-            inline void SetFrequency(
+            inline void setFrequency(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& name,
@@ -611,7 +611,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setFrequency(int(direction), channel, name, frequency, args);
             }
 
-            inline double GetFrequency(
+            inline double getFrequency(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -620,7 +620,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getFrequency(int(direction), channel);
             }
 
-            inline double GetFrequency(
+            inline double getFrequency(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& name) const
@@ -630,7 +630,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getFrequency(int(direction), channel, name);
             }
 
-            inline std::vector<std::string> ListFrequencies(
+            inline std::vector<std::string> listFrequencies(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -639,7 +639,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->listFrequencies(int(direction), channel);
             }
 
-            inline SoapySDR::RangeList GetFrequencyRange(
+            inline SoapySDR::RangeList getFrequencyRange(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const 
             {
@@ -648,7 +648,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getFrequencyRange(int(direction), channel);
             }
 
-            inline SoapySDR::RangeList GetFrequencyRange(
+            inline SoapySDR::RangeList getFrequencyRange(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& name) const
@@ -658,7 +658,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getFrequencyRange(int(direction), channel, name);
             }
 
-            inline SoapySDR::ArgInfoList GetFrequencyArgsInfo(
+            inline SoapySDR::ArgInfoList getFrequencyArgsInfo(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -671,7 +671,7 @@ namespace SoapySDR { namespace Java {
             // Sample Rate API
             //
 
-            inline void SetSampleRate(
+            inline void setSampleRate(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const double rate)
@@ -681,7 +681,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setSampleRate(int(direction), channel, rate);
             }
 
-            inline double GetSampleRate(
+            inline double getSampleRate(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -690,7 +690,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getSampleRate(int(direction), channel);
             }
 
-            inline SoapySDR::RangeList GetSampleRateRange(
+            inline SoapySDR::RangeList getSampleRateRange(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -703,7 +703,7 @@ namespace SoapySDR { namespace Java {
             // Bandwidth API
             //
 
-            inline void SetBandwidth(
+            inline void setBandwidth(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const double bandwidth)
@@ -713,7 +713,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->setBandwidth(int(direction), channel, bandwidth);
             }
 
-            inline double GetBandwidth(
+            inline double getBandwidth(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -722,7 +722,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getBandwidth(int(direction), channel);
             }
 
-            inline SoapySDR::RangeList GetBandwidthRange(
+            inline SoapySDR::RangeList getBandwidthRange(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -735,63 +735,63 @@ namespace SoapySDR { namespace Java {
             // Clocking API
             //
 
-            inline void SetMasterClockRate(const double rate)
+            inline void setMasterClockRate(const double rate)
             {
                 assert(_deviceSPtr);
 
                 _deviceSPtr->setMasterClockRate(rate);
             }
 
-            inline double GetMasterClockRate() const
+            inline double getMasterClockRate() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getMasterClockRate();
             }
 
-            inline SoapySDR::RangeList GetMasterClockRates() const
+            inline SoapySDR::RangeList getMasterClockRates() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getMasterClockRates();
             }
 
-            inline void SetReferenceClockRate(const double rate)
+            inline void setReferenceClockRate(const double rate)
             {
                 assert(_deviceSPtr);
 
                 _deviceSPtr->setReferenceClockRate(rate);
             }
 
-            inline double GetReferenceClockRate() const
+            inline double getReferenceClockRate() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getReferenceClockRate();
             }
 
-            inline SoapySDR::RangeList GetReferenceClockRates() const
+            inline SoapySDR::RangeList getReferenceClockRates() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getReferenceClockRates();
             }
 
-            inline std::vector<std::string> ListClockSources() const
+            inline std::vector<std::string> listClockSources() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listClockSources();
             }
 
-            inline void SetClockSource(const std::string& source)
+            inline void setClockSource(const std::string& source)
             {
                 assert(_deviceSPtr);
 
                 _deviceSPtr->setClockSource(source);
             }
 
-            inline std::string GetClockSource() const
+            inline std::string getClockSource() const
             {
                 assert(_deviceSPtr);
 
@@ -802,42 +802,42 @@ namespace SoapySDR { namespace Java {
             // Time API
             //
 
-            inline std::vector<std::string> ListTimeSources() const
+            inline std::vector<std::string> listTimeSources() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listTimeSources();
             }
 
-            inline void SetTimeSource(const std::string& source)
+            inline void setTimeSource(const std::string& source)
             {
                 assert(_deviceSPtr);
 
                 _deviceSPtr->setTimeSource(source);
             }
 
-            inline std::string GetTimeSource() const
+            inline std::string getTimeSource() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getTimeSource();
             }
 
-            inline bool HasHardwareTime(const std::string& what) const
+            inline bool hasHardwareTime(const std::string& what) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->hasHardwareTime(what);
             }
 
-            inline long long GetHardwareTime(const std::string& what) const
+            inline long long getHardwareTime(const std::string& what) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getHardwareTime(what);
             }
 
-            inline void SetHardwareTime(const long long timeNs, const std::string& what)
+            inline void setHardwareTime(const long long timeNs, const std::string& what)
             {
                 assert(_deviceSPtr);
 
@@ -848,28 +848,28 @@ namespace SoapySDR { namespace Java {
             // Sensor API
             //
 
-            inline std::vector<std::string> ListSensors() const
+            inline std::vector<std::string> listSensors() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listSensors();
             }
 
-            inline SoapySDR::ArgInfo GetSensorInfo(const std::string& key) const
+            inline SoapySDR::ArgInfo getSensorInfo(const std::string& key) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getSensorInfo(key);
             }
 
-            inline std::string ReadSensor(const std::string& key) const
+            inline std::string readSensor(const std::string& key) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->readSensor(key);
             }
 
-            inline std::vector<std::string> ListSensors(
+            inline std::vector<std::string> listSensors(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -878,7 +878,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->listSensors(int(direction), channel);
             }
 
-            inline SoapySDR::ArgInfo GetSensorInfo(
+            inline SoapySDR::ArgInfo getSensorInfo(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& key) const
@@ -888,7 +888,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getSensorInfo(int(direction), channel, key);
             }
 
-            inline std::string ReadSensor(
+            inline std::string readSensor(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& key) const
@@ -902,14 +902,14 @@ namespace SoapySDR { namespace Java {
             // Register API
             //
 
-            inline std::vector<std::string> ListRegisterInterfaces() const
+            inline std::vector<std::string> listRegisterInterfaces() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listRegisterInterfaces();
             }
 
-            inline void WriteRegister(
+            inline void writeRegister(
                 const std::string& name,
                 const unsigned addr,
                 const unsigned value)
@@ -919,7 +919,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeRegister(name, addr, value);
             }
 
-            inline unsigned ReadRegister(
+            inline unsigned readRegister(
                 const std::string& name,
                 const unsigned addr) const
             {
@@ -933,7 +933,7 @@ namespace SoapySDR { namespace Java {
             // expected, and these are less commonly used functions, so this
             // is fine.
 
-            inline void WriteRegisters(
+            inline void writeRegisters(
                 const std::string& name,
                 const unsigned addr,
                 const SizeVector& value)
@@ -950,7 +950,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeRegisters(name, addr, valueUnsigned);
             }
 
-            inline SizeVector ReadRegisters(
+            inline SizeVector readRegisters(
                 const std::string& name,
                 const unsigned addr,
                 const size_t length)
@@ -972,14 +972,14 @@ namespace SoapySDR { namespace Java {
             // Settings API
             //
 
-            inline SoapySDR::ArgInfoList GetSettingInfo() const
+            inline SoapySDR::ArgInfoList getSettingInfo() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->getSettingInfo();
             }
 
-            inline void WriteSetting(
+            inline void writeSetting(
                 const std::string& key,
                 const std::string& value)
             {
@@ -988,14 +988,14 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeSetting(key, value);
             }
 
-            inline std::string ReadSetting(const std::string& key) const
+            inline std::string readSetting(const std::string& key) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->readSetting(key);
             }
 
-            inline SoapySDR::ArgInfoList GetSettingInfo(
+            inline SoapySDR::ArgInfoList getSettingInfo(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel) const
             {
@@ -1004,7 +1004,7 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->getSettingInfo(int(direction), channel);
             }
 
-            inline void WriteSetting(
+            inline void writeSetting(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& key,
@@ -1015,7 +1015,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeSetting(int(direction), channel, key, value);
             }
 
-            inline std::string ReadSetting(
+            inline std::string readSetting(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
                 const std::string& key) const
@@ -1029,14 +1029,14 @@ namespace SoapySDR { namespace Java {
             // GPIO API
             //
 
-            inline std::vector<std::string> ListGPIOBanks() const
+            inline std::vector<std::string> listGPIOBanks() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listGPIOBanks();
             }
 
-            inline void WriteGPIO(
+            inline void writeGPIO(
                 const std::string& bank,
                 const unsigned value)
             {
@@ -1045,7 +1045,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeGPIO(bank, value);
             }
 
-            inline void WriteGPIO(
+            inline void writeGPIO(
                 const std::string& bank,
                 const unsigned value,
                 const unsigned mask)
@@ -1055,14 +1055,14 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeGPIO(bank, value, mask);
             }
 
-            inline unsigned ReadGPIO(const std::string& bank) const
+            inline unsigned readGPIO(const std::string& bank) const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->readGPIO(bank);
             }
 
-            inline void WriteGPIODir(
+            inline void writeGPIODir(
                 const std::string& bank,
                 const unsigned dir)
             {
@@ -1071,7 +1071,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeGPIODir(bank, dir);
             }
 
-            inline void WriteGPIODir(
+            inline void writeGPIODir(
                 const std::string& bank,
                 const unsigned dir,
                 const unsigned mask)
@@ -1081,7 +1081,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeGPIODir(bank, dir, mask);
             }
 
-            inline unsigned ReadGPIODir(const std::string& bank) const
+            inline unsigned readGPIODir(const std::string& bank) const
             {
                 assert(_deviceSPtr);
 
@@ -1092,7 +1092,7 @@ namespace SoapySDR { namespace Java {
             // I2C API
             //
 
-            inline void WriteI2C(
+            inline void writeI2C(
                 const int addr,
                 const std::string& data)
             {
@@ -1101,7 +1101,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeI2C(addr, data);
             }
 
-            inline std::string ReadI2C(
+            inline std::string readI2C(
                 const int addr,
                 const size_t numBytes)
             {
@@ -1114,7 +1114,7 @@ namespace SoapySDR { namespace Java {
             // SPI API
             //
 
-            inline unsigned TransactSPI(
+            inline unsigned transactSPI(
                 const int addr,
                 const unsigned data,
                 const size_t numBits)
@@ -1128,14 +1128,14 @@ namespace SoapySDR { namespace Java {
             // UART API
             //
 
-            inline std::vector<std::string> ListUARTs() const
+            inline std::vector<std::string> listUARTs() const
             {
                 assert(_deviceSPtr);
 
                 return _deviceSPtr->listUARTs();
             }
 
-            inline void WriteUART(
+            inline void writeUART(
                 const std::string& which,
                 const std::string& data)
             {
@@ -1144,7 +1144,7 @@ namespace SoapySDR { namespace Java {
                 _deviceSPtr->writeUART(which, data);
             }
 
-            inline std::string ReadUART(
+            inline std::string readUART(
                 const std::string& which,
                 const long long timeoutUs) const
             {
@@ -1157,21 +1157,21 @@ namespace SoapySDR { namespace Java {
             // Used for Java internals
             //
 
-            inline std::string __ToString() const
+            inline std::string __toString() const
             {
                 assert(_deviceSPtr);
 
                 return (_deviceSPtr->getDriverKey() + ":" + _deviceSPtr->getHardwareKey());
             }
 
-            inline bool Equals(const SoapySDR::Java::Device& other) const
+            inline bool equals(const SoapySDR::Java::Device& other) const
             {
                 assert(_deviceSPtr);
 
-                return (__ToString() == other.__ToString());
+                return (__toString() == other.__toString());
             }
 
-            inline UIntPtrT GetPointer() const
+            inline UIntPtrT getPointer() const
             {
                 assert(_deviceSPtr);
 
