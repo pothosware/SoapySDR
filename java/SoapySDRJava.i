@@ -49,3 +49,5 @@ JAVA_INIT("SoapySDRJava")
 %ignore KwargsFromString;
 %ignore KwargsToString;
 %include <SoapySDR/Types.hpp>
+
+%include "Logger.i"

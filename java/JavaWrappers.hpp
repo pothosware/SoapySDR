@@ -4,10 +4,7 @@
 
 #pragma once
 
-#include <SoapySDR/Formats.h>
 #include <SoapySDR/Time.hpp>
-
-#include <string>
 
 namespace SoapySDR { namespace Java {
 
@@ -26,6 +23,19 @@ namespace SoapySDR { namespace Java {
         NOT_SUPPORTED = -5,
         TIME_ERROR = -6,
         UNDERFLOW = -7
+    };
+
+    enum class LogLevel
+    {
+        FATAL = 1,
+        CRITICAL = 2,
+        ERROR = 3,
+        WARNING = 4,
+        NOTICE = 5,
+        INFO = 6,
+        DEBUG = 7,
+        TRACE = 8,
+        SSI = 9
     };
 
     struct Time
