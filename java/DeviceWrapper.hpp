@@ -377,7 +377,6 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasDCOffset(int(direction), channel);
             }
 
-            /*
             inline void setDCOffset(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
@@ -396,7 +395,6 @@ namespace SoapySDR { namespace Java {
 
                 return _deviceSPtr->getDCOffset(int(direction), channel);
             }
-            */
 
             inline bool hasIQBalance(
                 const SoapySDR::Java::Direction direction,
@@ -407,7 +405,6 @@ namespace SoapySDR { namespace Java {
                 return _deviceSPtr->hasIQBalance(int(direction), channel);
             }
 
-            /*
             inline void setIQBalance(
                 const SoapySDR::Java::Direction direction,
                 const size_t channel,
@@ -426,7 +423,6 @@ namespace SoapySDR { namespace Java {
 
                 return _deviceSPtr->getIQBalance(int(direction), channel);
             }
-            */
 
             inline bool hasIQBalanceMode(
                 const SoapySDR::Java::Direction direction,

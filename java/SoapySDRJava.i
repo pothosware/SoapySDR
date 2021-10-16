@@ -49,13 +49,14 @@
 
 ////////////////////////////////////////////////////////////////////////
 // Commonly used data types
-// TODO: we need our own complex class
 ////////////////////////////////////////////////////////////////////////
+%include <std_complex.i>
 %include <stdint.i>
-//%include <std_complex.i>
 %include <std_string.i>
 %include <std_vector.i>
 %include <std_map.i>
+
+%template(Complex) std::complex<double>;
 
 %typemap(javaclassmodifiers) SoapySDR::ArgInfo "class"
 %rename(ArgInfoInternal) SoapySDR::ArgInfo;
