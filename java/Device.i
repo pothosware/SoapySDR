@@ -5,6 +5,12 @@
 %include <stdint.i>
 %include <typemaps.i>
 
+%{
+#include "DeviceWrapper.hpp"
+
+#include <iterator>
+%}
+
 // Java has no unsigned types, so we need these extra checks to
 // catch values outside the end C++ type before they overflow or
 // underflow.
@@ -81,6 +87,17 @@
     }
 }
 
+%typemap(check) const SizeVector& value {
+    for(const auto elem: *$1)
+    {
+        if((elem < 0) || (elem > 0xFFFFFFFF))
+        {
+            SWIG_JavaException(jenv, SWIG_JavaIllegalArgumentException, "Register value must be >= 0");
+            return $null;
+        }
+    }
+}
+
 %apply double& OUTPUT { double& fullScaleOut };
 
 //
@@ -89,10 +106,6 @@
 
 %ignore SoapySDR::Java::DeviceDeleter;
 %nodefaultctor SoapySDR::Java::Device;
-
-%{
-#include "DeviceWrapper.hpp"
-%}
 
 %rename(DeviceInternal) SoapySDR::Java::Device;
 %typemap(javaclassmodifiers) SoapySDR::Java::Device "class"

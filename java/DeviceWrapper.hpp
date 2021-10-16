@@ -925,7 +925,7 @@ namespace SoapySDR { namespace Java {
             }
 
             // To avoid the uint/ulong issue, these functions will internally
-            // use SizeVector. The public-facing function will use uint[] as
+            // use SizeVector. The public-facing function will use long[] as
             // expected, and these are less commonly used functions, so this
             // is fine.
 
