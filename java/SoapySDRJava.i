@@ -56,38 +56,38 @@
 %include <std_vector.i>
 %include <std_map.i>
 
-%typemap(javaclassmodifiers) SoapySDR::ArgInfo ""
+%typemap(javaclassmodifiers) SoapySDR::ArgInfo "class"
 %rename(ArgInfoInternal) SoapySDR::ArgInfo;
 
 %ignore SoapySDR::Detail::StringToSetting;
 %include <SoapySDR/Types.hpp>
 
 #ifdef SIZE_T_IS_UNSIGNED_INT
-%typemap(javaclassmodifiers) std::vector<uint32_t> ""
+%typemap(javaclassmodifiers) std::vector<uint32_t> "class"
 %template(SizeList) std::vector<uint32_t>;
 #else
-%typemap(javaclassmodifiers) std::vector<unsigned long> ""
+%typemap(javaclassmodifiers) std::vector<unsigned long> "class"
 %template(SizeList) std::vector<unsigned long>;
 #endif
 
 // Hide SWIG-generated STL types, they're ugly and half-done
 
-%typemap(javaclassmodifiers) SoapySDR::Kwargs ""
+%typemap(javaclassmodifiers) SoapySDR::Kwargs "class"
 %template(Kwargs) std::map<std::string, std::string>;
 
-%typemap(javaclassmodifiers) std::vector<SoapySDR::Kwargs> ""
+%typemap(javaclassmodifiers) std::vector<SoapySDR::Kwargs> "class"
 %template(KwargsList) std::vector<SoapySDR::Kwargs>;
 
-%typemap(javaclassmodifiers) std::vector<SoapySDR::ArgInfo> ""
+%typemap(javaclassmodifiers) std::vector<SoapySDR::ArgInfo> "class"
 %template(ArgInfoInternalList) std::vector<SoapySDR::ArgInfo>;
 
-%typemap(javaclassmodifiers) std::vector<std::string> ""
+%typemap(javaclassmodifiers) std::vector<std::string> "class"
 %template(StringList) std::vector<std::string>;
 
-%typemap(javaclassmodifiers) std::vector<SoapySDR::Range> ""
+%typemap(javaclassmodifiers) std::vector<SoapySDR::Range> "class"
 %template(RangeList) std::vector<SoapySDR::Range>;
 
-%typemap(javaclassmodifiers) std::vector<double> ""
+%typemap(javaclassmodifiers) std::vector<double> "class"
 %template(DoubleList) std::vector<double>;
 
 ////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@
 
 %include "JavaWrappers.hpp"
 
-%typemap(javaclassmodifiers) SoapySDR::Java::SettingConversion ""
+%typemap(javaclassmodifiers) SoapySDR::Java::SettingConversion "class"
 
 %template(LongToString) SoapySDR::Java::SettingConversion::SettingToString<int64_t>;
 %template(ULongToString) SoapySDR::Java::SettingConversion::SettingToString<unsigned long>;

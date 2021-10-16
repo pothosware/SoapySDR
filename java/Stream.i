@@ -3,10 +3,10 @@
 
 %ignore SoapySDR::Java::StreamHandle::stream;
 %ignore SoapySDR::Java::StreamHandle::channels;
-%javamethodmodifiers SoapySDR::Java::StreamHandle::GetChannels "";
+%javamethodmodifiers SoapySDR::Java::StreamHandle::GetChannels "class";
 %ignore SoapySDR::Java::StreamHandle::format;
-%javamethodmodifiers SoapySDR::Java::StreamHandle::GetFormat "";
-%javamethodmodifiers SoapySDR::Java::StreamHandle::GetPointer "";
+%javamethodmodifiers SoapySDR::Java::StreamHandle::GetFormat "class";
+%javamethodmodifiers SoapySDR::Java::StreamHandle::GetPointer "class";
 %nodefaultctor SoapySDR::Java::StreamFormats;
 
 /*
