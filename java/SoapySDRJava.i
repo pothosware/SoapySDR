@@ -1,25 +1,39 @@
 // Copyright (c) 2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-// TODO: Format needs to be manually done to not be ugly
+%module(directors="1") SoapySDR
 
-// Ignore these
-#define SOAPY_SDR_API
+%include <typemaps.i>
+%include <std_vector.i>
 
-%module(directors="1") SoapySDRJava
-%include "enums.swg"
-%javaconst(1);
+////////////////////////////////////////////////////////////////////////
+// Include all major headers to compile against
+////////////////////////////////////////////////////////////////////////
+%{
+#include <SoapySDR/Version.hpp>
+#include <SoapySDR/Modules.hpp>
+#include <SoapySDR/Device.hpp>
+#include <SoapySDR/Errors.hpp>
+#include <SoapySDR/Formats.hpp>
+#include <SoapySDR/Time.hpp>
+#include <SoapySDR/Logger.hpp>
 
-%include "java_init.i"
+#include "JavaWrappers.hpp"
+%}
 
-JAVA_INIT("SoapySDR")
-JAVA_INIT("SoapySDRJava")
-
+////////////////////////////////////////////////////////////////////////
+// http://www.swig.org/Doc2.0/Library.html#Library_stl_exceptions
+////////////////////////////////////////////////////////////////////////
 %include <exception.i>
+
+// We only expect to throw DirectorExceptions from within the Java
+// logger class's calls.  Catching them permits us to
+// propagate exceptions thrown in the C# log handler callback back to
+// C#.
 %exception
 {
     try{$action}
-    catch (const Swig::DirectorException &e) {
+    catch(const Swig::DirectorException &e) {
         SWIG_JavaException(jenv, SWIG_RuntimeError, e.what());
     }
     SWIG_CATCH_STDEXCEPT
@@ -27,27 +41,76 @@ JAVA_INIT("SoapySDRJava")
     {SWIG_exception(SWIG_RuntimeError, "unknown");}
 }
 
-%include <std_map.i>
+////////////////////////////////////////////////////////////////////////
+// Config header defines API export
+////////////////////////////////////////////////////////////////////////
+%include <SoapySDR/Config.h>
+
+////////////////////////////////////////////////////////////////////////
+// Commonly used data types
+// TODO: we need our own complex class
+////////////////////////////////////////////////////////////////////////
+%include <stdint.i>
+//%include <std_complex.i>
 %include <std_string.i>
 %include <std_vector.i>
+%include <std_map.i>
 
-// TODO: hide these
-%template(StringVector) std::vector<std::string>;
+%typemap(javaclassmodifiers) SoapySDR::ArgInfo ""
+%rename(ArgInfoInternal) SoapySDR::ArgInfo;
 
-%{
-#include "JavaWrappers.hpp"
-
-#include <SoapySDR/Types.hpp>
-%}
-
-%nodefaultctor SoapySDR::Java::Time;
-%nodefaultdtor SoapySDR::Java::Time;
-%include "JavaWrappers.hpp"
-
-%ignore SettingToString;
-%ignore StringToSetting;
-%ignore KwargsFromString;
-%ignore KwargsToString;
+%ignore SoapySDR::Detail::StringToSetting;
 %include <SoapySDR/Types.hpp>
 
+#ifdef SIZE_T_IS_UNSIGNED_INT
+%typemap(javaclassmodifiers) std::vector<uint32_t> ""
+%template(SizeList) std::vector<uint32_t>;
+#else
+%typemap(javaclassmodifiers) std::vector<unsigned long> ""
+%template(SizeList) std::vector<unsigned long>;
+#endif
+
+// Hide SWIG-generated STL types, they're ugly and half-done
+
+%typemap(javaclassmodifiers) SoapySDR::Kwargs ""
+%template(Kwargs) std::map<std::string, std::string>;
+
+%typemap(javaclassmodifiers) std::vector<SoapySDR::Kwargs> ""
+%template(KwargsList) std::vector<SoapySDR::Kwargs>;
+
+%typemap(javaclassmodifiers) std::vector<SoapySDR::ArgInfo> ""
+%template(ArgInfoInternalList) std::vector<SoapySDR::ArgInfo>;
+
+%typemap(javaclassmodifiers) std::vector<std::string> ""
+%template(StringList) std::vector<std::string>;
+
+%typemap(javaclassmodifiers) std::vector<SoapySDR::Range> ""
+%template(RangeList) std::vector<SoapySDR::Range>;
+
+%typemap(javaclassmodifiers) std::vector<double> ""
+%template(DoubleList) std::vector<double>;
+
+////////////////////////////////////////////////////////////////////////
+// Include extensions before types that will use them
+////////////////////////////////////////////////////////////////////////
+%nodefaultctor SoapySDR::Java::BuildInfo;
+%nodefaultctor SoapySDR::Java::StreamHandle;
+
+%include "Stream.i"
+
+%include "JavaWrappers.hpp"
+
+%typemap(javaclassmodifiers) SoapySDR::Java::SettingConversion ""
+
+%template(LongToString) SoapySDR::Java::SettingConversion::SettingToString<int64_t>;
+%template(ULongToString) SoapySDR::Java::SettingConversion::SettingToString<unsigned long>;
+%template(BoolToString) SoapySDR::Java::SettingConversion::SettingToString<bool>;
+%template(DoubleToString) SoapySDR::Java::SettingConversion::SettingToString<double>;
+
+%template(StringToLong) SoapySDR::Java::SettingConversion::StringToSetting<int64_t>;
+%template(StringToULong) SoapySDR::Java::SettingConversion::StringToSetting<unsigned long>;
+%template(StringToBool) SoapySDR::Java::SettingConversion::StringToSetting<bool>;
+%template(StringToDouble) SoapySDR::Java::SettingConversion::StringToSetting<double>;
+
+%include "Device.i"
 %include "Logger.i"

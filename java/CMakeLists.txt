@@ -12,6 +12,18 @@ find_package(SoapySDR CONFIG REQUIRED)
 find_package(SWIG)
 message(STATUS "SWIG_FOUND: ${SWIG_FOUND} - ${SWIG_VERSION}")
 
+# SWIG doesn't deal well with (s)size_t and (u)intptr_t
+include(CheckCXXSourceCompiles)
+CHECK_CXX_SOURCE_COMPILES("
+    #include <cstddef>
+    int main() {
+    size_t *x = (unsigned int *)(NULL);
+    return 0; }" SIZE_T_IS_UNSIGNED_INT)
+
+if (SIZE_T_IS_UNSIGNED_INT)
+    list(APPEND CMAKE_SWIG_FLAGS -DSIZE_T_IS_UNSIGNED_INT)
+endif (SIZE_T_IS_UNSIGNED_INT)
+
 ########################################################################
 # Find Java
 ########################################################################
