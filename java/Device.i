@@ -14,9 +14,6 @@
 %ignore SoapySDR::Java::DeviceDeleter;
 %nodefaultctor SoapySDR::Java::Device;
 
-%typemap(javaclassmodifiers) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult> "class";
-%template(StreamResultPair) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
-
 %{
 #include "DeviceWrapper.hpp"
 %}
