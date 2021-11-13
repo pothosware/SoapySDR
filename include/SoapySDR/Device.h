@@ -1329,7 +1329,7 @@ SOAPY_SDR_API int SoapySDRDevice_writeRegisters(SoapySDRDevice *device, const ch
  * \param device a pointer to a device instance
  * \param name the name of a available memory block interface
  * \param addr the memory block start address
- * \param [inout] length number of words to be read from memory block
+ * \param [in,out] length number of words to be read from memory block
  * \return the memory block content
  */
 SOAPY_SDR_API unsigned *SoapySDRDevice_readRegisters(const SoapySDRDevice *device, const char *name, const unsigned addr, size_t *length);
@@ -1488,7 +1488,7 @@ SOAPY_SDR_API int SoapySDRDevice_writeI2C(SoapySDRDevice *device, const int addr
  * numBytes will be set to the number of actual bytes read.
  * \param device a pointer to a device instance
  * \param addr the address of the slave
- * \param [inout] numBytes the number of bytes to read
+ * \param [in,out] numBytes the number of bytes to read
  * \return an array of bytes read from the slave
  */
 SOAPY_SDR_API char *SoapySDRDevice_readI2C(SoapySDRDevice *device, const int addr, size_t *numBytes);
