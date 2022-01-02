@@ -88,7 +88,7 @@ endif()
 ########################################################################
 ## set the swig flags - shared with python3 build
 ########################################################################
-set(CMAKE_SWIG_FLAGS -c++ -threads -I${SoapySDR_INCLUDE_DIRS})
+set(CMAKE_SWIG_FLAGS -c++ -threads -I${SoapySDR_INCLUDE_DIRS} -I${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 #check for size_t issue on arm 32-bit platforms
 include(CheckCXXSourceCompiles)
