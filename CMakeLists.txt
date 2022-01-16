@@ -139,22 +139,9 @@ add_subdirectory(tests)
 add_subdirectory(docs)
 
 ########################################################################
-# Python support (optional)
+# SWIG wrappers (optional)
 ########################################################################
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python bindings if possible...")
-add_subdirectory(python)
-
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python3 support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python3 bindings if possible...")
-add_subdirectory(python3)
-
+add_subdirectory(swig)
 
 ########################################################################
 # uninstall target
