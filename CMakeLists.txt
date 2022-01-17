@@ -144,6 +144,16 @@ add_subdirectory(docs)
 add_subdirectory(swig)
 
 ########################################################################
+# LuaJIT support (optional)
+########################################################################
+message(STATUS "")
+message(STATUS "#############################################")
+message(STATUS "## Begin configuration for LuaJIT support...")
+message(STATUS "#############################################")
+message(STATUS "Enabling optional LuaJIT bindings if possible...")
+add_subdirectory(luajit)
+
+########################################################################
 # uninstall target
 ########################################################################
 configure_file(

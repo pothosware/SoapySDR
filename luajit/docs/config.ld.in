@@ -1,0 +1,6 @@
+project = "SoapySDR"
+description = "SoapySDR LuaJIT API"
+full_description = "SoapySDR - vendor and platform neutral SDR support library."
+title = "SoapySDR LuaJIT API"
+file = "@SOAPYSDR_LUAJIT_DIRECTORY@"
+examples = "@SOAPYSDR_LUAJIT_DIRECTORY@/apps"
