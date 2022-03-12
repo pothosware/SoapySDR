@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Nicholas Corgan
+-- Copyright (c) 2021-2022 Nicholas Corgan
 -- SPDX-License-Identifier: BSL-1.0
 
 local __internal = {}
@@ -377,11 +377,15 @@ if not __internal.SoapySDR then
 
         SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, size_t *length);
 
+        SoapySDRArgInfo SoapySDRDevice_getSettingInfoWithKey(const SoapySDRDevice *device, const char *key);
+
         int SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value);
 
         char *SoapySDRDevice_readSetting(const SoapySDRDevice *device, const char *key);
 
         SoapySDRArgInfo *SoapySDRDevice_getChannelSettingInfo(const SoapySDRDevice *device, const int direction, const size_t channel, size_t *length);
+
+        SoapySDRArgInfo SoapySDRDevice_getChannelSettingInfoWithKey(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key);
 
         int SoapySDRDevice_writeChannelSetting(SoapySDRDevice *device, const int direction, const size_t channel, const char *key, const char *value);
 

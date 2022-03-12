@@ -1212,6 +1212,13 @@ public:
     virtual ArgInfoList getSettingInfo(void) const;
 
     /*!
+     * Get information on a specific setting.
+     * \param key the setting identifier
+     * \return all information for a specific setting
+     */
+    virtual ArgInfo getSettingInfo(const std::string &key) const;
+
+    /*!
      * Write an arbitrary setting on the device.
      * The interpretation is up the implementation.
      * \param key the setting identifier
@@ -1251,6 +1258,15 @@ public:
      * \return a list of argument info structures
      */
     virtual ArgInfoList getSettingInfo(const int direction, const size_t channel) const;
+
+    /*!
+     * Get information on a specific channel setting.
+     * \param direction the channel direction RX or TX
+     * \param channel an available channel on the device
+     * \param key the setting identifier
+     * \return all information for a specific channel setting
+     */
+    virtual ArgInfo getSettingInfo(const int direction, const size_t channnel, const std::string &key) const;
 
     /*!
      * Write an arbitrary channel setting on the device.

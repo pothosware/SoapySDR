@@ -734,6 +734,20 @@ SoapySDR::ArgInfoList SoapySDR::Device::getSettingInfo(void) const
     return SoapySDR::ArgInfoList();
 }
 
+SoapySDR::ArgInfo SoapySDR::Device::getSettingInfo(const std::string &key) const
+{
+    const auto allArgInfos = this->getSettingInfo();
+    auto argInfoIter = std::find_if(
+        allArgInfos.begin(),
+        allArgInfos.end(),
+        [&key](const SoapySDR::ArgInfo &argInfo)
+        {
+            return (argInfo.key == key);
+        });
+
+    return (argInfoIter != allArgInfos.end()) ? (*argInfoIter) : SoapySDR::ArgInfo();
+}
+
 void SoapySDR::Device::writeSetting(const std::string &, const std::string &)
 {
     return;
@@ -747,6 +761,20 @@ std::string SoapySDR::Device::readSetting(const std::string &) const
 SoapySDR::ArgInfoList SoapySDR::Device::getSettingInfo(const int, const size_t) const
 {
     return SoapySDR::ArgInfoList();
+}
+
+SoapySDR::ArgInfo SoapySDR::Device::getSettingInfo(const int direction, const size_t channel, const std::string &key) const
+{
+    const auto allArgInfos = this->getSettingInfo(direction, channel);
+    auto argInfoIter = std::find_if(
+        allArgInfos.begin(),
+        allArgInfos.end(),
+        [&key](const SoapySDR::ArgInfo &argInfo)
+        {
+            return (argInfo.key == key);
+        });
+
+    return (argInfoIter != allArgInfos.end()) ? (*argInfoIter) : SoapySDR::ArgInfo();
 }
 
 void SoapySDR::Device::writeSetting(const int, const size_t, const std::string &, const std::string &)
