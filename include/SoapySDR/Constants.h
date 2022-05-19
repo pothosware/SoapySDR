@@ -64,3 +64,28 @@
  * stream API calls. The trigger implementation is hardware-specific.
  */
 #define SOAPY_SDR_WAIT_TRIGGER (1 << 6)
+
+/*!
+ * A flag that can be used for SDR specific data.
+ */
+#define SOAPY_SDR_USER_FLAG0 (1 << 16)
+
+/*!
+ * A flag that can be used for SDR specific data.
+ */
+#define SOAPY_SDR_USER_FLAG1 (1 << 17)
+
+/*!
+ * A flag that can be used for SDR specific data.
+ */
+#define SOAPY_SDR_USER_FLAG2 (1 << 18)
+
+/*!
+ * A flag that can be used for SDR specific data.
+ */
+#define SOAPY_SDR_USER_FLAG3 (1 << 19)
+
+/*!
+ * A flag that can be used for SDR specific data.
+ */
+#define SOAPY_SDR_USER_FLAG4 (1 << 20)
