@@ -1,4 +1,4 @@
-// Copyright (c) 2020-2021 Nicholas Corgan
+// Copyright (c) 2020-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once

@@ -1,9 +1,7 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %{
-#include "Utility.hpp"
-
 #include <SoapySDR/Types.hpp>
 %}
 
@@ -19,7 +17,7 @@
 // conflicts with the enum type name
 %rename(ArgType) SoapySDR::ArgInfo::type;
 
-%typemap(cscode) SoapySDR::ArgInfo
+%typemap(javacode) SoapySDR::ArgInfo
 %{
     //
     // Object overrides
@@ -45,11 +43,11 @@
 //
 
 // Accept any Dictionary and convert it internally
-%typemap(cstype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
-%typemap(csin,
+%typemap(javatype) const std::map<std::string, std::string> & "System.Collections.Generic.IDictionary<string, string>"
+%typemap(javain,
     pre="
-        Kwargs temp$csinput = Utility.ToKwargs($csinput);
-    ") const std::map<std::string, std::string> & "$csclassname.getCPtr(temp$csinput)"
+        Kwargs temp$javainput = Utility.ToKwargs($javainput);
+    ") const std::map<std::string, std::string> & "$javaclassname.getCPtr(temp$javainput)"
 
 //
 // Range
@@ -60,7 +58,7 @@
 %attribute(SoapySDR::Range, double, Maximum, maximum);
 %attribute(SoapySDR::Range, double, Step, step);
 
-%typemap(cscode) SoapySDR::Range
+%typemap(javacode) SoapySDR::Range
 %{
     //
     // Object overrides

@@ -1,7 +1,7 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-%typemap(csclassmodifiers) LogHandlerBase "internal class"
+%typemap(javaclassmodifiers) LogHandlerBase "internal class"
 
 %ignore SoapySDR_logf;
 %ignore SoapySDR_vlogf;
@@ -9,12 +9,6 @@
 %ignore SoapySDR::logf;
 %ignore SoapySDR::vlogf;
 %ignore SoapySDR::registerLogHandler;
-
-%feature("director:except") {
-    if ($error != NULL) {
-        throw Swig::DirectorMethodException();
-    }
-}
 
 %feature("director") LogHandlerBase;
 

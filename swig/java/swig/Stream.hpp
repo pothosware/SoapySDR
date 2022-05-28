@@ -1,10 +1,9 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
 
 #include "Constants.hpp"
-#include "Utility.hpp"
 
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
@@ -78,17 +77,6 @@ namespace SoapySDR { namespace Java {
     struct StreamHandle
     {
         SoapySDR::Stream* stream{ nullptr };
-
-        // Ignored
-        SWIGSizeVector channels;
-        inline SWIGSizeVector GetChannels() const {return channels;}
-
-        // Ignored
-        std::string format;
-        inline std::string GetFormat() const {return format;}
-
-        // Ignored
-        inline SWIGSize GetPointer() const {return reinterpret_cast<SWIGSize>(stream);}
     };
 
     struct StreamResult

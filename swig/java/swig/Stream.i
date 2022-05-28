@@ -1,7 +1,7 @@
-// Copyright (c) 2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-%typemap(csclassmodifiers) SoapySDR::Java::StreamHandle "internal class";
+%typemap(javaclassmodifiers) SoapySDR::Java::StreamHandle "internal class";
 %nodefaultctor SoapySDR::Java::StreamHandle;
 %ignore SoapySDR::Java::StreamHandle::stream;
 %ignore SoapySDR::Java::StreamHandle::channels;
@@ -14,12 +14,12 @@
 %}
 
 // Allows bitwise operations
-%typemap(csimports) SoapySDR::Java::StreamFlags "
+%typemap(javaimports) SoapySDR::Java::StreamFlags "
 using System;"
-%typemap(csclassmodifiers) SoapySDR::Java::StreamFlags "[Flags]
+%typemap(javaclassmodifiers) SoapySDR::Java::StreamFlags "[Flags]
 public enum";
 
-%typemap(csimports) SoapySDR::Java::StreamHandle "
+%typemap(javaimports) SoapySDR::Java::StreamHandle "
 using System;
 using System.Linq;"
 
