@@ -38,26 +38,22 @@
 
 // Ignore stream-related functions, we're rewriting some
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
-%ignore SoapySDR::Device::setupStream;
-%ignore SoapySDR::Device::closeStream;
-%ignore SoapySDR::Device::getStreamMTU;
-%ignore SoapySDR::Device::activateStream;
-%ignore SoapySDR::Device::deactivateStream;
+%ignore SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &);
+%ignore SoapySDR::Device::closeStream(Stream *);
+%ignore SoapySDR::Device::getStreamMTU(Stream *);
+%ignore SoapySDR::Device::activateStream(Stream *, const int, const long long, const size_t);
+%ignore SoapySDR::Device::deactivateStream(Stream *, const int, const long long);
 %ignore SoapySDR::Device::readStream;
 %ignore SoapySDR::Device::writeStream;
 %ignore SoapySDR::Device::readStreamStatus;
+
+// Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNumDirectAccessBuffers;
 %ignore SoapySDR::Device::getDirectAccessBufferAddrs;
 %ignore SoapySDR::Device::acquireReadBuffer;
 %ignore SoapySDR::Device::releaseReadBuffer;
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
-
-// Ignore functions explicitly using std::vector<unsigned> due to size_t workaround
-%ignore SoapySDR::Device::writeRegisters;
-%ignore SoapySDR::Device::readRegisters;
-
-// Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
 %typemap(javacode) SoapySDR::Device
@@ -109,6 +105,8 @@
         SoapySDR::Device::unmake(self);
     }
 
+    // TODO: stream class like C#?
+
     SoapySDR::Java::NativeStreamFormat getNativeStreamFormat(
         const int direction,
         const size_t channel) const
@@ -117,6 +115,56 @@
         ret.format = self->getNativeStreamFormat(direction, channel, ret.fullScale);
 
         return ret;
+    }
+
+    SoapySDR::Java::StreamHandle setupStream(
+        const int direction,
+        const std::string &format,
+        const std::vector<size_t> &channels = std::vector<size_t>(),
+        const SoapySDR::Kwargs &args = SoapySDR::Kwargs())
+    {
+        SoapySDR::Java::StreamHandle stream;
+        stream.stream = self->setupStream(
+            direction,
+            format,
+            channels,
+            args);
+
+        return stream;
+    }
+
+    void closeStream(const SoapySDR::Java::StreamHandle &stream)
+    {
+        self->closeStream(stream.stream);
+    }
+
+    size_t getStreamMTU(const SoapySDR::Java::StreamHandle &stream) const
+    {
+        return self->getStreamMTU(stream.stream);
+    }
+
+    SoapySDR::Java::ErrorCode activateStream(
+        const SoapySDR::Java::StreamHandle &stream,
+        const int flags = 0,
+        const long long timeNs = 0,
+        const size_t numElems = 0)
+    {
+        return SoapySDR::Java::ErrorCode(self->activateStream(
+            stream.stream,
+            flags,
+            timeNs,
+            numElems));
+    }
+
+    SoapySDR::Java::ErrorCode deactivateStream(
+        const SoapySDR::Java::StreamHandle &stream,
+        const int flags = 0,
+        const long long timeNs = 0)
+    {
+        return SoapySDR::Java::ErrorCode(self->deactivateStream(
+            stream.stream,
+            flags,
+            timeNs));
     }
 };
 

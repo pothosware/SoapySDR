@@ -91,12 +91,12 @@
 
 struct Time
 {
-    static inline long long TicksToTimeNs(const long long ticks, const double rate)
+    static inline long long ticksToTimeNs(const long long ticks, const double rate)
     {
         return SoapySDR::ticksToTimeNs(ticks, rate);
     }
 
-    static inline long long TimeNsToTicks(const long long timeNs, const double rate)
+    static inline long long timeNsToTicks(const long long timeNs, const double rate)
     {
         return SoapySDR::timeNsToTicks(timeNs, rate);
     }
@@ -105,8 +105,8 @@ struct Time
 
 struct Time
 {
-    static long long TicksToTimeNs(const long long ticks, const double rate);
-    static long long TimeNsToTicks(const long long timeNs, const double rate);
+    static long long ticksToTimeNs(const long long ticks, const double rate);
+    static long long timeNsToTicks(const long long timeNs, const double rate);
 };
 
 /*
@@ -185,6 +185,7 @@ struct TypeConversionInternal
 ////////////////////////////////////////////////////////////////////////
 
 %template(StringList) std::vector<std::string>;
+%template(SizeList) std::vector<size_t>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
