@@ -16,16 +16,14 @@
 %ignore SoapySDR::Device::make;
 %ignore SoapySDR::Device::unmake;
 
-%apply double& OUTPUT { double& fullScale };
-
-%typemap(javaclassmodifiers) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult> "internal class";
+%typemap(javaclassmodifiers) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult> "class";
 %template(StreamResultPairInternal) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
 
 // 
 // Use the Java enum for direction
 //
 
-%typemap(javatype) const int direction "Direction"
+%typemap(jstype) const int direction "Direction"
 %typemap(javain,
          pre="int temp$javainput = (int)$javainput;")
          const int direction
@@ -39,6 +37,7 @@
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
 
 // Ignore stream-related functions, we're rewriting some
+%ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
 %ignore SoapySDR::Device::setupStream;
 %ignore SoapySDR::Device::closeStream;
 %ignore SoapySDR::Device::getStreamMTU;
@@ -63,11 +62,23 @@
 
 %typemap(javacode) SoapySDR::Device
 %{
-    public override string ToString() => string.Format("{0}:{1}", DriverKey, HardwareKey);
+    @override
+    public String toString() {
+        return getDriverKey()+":"+getHardwareKey();
+    }
 
-    public override bool Equals(object obj) => (obj as Device)?.swigCPtr.Equals(swigCPtr) ?? false;
+    @override
+    public boolean equals(Object o) {
+        return (hashCode() == o.hashCode());
+    }
 
-    public override int GetHashCode() => GetType().GetHashCode() ^ (swigCPtr.GetHashCode() << 1);
+    @override
+    public int hashCode() {
+        return new HashCodeBuilder(1351, 4063)
+            .append(getClass().getName())
+            .append(swigCPtr)
+            .toHashCode();
+    }
 %}
 
 %feature("compactdefaultargs", "0") setHardwareTime;
@@ -75,18 +86,14 @@
 
 %include <SoapySDR/Device.hpp>
 
-%javamethodmodifiers SoapySDR::Device::SetupStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::CloseStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::GetStreamMTUInternal "internal";
-%javamethodmodifiers SoapySDR::Device::ActivateStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::DeactivateStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::ReadStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::WriteStreamInternal "internal";
-%javamethodmodifiers SoapySDR::Device::ReadStreamStatusInternal "internal";
-
 // Internal bridge functions to make the Java part easier
 %extend SoapySDR::Device
 {
+    static SoapySDR::KwargsList enumerate()
+    {
+        return SoapySDR::Device::enumerate("");
+    }
+
     Device()
     {
         return SoapySDR::Device::make("");
@@ -106,4 +113,16 @@
     {
         SoapySDR::Device::unmake(self);
     }
+
+    SoapySDR::Java::NativeStreamFormat getNativeStreamFormat(
+        const int direction,
+        const size_t channel) const
+    {
+        SoapySDR::Java::NativeStreamFormat ret;
+        ret.format = self->getNativeStreamFormat(direction, channel, ret.fullScale);
+
+        return ret;
+    }
 };
+
+// TODO: add Java chrono for times

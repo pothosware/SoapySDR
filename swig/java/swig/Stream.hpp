@@ -10,7 +10,13 @@
 
 #include <utility>
 
-namespace SoapySDR { namespace Java { 
+namespace SoapySDR { namespace Java {
+
+    struct NativeStreamFormat
+    {
+        std::string format;
+        double fullScale;
+    };
 
     enum class StreamFlags
     {

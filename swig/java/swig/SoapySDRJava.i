@@ -10,7 +10,7 @@
 %include <typemaps.i>
 %include <std_map.i>
 %include <std_vector.i>
-%include "std_complex.i"
+%include "std_complex.i" // TODO: typemap to Apache complex
 
 ////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
@@ -50,6 +50,16 @@
 // Config header defines API export
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Config.h>
+
+%typemap(jstype) size_t "int"
+%typemap(jstype) const size_t "int"
+
+%typemap(jstype) const std::vector<std::string> & "java.util.AbstractList<String>"
+%typemap(javain,
+    pre="
+        Kwargs temp$javainput = Utility.ToStringList($javainput);
+    ") const std::vector<std::string> & "$javaclassname.getCPtr(temp$javainput)"
+
 
 ////////////////////////////////////////////////////////////////////////
 // Commonly used data types
@@ -100,7 +110,7 @@ struct Time
 
 /*
 
-%typemap(javaclassmodifiers) TypeConversionInternal "internal class";
+%typemap(javaclassmodifiers) TypeConversionInternal "class";
 %nodefaultctor TypeConversionInternal;
 
 %{
