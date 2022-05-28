@@ -11,7 +11,7 @@
 
 #include <utility>
 
-namespace SoapySDR { namespace CSharp { 
+namespace SoapySDR { namespace Java { 
 
     enum class StreamFlags
     {
@@ -100,12 +100,12 @@ namespace SoapySDR { namespace CSharp {
         size_t ChanMask{0U};
     };
     
-    using StreamResultPairInternal = std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
+    using StreamResultPairInternal = std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
 }}
 
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::EndBurst, SOAPY_SDR_END_BURST);
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::HasTime, SOAPY_SDR_HAS_TIME);
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::EndAbrupt, SOAPY_SDR_END_ABRUPT);
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::OnePacket, SOAPY_SDR_ONE_PACKET);
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::MoreFragments, SOAPY_SDR_MORE_FRAGMENTS);
-ENUM_CHECK(SoapySDR::CSharp::StreamFlags::WaitTrigger, SOAPY_SDR_WAIT_TRIGGER);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::EndBurst, SOAPY_SDR_END_BURST);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::HasTime, SOAPY_SDR_HAS_TIME);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::EndAbrupt, SOAPY_SDR_END_ABRUPT);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::OnePacket, SOAPY_SDR_ONE_PACKET);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::MoreFragments, SOAPY_SDR_MORE_FRAGMENTS);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::WaitTrigger, SOAPY_SDR_WAIT_TRIGGER);

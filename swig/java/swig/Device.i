@@ -13,11 +13,11 @@
 
 %apply double& OUTPUT { double& fullScale };
 
-%typemap(csclassmodifiers) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult> "internal class";
-%template(StreamResultPairInternal) std::pair<SoapySDR::CSharp::ErrorCode, SoapySDR::CSharp::StreamResult>;
+%typemap(csclassmodifiers) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult> "internal class";
+%template(StreamResultPairInternal) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
 
 // 
-// Use the C# enum for direction
+// Use the Java enum for direction
 //
 
 %typemap(csconstruct, excode=SWIGEXCODE,directorconnect="\n    SwigDirectorConnect();") SoapySDR::Device %{: this($imcall, true) {
@@ -91,7 +91,7 @@ using System.Linq;"
 // Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
-// Per C# convention, convert trivial getters and setters to properties
+// Per Java convention, convert trivial getters and setters to properties
 %attributestring(SoapySDR::Device, std::string, DriverKey, getDriverKey);
 %attributestring(SoapySDR::Device, std::string, HardwareKey, getHardwareKey);
 %attributeval(SoapySDR::Device, SoapySDR::Kwargs, HardwareInfo, getHardwareInfo);
@@ -260,7 +260,7 @@ using System.Linq;"
 %csmethodmodifiers SoapySDR::Device::WriteStreamInternal "internal";
 %csmethodmodifiers SoapySDR::Device::ReadStreamStatusInternal "internal";
 
-// Internal bridge functions to make the C# part easier
+// Internal bridge functions to make the Java part easier
 %extend SoapySDR::Device
 {
     Device()
@@ -278,13 +278,13 @@ using System.Linq;"
         return SoapySDR::Device::make(args);
     }
 
-    SoapySDR::CSharp::StreamHandle SetupStreamInternal(
-        const SoapySDR::CSharp::Direction direction,
+    SoapySDR::Java::StreamHandle SetupStreamInternal(
+        const SoapySDR::Java::Direction direction,
         const std::string& format,
         const SWIGSizeVector& channels,
         const SoapySDR::Kwargs& kwargs)
     {
-        SoapySDR::CSharp::StreamHandle streamHandle;
+        SoapySDR::Java::StreamHandle streamHandle;
         streamHandle.stream = self->setupStream(int(direction), format, copyVector<size_t>(channels), kwargs);
         streamHandle.format = format;
         streamHandle.channels = channels;
@@ -292,47 +292,47 @@ using System.Linq;"
         return streamHandle;
     }
 
-    void CloseStreamInternal(const SoapySDR::CSharp::StreamHandle& streamHandle)
+    void CloseStreamInternal(const SoapySDR::Java::StreamHandle& streamHandle)
     {
         self->closeStream(streamHandle.stream);
     }
 
-    size_t GetStreamMTUInternal(const SoapySDR::CSharp::StreamHandle& streamHandle)
+    size_t GetStreamMTUInternal(const SoapySDR::Java::StreamHandle& streamHandle)
     {
         return self->getStreamMTU(streamHandle.stream);
     }
 
-    SoapySDR::CSharp::ErrorCode ActivateStreamInternal(
-        const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const SoapySDR::CSharp::StreamFlags flags,
+    SoapySDR::Java::ErrorCode ActivateStreamInternal(
+        const SoapySDR::Java::StreamHandle& streamHandle,
+        const SoapySDR::Java::StreamFlags flags,
         const long long timeNs,
         const size_t numElems)
     {
-        return SoapySDR::CSharp::ErrorCode(self->activateStream(
+        return SoapySDR::Java::ErrorCode(self->activateStream(
             streamHandle.stream,
             int(flags),
             timeNs,
             numElems));
     }
 
-    SoapySDR::CSharp::ErrorCode DeactivateStreamInternal(
-        const SoapySDR::CSharp::StreamHandle& streamHandle,
-        const SoapySDR::CSharp::StreamFlags flags,
+    SoapySDR::Java::ErrorCode DeactivateStreamInternal(
+        const SoapySDR::Java::StreamHandle& streamHandle,
+        const SoapySDR::Java::StreamFlags flags,
         const long long timeNs)
     {
-        return SoapySDR::CSharp::ErrorCode(self->deactivateStream(
+        return SoapySDR::Java::ErrorCode(self->deactivateStream(
             streamHandle.stream,
             int(flags),
             timeNs));
     }
 
-    SoapySDR::CSharp::StreamResultPairInternal ReadStreamInternal(
-        const SoapySDR::CSharp::StreamHandle& streamHandle,
+    SoapySDR::Java::StreamResultPairInternal ReadStreamInternal(
+        const SoapySDR::Java::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
         const long timeoutUs)
     {
-        SoapySDR::CSharp::StreamResultPairInternal resultPair;
+        SoapySDR::Java::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
@@ -345,23 +345,23 @@ using System.Linq;"
             intFlags,
             result.TimeNs,
             result.TimeoutUs);
-        result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
+        result.Flags = SoapySDR::Java::StreamFlags(intFlags);
 
         if(cppRet >= 0) result.NumSamples = static_cast<size_t>(cppRet);
-        else            errorCode = static_cast<SoapySDR::CSharp::ErrorCode>(cppRet);
+        else            errorCode = static_cast<SoapySDR::Java::ErrorCode>(cppRet);
 
         return resultPair;
     }
 
-    SoapySDR::CSharp::StreamResultPairInternal WriteStreamInternal(
-        const SoapySDR::CSharp::StreamHandle& streamHandle,
+    SoapySDR::Java::StreamResultPairInternal WriteStreamInternal(
+        const SoapySDR::Java::StreamHandle& streamHandle,
         const SWIGSizeVector& buffs,
         const size_t numElems,
-        const SoapySDR::CSharp::StreamFlags flags,
+        const SoapySDR::Java::StreamFlags flags,
         const long long timeNs,
         const long timeoutUs)
     {
-        SoapySDR::CSharp::StreamResultPairInternal resultPair;
+        SoapySDR::Java::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
@@ -374,30 +374,30 @@ using System.Linq;"
             intFlags,
             timeNs,
             timeoutUs);
-        result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
+        result.Flags = SoapySDR::Java::StreamFlags(intFlags);
 
         if(cppRet >= 0) result.NumSamples = static_cast<size_t>(cppRet);
-        else            errorCode = static_cast<SoapySDR::CSharp::ErrorCode>(cppRet);
+        else            errorCode = static_cast<SoapySDR::Java::ErrorCode>(cppRet);
 
         return resultPair;
     }
 
-    SoapySDR::CSharp::StreamResultPairInternal ReadStreamStatusInternal(
-        const SoapySDR::CSharp::StreamHandle& streamHandle,
+    SoapySDR::Java::StreamResultPairInternal ReadStreamStatusInternal(
+        const SoapySDR::Java::StreamHandle& streamHandle,
         const long timeoutUs)
     {
-        SoapySDR::CSharp::StreamResultPairInternal resultPair;
+        SoapySDR::Java::StreamResultPairInternal resultPair;
         auto& errorCode = resultPair.first;
         auto& result = resultPair.second;
 
         int intFlags = 0;
-        errorCode = SoapySDR::CSharp::ErrorCode(self->readStreamStatus(
+        errorCode = SoapySDR::Java::ErrorCode(self->readStreamStatus(
             streamHandle.stream,
             result.ChanMask,
             intFlags,
             result.TimeNs,
             result.TimeoutUs));
-        result.Flags = SoapySDR::CSharp::StreamFlags(intFlags);
+        result.Flags = SoapySDR::Java::StreamFlags(intFlags);
 
         return resultPair;
     }

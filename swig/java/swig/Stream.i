@@ -1,25 +1,25 @@
 // Copyright (c) 2021 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
-%typemap(csclassmodifiers) SoapySDR::CSharp::StreamHandle "internal class";
-%nodefaultctor SoapySDR::CSharp::StreamHandle;
-%ignore SoapySDR::CSharp::StreamHandle::stream;
-%ignore SoapySDR::CSharp::StreamHandle::channels;
-%ignore SoapySDR::CSharp::StreamHandle::format;
+%typemap(csclassmodifiers) SoapySDR::Java::StreamHandle "internal class";
+%nodefaultctor SoapySDR::Java::StreamHandle;
+%ignore SoapySDR::Java::StreamHandle::stream;
+%ignore SoapySDR::Java::StreamHandle::channels;
+%ignore SoapySDR::Java::StreamHandle::format;
 
-%nodefaultctor SoapySDR::CSharp::StreamFormat;
+%nodefaultctor SoapySDR::Java::StreamFormat;
 
 %{
 #include "Stream.hpp"
 %}
 
 // Allows bitwise operations
-%typemap(csimports) SoapySDR::CSharp::StreamFlags "
+%typemap(csimports) SoapySDR::Java::StreamFlags "
 using System;"
-%typemap(csclassmodifiers) SoapySDR::CSharp::StreamFlags "[Flags]
+%typemap(csclassmodifiers) SoapySDR::Java::StreamFlags "[Flags]
 public enum";
 
-%typemap(csimports) SoapySDR::CSharp::StreamHandle "
+%typemap(csimports) SoapySDR::Java::StreamHandle "
 using System;
 using System.Linq;"
 

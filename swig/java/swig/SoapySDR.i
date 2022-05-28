@@ -40,8 +40,8 @@
 %include <exception.i>
 
 // We only expect to throw DirectorExceptions from within
-// the C# logger class. This will allow us to propagate the
-// C# error back to C#.
+// the Java logger class. This will allow us to propagate the
+// Java error back to Java.
 %exception
 {
     try{$action}
@@ -113,7 +113,7 @@ typedef unsigned long long size_t;
 %include "Constants.hpp"
 
 ////////////////////////////////////////////////////////////////////////
-// C# needs everything in classes, so add some simple structs for
+// Java needs everything in classes, so add some simple structs for
 // global functions
 ////////////////////////////////////////////////////////////////////////
 %nodefaultctor Time;
@@ -218,7 +218,7 @@ struct TypeConversionInternal
 %template(RangeList) std::vector<SoapySDR::Range>;
 
 ////////////////////////////////////////////////////////////////////////
-// Enforce C# naming conventions
+// Enforce Java naming conventions
 ////////////////////////////////////////////////////////////////////////
 
 %rename("%(camelcase)s", %$ispublic) "";

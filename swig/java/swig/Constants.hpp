@@ -11,7 +11,7 @@
 
 #include <string>
 
-namespace SoapySDR { namespace CSharp {
+namespace SoapySDR { namespace Java {
 
     enum class Direction
     {
@@ -20,7 +20,7 @@ namespace SoapySDR { namespace CSharp {
     };
 
     // Note: we need to repeat the literal enum values or
-    //       SWIG will copy SOAPY_SDR* into the C# file.
+    //       SWIG will copy SOAPY_SDR* into the Java file.
     enum class ErrorCode
     {
         None         = 0,
@@ -34,7 +34,7 @@ namespace SoapySDR { namespace CSharp {
     };
 
     // Note: we need to repeat the literal enum values or
-    //       SWIG will copy SOAPY_SDR* into the C# file.
+    //       SWIG will copy SOAPY_SDR* into the Java file.
     enum class LogLevel
     {
         Fatal    = 1,
@@ -55,5 +55,5 @@ namespace SoapySDR { namespace CSharp {
 #define ENUM_CHECK(_enum,_define) \
     static_assert(int(_enum) == _define, #_define)
 
-ENUM_CHECK(SoapySDR::CSharp::Direction::Tx, SOAPY_SDR_TX);
-ENUM_CHECK(SoapySDR::CSharp::Direction::Rx, SOAPY_SDR_RX);
+ENUM_CHECK(SoapySDR::Java::Direction::Tx, SOAPY_SDR_TX);
+ENUM_CHECK(SoapySDR::Java::Direction::Rx, SOAPY_SDR_RX);
