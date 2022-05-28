@@ -25,7 +25,7 @@
 
 %typemap(jstype) const int direction "Direction"
 %typemap(javain,
-         pre="int temp$javainput = (int)$javainput;")
+         pre="int temp$javainput = $javainput.swigValue();")
          const int direction
          "temp$javainput"
 
@@ -89,11 +89,6 @@
 // Internal bridge functions to make the Java part easier
 %extend SoapySDR::Device
 {
-    static SoapySDR::KwargsList enumerate()
-    {
-        return SoapySDR::Device::enumerate("");
-    }
-
     Device()
     {
         return SoapySDR::Device::make("");

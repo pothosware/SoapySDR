@@ -6,6 +6,7 @@
 
 %include "java_init.i"
 %include "soapy_common.i"
+%include "enums.swg"
 
 %include <typemaps.i>
 %include <std_map.i>

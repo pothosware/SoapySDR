@@ -15,14 +15,4 @@
 #include "Stream.hpp"
 %}
 
-// Allows bitwise operations
-%typemap(javaimports) SoapySDR::Java::StreamFlags "
-using System;"
-%typemap(javaclassmodifiers) SoapySDR::Java::StreamFlags "[Flags]
-public enum";
-
-%typemap(javaimports) SoapySDR::Java::StreamHandle "
-using System;
-using System.Linq;"
-
 %include "Stream.hpp"
