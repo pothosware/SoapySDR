@@ -1,6 +1,6 @@
 // Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
-// Copyright (c)      2021 Nicholas Corgan
+// Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %define DOCSTRING
@@ -17,6 +17,8 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 %enddef
 
 %module(directors="1", docstring=DOCSTRING) SoapySDR
+
+%include "soapy_common.i"
 
 ////////////////////////////////////////////////////////////////////////
 // python3.8 and up need to have the dll search path set
@@ -97,7 +99,6 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
 %include <std_string.i>
 %include <std_vector.i>
 %include <std_map.i>
-%ignore SoapySDR::Detail::StringToSetting; //ignore SFINAE overloads
 %include <SoapySDR/Types.hpp>
 
 //handle arm 32-bit case where size_t and unsigned are the same
@@ -169,11 +170,6 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Constants.h>
 //import types.h for the defines
-//these ignores are C++ functions that were taken by %template() above
-%ignore SoapySDRKwargs;
-%ignore SoapySDRKwargs_clear;
-%ignore SoapySDRKwargsList_clear;
-%ignore SoapySDRArgInfoList_clear;
 %include <SoapySDR/Types.h>
 %include <SoapySDR/Errors.h>
 %include <SoapySDR/Version.h>
@@ -182,12 +178,6 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
 ////////////////////////////////////////////////////////////////////////
 // Logging tie-ins for python
 ////////////////////////////////////////////////////////////////////////
-%ignore SoapySDR_logf;
-%ignore SoapySDR_vlogf;
-%ignore SoapySDR_registerLogHandler;
-%ignore SoapySDR::logf;
-%ignore SoapySDR::vlogf;
-%ignore SoapySDR::registerLogHandler;
 %include <SoapySDR/Logger.h>
 %include <SoapySDR/Logger.hpp>
 
@@ -272,14 +262,17 @@ def registerLogHandler(handler):
 %include <SoapySDR/Formats.hpp>
 %include <SoapySDR/Time.hpp>
 
-%ignore SoapySDR::logf;
-%ignore SoapySDR::vlogf;
-%ignore SoapySDR::registerLogHandler;
 %include <SoapySDR/Logger.hpp>
 
 ////////////////////////////////////////////////////////////////////////
 // Device object
 ////////////////////////////////////////////////////////////////////////
+
+// SWIG warns that one parallel Device::make() function shadows another,
+// leading to the second being ignored. Despite this, SWIG generates both
+// functions anyway, making this a false positive warning message.
+%warnfilter(509) SoapySDR::Device::make;
+
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>
 

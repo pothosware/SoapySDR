@@ -29,6 +29,7 @@ std::string sensorReadings(SoapySDR::Device *);
 int SoapySDRRateTest(
     const std::string &argStr,
     const double sampleRate,
+    const std::string &formatStr,
     const std::string &channelStr,
     const std::string &directionStr);
 
@@ -67,6 +68,7 @@ static int printHelp(void)
     std::cout << "  Rate testing options:" << std::endl;
     std::cout << "    --args[=\"driver=foo\"] \t\t Arguments for testing" << std::endl;
     std::cout << "    --rate[=stream rate Sps] \t\t Rate in samples per second" << std::endl;
+    std::cout << "    --format[=CS16|CS8|...] \t\t Sample format, default native" << std::endl;
     std::cout << "    --channels[=\"0, 1, 2\"] \t\t List of channels, default 0" << std::endl;
     std::cout << "    --direction[=RX or TX] \t\t Specify the channel direction" << std::endl;
     std::cout << std::endl;
@@ -283,6 +285,7 @@ int main(int argc, char *argv[])
 
     std::string serial;
     std::string argStr;
+    std::string formatStr;
     std::string chanStr;
     std::string dirStr;
     double sampleRate(0.0);
@@ -310,6 +313,7 @@ int main(int argc, char *argv[])
 
         {"args", optional_argument, nullptr, 'a'},
         {"rate", optional_argument, nullptr, 'r'},
+        {"format", optional_argument, nullptr, 't'},
         {"channels", optional_argument, nullptr, 'n'},
         {"direction", optional_argument, nullptr, 'd'},
         {nullptr, no_argument, nullptr, '\0'}
@@ -357,6 +361,9 @@ int main(int argc, char *argv[])
         case 'r':
             if (optarg != nullptr) sampleRate = std::stod(optarg);
             break;
+        case 't':
+            if (optarg != nullptr) formatStr = optarg;
+            break;
         case 'n':
             if (optarg != nullptr) chanStr = optarg;
             break;
@@ -384,7 +391,7 @@ int main(int argc, char *argv[])
     //invoke utilities that rely on multiple arguments
     if (sampleRate != 0.0)
     {
-        return SoapySDRRateTest(argStr, sampleRate, chanStr, dirStr);
+        return SoapySDRRateTest(argStr, sampleRate, formatStr, chanStr, dirStr);
     }
 
     //unknown or unspecified options, do help...

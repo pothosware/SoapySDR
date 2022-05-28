@@ -1,7 +1,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.3.0)
 project(SoapySDR)
 enable_language(CXX)
 enable_testing()
@@ -139,32 +139,19 @@ add_subdirectory(tests)
 add_subdirectory(docs)
 
 ########################################################################
-# Java support (optional)
+# SWIG wrappers (optional)
+########################################################################
+add_subdirectory(swig)
+
+########################################################################
+# LuaJIT support (optional)
 ########################################################################
 message(STATUS "")
 message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Java support...")
+message(STATUS "## Begin configuration for LuaJIT support...")
 message(STATUS "#############################################")
-message(STATUS "Enabling optional Java bindings if possible...")
-add_subdirectory(java)
-
-########################################################################
-# Python support (optional)
-########################################################################
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python bindings if possible...")
-add_subdirectory(python)
-
-message(STATUS "")
-message(STATUS "#############################################")
-message(STATUS "## Begin configuration for Python3 support...")
-message(STATUS "#############################################")
-message(STATUS "Enabling optional Python3 bindings if possible...")
-add_subdirectory(python3)
-
+message(STATUS "Enabling optional LuaJIT bindings if possible...")
+add_subdirectory(luajit)
 
 ########################################################################
 # uninstall target

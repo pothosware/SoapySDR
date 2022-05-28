@@ -52,7 +52,8 @@ jobs:
           - uses: actions/checkout@v2
           - name: Install dependencies
             run: |
-                sudo apt install -y libpython2-dev libpython3-dev python-numpy python3-numpy doxygen
+                sudo apt install -y libpython2-dev libpython3-dev python-numpy python3-numpy doxygen luajit luarocks lua-ldoc
+                sudo luarocks install luaunit
           - name: Build SoapySDR
             run: |
                 mkdir -p ${{github.workspace}}/build
@@ -91,6 +92,13 @@ jobs:
                 ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
                 ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
                 ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+          - name: Test LuaJIT bindings
+            run: |
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.API_VERSION)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.ABI_VERSION)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
     osx-ci:
         name: OS X
         runs-on: macos-latest
@@ -101,30 +109,35 @@ jobs:
                     - cc: gcc-9
                       cxx: g++-9
                       build_type: Release
+                      test_luajit: false
                     - cc: gcc-9
                       cxx: g++-9
                       build_type: Debug
-
+                      test_luajit: false
                     - cc: gcc-10
                       cxx: g++-10
                       build_type: Release
+                      test_luajit: false
                     - cc: gcc-10
                       cxx: g++-10
                       build_type: Debug
-
+                      test_luajit: false
                     - cc: gcc-11
                       cxx: g++-11
                       build_type: Release
+                      test_luajit: false
                     - cc: gcc-11
                       cxx: g++-11
                       build_type: Debug
-
+                      test_luajit: false
                     - cc: clang
                       cxx: clang++
                       build_type: Release
+                      test_luajit: true
                     - cc: clang
                       cxx: clang++
                       build_type: Debug
+                      test_luajit: true
         env:
             CC: ${{matrix.cc}}
             CXX: ${{matrix.cxx}}
@@ -135,9 +148,16 @@ jobs:
           - uses: actions/checkout@v2
           - name: Install dependencies
             run: |
-                brew install doxygen
+                brew install doxygen luajit
+                which luajit
                 pip install numpy
                 pip3 install numpy
+
+                # Installing Lua 5.1 dependencies via package is ugly
+                cd ${{runner.workspace}}
+                git clone https://github.com/bluebird75/luaunit.git -b LUAUNIT_V3_4
+                sudo mkdir -p /usr/local/share/lua/5.1
+                sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
           - name: Build SoapySDR
             run: |
                 mkdir -p ${{github.workspace}}/build
@@ -157,9 +177,17 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Test LuaJIT bindings
+            if: ${{ matrix.test_luajit }}
+            run: |
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.API_VERSION)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.ABI_VERSION)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))'
+                luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
     windows-ci:
         name: Windows
-        runs-on: windows-latest
+        runs-on: windows-2019
         strategy:
             fail-fast: false
             matrix:
@@ -195,14 +223,34 @@ jobs:
                       arch: x64
                       build_type: Debug
         env:
+            # Easier to have multiple copies of a subpath than deal with CI path parsing issues
             INSTALL_PREFIX: 'C:\Program Files\SoapySDR'
+            LUAJIT_INSTALL_PREFIX: 'C:\Program Files\LuaJIT'
+            LUAJIT_LUA_DIR: 'C:\Program Files\LuaJIT\lua'
+            LUA_PATH: '.\?.lua;C:\Program Files\LuaJIT\lua\?.lua;C:\Program Files\LuaJIT\lua\?\init.lua;C:\Program Files\SoapySDR\share\lua\5.1\?.lua;C:\Program Files\SoapySDR\share\lua\5.1\?\?.lua;C:\Program Files\SoapySDR\share\lua\5.1\?\init.lua'
         steps:
           - uses: actions/checkout@v2
           - uses: ilammy/msvc-dev-cmd@v1
             with:
                 arch: ${{matrix.arch}}
+          - name: Install dependencies
+            run: |
+                mkdir -p "$Env:LUAJIT_LUA_DIR"
+
+                cd ${{runner.workspace}}
+                git clone https://github.com/LuaJIT/LuaJIT.git -b v2.1
+                cd LuaJIT\src
+                .\msvcbuild.bat
+                cp luajit.exe "$Env:LUAJIT_INSTALL_PREFIX"
+                cp lua51.dll "$Env:LUAJIT_INSTALL_PREFIX"
+                cp -r jit "$Env:LUAJIT_INSTALL_PREFIX"
+
+                cd ${{runner.workspace}}
+                git clone https://github.com/bluebird75/luaunit.git -b LUAUNIT_V3_4
+                cp -v luaunit\luaunit.lua "$Env:LUAJIT_LUA_DIR"
           - name: Build SoapySDR
             run: |
+                $Env:PATH += ";$Env:LUAJIT_INSTALL_PREFIX"
                 mkdir ${{github.workspace}}\build
                 cd ${{github.workspace}}\build
                 cmake ${{matrix.cmake_config}} -DENABLE_PYTHON=OFF -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
@@ -213,7 +261,7 @@ jobs:
                 cmake --install . --config ${{matrix.build_type}}
           - name: Run unit tests
             run: |
-                $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin;$Env:LUAJIT_INSTALL_PREFIX"
                 cd ${{github.workspace}}\build
                 ctest --output-on-failure -C ${{matrix.build_type}}
           - name: Test SoapySDRUtil
@@ -222,3 +270,11 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Test LuaJIT bindings
+            run: |
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin;$Env:LUAJIT_INSTALL_PREFIX"
+                luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.API_VERSION)"
+                luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.ABI_VERSION)"
+                luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Error.TIMEOUT)"
+                luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))"
+                luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Device.new('driver=null'))"

@@ -80,7 +80,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     #common warnings to help encourage good coding practices
     target_compile_options(SoapySDR PUBLIC -Wall)
     target_compile_options(SoapySDR PUBLIC -Wextra)
-    target_compile_options(SoapySDR PUBLIC -Wnon-virtual-dtor)
+    target_compile_options(SoapySDR PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>)
 endif()
 
 if (MSVC)
