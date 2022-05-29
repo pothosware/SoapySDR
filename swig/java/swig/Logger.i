@@ -29,14 +29,14 @@
             // Restore the default, C coded, log handler.
             SoapySDR::registerLogHandler(nullptr);
         }
-        virtual void Handle(const SoapySDR::Java::LogLevel, const char *) = 0;
+        virtual void handle(const SoapySDR::Java::LogLevel, const char *) = 0;
 
-        static void Log(const SoapySDR::Java::LogLevel logLevel, const std::string& message)
+        static void log(const SoapySDR::Java::LogLevel logLevel, const std::string& message)
         {
             SoapySDR::log((SoapySDR::LogLevel)logLevel, message);
         }
 
-        static void SetLogLevel(const SoapySDR::Java::LogLevel logLevel)
+        static void setLogLevel(const SoapySDR::Java::LogLevel logLevel)
         {
             SoapySDR::setLogLevel((SoapySDR::LogLevel)logLevel);
         }
@@ -44,7 +44,7 @@
     private:
         static void GlobalHandler(const SoapySDR::LogLevel logLevel, const char *message)
         {
-            if (GlobalHandle != nullptr) GlobalHandle->Handle((SoapySDR::Java::LogLevel)logLevel, message);
+            if (GlobalHandle != nullptr) GlobalHandle->handle((SoapySDR::Java::LogLevel)logLevel, message);
         }
 
         static LogHandlerBase *GlobalHandle;
