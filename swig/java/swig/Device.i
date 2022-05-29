@@ -45,7 +45,7 @@
 %ignore SoapySDR::Device::deactivateStream(Stream *, const int, const long long);
 %ignore SoapySDR::Device::readStream;
 %ignore SoapySDR::Device::writeStream;
-%ignore SoapySDR::Device::readStreamStatus;
+%ignore SoapySDR::Device::readStreamStatus(Stream *, size_t &, int &, long long &, const long);
 
 // Don't wrap development-layer functions
 %ignore SoapySDR::Device::getNumDirectAccessBuffers;
@@ -167,6 +167,25 @@
             stream.stream,
             flags,
             timeNs));
+    }
+
+    SoapySDR::Java::StreamResult readStreamStatus(
+        const SoapySDR::Java::StreamHandle &stream,
+        const long timeoutUs = 100000)
+    {
+        SoapySDR::Java::StreamResult result;
+
+        int intFlags = 0;
+
+        result.errorCode = SoapySDR::Java::ErrorCode(self->readStreamStatus(
+            stream.stream,
+            result.chanMask,
+            intFlags,
+            result.timeNs,
+            timeoutUs));
+        result.flags = SoapySDR::Java::StreamFlags(intFlags);
+
+        return result;
     }
 };
 
