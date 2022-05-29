@@ -93,8 +93,10 @@
             {
                 auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
 
+                if(stream->channels.size() != 1)
+                    throw std::runtime_error("This function can only be used for one-channel streams.");
                 if(stream->format != expectedFormat)
-                    throw std::invalid_argument("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
+                    throw std::runtime_error("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
 
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 void *buffs[1] = {rawBuffer};
@@ -146,8 +148,10 @@
             {
                 auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
 
+                if(stream->channels.size() != 1)
+                    throw std::runtime_error("This function can only be used for one-channel streams.");
                 if(stream->format != expectedFormat)
-                    throw std::invalid_argument("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
+                    throw std::runtime_error("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
 
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 const void *buffs[1] = {rawBuffer};
