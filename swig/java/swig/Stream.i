@@ -69,23 +69,23 @@
 %typemap(jtype) const double *nioBuffer "java.nio.DoubleBuffer[]"
 
 %native(Device_readStreamByteArray1D) SoapySDR::Java::StreamResult readStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, int8_t *buffer, long timeoutUs);
-%native(Device_readStreamByteArray1D) SoapySDR::Java::StreamResult readStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, short *buffer, long timeoutUs);
-%native(Device_readStreamByteArray1D) SoapySDR::Java::StreamResult readStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, int *buffer, long timeoutUs);
-%native(Device_readStreamByteArray1D) SoapySDR::Java::StreamResult readStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, float *buffer, long timeoutUs);
-%native(Device_readStreamByteArray1D) SoapySDR::Java::StreamResult readStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, double *buffer, long timeoutUs);
+%native(Device_readStreamShortArray1D) SoapySDR::Java::StreamResult readStreamShortArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, short *buffer, long timeoutUs);
+%native(Device_readStreamIntArray1D) SoapySDR::Java::StreamResult readStreamIntArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, int *buffer, long timeoutUs);
+%native(Device_readStreamFloatArray1D) SoapySDR::Java::StreamResult readStreamFloatArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, float *buffer, long timeoutUs);
+%native(Device_readStreamDoubleArray1D) SoapySDR::Java::StreamResult readStreamDoubleArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, double *buffer, long timeoutUs);
 
 %native(Device_writeStreamByteArray1D) SoapySDR::Java::StreamResult writeStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const int8_t *buffer, long long timeNs, long timeoutUs);
-%native(Device_writeStreamByteArray1D) SoapySDR::Java::StreamResult writeStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const short *buffer, long long timeNs, long timeoutUs);
-%native(Device_writeStreamByteArray1D) SoapySDR::Java::StreamResult writeStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const int *buffer, long long timeNs, long timeoutUs);
-%native(Device_writeStreamByteArray1D) SoapySDR::Java::StreamResult writeStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const float *buffer, long long timeNs, long timeoutUs);
-%native(Device_writeStreamByteArray1D) SoapySDR::Java::StreamResult writeStreamByteArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const double *buffer, long long timeNs, long timeoutUs);
+%native(Device_writeStreamShortArray1D) SoapySDR::Java::StreamResult writeStreamShortArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const short *buffer, long long timeNs, long timeoutUs);
+%native(Device_writeStreamIntArray1D) SoapySDR::Java::StreamResult writeStreamIntArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const int *buffer, long long timeNs, long timeoutUs);
+%native(Device_writeStreamFloatArray1D) SoapySDR::Java::StreamResult writeStreamFloatArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const float *buffer, long long timeNs, long timeoutUs);
+%native(Device_writeStreamDoubleArray1D) SoapySDR::Java::StreamResult writeStreamDoubleArray1D(SoapySDR::Device *, const SoapySDR::Java::StreamHandle &stream, const double *buffer, long long timeNs, long timeoutUs);
 
 %{
     //
     // Common code
     //
 
-    static jlong readStreamByteArray1D(
+    static jlong readStream1D(
         JNIEnv *jenv,
         SoapySDR::Device *device,
         SoapySDR::Java::StreamHandle *stream,
@@ -116,7 +116,39 @@
         return jresult;
     }
 
-    static jlong readStreamByteArray1D(
+    static jlong writeStream1D(
+        JNIEnv *jenv,
+        SoapySDR::Device *device,
+        SoapySDR::Java::StreamHandle *stream,
+        const void *rawBuffer,
+        size_t elems,
+        jlong jtimeNs,
+        jlong timeoutUs)
+    {
+        SoapySDR::Java::StreamResult result;
+        jlong jresult = 0;
+
+        try
+        {
+            const void *buffs[1] = {rawBuffer};
+            int intFlags = 0;
+
+            result.errorCode = SoapySDR::Java::ErrorCode(device->writeStream(
+                stream->stream,
+                &buffs[0],
+                elems,
+                intFlags,
+                jtimeNs,
+                timeoutUs));
+            result.flags = SoapySDR::Java::StreamFlags(intFlags);
+        }
+        SWIG_JAVA_CATCH_JLONG
+
+        *(SoapySDR::Java::StreamResult **)&jresult = new SoapySDR::Java::StreamResult(result);
+        return jresult;
+    }
+
+    static jlong readStreamArray1D(
         JNIEnv *jenv,
         jlong jdevice,
         jlong jstream,
@@ -150,7 +182,7 @@
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 const size_t elems = jelems / 2;
 
-                jresult = readStreamByteArray1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
+                jresult = readStream1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
 
                 jenv->ReleasePrimitiveArrayCritical(jbuffer, rawBuffer, 0);
             }
@@ -160,7 +192,7 @@
         return jresult;
     }
 
-    static jlong readStreamByteArray1D(
+    static jlong readStreamBuffer1D(
         JNIEnv *jenv,
         jlong jdevice,
         jlong jstream,
@@ -197,7 +229,7 @@
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 const size_t elems = jbytes / elemSize;
 
-                jresult = readStreamByteArray1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
+                jresult = readStream1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
             }
             else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
         }
@@ -205,39 +237,7 @@
         return jresult;
     }
 
-    static jlong writeStreamByteArray1D(
-        JNIEnv *jenv,
-        SoapySDR::Device *device,
-        SoapySDR::Java::StreamHandle *stream,
-        const void *rawBuffer,
-        size_t elems,
-        jlong jtimeNs,
-        jlong timeoutUs)
-    {
-        SoapySDR::Java::StreamResult result;
-        jlong jresult = 0;
-
-        try
-        {
-            const void *buffs[1] = {rawBuffer};
-            int intFlags = 0;
-
-            result.errorCode = SoapySDR::Java::ErrorCode(device->writeStream(
-                stream->stream,
-                &buffs[0],
-                elems,
-                intFlags,
-                jtimeNs,
-                timeoutUs));
-            result.flags = SoapySDR::Java::StreamFlags(intFlags);
-        }
-        SWIG_JAVA_CATCH_JLONG
-
-        *(SoapySDR::Java::StreamResult **)&jresult = new SoapySDR::Java::StreamResult(result);
-        return jresult;
-    }
-
-    static jlong writeStreamByteArray1D(
+    static jlong writeStreamArray1D(
         JNIEnv *jenv,
         jlong jdevice,
         jlong jstream,
@@ -275,7 +275,7 @@
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 const size_t elems = jbytes / elemSize;
 
-                jresult = writeStreamByteArray1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
+                jresult = writeStream1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
             }
             else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
         }
@@ -283,7 +283,7 @@
         return jresult;
     }
 
-    static jlong writeStreamByteArray1D(
+    static jlong writeStreamBuffer1D(
         JNIEnv *jenv,
         jlong jdevice,
         jlong jstream,
@@ -321,7 +321,7 @@
                 auto *device = *(SoapySDR::Device**)&jdevice;
                 const size_t elems = jbytes / elemSize;
 
-                jresult = writeStreamByteArray1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
+                jresult = writeStream1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
             }
             else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
         }
@@ -343,10 +343,10 @@
         jbyteArray jbuffer,
         jlong jtimeoutUs)
     {
-        return readStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS8);
+        return readStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS8);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamShortArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -356,10 +356,10 @@
         jshortArray jbuffer,
         jlong jtimeoutUs)
     {
-        return readStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS16);
+        return readStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS16);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamIntArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -369,10 +369,10 @@
         jintArray jbuffer,
         jlong jtimeoutUs)
     {
-        return readStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS32);
+        return readStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS32);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamFloatArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -382,10 +382,10 @@
         jfloatArray jbuffer,
         jlong jtimeoutUs)
     {
-        return readStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF32);
+        return readStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF32);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamDoubleArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -395,7 +395,7 @@
         jdoubleArray jbuffer,
         jlong jtimeoutUs)
     {
-        return readStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF64);
+        return readStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF64);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByteArray1D(
@@ -409,10 +409,10 @@
         jlong jtimeNs,
         jlong jtimeoutUs)
     {
-        return writeStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS8);
+        return writeStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS8);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamShortArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -423,10 +423,10 @@
         jlong jtimeNs,
         jlong jtimeoutUs)
     {
-        return writeStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS16);
+        return writeStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS16);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamIntArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -437,10 +437,10 @@
         jlong jtimeNs,
         jlong jtimeoutUs)
     {
-        return writeStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS32);
+        return writeStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS32);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamFloatArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -451,10 +451,10 @@
         jlong jtimeNs,
         jlong jtimeoutUs)
     {
-        return writeStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF32);
+        return writeStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF32);
     }
 
-    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByteArray1D(
+    SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamDoubleArray1D(
         JNIEnv *jenv,
         jclass,
         jlong jdevice,
@@ -465,6 +465,6 @@
         jlong jtimeNs,
         jlong jtimeoutUs)
     {
-        return writeStreamByteArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF64);
+        return writeStreamArray1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF64);
     }
 %}
