@@ -75,53 +75,151 @@
 
     static jlong readStream1D(
         JNIEnv *jenv,
-        jlong jdevice,
-        jlong jstream,
-        jarray jbuffer,
-        jlong jtimeout,
-        const std::string &expectedFormat)
+        SoapySDR::Device *device,
+        SoapySDR::Java::StreamHandle *stream,
+        void *rawBuffer,
+        size_t elems,
+        jlong timeoutUs)
     {
         SoapySDR::Java::StreamResult result;
         jlong jresult = 0;
 
-        const auto jelems = jenv->GetArrayLength(jbuffer);
-        void *rawBuffer = jenv->GetPrimitiveArrayCritical(jbuffer, nullptr);
-
-        if(rawBuffer)
+        try
         {
-            try
-            {
-                auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
+            void *buffs[1] = {rawBuffer};
+            int intFlags = 0;
 
-                if(stream->channels.size() != 1)
-                    throw std::runtime_error("This function can only be used for one-channel streams.");
-                if(stream->format != expectedFormat)
-                    throw std::runtime_error("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
+            result.errorCode = SoapySDR::Java::ErrorCode(device->readStream(
+                stream->stream,
+                &buffs[0],
+                elems,
+                intFlags,
+                result.timeNs,
+                timeoutUs));
+            result.flags = SoapySDR::Java::StreamFlags(intFlags);
+        }
+        SWIG_JAVA_CATCH_JLONG
 
-                auto *device = *(SoapySDR::Device**)&jdevice;
-                void *buffs[1] = {rawBuffer};
-                const size_t elems = jelems / 2; // Complex
+        *(SoapySDR::Java::StreamResult **)&jresult = new SoapySDR::Java::StreamResult(result);
+        return jresult;
+    }
 
-                int intFlags = 0;
+    static jlong readStream1D(
+        JNIEnv *jenv,
+        jlong jdevice,
+        jlong jstream,
+        jarray jbuffer,
+        jlong jtimeoutUs,
+        const std::string &expectedFormat)
+    {
+        jlong jresult = 0;
 
-                result.errorCode = SoapySDR::Java::ErrorCode(device->readStream(
-                    stream->stream,
-                    &buffs[0],
-                    elems,
-                    intFlags,
-                    result.timeNs,
-                    jtimeout));
-                result.flags = SoapySDR::Java::StreamFlags(intFlags);
-            }
-            SWIG_JAVA_CATCH_JLONG
+        const auto jelems = jenv->GetArrayLength(jbuffer);
+        auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
+
+        if(stream->format != expectedFormat)
+        {
+            std::string errorMsg = "Invalid stream format "+stream->format+". Expected "+expectedFormat+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else if(stream->channels.size() != 1)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "This function can only be used with single-channel streams.");
+        }
+        else if((jelems % 2) != 0)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "Arrays for interleaved buffers must be of even length.");
         }
         else
         {
-            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed");
-            return 0;
+            void *rawBuffer = jenv->GetPrimitiveArrayCritical(jbuffer, nullptr);
+            if(rawBuffer)
+            {
+                auto *device = *(SoapySDR::Device**)&jdevice;
+                const size_t elems = jelems / 2;
+
+                jresult = readStream1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
+
+                jenv->ReleasePrimitiveArrayCritical(jbuffer, rawBuffer, 0);
+            }
+            else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed");
         }
 
-        if(rawBuffer) jenv->ReleasePrimitiveArrayCritical(jbuffer, rawBuffer, 0);
+        return jresult;
+    }
+
+    static jlong readStream1D(
+        JNIEnv *jenv,
+        jlong jdevice,
+        jlong jstream,
+        jobject jbuffer,
+        jlong jtimeoutUs,
+        const std::string &expectedFormat)
+    {
+        jlong jresult = 0;
+
+        const auto jbytes = jenv->GetDirectBufferCapacity(jbuffer);
+        auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
+
+        const size_t elemSize = SoapySDR::formatToSize(expectedFormat);
+
+        if(stream->format != expectedFormat)
+        {
+            std::string errorMsg = "Invalid stream format "+stream->format+". Expected "+expectedFormat+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else if(stream->channels.size() != 1)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "This function can only be used with single-channel streams.");
+        }
+        else if((jbytes % elemSize) != 0)
+        {
+            std::string errorMsg = "Buffer size must be divisble by element size "+std::to_string(elemSize)+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else
+        {
+            void *rawBuffer = jenv->GetDirectBufferAddress(jbuffer);
+            if(rawBuffer)
+            {
+                auto *device = *(SoapySDR::Device**)&jdevice;
+                const size_t elems = jbytes / elemSize;
+
+                jresult = readStream1D(jenv, device, stream, rawBuffer, elems, jtimeoutUs);
+            }
+            else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
+        }
+
+        return jresult;
+    }
+
+    static jlong writeStream1D(
+        JNIEnv *jenv,
+        SoapySDR::Device *device,
+        SoapySDR::Java::StreamHandle *stream,
+        const void *rawBuffer,
+        size_t elems,
+        jlong jtimeNs,
+        jlong timeoutUs)
+    {
+        SoapySDR::Java::StreamResult result;
+        jlong jresult = 0;
+
+        try
+        {
+            const void *buffs[1] = {rawBuffer};
+            int intFlags = 0;
+
+            result.errorCode = SoapySDR::Java::ErrorCode(device->writeStream(
+                stream->stream,
+                &buffs[0],
+                elems,
+                intFlags,
+                jtimeNs,
+                timeoutUs));
+            result.flags = SoapySDR::Java::StreamFlags(intFlags);
+        }
+        SWIG_JAVA_CATCH_JLONG
 
         *(SoapySDR::Java::StreamResult **)&jresult = new SoapySDR::Java::StreamResult(result);
         return jresult;
@@ -133,52 +231,89 @@
         jlong jstream,
         jarray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout,
+        jlong jtimeoutUs,
         const std::string &expectedFormat)
     {
-        SoapySDR::Java::StreamResult result;
         jlong jresult = 0;
 
-        const auto jelems = jenv->GetArrayLength(jbuffer);
-        void *rawBuffer = jenv->GetPrimitiveArrayCritical(jbuffer, nullptr);
+        const auto jbytes = jenv->GetDirectBufferCapacity(jbuffer);
+        auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
 
-        if(rawBuffer)
+        const size_t elemSize = SoapySDR::formatToSize(expectedFormat);
+
+        if(stream->format != expectedFormat)
         {
-            try
-            {
-                auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
-
-                if(stream->channels.size() != 1)
-                    throw std::runtime_error("This function can only be used for one-channel streams.");
-                if(stream->format != expectedFormat)
-                    throw std::runtime_error("Invalid stream format "+stream->format+". Expected "+expectedFormat+".");
-
-                auto *device = *(SoapySDR::Device**)&jdevice;
-                const void *buffs[1] = {rawBuffer};
-                const size_t elems = jelems / 2; // Complex
-
-                int intFlags = 0;
-
-                result.errorCode = SoapySDR::Java::ErrorCode(device->writeStream(
-                    stream->stream,
-                    &buffs[0],
-                    elems,
-                    intFlags,
-                    jtimeNs,
-                    jtimeout));
-                result.flags = SoapySDR::Java::StreamFlags(intFlags);
-            }
-            SWIG_JAVA_CATCH_JLONG
+            std::string errorMsg = "Invalid stream format "+stream->format+". Expected "+expectedFormat+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else if(stream->channels.size() != 1)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "This function can only be used with single-channel streams.");
+        }
+        else if((jbytes % elemSize) != 0)
+        {
+            std::string errorMsg = "Buffer size must be divisble by element size "+std::to_string(elemSize)+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
         }
         else
         {
-            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed");
-            return 0;
+            const void *rawBuffer = jenv->GetDirectBufferAddress(jbuffer);
+            if(rawBuffer)
+            {
+                auto *device = *(SoapySDR::Device**)&jdevice;
+                const size_t elems = jbytes / elemSize;
+
+                jresult = writeStream1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
+            }
+            else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
         }
 
-        if(rawBuffer) jenv->ReleasePrimitiveArrayCritical(jbuffer, rawBuffer, 0);
+        return jresult;
+    }
 
-        *(SoapySDR::Java::StreamResult **)&jresult = new SoapySDR::Java::StreamResult(result);
+    static jlong writeStream1D(
+        JNIEnv *jenv,
+        jlong jdevice,
+        jlong jstream,
+        jobject jbuffer,
+        jlong jtimeNs,
+        jlong jtimeoutUs,
+        const std::string &expectedFormat)
+    {
+        jlong jresult = 0;
+
+        const auto jbytes = jenv->GetDirectBufferCapacity(jbuffer);
+        auto *stream = *(SoapySDR::Java::StreamHandle**)&jstream;
+
+        const size_t elemSize = SoapySDR::formatToSize(expectedFormat);
+
+        if(stream->format != expectedFormat)
+        {
+            std::string errorMsg = "Invalid stream format "+stream->format+". Expected "+expectedFormat+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else if(stream->channels.size() != 1)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "This function can only be used with single-channel streams.");
+        }
+        else if((jbytes % elemSize) != 0)
+        {
+            std::string errorMsg = "Buffer size must be divisble by element size "+std::to_string(elemSize)+".";
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+        }
+        else
+        {
+            const void *rawBuffer = jenv->GetDirectBufferAddress(jbuffer);
+            if(rawBuffer)
+            {
+                auto *device = *(SoapySDR::Device**)&jdevice;
+                const size_t elems = jbytes / elemSize;
+
+                jresult = writeStream1D(jenv, device, stream, rawBuffer, elems, jtimeNs, jtimeoutUs);
+            }
+            else SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
+        }
+
         return jresult;
     }
 
@@ -194,9 +329,9 @@
         jlong jstream,
         jobject,
         jbyteArray jbuffer,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeout, SOAPY_SDR_CS8);
+        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS8);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamShort1D(
@@ -207,9 +342,9 @@
         jlong jstream,
         jobject,
         jshortArray jbuffer,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeout, SOAPY_SDR_CS16);
+        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS16);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamInt1D(
@@ -220,9 +355,9 @@
         jlong jstream,
         jobject,
         jintArray jbuffer,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeout, SOAPY_SDR_CS32);
+        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CS32);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamFloat1D(
@@ -233,9 +368,9 @@
         jlong jstream,
         jobject,
         jfloatArray jbuffer,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeout, SOAPY_SDR_CF32);
+        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF32);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1readStreamDouble1D(
@@ -246,9 +381,9 @@
         jlong jstream,
         jobject,
         jdoubleArray jbuffer,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeout, SOAPY_SDR_CF64);
+        return readStream1D(jenv, jdevice, jstream, jbuffer, jtimeoutUs, SOAPY_SDR_CF64);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByte1D(
@@ -260,9 +395,9 @@
         jobject,
         jbyteArray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeout, SOAPY_SDR_CS8);
+        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS8);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamShort1D(
@@ -274,9 +409,9 @@
         jobject,
         jshortArray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeout, SOAPY_SDR_CS16);
+        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS16);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamInt1D(
@@ -288,9 +423,9 @@
         jobject,
         jintArray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeout, SOAPY_SDR_CS32);
+        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CS32);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamFloat1D(
@@ -302,9 +437,9 @@
         jobject,
         jfloatArray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeout, SOAPY_SDR_CF32);
+        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF32);
     }
 
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_Device_1writeStreamByte1D(
@@ -316,8 +451,8 @@
         jobject,
         jdoubleArray jbuffer,
         jlong jtimeNs,
-        jlong jtimeout)
+        jlong jtimeoutUs)
     {
-        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeout, SOAPY_SDR_CF64);
+        return writeStream1D(jenv, jdevice, jstream, jbuffer, jtimeNs, jtimeoutUs, SOAPY_SDR_CF64);
     }
 %}
