@@ -52,8 +52,12 @@ jobs:
           - uses: actions/checkout@v2
           - name: Install dependencies
             run: |
-                sudo apt install -y libpython2-dev libpython3-dev python-numpy python3-numpy doxygen luajit luarocks lua-ldoc
-                sudo luarocks install luaunit
+                sudo apt install -y libpython2-dev libpython3-dev python-numpy python3-numpy doxygen luajit lua-ldoc
+
+                # LuaRocks stopped installing properly through apt, so just copy the file from its repo
+                git clone https://github.com/bluebird75/luaunit -b LUAUNIT_V3_4
+                sudo mkdir -p /usr/local/share/lua/5.1
+                sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
           - name: Build SoapySDR
             run: |
                 mkdir -p ${{github.workspace}}/build
