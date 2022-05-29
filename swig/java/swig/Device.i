@@ -75,6 +75,304 @@
             .append(swigCPtr)
             .toHashCode();
     }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        byte[] buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamByteArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        short[] buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamShortArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        int[] buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamIntArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        float[] buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamFloatArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        double[] buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamDoubleArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        java.nio.ByteBuffer buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamByteBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        java.nio.ShortBuffer buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamShortBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        java.nio.IntBuffer buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamIntBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        java.nio.FloatBuffer buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamFloatBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult readStream(
+        StreamHandle stream,
+        java.nio.DoubleBuffer buffer,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_readStreamDoubleBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        byte[] buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamByteArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            timeNs,
+            buffer,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        short[] buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamShortArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        int[] buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamIntArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        float[] buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamFloatArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        double[] buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamDoubleArray1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        java.nio.ByteBuffer buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamByteBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        java.nio.ShortBuffer buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamShortBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        java.nio.IntBuffer buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamIntBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        java.nio.FloatBuffer buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamFloatBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
+
+    public StreamResult writeStream(
+        StreamHandle stream,
+        java.nio.DoubleBuffer buffer,
+        long timeNs,
+        long timeoutUs)
+    {
+        return new StreamResult(SoapySDRJavaJNI.Device_writeStreamDoubleBuffer1D(
+            swigCPtr,
+            this,
+            StreamHandle.getCPtr(stream),
+            stream,
+            buffer,
+            timeNs,
+            timeoutUs));
+    }
 %}
 
 %feature("compactdefaultargs", "0") setHardwareTime;
