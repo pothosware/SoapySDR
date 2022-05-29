@@ -8,6 +8,8 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
 
+#include <jni.h>
+
 #include <utility>
 
 namespace SoapySDR { namespace Java {
@@ -83,18 +85,19 @@ namespace SoapySDR { namespace Java {
     struct StreamHandle
     {
         SoapySDR::Stream* stream{ nullptr };
+        std::string format;
+        std::vector<size_t> channels;
     };
 
     struct StreamResult
     {
-        size_t NumSamples{0};
-        StreamFlags Flags{ StreamFlags::None };
-        long long TimeNs{0};
-        long TimeoutUs{0};
-        size_t ChanMask{0U};
+        SoapySDR::Java::ErrorCode errorCode;
+        size_t numSamples{0};
+        StreamFlags flags{ StreamFlags::None }; // TODO: needs to be exposed as an EnumSet
+        long long timeNs{0};
+        long timeoutUs{0};
+        size_t chanMask{0U};
     };
-    
-    using StreamResultPairInternal = std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
 }}
 
 ENUM_CHECK(SoapySDR::Java::StreamFlags::EndBurst, SOAPY_SDR_END_BURST);
@@ -103,3 +106,50 @@ ENUM_CHECK(SoapySDR::Java::StreamFlags::EndAbrupt, SOAPY_SDR_END_ABRUPT);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::OnePacket, SOAPY_SDR_ONE_PACKET);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::MoreFragments, SOAPY_SDR_MORE_FRAGMENTS);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::WaitTrigger, SOAPY_SDR_WAIT_TRIGGER);
+
+#define SWIG_JAVA_CATCH_JLONG \
+    catch (const Swig::DirectorException &e) \
+    { \
+      { \
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e.what()); return 0;  \
+      }; \
+    } \
+    catch (std::invalid_argument& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_ValueError, e.what()); return 0;  \
+      }; \
+    } catch (std::domain_error& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_ValueError, e.what()); return 0;  \
+      }; \
+    } catch (std::overflow_error& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_OverflowError, e.what()); return 0;  \
+      }; \
+    } catch (std::out_of_range& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_IndexError, e.what()); return 0;  \
+      }; \
+    } catch (std::length_error& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_IndexError, e.what()); return 0;  \
+      }; \
+    } catch (std::runtime_error& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_RuntimeError, e.what()); return 0;  \
+      }; \
+    } catch (std::bad_cast& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_TypeError, e.what()); return 0;  \
+      }; \
+    } catch (std::exception& e) { \
+      { \
+        SWIG_JavaException(jenv, SWIG_SystemError, e.what()); return 0;  \
+      }; \
+    } \
+    catch (...) \
+    { \
+      { \
+        SWIG_JavaException(jenv, SWIG_RuntimeError, "unknown"); return 0;  \
+      }; \
+    }

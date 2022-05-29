@@ -40,7 +40,7 @@
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
 %ignore SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &);
 %ignore SoapySDR::Device::closeStream(Stream *);
-%ignore SoapySDR::Device::getStreamMTU(Stream *);
+%ignore SoapySDR::Device::getStreamMTU(Stream *) const;
 %ignore SoapySDR::Device::activateStream(Stream *, const int, const long long, const size_t);
 %ignore SoapySDR::Device::deactivateStream(Stream *, const int, const long long);
 %ignore SoapySDR::Device::readStream;
@@ -129,6 +129,8 @@
             format,
             channels,
             args);
+        stream.format = format;
+        stream.channels = channels;
 
         return stream;
     }
