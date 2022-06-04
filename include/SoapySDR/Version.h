@@ -27,7 +27,7 @@
  * #endif
  * \endcode
  */
-#define SOAPY_SDR_API_VERSION 0x00080000
+#define SOAPY_SDR_API_VERSION 0x00080100
 
 /*!
  * ABI Version Information - incremented when the ABI is changed.
@@ -36,7 +36,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.8"
+#define SOAPY_SDR_ABI_VERSION "0.8-1"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -162,6 +162,11 @@
  * Compatibility define for initializing devices in parallel with string arguments
  */
 #define SOAPY_SDR_API_HAS_PARALLEL_STRING_MAKE
+
+/*!
+ * Compatiblity define for querying information for specific settings
+ */
+#define SOAPY_SDR_API_HAS_GET_SPECIFIC_SETTING_INFO
 
 #ifdef __cplusplus
 extern "C" {

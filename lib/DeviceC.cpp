@@ -845,6 +845,13 @@ SoapySDRArgInfo *SoapySDRDevice_getSettingInfo(const SoapySDRDevice *device, siz
     __SOAPY_SDR_C_CATCH_RET(nullptr);
 }
 
+SoapySDRArgInfo SoapySDRDevice_getSettingInfoWithKey(const SoapySDRDevice *device, const char *key)
+{
+    __SOAPY_SDR_C_TRY
+    return toArgInfo(device->getSettingInfo(key));
+    __SOAPY_SDR_C_CATCH_RET(SoapySDRArgInfo())
+}
+
 int SoapySDRDevice_writeSetting(SoapySDRDevice *device, const char *key, const char *value)
 {
     __SOAPY_SDR_C_TRY
@@ -865,6 +872,13 @@ SoapySDRArgInfo *SoapySDRDevice_getChannelSettingInfo(const SoapySDRDevice *devi
     __SOAPY_SDR_C_TRY
     return toArgInfoList(device->getSettingInfo(direction, channel), length);
     __SOAPY_SDR_C_CATCH_RET(nullptr);
+}
+
+SoapySDRArgInfo SoapySDRDevice_getChannelSettingInfoWithKey(const SoapySDRDevice *device, const int direction, const size_t channel, const char *key)
+{
+    __SOAPY_SDR_C_TRY
+    return toArgInfo(device->getSettingInfo(direction, channel, key));
+    __SOAPY_SDR_C_CATCH_RET(SoapySDRArgInfo())
 }
 
 int SoapySDRDevice_writeChannelSetting(SoapySDRDevice *device, const int direction, const size_t channel, const char *key, const char *value)
