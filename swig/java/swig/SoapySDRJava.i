@@ -76,7 +76,6 @@
 %nodefaultctor BuildInfo;
 %nodefaultctor BuildInfo::CompileTime;
 %nodefaultctor BuildInfo::Runtime;
-%typemap(javaclassmodifiers) BuildInfo "public partial class";
 %include "Versions.hpp"
 
 %include "Constants.hpp"

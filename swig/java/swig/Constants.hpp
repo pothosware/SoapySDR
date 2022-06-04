@@ -13,12 +13,6 @@
 
 namespace SoapySDR { namespace Java {
 
-    enum class Direction
-    {
-        Tx = 0,
-        Rx = 1
-    };
-
     // Note: we need to repeat the literal enum values or
     //       SWIG will copy SOAPY_SDR* into the Java file.
     enum class ErrorCode
@@ -54,6 +48,3 @@ namespace SoapySDR { namespace Java {
 // enforce equality with these static_asserts.
 #define ENUM_CHECK(_enum,_define) \
     static_assert(int(_enum) == _define, #_define)
-
-ENUM_CHECK(SoapySDR::Java::Direction::Tx, SOAPY_SDR_TX);
-ENUM_CHECK(SoapySDR::Java::Direction::Rx, SOAPY_SDR_RX);
