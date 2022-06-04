@@ -15,6 +15,14 @@ namespace SoapySDR { namespace Java {
 
     // Note: we need to repeat the literal enum values or
     //       SWIG will copy SOAPY_SDR* into the Java file.
+    enum class Direction
+    {
+        Tx = 0,
+        Rx = 1
+    };
+
+    // Note: we need to repeat the literal enum values or
+    //       SWIG will copy SOAPY_SDR* into the Java file.
     enum class ErrorCode
     {
         None         = 0,
