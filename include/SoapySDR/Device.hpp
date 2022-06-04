@@ -1249,7 +1249,7 @@ public:
      * \return the setting value
      */
     template <typename Type>
-    Type readSetting(const std::string &key);
+    Type readSetting(const std::string &key) const;
 
     /*!
      * Describe the allowed keys and values used for channel settings.
@@ -1307,7 +1307,7 @@ public:
      * \return the setting value
      */
     template <typename Type>
-    Type readSetting(const int direction, const size_t channel, const std::string &key);
+    Type readSetting(const int direction, const size_t channel, const std::string &key) const;
 
     /*******************************************************************
      * GPIO API
@@ -1471,7 +1471,7 @@ void SoapySDR::Device::writeSetting(const std::string &key, const Type &value)
 }
 
 template <typename Type>
-Type SoapySDR::Device::readSetting(const std::string &key)
+Type SoapySDR::Device::readSetting(const std::string &key) const
 {
     return SoapySDR::StringToSetting<Type>(this->readSetting(key));
 }
@@ -1483,7 +1483,7 @@ void SoapySDR::Device::writeSetting(const int direction, const size_t channel, c
 }
 
 template <typename Type>
-Type SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &key)
+Type SoapySDR::Device::readSetting(const int direction, const size_t channel, const std::string &key) const
 {
     return SoapySDR::StringToSetting<Type>(this->readSetting(direction, channel, key));
 }
