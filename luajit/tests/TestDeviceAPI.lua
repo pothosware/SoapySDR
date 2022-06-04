@@ -224,6 +224,7 @@ local function testDeviceWithDirection(device, direction)
     -- Settings API
     --
     luaunit.assertIsTable(device:getChannelSettingInfo(direction, 0))
+    luaunit.assertIsTable(device:getChannelSettingInfoWithKey(direction, 0, ""))
     device:writeChannelSetting(direction, 0, "", "")
     luaunit.assertIsString(device:readChannelSetting(direction, 0, ""))
 end
@@ -293,6 +294,7 @@ function testDevice()
     -- Settings API
     --
     luaunit.assertIsTable(device:getSettingInfo())
+    luaunit.assertIsTable(device:getSettingInfoWithKey(""))
     device:writeSetting("", "")
     luaunit.assertEquals(device:readSetting(""), "")
 

@@ -1536,6 +1536,17 @@ function Device:getSettingInfo()
 end
 
 ---
+-- Get information on a specific setting.
+-- @tparam string key the setting identifier
+-- @treturn table A @{SoapySDR.ArgInfo} table
+function Device:getSettingInfoWithKey(key)
+    return processDeviceOutput(
+        lib.SoapySDRDevice_getSettingInfoWithKey(
+            self.__deviceHandle,
+            Utility.toString(key)))
+end
+
+---
 -- Write an arbitrary setting on the device.
 -- The interpretation is up the implementation.
 --
@@ -1581,6 +1592,21 @@ function Device:getChannelSettingInfo(direction, channel)
             channel,
             lengthPtr),
         lengthPtr)
+end
+
+---
+-- Get information on a specific channel setting.
+-- @tparam SoapySDR.Direction direction the channel direction (RX or TX)
+-- @tparam uint channel an available channel on the device
+-- @tparam string key the setting identifier
+-- @treturn table A @{SoapySDR.ArgInfo} table
+function Device:getChannelSettingInfoWithKey(direction, channel, key)
+    return processDeviceOutput(
+        lib.SoapySDRDevice_getChannelSettingInfoWithKey(
+            self.__deviceHandle,
+            direction,
+            channel,
+            Utility.toString(key)))
 end
 
 ---
