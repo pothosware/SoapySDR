@@ -169,6 +169,16 @@ local SoapySDR =
     -- Indicate that the stream should wait for an external trigger event.
     -- This flag might be used with the flags argument in any of the
     -- stream API calls. The trigger implementation is hardware-specific.
+    -- @field USER_FLAG0
+    -- A flag that can be used for SDR-specific data.
+    -- @field USER_FLAG1
+    -- A flag that can be used for SDR-specific data.
+    -- @field USER_FLAG2
+    -- A flag that can be used for SDR-specific data.
+    -- @field USER_FLAG3
+    -- A flag that can be used for SDR-specific data.
+    -- @field USER_FLAG4
+    -- A flag that can be used for SDR-specific data.
     --
     -- @usage
     -- local flags = bit.bor(SoapySDR.StreamFlags.HAS_TIME, SoapySDR.StreamFlags.END_BURST)
@@ -180,6 +190,11 @@ local SoapySDR =
         ONE_PACKET     = 16,
         MORE_FRAGMENTS = 32,
         WAIT_TRIGGER   = 64,
+        USER_FLAG0     = 65536,
+        USER_FLAG1     = 131072,
+        USER_FLAG2     = 262144,
+        USER_FLAG3     = 524288,
+        USER_FLAG4     = 1048576
     },
 
     --- Enumerate a list of available devices on the system.
