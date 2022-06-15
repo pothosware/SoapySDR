@@ -102,7 +102,7 @@ namespace SoapySDR { namespace Java {
     public:
         Stream(void) = delete;
 
-        // Hidden from SWIG (TODO: not working)
+        // Hidden from SWIG
         Stream(
             SoapySDR::Device *device,
             const int direction,
@@ -201,7 +201,7 @@ namespace SoapySDR { namespace Java {
         bool _active{false};
     };
 
-    // All hidden from SWIG, called from manual C++ (TODO: not working)
+    // All hidden from SWIG, called from manual C++
     class RxStream: public Stream
     {
     public:
@@ -242,7 +242,7 @@ namespace SoapySDR { namespace Java {
         }
     };
 
-    // All hidden from SWIG (minus readStatus), called from manual C++ (TODO: not working)
+    // All hidden from SWIG (minus readStatus)
     class TxStream: public Stream
     {
     public:

@@ -5,12 +5,14 @@
 %nodefaultctor SoapySDR::Java::NativeStreamFormat;
 %nodefaultctor SoapySDR::Java::StreamFormat;
 
-%ignore SoapySDR::Java::Stream(SoapySDR::Device *, SoapySDR::Stream *, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
-%ignore SoapySDR::Java::RxStream(SoapySDR::Device *, SoapySDR::Stream *, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
-%ignore SoapySDR::Java::TxStream(SoapySDR::Device *, SoapySDR::Stream *, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
 %nodefaultctor SoapySDR::Java::Stream;
 %nodefaultctor SoapySDR::Java::RxStream;
 %nodefaultctor SoapySDR::Java::TxStream;
+%ignore SoapySDR::Java::Stream::Stream(SoapySDR::Device *, const int, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
+%ignore SoapySDR::Java::RxStream::RxStream(SoapySDR::Device *, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
+%ignore SoapySDR::Java::RxStream::read;
+%ignore SoapySDR::Java::TxStream::TxStream(SoapySDR::Device *, const std::string &, const std::vector<size_t> &, const SoapySDR::Kwargs &);
+%ignore SoapySDR::Java::TxStream::write;
 
 // Java doesn't support bitwise operations on enums, so the
 // conventional API for this is to take in a set. We'll deal
