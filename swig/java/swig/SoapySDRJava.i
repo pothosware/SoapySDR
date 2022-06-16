@@ -52,19 +52,28 @@
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Config.h>
 
-%typemap(jstype) size_t "int"
-%typemap(jstype) const size_t "int"
-
-%typemap(jstype) const std::vector<std::string> & "java.util.AbstractList<String>"
-%typemap(javain,
-    pre="
-        Kwargs temp$javainput = Utility.ToStringList($javainput);
-    ") const std::vector<std::string> & "$javaclassname.getCPtr(temp$javainput)"
-
-
 ////////////////////////////////////////////////////////////////////////
 // Commonly used data types
 ////////////////////////////////////////////////////////////////////////
+
+%typemap(jstype) size_t "int"
+%typemap(jstype) const size_t "int"
+
+%typemap(javaclassmodifiers) std::complex<double> "class";
+
+%typemap(jstype) const std::complex<double> & "org.apache.commons.math3.complex.Complex"
+%typemap(javain,
+    pre="
+        ComplexDouble temp$javainput = new ComplexDouble($javainput.getReal(), $javainput.getImaginary());
+    ") const std::complex<double> & "$javaclassname.getCPtr(temp$javainput)"
+
+%typemap(jstype) std::complex<double> "org.apache.commons.math3.complex.Complex"
+%typemap(javaout) std::complex<double> {
+    ComplexDouble tempComplex = $jnicall;
+
+    return new org.apache.commons.math3.complex.Complex(tempComplex.real(), tempComplex.imag());
+}
+
 %include <stdint.i>
 %include <std_complex.i>
 %include <std_string.i>
