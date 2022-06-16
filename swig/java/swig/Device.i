@@ -12,9 +12,7 @@
 
 // Ignore normal factory stuff
 %nodefaultctor SoapySDR::Device;
-%ignore SoapySDR::Device::~Device; // Class will call unmake on destruction
 %ignore SoapySDR::Device::make;
-%ignore SoapySDR::Device::unmake;
 
 %typemap(javaclassmodifiers) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult> "class";
 %template(StreamResultPairInternal) std::pair<SoapySDR::Java::ErrorCode, SoapySDR::Java::StreamResult>;
@@ -80,6 +78,40 @@
 %feature("compactdefaultargs", "0") setHardwareTime;
 %feature("compactdefaultargs", "0") readUART;
 
+//
+// Destruction
+//
+
+// We need unmake exposed for SWIG to call internally, but don't expose it to the user.
+%ignore SoapySDR::Device::unmake(const std::vector<Device *> &);
+%javamethodmodifiers SoapySDR::Device::unmake "";
+
+%typemap(javadestruct, methodname="delete", methodmodifiers="public synchronized", parameters="") SoapySDR::Device {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
+        swigCMemOwn = false;
+        unmake(this);
+      }
+      swigCPtr = 0;
+    }
+  }
+
+%typemap(javadestruct_derived, methodname="delete", methodmodifiers="public synchronized", parameters="") SoapySDR::Device {
+    if (swigCPtr != 0) {
+      unmake(this);
+      if (swigCMemOwn) {
+        swigCMemOwn = false;
+        unmake(this);
+      }
+      swigCPtr = 0;
+    }
+    super.delete();
+  }
+
+//
+// Include and extend class
+//
+
 %include <SoapySDR/Device.hpp>
 
 // Internal bridge functions to make the Java part easier
@@ -98,11 +130,6 @@
     Device(const std::string &args)
     {
         return SoapySDR::Device::make(args);
-    }
-
-    ~Device()
-    {
-        SoapySDR::Device::unmake(self);
     }
 
     SoapySDR::Java::NativeStreamFormat getNativeStreamFormat(
