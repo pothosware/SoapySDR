@@ -69,7 +69,7 @@
 
 %typemap(jstype) std::complex<double> "org.apache.commons.math3.complex.Complex"
 %typemap(javaout) std::complex<double> {
-    ComplexDouble tempComplex = $jnicall;
+    ComplexDouble tempComplex = new ComplexDouble($jnicall, true);
 
     return new org.apache.commons.math3.complex.Complex(tempComplex.real(), tempComplex.imag());
 }
