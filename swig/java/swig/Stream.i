@@ -700,8 +700,6 @@
     SWIGEXPORT jlong JNICALL Java_PothosWare_SoapySDR_SoapySDRJavaJNI_TxStream_1writeIntArray1D(
         JNIEnv *jenv,
         jclass,
-        jlong jdevice,
-        jobject,
         jlong jstream,
         jobject,
         jintArray jbuffer,
