@@ -12,7 +12,7 @@ endif()
 ########################################################################
 # Setup the library
 ########################################################################
-add_library(SoapySDR SHARED
+set(sources
     Device.cpp
     Factory.cpp
     Registry.cpp
@@ -35,6 +35,11 @@ add_library(SoapySDR SHARED
     FormatsC.cpp
     ConvertersC.cpp
 )
+if(ANDROID)
+    list(APPEND sources android/glob.c)
+endif()
+
+add_library(SoapySDR SHARED ${sources})
 target_link_libraries(SoapySDR PUBLIC ${SoapySDR_LINKER_FLAGS})
 target_include_directories(SoapySDR PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(SoapySDR PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
@@ -106,6 +111,10 @@ endif()
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
     target_compile_options(SoapySDR PUBLIC -stdlib=libc++)
+endif()
+
+if(ANDROID)
+    target_include_directories(SoapySDR PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/android)
 endif()
 
 ########################################################################
