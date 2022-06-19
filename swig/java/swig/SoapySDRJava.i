@@ -56,9 +56,6 @@
 // Commonly used data types
 ////////////////////////////////////////////////////////////////////////
 
-%typemap(jstype) size_t "int"
-%typemap(jstype) const size_t "int"
-
 %typemap(javaclassmodifiers) std::complex<double> "class";
 
 %typemap(jstype) const std::complex<double> & "org.apache.commons.math3.complex.Complex"

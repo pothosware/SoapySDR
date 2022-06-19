@@ -17,19 +17,19 @@
 
 %typemap(javacode) SoapySDR::ArgInfo
 %{
-    @override
+    @Override
     public String toString() {
         return String.format("%s (%s)", getName(), getType());
     }
 
-    @override
+    @Override
     public boolean equals(Object o) {
         return (hashCode() == o.hashCode());
     }
 
-    @override
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(1351, 4063)
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(1351, 4063)
             .append(getClass().getName())
             .append(getName())
             .append(getType())
@@ -60,19 +60,19 @@
 
 %typemap(javacode) SoapySDR::Range
 %{
-    @override
+    @Override
     public String toString() {
         return String.format("Range: min=%f, max=%f, step=%f", getMinimum(), getMaximum(), getStep());
     }
 
-    @override
+    @Override
     public boolean equals(Object o) {
         return (hashCode() == o.hashCode());
     }
 
-    @override
+    @Override
     public int hashCode() {
-        return new HashCodeBuilder(1351, 4063)
+        return new org.apache.commons.lang3.builder.HashCodeBuilder(1351, 4063)
             .append(getClass().getName())
             .append(getMinimum())
             .append(getMaximum())
