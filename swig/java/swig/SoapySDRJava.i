@@ -62,7 +62,8 @@
 %typemap(javain,
     pre="
         ComplexDouble temp$javainput = new ComplexDouble($javainput.getReal(), $javainput.getImaginary());
-    ") const std::complex<double> & "$javaclassname.getCPtr(temp$javainput)"
+    ",
+    pgcppname="temp$javainput") const std::complex<double> & "$javaclassname.getCPtr(temp$javainput)"
 
 %typemap(jstype) std::complex<double> "org.apache.commons.math3.complex.Complex"
 %typemap(javaout) std::complex<double> {

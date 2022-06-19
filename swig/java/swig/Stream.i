@@ -21,12 +21,14 @@
 %typemap(jstype) const int flags "java.util.EnumSet<StreamFlags>"
 %typemap(javain,
     pre="
-        StreamFlags[] flagArray;
-        $javainput.ToArray(flagArray);
+        StreamFlags[] flagArray = null;
+        flagArray = (StreamFlags[])$javainput.toArray(flagArray);
 
         int jniInput = 0;
-        for(StreamFlags flag: flagArray) {
-            jniInput = jniInput | flag.swigValue();
+        if(flagArray != null) {
+            for(StreamFlags flag: flagArray) {
+                jniInput = jniInput | flag.swigValue();
+            }
         }
     ") const int flags "jniInput"
 

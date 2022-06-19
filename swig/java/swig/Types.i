@@ -41,13 +41,13 @@
 // Kwargs
 //
 
-// TODO: implement toKwargs
 // Accept any Map and convert it internally
 %typemap(jstype) const std::map<std::string, std::string> & "java.util.AbstractMap<String, String>"
 %typemap(javain,
     pre="
-        Kwargs temp$javainput = Utility.ToKwargs($javainput);
-    ") const std::map<std::string, std::string> & "$javaclassname.getCPtr(temp$javainput)"
+        Kwargs temp$javainput = Utility.toKwargs($javainput);
+    ",
+    pgcppname="temp$javainput") const std::map<std::string, std::string> & "$javaclassname.getCPtr(temp$javainput)"
 
 //
 // Range
