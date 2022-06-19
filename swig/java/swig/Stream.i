@@ -35,29 +35,27 @@
 // usage.
 //
 
-%typemap(jtype) int8_t *buffer "byte[]"
-%typemap(jtype) short *buffer "short[]"
-%typemap(jtype) int *buffer "int[]"
-%typemap(jtype) float *buffer "float[]"
-%typemap(jtype) double *buffer "double[]"
+%define BUFFER_TYPEMAPS(ctype, arrtype, buftype)
+    %typemap(jni) ctype *buffer "jarray"
+    %typemap(jni) const ctype *buffer "jarray"
+    %typemap(jni) ctype *nioBuffer "jobject"
 
-%typemap(jtype) const int8_t *buffer "byte[]"
-%typemap(jtype) const short *buffer "short[]"
-%typemap(jtype) const int *buffer "int[]"
-%typemap(jtype) const float *buffer "float[]"
-%typemap(jtype) const double *buffer "double[]"
+    %typemap(jtype) ctype *buffer #arrtype
+    %typemap(jtype) const ctype *buffer #arrtype
+    %typemap(jtype) ctype *nioBuffer #buftype
+    %typemap(jtype) const ctype *nioBuffer #buftype
 
-%typemap(jtype) int8_t *nioBuffer "java.nio.ByteBuffer"
-%typemap(jtype) short *nioBuffer "java.nio.ShortBuffer"
-%typemap(jtype) int *nioBuffer "java.nio.IntBuffer"
-%typemap(jtype) float *nioBuffer "java.nio.FloatBuffer"
-%typemap(jtype) double *nioBuffer "java.nio.DoubleBuffer"
+    %typemap(jstype) ctype *buffer #arrtype
+    %typemap(jstype) const ctype *buffer #arrtype
+    %typemap(jstype) ctype *nioBuffer #buftype
+    %typemap(jstype) const ctype *nioBuffer #buftype
+%enddef
 
-%typemap(jtype) const int8_t *nioBuffer "java.nio.ByteBuffer"
-%typemap(jtype) const short *nioBuffer "java.nio.ShortBuffer"
-%typemap(jtype) const int *nioBuffer "java.nio.IntBuffer"
-%typemap(jtype) const float *nioBuffer "java.nio.FloatBuffer"
-%typemap(jtype) const double *nioBuffer "java.nio.DoubleBuffer"
+BUFFER_TYPEMAPS(int8_t, byte[], java.nio.ByteBuffer)
+BUFFER_TYPEMAPS(short, short[], java.nio.ShortBuffer)
+BUFFER_TYPEMAPS(int, int[], java.nio.IntBuffer)
+BUFFER_TYPEMAPS(float, float[], java.nio.FloatBuffer)
+BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
 
 %native(RxStream_readByteArray1D) SoapySDR::Java::StreamResult readByteArray1D(SoapySDR::Java::RxStream *, int8_t *buffer, jlong timeoutUs);
 %native(RxStream_readShortArray1D) SoapySDR::Java::StreamResult readShortArray1D(SoapySDR::Java::RxStream *, short *buffer, jlong timeoutUs);
