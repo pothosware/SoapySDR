@@ -34,21 +34,18 @@
 // Manually implement streaming functions in JNI to optimize array/buffer
 // usage.
 //
+// Typemaps based on: https://stackoverflow.com/a/32474455
+//
 
-%define BUFFER_TYPEMAPS(ctype, arrtype, buftype)
-    %typemap(jni) ctype *buffer "jarray"
-    %typemap(jni) const ctype *buffer "jarray"
-    %typemap(jni) ctype *nioBuffer "jobject"
+%define BUFFER_TYPEMAPS(ctype, arr_jtype_jstype, nio_jtype_jstype)
+    %typemap(jtype) (ctype *buffer), (const ctype *buffer) #arr_jtype_jstype
+    %typemap(jtype) (ctype *nioBuffer), (const ctype *nioBuffer) #nio_jtype_jstype
 
-    %typemap(jtype) ctype *buffer #arrtype
-    %typemap(jtype) const ctype *buffer #arrtype
-    %typemap(jtype) ctype *nioBuffer #buftype
-    %typemap(jtype) const ctype *nioBuffer #buftype
+    %typemap(jstype) (ctype *buffer), (const ctype *buffer) #arr_jtype_jstype
+    %typemap(jstype) (ctype *nioBuffer), (const ctype *nioBuffer) #nio_jtype_jstype
 
-    %typemap(jstype) ctype *buffer #arrtype
-    %typemap(jstype) const ctype *buffer #arrtype
-    %typemap(jstype) ctype *nioBuffer #buftype
-    %typemap(jstype) const ctype *nioBuffer #buftype
+    %typemap(javain) (ctype *buffer), (const ctype *buffer) "$javainput"
+    %typemap(javain) (ctype *nioBuffer), (const ctype *nioBuffer) "$javainput"
 %enddef
 
 BUFFER_TYPEMAPS(int8_t, byte[], java.nio.ByteBuffer)
@@ -109,130 +106,100 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         byte[] outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readByteArray1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readByteArray1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         short[] outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readShortArray1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readShortArray1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         int[] outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readIntArray1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readIntArray1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         float[] outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readFloatArray1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readFloatArray1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         double[] outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readDoubleArray1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readDoubleArray1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         java.nio.ByteBuffer outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readByteBuffer1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readByteBuffer1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         java.nio.ShortBuffer outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readShortBuffer1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readShortBuffer1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         java.nio.IntBuffer outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readIntBuffer1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readIntBuffer1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         java.nio.FloatBuffer outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readFloatBuffer1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readFloatBuffer1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 
     public StreamResult read(
         java.nio.DoubleBuffer outputBuffer,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.RxStream_readDoubleBuffer1D(
-                swigCPtr,
-                this,
-                outputBuffer,
-                timeoutUs),
-            true);
+        return SoapySDRJava.RxStream_readDoubleBuffer1D(
+            this,
+            outputBuffer,
+            timeoutUs);
     }
 %}
 
@@ -243,14 +210,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeByteArray1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeByteArray1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -258,14 +222,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeShortArray1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeShortArray1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -273,14 +234,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeIntArray1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeIntArray1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -288,14 +246,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeFloatArray1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeFloatArray1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -303,14 +258,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeDoubleArray1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeDoubleArray1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -318,14 +270,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeByteBuffer1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeByteBuffer1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -333,14 +282,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeShortBuffer1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeShortBuffer1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -348,14 +294,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeIntBuffer1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeIntBuffer1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -363,14 +306,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeFloatBuffer1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeFloatBuffer1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 
     public StreamResult write(
@@ -378,14 +318,11 @@ BUFFER_TYPEMAPS(double, double[], java.nio.DoubleBuffer)
         long timeNs,
         long timeoutUs)
     {
-        return new StreamResult(
-            SoapySDRJavaJNI.TxStream_writeDoubleBuffer1D(
-                swigCPtr,
-                this,
-                buffer,
-                timeNs,
-                timeoutUs),
-            true);
+        return SoapySDRJava.TxStream_writeDoubleBuffer1D(
+            this,
+            buffer,
+            timeNs,
+            timeoutUs);
     }
 %}
 
