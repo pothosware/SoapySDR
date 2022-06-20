@@ -26,6 +26,7 @@
 #include <SoapySDR/Logger.hpp>
 
 #include "Constants.hpp"
+#include "Env.hpp"
 #include "Versions.hpp"
 %}
 
@@ -197,6 +198,13 @@ struct TypeConversionInternal
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
 %template(RangeList) std::vector<SoapySDR::Range>;
 %template(ComplexDouble) std::complex<double>;
+
+////////////////////////////////////////////////////////////////////////
+// Environment variable hackery
+////////////////////////////////////////////////////////////////////////
+%nodefaultctor SoapySDR::Java::Env;
+%typemap(javaclassmodifiers) SoapySDR::Java::Env "class";
+%include "Env.hpp"
 
 ////////////////////////////////////////////////////////////////////////
 // Enforce Java naming conventions

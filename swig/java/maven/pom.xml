@@ -59,6 +59,7 @@
                                 <option>-DENABLE_CSHARP=OFF</option>
                                 <option>-DENABLE_OCTAVE=OFF</option>
                                 <option>-DENABLE_DOCS=OFF</option>
+                                <option>-DENABLE_APPS=OFF</option>
                                 <option>-DENABLE_TESTS=OFF</option>
                             </options>
                         </configuration>
@@ -79,6 +80,34 @@
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-binaries</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/cmake/lib</directory>
+                                    <includes>
+                                        <include>*.dll</include>
+                                        <include>*.so*</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>${project.build.directory}/cmake/swig/java/swig</directory>
+                                    <includes>
+                                        <include>*.dll</include>
+                                        <include>*.so</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -103,7 +132,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
-    </plugin>
+            </plugin>
         </plugins>
     </build>
     <reporting>
