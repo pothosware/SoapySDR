@@ -1,4 +1,4 @@
-// Copyright (c) 2017,2022 Nicholas Corgan
+// Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 package Pothosware.SoapySDR;

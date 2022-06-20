@@ -17,7 +17,7 @@ public static Kwargs toKwargs(AbstractMap<String, String> args)
     for(AbstractMap.Entry<String, String> entry: args.entrySet())
         kwargs.put(entry.getKey(), entry.getValue());
 
-    return new Kwargs();
+    return kwargs;
 }
 
 }

@@ -31,8 +31,15 @@
     public int hashCode() {
         return new org.apache.commons.lang3.builder.HashCodeBuilder(1351, 4063)
             .append(getClass().getName())
+            .append(getKey())
+            .append(getValue())
             .append(getName())
+            .append(getDescription())
+            .append(getUnits())
             .append(getType())
+            .append(getRange())
+            .append(getOptions())
+            .append(getOptionNames())
             .toHashCode();
     }
 %}
