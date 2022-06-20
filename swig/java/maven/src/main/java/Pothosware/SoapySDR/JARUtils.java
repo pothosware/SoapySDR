@@ -83,16 +83,11 @@ class JARUtils {
                 soapyDirectory = Files.createTempDirectory("SoapySDR_");
                 soapyDirectory.toFile().deleteOnExit();
 
-                // http://stackoverflow.com/a/24988095
-                System.setProperty("java.library.path", soapyDirectory.toString());
-                Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
-                fieldSysPath.setAccessible(true);
-                fieldSysPath.set(null, null);
-
                 for(int i = 0; i < libraryNames.length; ++i) {
                     extractResourceFromJAR(getLibraryFileName(libraryNames[i]), true);
                 }
             } catch(Exception e) {
+                System.err.println("Failed to initialize SoapySDR: "+e.toString());
             }
         }
     }
