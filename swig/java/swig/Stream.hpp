@@ -36,57 +36,6 @@ namespace SoapySDR { namespace Java {
         WaitTrigger   = (1 << 6)
     };
 
-    // TODO: ComplexFloat64, etc
-    struct StreamFormat
-    {
-        static const std::string CF64;
-        static const std::string CF32;
-        static const std::string CS32;
-        static const std::string CU32;
-        static const std::string CS16;
-        static const std::string CU16;
-        static const std::string CS12;
-        static const std::string CU12;
-        static const std::string CS8;
-        static const std::string CU8;
-        static const std::string CS4;
-        static const std::string CU4;
-        static const std::string F64;
-        static const std::string F32;
-        static const std::string S32;
-        static const std::string U32;
-        static const std::string S16;
-        static const std::string U16;
-        static const std::string S8;
-        static const std::string U8;
-
-        static inline size_t FormatToSize(const std::string& format)
-        {
-            return SoapySDR::formatToSize(format);
-        }
-    };
-
-    const std::string StreamFormat::CF64 = SOAPY_SDR_CF64;
-    const std::string StreamFormat::CF32 = SOAPY_SDR_CF32;
-    const std::string StreamFormat::CS32 = SOAPY_SDR_CS32;
-    const std::string StreamFormat::CU32 = SOAPY_SDR_CU32;
-    const std::string StreamFormat::CS16 = SOAPY_SDR_CS16;
-    const std::string StreamFormat::CU16 = SOAPY_SDR_CU16;
-    const std::string StreamFormat::CS12 = SOAPY_SDR_CS12;
-    const std::string StreamFormat::CU12 = SOAPY_SDR_CU12;
-    const std::string StreamFormat::CS8  = SOAPY_SDR_CS8;
-    const std::string StreamFormat::CU8  = SOAPY_SDR_CU8;
-    const std::string StreamFormat::CS4  = SOAPY_SDR_CS4;
-    const std::string StreamFormat::CU4  = SOAPY_SDR_CU4;
-    const std::string StreamFormat::F64  = SOAPY_SDR_F64;
-    const std::string StreamFormat::F32  = SOAPY_SDR_F32;
-    const std::string StreamFormat::S32  = SOAPY_SDR_S32;
-    const std::string StreamFormat::U32  = SOAPY_SDR_U32;
-    const std::string StreamFormat::S16  = SOAPY_SDR_S16;
-    const std::string StreamFormat::U16  = SOAPY_SDR_U16;
-    const std::string StreamFormat::S8   = SOAPY_SDR_S8;
-    const std::string StreamFormat::U8   = SOAPY_SDR_U8;
-
     struct StreamResult
     {
         SoapySDR::Java::ErrorCode errorCode;
