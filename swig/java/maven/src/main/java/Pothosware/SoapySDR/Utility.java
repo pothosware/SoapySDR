@@ -5,10 +5,10 @@ package Pothosware.SoapySDR;
 
 import java.util.AbstractMap;
 
-class Utility
+public final class Utility
 {
 
-public static Kwargs toKwargs(AbstractMap<String, String> args)
+static Kwargs toKwargs(AbstractMap<String, String> args)
 {
     if(args instanceof Kwargs)
         return (Kwargs)args;

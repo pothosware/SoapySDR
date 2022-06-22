@@ -83,8 +83,8 @@ class JARUtils {
                 soapyDirectory = Files.createTempDirectory("SoapySDR_");
                 soapyDirectory.toFile().deleteOnExit();
 
-                for(int i = 0; i < libraryNames.length; ++i) {
-                    extractResourceFromJAR(getLibraryFileName(libraryNames[i]), true);
+                for(String libraryName: libraryNames) {
+                    extractResourceFromJAR(getLibraryFileName(libraryName), true);
                 }
             } catch(Exception e) {
                 System.err.println("Failed to initialize SoapySDR: "+e.toString());
