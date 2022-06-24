@@ -116,8 +116,6 @@ struct Time
     static long long timeNsToTicks(const long long timeNs, const double rate);
 };
 
-/*
-
 %typemap(javaclassmodifiers) TypeConversionInternal "class";
 %nodefaultctor TypeConversionInternal;
 
@@ -161,31 +159,21 @@ struct TypeConversionInternal
     static std::string KwargsToString(const SoapySDR::Kwargs &kwargs);
 };
 
-%template(SByteToString) TypeConversionInternal::SettingToString<int8_t>;
-%template(ShortToString) TypeConversionInternal::SettingToString<int16_t>;
-%template(IntToString) TypeConversionInternal::SettingToString<int32_t>;
-%template(LongToString) TypeConversionInternal::SettingToString<int64_t>;
-%template(ByteToString) TypeConversionInternal::SettingToString<uint8_t>;
-%template(UShortToString) TypeConversionInternal::SettingToString<uint16_t>;
-%template(UIntToString) TypeConversionInternal::SettingToString<uint32_t>;
-%template(ULongToString) TypeConversionInternal::SettingToString<uint64_t>;
-%template(BoolToString) TypeConversionInternal::SettingToString<bool>;
-%template(FloatToString) TypeConversionInternal::SettingToString<float>;
-%template(DoubleToString) TypeConversionInternal::SettingToString<double>;
+%template(byteToString) TypeConversionInternal::SettingToString<int8_t>;
+%template(shortToString) TypeConversionInternal::SettingToString<int16_t>;
+%template(intToString) TypeConversionInternal::SettingToString<int32_t>;
+%template(longToString) TypeConversionInternal::SettingToString<int64_t>;
+%template(booleanToString) TypeConversionInternal::SettingToString<bool>;
+%template(floatToString) TypeConversionInternal::SettingToString<float>;
+%template(doubleToString) TypeConversionInternal::SettingToString<double>;
 
-%template(StringToSByte) TypeConversionInternal::StringToSetting<int8_t>;
-%template(StringToShort) TypeConversionInternal::StringToSetting<int16_t>;
-%template(StringToInt) TypeConversionInternal::StringToSetting<int32_t>;
-%template(StringToLong) TypeConversionInternal::StringToSetting<int64_t>;
-%template(StringToByte) TypeConversionInternal::StringToSetting<uint8_t>;
-%template(StringToUShort) TypeConversionInternal::StringToSetting<uint16_t>;
-%template(StringToUInt) TypeConversionInternal::StringToSetting<uint32_t>;
-%template(StringToULong) TypeConversionInternal::StringToSetting<uint64_t>;
-%template(StringToBool) TypeConversionInternal::StringToSetting<bool>;
-%template(StringToFloat) TypeConversionInternal::StringToSetting<float>;
-%template(StringToDouble) TypeConversionInternal::StringToSetting<double>;
-
-*/
+%template(stringToByte) TypeConversionInternal::StringToSetting<int8_t>;
+%template(stringToShort) TypeConversionInternal::StringToSetting<int16_t>;
+%template(stringToInt) TypeConversionInternal::StringToSetting<int32_t>;
+%template(stringToLong) TypeConversionInternal::StringToSetting<int64_t>;
+%template(stringToBoolean) TypeConversionInternal::StringToSetting<bool>;
+%template(stringToFloat) TypeConversionInternal::StringToSetting<float>;
+%template(stringToDouble) TypeConversionInternal::StringToSetting<double>;
 
 ////////////////////////////////////////////////////////////////////////
 // We need all STL declarations before the rename call
