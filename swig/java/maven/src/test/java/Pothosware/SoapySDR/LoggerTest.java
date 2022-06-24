@@ -64,7 +64,7 @@ public class LoggerTest
 
         Logger.registerLogHandler((logLevel, message) ->
         {
-            System.out.println(logLevel.toString()+": "+message);
+            System.out.println("Java lambda: " + logLevel.toString()+": "+message);
         });
         callLogger();
         Logger.registerLogHandler(null);

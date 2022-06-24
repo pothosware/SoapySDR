@@ -10,19 +10,18 @@ public class Logger
         void log(LogLevel logLevel, String message);
     }
 
-    private class LogHandler extends LogHandlerBase
+    private static class LogHandler extends LogHandlerBase
     {
-        public LogHandler()
+        public LogHandler(SoapyLogger _logger)
         {
             super();
+            logger = _logger;
         }
 
         @Override
         public void handle(LogLevel logLevel, String message)
         {
-            // We should only ever get here if logger isn't null,
-            // but just to be sure...
-            if(logger != null) logger.log(logLevel, message);
+            logger.log(logLevel, message);
         }
 
         private void setLogger(SoapyLogger _logger)
@@ -47,6 +46,7 @@ public class Logger
 
     public static void registerLogHandler(SoapyLogger logger)
     {
+        logHandler = (logger != null) ? new LogHandler(logger) : null;
     }
 
     public static void setLogLevel(LogLevel logLevel)
