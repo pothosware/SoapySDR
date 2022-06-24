@@ -39,6 +39,20 @@ public class LoggerTest
         private String filepath;
     }
 
+    private class ExceptionLogger implements Logger.SoapyLogger
+    {
+        public ExceptionLogger()
+        {
+            super();
+        }
+
+        @Override
+        public void log(LogLevel logLevel, String message)
+        {
+            throw new RuntimeException(logLevel.toString()+": "+message);
+        }
+    }
+
     private void callLogger()
     {
         LogLevel logLevel = LogLevel.CRITICAL;
@@ -89,6 +103,10 @@ public class LoggerTest
     @Test
     public void testExceptionLogger()
     {
-        // TODO
+        // Make sure exceptions from the Java callback are handled cleanly.
+        Logger.registerLogHandler(new ExceptionLogger());
+
+        var ex = assertThrows(RuntimeException.class, () -> { Logger.log(LogLevel.ERROR, "This should have thrown an exception"); });
+        assertEquals("ERROR: This should have thrown an exception", ex.getMessage());
     }
 }
