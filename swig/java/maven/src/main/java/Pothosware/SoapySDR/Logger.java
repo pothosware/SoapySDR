@@ -46,7 +46,12 @@ public class Logger
 
     public static void registerLogHandler(SoapyLogger logger)
     {
-        logHandler = (logger != null) ? new LogHandler(logger) : null;
+        if(logger != null) logHandler = new LogHandler(logger);
+        else
+        {
+            LogHandlerBase.unregisterLogHandler();
+            logHandler = null;
+        }
     }
 
     public static void setLogLevel(LogLevel logLevel)
