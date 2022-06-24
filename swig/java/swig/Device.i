@@ -56,6 +56,12 @@
 
 %typemap(javacode) SoapySDR::Device
 %{
+    public static KwargsList enumerate()
+    {
+        // For some reason, extending this in C++ didn't work.
+        return enumerate("");
+    }
+
     @Override
     public String toString() {
         return getDriverKey()+":"+getHardwareKey();

@@ -41,6 +41,17 @@
             SoapySDR::setLogLevel((SoapySDR::LogLevel)logLevel);
         }
 
+        // Setting the Java instance to null doesn't destroy the underlying LogHandler,
+        // so we need this call.
+        static void unregisterLogHandler()
+        {
+            if(GlobalHandle)
+            {
+                delete GlobalHandle;
+                GlobalHandle = nullptr;
+            }
+        }
+
     private:
         static void GlobalHandler(const SoapySDR::LogLevel logLevel, const char *message)
         {
