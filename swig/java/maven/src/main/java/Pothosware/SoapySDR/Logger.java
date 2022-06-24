@@ -45,12 +45,9 @@ public class Logger
         log(logLevel, String.format(format, args));
     }
 
-    /*
     public static void registerLogHandler(SoapyLogger logger)
     {
-        logHandler.setLogger(logger);
     }
-    */
 
     public static void setLogLevel(LogLevel logLevel)
     {
