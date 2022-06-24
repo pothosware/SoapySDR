@@ -60,6 +60,12 @@
 
 %typemap(javacode) SoapySDR::Device
 %{
+    static
+    {
+        try { JARUtils.initialize(); }
+        catch(Exception e) {}
+    }
+
     public static KwargsList enumerate()
     {
         // For some reason, extending this in C++ didn't work.
@@ -86,12 +92,12 @@
 
     public void writeSetting(String key, Object value)
     {
-        writeSetting(key, SoapyTypeConverter.convert(value, String.class));
+        writeSettingInternal(key, (String)SoapyTypeConverter.convert(value, String.class));
     }
 
     public void writeSetting(Direction direction, long channel, String key, Object value)
     {
-        writeSetting(direction, channel, key, SoapyTypeConverter.convert(value, String.class));
+        writeSettingInternal(direction, channel, key, (String)SoapyTypeConverter.convert(value, String.class));
     }
 %}
 
