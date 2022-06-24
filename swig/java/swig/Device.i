@@ -34,7 +34,7 @@
 %ignore SoapySDR::Device::writeRegister(const unsigned, const unsigned);
 %ignore SoapySDR::Device::readRegister(const unsigned) const;
 
-// Ignore stream-related functions, we're rewriting some
+// Ignore stream-related functions, we're rewriting them
 %ignore SoapySDR::Device::getNativeStreamFormat(const int, const size_t, double &) const;
 %ignore SoapySDR::Device::setupStream(const int, const std::string &, const std::vector<size_t> &, const Kwargs &);
 %ignore SoapySDR::Device::closeStream(Stream *);
@@ -53,6 +53,10 @@
 %ignore SoapySDR::Device::acquireWriteBuffer;
 %ignore SoapySDR::Device::releaseWriteBuffer;
 %ignore SoapySDR::Device::getNativeDeviceHandle;
+
+// Hide functions we need internally but don't want to expose
+%rename(writeSettingInternal) SoapySDR::Device::writeSetting;
+%javamethodmodifiers SoapySDR::Device::writeSetting "";
 
 %typemap(javacode) SoapySDR::Device
 %{
@@ -78,6 +82,16 @@
             .append(getClass().getName())
             .append(swigCPtr)
             .toHashCode();
+    }
+
+    public void writeSetting(String key, Object value)
+    {
+        writeSetting(key, SoapyTypeConverter.convert(value, String.class));
+    }
+
+    public void writeSetting(Direction direction, long channel, String key, Object value)
+    {
+        writeSetting(direction, channel, key, SoapyTypeConverter.convert(value, String.class));
     }
 %}
 
