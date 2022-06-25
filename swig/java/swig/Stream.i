@@ -42,7 +42,7 @@
     %typemap(jstype) (const ctype *buffer) #arr_jtype_jstype
     %typemap(javain) (const ctype *buffer) "$javainput"
 
-    %typemap(jni) (const ctype *nioBuffer) #arr_jnitype
+    %typemap(jni) (const ctype *nioBuffer) "jobject"
     %typemap(jtype) (const ctype *nioBuffer) #nio_jtype_jstype
     %typemap(jstype) (const ctype *nioBuffer) #nio_jtype_jstype
     %typemap(javain) (const ctype *nioBuffer) "$javainput"
@@ -76,6 +76,8 @@
 
         void * $input_buffer = nullptr;
         size_t $input_numElems = 0;
+
+        printf("%zu %zu\n", size_t($input_jbytes), size_t($input_elemSize));
 
         if(($input_jbytes % $input_elemSize) == 0)
         {

@@ -8,8 +8,6 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
 
-#include <jni.h>
-
 #include <cassert>
 #include <stdexcept>
 #include <utility>
@@ -300,51 +298,3 @@ ENUM_CHECK(SoapySDR::Java::StreamFlags::END_ABRUPT, SOAPY_SDR_END_ABRUPT);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::ONE_PACKET, SOAPY_SDR_ONE_PACKET);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::MORE_FRAGMENTS, SOAPY_SDR_MORE_FRAGMENTS);
 ENUM_CHECK(SoapySDR::Java::StreamFlags::WAIT_TRIGGER, SOAPY_SDR_WAIT_TRIGGER);
-
-// Copied from SWIG-generated output
-#define SWIG_JAVA_CATCH_JLONG \
-    catch (const Swig::DirectorException &e) \
-    { \
-      { \
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e.what()); return 0;  \
-      }; \
-    } \
-    catch (std::invalid_argument& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_ValueError, e.what()); return 0;  \
-      }; \
-    } catch (std::domain_error& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_ValueError, e.what()); return 0;  \
-      }; \
-    } catch (std::overflow_error& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_OverflowError, e.what()); return 0;  \
-      }; \
-    } catch (std::out_of_range& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_IndexError, e.what()); return 0;  \
-      }; \
-    } catch (std::length_error& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_IndexError, e.what()); return 0;  \
-      }; \
-    } catch (std::runtime_error& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_RuntimeError, e.what()); return 0;  \
-      }; \
-    } catch (std::bad_cast& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_TypeError, e.what()); return 0;  \
-      }; \
-    } catch (std::exception& e) { \
-      { \
-        SWIG_JavaException(jenv, SWIG_SystemError, e.what()); return 0;  \
-      }; \
-    } \
-    catch (...) \
-    { \
-      { \
-        SWIG_JavaException(jenv, SWIG_RuntimeError, "unknown"); return 0;  \
-      }; \
-    }
