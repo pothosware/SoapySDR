@@ -11,7 +11,7 @@
 %include <typemaps.i>
 %include <std_map.i>
 %include <std_vector.i>
-%include "std_complex.i" // TODO: typemap to Apache complex
+%include "std_complex.i"
 
 ////////////////////////////////////////////////////////////////////////
 // Include all major headers to compile against
@@ -56,6 +56,15 @@
 ////////////////////////////////////////////////////////////////////////
 // Commonly used data types
 ////////////////////////////////////////////////////////////////////////
+
+%typemap(in) const size_t, const unsigned, const unsigned long, const unsigned long long %{
+    if($input < 0) {
+        SWIG_JavaException(jenv, SWIG_OverflowError, "Number must be non-negative");
+        return $null;
+    } else {
+        $1 = ($type)$input;
+    }
+%}
 
 %typemap(javaclassmodifiers) std::complex<double> "class";
 
