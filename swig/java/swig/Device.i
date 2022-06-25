@@ -27,6 +27,10 @@
          const int direction
          "temp$javainput"
 
+// For Java, it's more natural to use int than long.
+%typemap(jstype) const size_t channel "int"
+%typemap(jtype) const size_t channel "int"
+
 // Don't wrap deprecated functions
 %ignore SoapySDR::Device::listSampleRates;
 %ignore SoapySDR::Device::listBandwidths;
@@ -95,27 +99,27 @@
         writeSettingInternal(key, (String)SoapyTypeConverter.convert(value, String.class));
     }
 
-    public void writeSetting(Direction direction, long channel, String key, Object value)
+    public void writeSetting(Direction direction, int channel, String key, Object value)
     {
         writeSettingInternal(direction, channel, key, (String)SoapyTypeConverter.convert(value, String.class));
     }
 
-    public void setFrequency(Direction direction, long channel, double frequency)
+    public void setFrequency(Direction direction, int channel, double frequency)
     {
         setFrequency(direction, channel, frequency, "");
     }
 
-    public void setFrequency(Direction direction, long channel, double frequency, String args)
+    public void setFrequency(Direction direction, int channel, double frequency, String args)
     {
         setFrequency(direction, channel, frequency, TypeConversionInternal.StringToKwargs(args));
     }
 
-    public void setFrequency(Direction direction, long channel, String name, double frequency)
+    public void setFrequency(Direction direction, int channel, String name, double frequency)
     {
         setFrequency(direction, channel, name, frequency, "");
     }
 
-    public void setFrequency(Direction direction, long channel, String name, double frequency, String args)
+    public void setFrequency(Direction direction, int channel, String name, double frequency, String args)
     {
         setFrequency(direction, channel, name, frequency, TypeConversionInternal.StringToKwargs(args));
     }
