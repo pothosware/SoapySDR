@@ -99,6 +99,26 @@
     {
         writeSettingInternal(direction, channel, key, (String)SoapyTypeConverter.convert(value, String.class));
     }
+
+    public void setFrequency(Direction direction, long channel, double frequency)
+    {
+        setFrequency(direction, channel, frequency, "");
+    }
+
+    public void setFrequency(Direction direction, long channel, double frequency, String args)
+    {
+        setFrequency(direction, channel, frequency, TypeConversionInternal.StringToKwargs(args));
+    }
+
+    public void setFrequency(Direction direction, long channel, String name, double frequency)
+    {
+        setFrequency(direction, channel, name, frequency, "");
+    }
+
+    public void setFrequency(Direction direction, long channel, String name, double frequency, String args)
+    {
+        setFrequency(direction, channel, name, frequency, TypeConversionInternal.StringToKwargs(args));
+    }
 %}
 
 %feature("compactdefaultargs", "0") setHardwareTime;

@@ -8,7 +8,13 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.*;
 import org.junit.jupiter.params.provider.*;
 
+import org.apache.commons.math3.complex.*;
+
 import java.util.*;
+
+// For the null device, functions generally don't do anything or return some
+// hardcoded value, but we can still make sure functions compile and run as
+// expected.
 
 public class DeviceAPITest
 {
@@ -82,7 +88,7 @@ public class DeviceAPITest
         var sensors = device.listSensors();
         var sensorInfo = device.getSensorInfo("");
 
-        var value = device.readSensor("");
+        var sensorValue = device.readSensor("");
 
         //
         // Register API
@@ -96,7 +102,7 @@ public class DeviceAPITest
         // TODO: writeRegisters, readRegisters
 
         //
-        // Settings API
+        // Settings API (TODO: non-string returns when implemented)
         //
 
         var allSettingInfo = device.getSettingInfo();
@@ -106,6 +112,8 @@ public class DeviceAPITest
         device.writeSetting("", 0.0);
         device.writeSetting("", false);
         device.writeSetting("", "");
+
+        var settingValue = device.readSetting("");
 
         //
         // GPIO API
@@ -143,9 +151,7 @@ public class DeviceAPITest
         assertEquals("", device.readUART("", 1000));
     }
 
-    @ParameterizedTest
-    @EnumSource(Direction.class)
-    void testDeviceNonStreamingDirectionFunctions(Direction direction)
+    private void testDeviceNonStreamingDirectionFunctions(Direction direction)
     {
         var device = getTestDevice();
 
@@ -159,160 +165,144 @@ public class DeviceAPITest
         var channelInfo = device.getChannelInfo(direction, 0);
         var fullDuplex = device.getFullDuplex(direction, 0);
 
-        /*
-         *
-        var device = GetTestDevice();
-
-        //
-        // Channels API
-        //
-
-        device.SetFrontendMapping(direction, "");
-        _ = device.GetFrontendMapping(direction);
-        _ = device.GetNumChannels(direction);
-        _ = device.GetChannelInfo(direction, 0);
-        _ = device.GetFullDuplex(direction, 0);
-
         //
         // Stream API
         //
 
-        _ = device.GetStreamFormats(direction, 0);
+        var streamFormats = device.getStreamFormats(direction, 0);
 
-        double fullScale;
-        Assert.AreEqual(Pothosware.SoapySDR.StreamFormat.ComplexInt16, device.GetNativeStreamFormat(direction, 0, out fullScale));
-        Assert.AreEqual(1 << 15, fullScale);
+        var nativeStreamFormat = device.getNativeStreamFormat(direction, 0);
+        assertEquals(StreamFormat.CS16, nativeStreamFormat.getFormat());
+        assertEquals(1 << 15, nativeStreamFormat.getFullScale());
 
-        _ = device.GetStreamArgsInfo(direction, 0);
+        var streamArgsInfo = device.getStreamArgsInfo(direction, 0);
 
         //
         // Antenna API
         //
 
-        _ = device.ListAntennas(direction, 0);
-        _ = device.GetAntenna(direction, 0);
-        device.SetAntenna(direction, 0, "ANT");
+        var antennas = device.listAntennas(direction, 0);
+        var antenna = device.getAntenna(direction, 0);
+        device.setAntenna(direction, 0, "ANT");
 
         //
         // Frontend corrections API
         //
 
-        _ = device.HasDCOffsetMode(direction, 0);
-        _ = device.GetDCOffsetMode(direction, 0);
-        device.SetDCOffsetMode(direction, 0, true);
+        var hasDCOffsetMode = device.hasDCOffsetMode(direction, 0);
+        var dcOffsetMode = device.getDCOffsetMode(direction, 0);
+        device.setDCOffsetMode(direction, 0, true);
 
-        _ = device.HasDCOffset(direction, 0);
-        _ = device.GetDCOffset(direction, 0);
-        device.SetDCOffset(direction, 0, new System.Numerics.Complex(1.0, 0.0));
+        var hasDCOffset = device.hasDCOffset(direction, 0);
+        var dcOffset = device.getDCOffset(direction, 0);
+        device.setDCOffset(direction, 0, new Complex(1.0, 0.0));
 
-        _ = device.HasIQBalanceMode(direction, 0);
-        _ = device.GetIQBalanceMode(direction, 0);
-        device.SetIQBalanceMode(direction, 0, true);
+        var hasIQBalanceMode = device.hasIQBalanceMode(direction, 0);
+        var iqBalanceMode = device.getIQBalanceMode(direction, 0);
+        device.setIQBalanceMode(direction, 0, true);
 
-        _ = device.HasIQBalance(direction, 0);
-        _ = device.GetIQBalance(direction, 0);
-        device.SetIQBalance(direction, 0, new System.Numerics.Complex(1.0, 0.0));
+        var hasIQBalance = device.hasIQBalance(direction, 0);
+        var iqBalance = device.getIQBalance(direction, 0);
+        device.setIQBalance(direction, 0, new Complex(1.0, 0.0));
 
-        _ = device.HasFrequencyCorrection(direction, 0);
-        _ = device.GetFrequencyCorrection(direction, 0);
-        device.SetFrequencyCorrection(direction, 0, 0.0);
+        var hasFrequencyCorrection = device.hasFrequencyCorrection(direction, 0);
+        var getFrequencyCorrection = device.getFrequencyCorrection(direction, 0);
+        device.setFrequencyCorrection(direction, 0, 0.0);
 
         //
         // Gain API
         //
 
-        _ = device.ListGains(direction, 0);
+        var gains = device.listGains(direction, 0);
 
-        _ = device.HasGainMode(direction, 0);
-        _ = device.GetGainMode(direction, 0);
-        device.SetGainMode(direction, 0, true);
+        var hasGainMode = device.hasGainMode(direction, 0);
+        var gainMode = device.getGainMode(direction, 0);
+        device.setGainMode(direction, 0, true);
 
-        _ = device.GetGain(direction, 0);
-        _ = device.GetGain(direction, 0, "");
-        device.SetGain(direction, 0, 0.0);
-        device.SetGain(direction, 0, "", 0.0);
+        var gain = device.getGain(direction, 0);
+        var gainElement = device.getGain(direction, 0, "");
+        device.setGain(direction, 0, 0.0);
+        device.setGain(direction, 0, "", 0.0);
 
-        _ = device.GetGainRange(direction, 0);
-        _ = device.GetGainRange(direction, 0, "");
+        var gainRange = device.getGainRange(direction, 0);
+        var channelGainRange = device.getGainRange(direction, 0, "");
 
         //
         // Frequency API
         //
 
-        var frequencyArgsString = "key0=val0,key1=val1";
+        var frequencyArgsString = "key=val0,key1=val1";
 
-        var frequencyArgsMap = new Dictionary<string, string>();
-        frequencyArgsMap["key0"] = "val0";
-        frequencyArgsMap["key1"] = "val1";
+        var frequencyArgsMap = new HashMap<String, String>();
+        frequencyArgsMap.put("key0", "val0");
+        frequencyArgsMap.put("key1", "val1");
 
-        device.SetFrequency(direction, 0, 0.0);
-        device.SetFrequency(direction, 0, 0.0, frequencyArgsString);
-        device.SetFrequency(direction, 0, 0.0, frequencyArgsMap);
-        _ = device.GetFrequency(direction, 0);
+        device.setFrequency(direction, 0, 0.0);
+        device.setFrequency(direction, 0, 0.0, frequencyArgsString);
+        device.setFrequency(direction, 0, 0.0, frequencyArgsMap);
+        var frequency = device.getFrequency(direction, 0);
 
-        device.SetFrequency(direction, 0, "", 0.0);
-        device.SetFrequency(direction, 0, "", 0.0, frequencyArgsString);
-        device.SetFrequency(direction, 0, "", 0.0, frequencyArgsMap);
-        _ = device.GetFrequency(direction, 0, "");
+        device.setFrequency(direction, 0, "", 0.0);
+        device.setFrequency(direction, 0, "", 0.0, frequencyArgsString);
+        device.setFrequency(direction, 0, "", 0.0, frequencyArgsMap);
+        var frequencyComponent = device.getFrequency(direction, 0, "");
 
-        _ = device.ListFrequencies(direction, 0);
+        var frequencies = device.listFrequencies(direction, 0);
 
-        _ = device.GetFrequencyRange(direction, 0);
-        _ = device.GetFrequencyRange(direction, 0, "");
-        _ = device.GetFrequencyArgsInfo(direction, 0);
+        var frequencyRange = device.getFrequencyRange(direction, 0);
+        var frequencyComponentRange = device.getFrequencyRange(direction, 0, "");
+        var frequencyArgsInfo = device.getFrequencyArgsInfo(direction, 0);
 
         //
         // Sample rate API
         //
 
-        device.SetSampleRate(direction, 0, 0.0);
-        _ = device.GetSampleRate(direction, 0);
-        _ = device.GetSampleRateRange(direction, 0);
+        device.setSampleRate(direction, 0, 0.0);
+        var sampleRate = device.getSampleRate(direction, 0);
+        var sampleRateRange = device.getSampleRateRange(direction, 0);
 
         //
         // Bandwidth API
         //
 
-        device.SetBandwidth(direction, 0, 0.0);
-        _ = device.GetBandwidth(direction, 0);
-        _ = device.GetBandwidthRange(direction, 0);
+        device.setBandwidth(direction, 0, 0.0);
+        var bandwidth = device.getBandwidth(direction, 0);
+        var bandwidthRange = device.getBandwidthRange(direction, 0);
 
         //
-        // Sensor API
+        // Sensor API (TODO: non-string returns when implemented)
         //
 
-        _ = device.ListSensors(direction, 0);
+        var sensors = device.listSensors(direction, 0);
 
-        _ = device.ReadSensor(direction, 0, "");
-        _ = device.ReadSensor<bool>(direction, 0, "");
-        _ = device.ReadSensor<string>(direction, 0, "");
+        var sensorValue = device.readSensor(direction, 0, "");
 
         //
-        // Settings API
+        // Settings API (TODO: non-string returns when implemented)
         //
 
-        _ = device.GetSettingInfo(direction, 0);
-        _ = device.GetSettingInfo(direction, 0, "");
+        var allSettingInfo = device.getSettingInfo(direction, 0);
+        var settingInfo = device.getSettingInfo(direction, 0, "");
 
-        device.WriteSetting("", 0);
-        device.WriteSetting("", 0.0);
-        device.WriteSetting("", false);
-        device.WriteSetting("", "");
+        device.writeSetting(direction, 0, "", 0);
+        device.writeSetting(direction, 0, "", 0.0);
+        device.writeSetting(direction, 0, "", false);
+        device.writeSetting(direction, 0, "", "");
 
-        /*
-        _ = device.ReadSetting(direction, 0, "");
-        _ = device.ReadSetting<bool>(direction, 0, "");
+        var settingValue = device.readSetting(direction, 0, "");
+    }
 
-        _ = device.ReadSetting<short>(direction, 0, "");
-        _ = device.ReadSetting<int>(direction, 0, "");
-        _ = device.ReadSetting<long>(direction, 0, "");
-        _ = device.ReadSetting<ushort>(direction, 0, "");
-        _ = device.ReadSetting<uint>(direction, 0, "");
-        _ = device.ReadSetting<ulong>(direction, 0, "");
-        _ = device.ReadSetting<float>(direction, 0, "");
-        _ = device.ReadSetting<double>(direction, 0, "");
+    // Workaround for parameterized tests not working for some reason
+    @Test
+    public void testDeviceTxNonStreamingDirectionFunctions()
+    {
+        testDeviceNonStreamingDirectionFunctions(Direction.TX);
+    }
 
-        _ = device.ReadSetting<string>(direction, 0, "");
-         */
+    // Workaround for parameterized tests not working for some reason
+    @Test
+    public void testDeviceRxNonStreamingDirectionFunctions()
+    {
+        testDeviceNonStreamingDirectionFunctions(Direction.RX);
     }
 }
