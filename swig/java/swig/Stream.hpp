@@ -27,20 +27,20 @@ namespace SoapySDR { namespace Java {
 
     enum class StreamFlags
     {
-        None          = 0,
-        EndBurst      = (1 << 1),
-        HasTime       = (1 << 2),
-        EndAbrupt     = (1 << 3),
-        OnePacket     = (1 << 4),
-        MoreFragments = (1 << 5),
-        WaitTrigger   = (1 << 6)
+        NONE           = 0,
+        END_BURST      = (1 << 1),
+        HAS_TIME       = (1 << 2),
+        END_ABRUPT     = (1 << 3),
+        ONE_PACKET     = (1 << 4),
+        MORE_FRAGMENTS = (1 << 5),
+        WAIT_TRIGGER   = (1 << 6)
     };
 
     struct StreamResult
     {
         SoapySDR::Java::ErrorCode errorCode;
         size_t numSamples{0};
-        StreamFlags flags{ StreamFlags::None }; // TODO: needs to be exposed as an EnumSet
+        StreamFlags flags{ StreamFlags::NONE }; // TODO: needs to be exposed as an EnumSet
         long long timeNs{0};
         long timeoutUs{0};
         size_t chanMask{0U};
@@ -253,12 +253,12 @@ namespace SoapySDR { namespace Java {
     };
 }}
 
-ENUM_CHECK(SoapySDR::Java::StreamFlags::EndBurst, SOAPY_SDR_END_BURST);
-ENUM_CHECK(SoapySDR::Java::StreamFlags::HasTime, SOAPY_SDR_HAS_TIME);
-ENUM_CHECK(SoapySDR::Java::StreamFlags::EndAbrupt, SOAPY_SDR_END_ABRUPT);
-ENUM_CHECK(SoapySDR::Java::StreamFlags::OnePacket, SOAPY_SDR_ONE_PACKET);
-ENUM_CHECK(SoapySDR::Java::StreamFlags::MoreFragments, SOAPY_SDR_MORE_FRAGMENTS);
-ENUM_CHECK(SoapySDR::Java::StreamFlags::WaitTrigger, SOAPY_SDR_WAIT_TRIGGER);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::END_BURST, SOAPY_SDR_END_BURST);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::HAS_TIME, SOAPY_SDR_HAS_TIME);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::END_ABRUPT, SOAPY_SDR_END_ABRUPT);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::ONE_PACKET, SOAPY_SDR_ONE_PACKET);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::MORE_FRAGMENTS, SOAPY_SDR_MORE_FRAGMENTS);
+ENUM_CHECK(SoapySDR::Java::StreamFlags::WAIT_TRIGGER, SOAPY_SDR_WAIT_TRIGGER);
 
 // Copied from SWIG-generated output
 #define SWIG_JAVA_CATCH_JLONG \
