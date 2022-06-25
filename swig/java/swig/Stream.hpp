@@ -101,6 +101,13 @@ namespace SoapySDR { namespace Java {
             return _device->getStreamMTU(_stream);
         }
 
+        inline bool active(void) const
+        {
+            assert(device);
+
+            return _active;
+        }
+
         ErrorCode activate(
             const int flags = 0,
             const long long timeNs = 0,

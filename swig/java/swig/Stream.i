@@ -18,11 +18,10 @@
 // conventional API for this is to take in a set. We'll deal
 // with the ugliness to get the conversions ourselves.
 
-%typemap(jstype) const int flags "java.util.EnumSet<StreamFlags>"
+%typemap(jstype) const int flags "java.util.Set<StreamFlags>"
 %typemap(javain,
     pre="
-        StreamFlags[] flagArray = null;
-        flagArray = (StreamFlags[])$javainput.toArray(flagArray);
+        var flagArray = (StreamFlags[])$javainput.toArray(new StreamFlags[0]);
 
         int jniInput = 0;
         if(flagArray != null) {
