@@ -38,7 +38,7 @@ public class StreamingAPITest
         public Kwargs streamArgsMap = new Kwargs();
         public HashSet<StreamFlags> streamFlags = new HashSet<StreamFlags>();
         public long timeNs = 1000;
-        public long timeoutUs = 1000;
+        public int timeoutUs = 1000;
         public long numElems = 1024;
 
         public TestParams()
@@ -90,15 +90,15 @@ public class StreamingAPITest
 
         if(streamFormatMatches)
         {
-            var streamResult = txStream.write(arr, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
-            streamResult = txStream.write(buff, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeBuffer(buff, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
-            streamResult = txStream.write(directBuff, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeBuffer(directBuff, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -108,7 +108,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.write(new byte[mtu-1], params.timeNs, params.timeoutUs);
+                    var badStreamResult = txStream.writeArray(new byte[mtu-1], params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains("interleaved"));
 
@@ -116,7 +116,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.write(ByteBuffer.allocate(mtu-1), params.timeNs, params.timeoutUs);
+                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocate(mtu-1), params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains("interleaved"));
         }
@@ -126,7 +126,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.write(arr, params.timeNs, params.timeoutUs);
+                    var badStreamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS8));
 
@@ -134,7 +134,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.write(buff, params.timeNs, params.timeoutUs);
+                    var badStreamResult = txStream.writeBuffer(buff, params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CS8));
         }
