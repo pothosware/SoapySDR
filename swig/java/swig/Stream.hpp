@@ -194,6 +194,63 @@ namespace SoapySDR { namespace Java {
 
             return result;
         }
+
+        // Note: these functions are technically identical, but the parameter
+        // names trigger different typemaps.
+        #define RX_STREAM_READ_FCNS(ctype, format) \
+            inline SoapySDR::Java::StreamResult readArray( \
+                const ctype *buffer, \
+                const size_t length, \
+                const long timeoutUs) \
+            { \
+                return this->_read1D(buffer, length, timeoutUs, format); \
+            } \
+            inline SoapySDR::Java::StreamResult readBuffer( \
+                const ctype *nioBuffer, \
+                const size_t length, \
+                const long timeoutUs) \
+            { \
+                return this->_read1D(nioBuffer, length, timeoutUs, format); \
+            }
+
+        RX_STREAM_READ_FCNS(int8_t, SOAPY_SDR_CS8)
+        RX_STREAM_READ_FCNS(short, SOAPY_SDR_CS16)
+        RX_STREAM_READ_FCNS(int, SOAPY_SDR_CS32)
+        RX_STREAM_READ_FCNS(float, SOAPY_SDR_CF32)
+        RX_STREAM_READ_FCNS(double, SOAPY_SDR_CF64)
+
+    private:
+        template <typename T>
+        SoapySDR::Java::StreamResult _read1D(
+            T *buffer,
+            const size_t length,
+            const long timeoutUs,
+            const std::string &requiredFormat)
+        {
+            assert(buffer);
+            assert((length % 2) == 0);
+
+            if(_format != requiredFormat)
+                throw std::invalid_argument(std::string("Invalid stream format. Expected ")+requiredFormat);
+
+            int intFlags = 0;
+
+            StreamResult result;
+            auto readRet = _device->readStream(
+                _stream,
+                (void**)&buffer,
+                length,
+                intFlags,
+                result.timeNs,
+                timeoutUs);
+
+            if(readRet >= 0) result.numSamples = size_t(readRet);
+            else result.errorCode = SoapySDR::Java::ErrorCode(readRet);
+
+            result.flags = SoapySDR::Java::StreamFlags(intFlags);
+
+            return result;
+        }
     };
 
     // Construction hidden from SWIG

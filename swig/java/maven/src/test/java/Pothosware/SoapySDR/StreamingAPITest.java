@@ -84,9 +84,9 @@ public class StreamingAPITest
 
         // Test array and NIO buffer overloads. For the NIO buffer, test
         // buffers allocated with each method, for the sake of thoroughness.
-        var arr = new byte[mtu];
-        var buff = ByteBuffer.allocate(mtu);
-        var directBuff = ByteBuffer.allocateDirect(mtu);
+        var arr = new byte[mtu*2];
+        var buff = ByteBuffer.allocate(mtu*2);
+        var directBuff = ByteBuffer.allocateDirect(mtu*2);
 
         if(streamFormatMatches)
         {
