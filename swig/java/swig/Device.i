@@ -111,7 +111,7 @@
 
     public void setFrequency(Direction direction, int channel, double frequency, String args)
     {
-        setFrequency(direction, channel, frequency, TypeConversionInternal.StringToKwargs(args));
+        setFrequency(direction, channel, frequency, TypeConversionInternal.stringToKwargs(args));
     }
 
     public void setFrequency(Direction direction, int channel, String name, double frequency)
@@ -121,7 +121,7 @@
 
     public void setFrequency(Direction direction, int channel, String name, double frequency, String args)
     {
-        setFrequency(direction, channel, name, frequency, TypeConversionInternal.StringToKwargs(args));
+        setFrequency(direction, channel, name, frequency, TypeConversionInternal.stringToKwargs(args));
     }
 %}
 

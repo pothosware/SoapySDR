@@ -66,6 +66,16 @@
     }
 %}
 
+// TODO: make SizeList private after figuring out the Stream getter
+%typemap(jstype) const std::vector<size_t> &channels "int[]"
+%typemap(javain,
+    pre="
+        var temp$javainput = new SizeList();
+        for(int chan: $javainput)
+            temp$javainput.add((long)chan);
+    ",
+    pgcppname="temp$javainput") const std::vector<size_t> &channels "$javaclassname.getCPtr(temp$javainput)"
+
 %typemap(javaclassmodifiers) std::complex<double> "class";
 
 %typemap(jstype) const std::complex<double> & "org.apache.commons.math3.complex.Complex"
@@ -132,23 +142,23 @@ struct Time
 struct TypeConversionInternal
 {
     template <typename T>
-    static inline std::string SettingToString(const T &setting)
+    static inline std::string settingToString(const T &setting)
     {
         return SoapySDR::SettingToString<T>(setting);
     }
 
     template <typename T>
-    static inline T StringToSetting(const std::string &setting)
+    static inline T stringToSetting(const std::string &setting)
     {
         return SoapySDR::StringToSetting<T>(setting);
     }
 
-    static inline SoapySDR::Kwargs StringToKwargs(const std::string &args)
+    static inline SoapySDR::Kwargs stringToKwargs(const std::string &args)
     {
         return SoapySDR::KwargsFromString(args);
     }
 
-    static inline std::string KwargsToString(const SoapySDR::Kwargs &kwargs)
+    static inline std::string kwargsToString(const SoapySDR::Kwargs &kwargs)
     {
         return SoapySDR::KwargsToString(kwargs);
     }
@@ -158,37 +168,38 @@ struct TypeConversionInternal
 struct TypeConversionInternal
 {
     template <typename T>
-    static std::string SettingToString(const T &setting);
+    static std::string settingToString(const T &setting);
 
     template <typename T>
-    static T StringToSetting(const std::string &setting);
+    static T stringToSetting(const std::string &setting);
 
-    static SoapySDR::Kwargs StringToKwargs(const std::string &args);
+    static SoapySDR::Kwargs stringToKwargs(const std::string &args);
 
-    static std::string KwargsToString(const SoapySDR::Kwargs &kwargs);
+    static std::string kwargsToString(const SoapySDR::Kwargs &kwargs);
 };
 
-%template(byteToString) TypeConversionInternal::SettingToString<int8_t>;
-%template(shortToString) TypeConversionInternal::SettingToString<int16_t>;
-%template(intToString) TypeConversionInternal::SettingToString<int32_t>;
-%template(longToString) TypeConversionInternal::SettingToString<int64_t>;
-%template(booleanToString) TypeConversionInternal::SettingToString<bool>;
-%template(floatToString) TypeConversionInternal::SettingToString<float>;
-%template(doubleToString) TypeConversionInternal::SettingToString<double>;
+%template(byteToString) TypeConversionInternal::settingToString<int8_t>;
+%template(shortToString) TypeConversionInternal::settingToString<int16_t>;
+%template(intToString) TypeConversionInternal::settingToString<int32_t>;
+%template(longToString) TypeConversionInternal::settingToString<int64_t>;
+%template(booleanToString) TypeConversionInternal::settingToString<bool>;
+%template(floatToString) TypeConversionInternal::settingToString<float>;
+%template(doubleToString) TypeConversionInternal::settingToString<double>;
 
-%template(stringToByte) TypeConversionInternal::StringToSetting<int8_t>;
-%template(stringToShort) TypeConversionInternal::StringToSetting<int16_t>;
-%template(stringToInt) TypeConversionInternal::StringToSetting<int32_t>;
-%template(stringToLong) TypeConversionInternal::StringToSetting<int64_t>;
-%template(stringToBoolean) TypeConversionInternal::StringToSetting<bool>;
-%template(stringToFloat) TypeConversionInternal::StringToSetting<float>;
-%template(stringToDouble) TypeConversionInternal::StringToSetting<double>;
+%template(stringToByte) TypeConversionInternal::stringToSetting<int8_t>;
+%template(stringToShort) TypeConversionInternal::stringToSetting<int16_t>;
+%template(stringToInt) TypeConversionInternal::stringToSetting<int32_t>;
+%template(stringToLong) TypeConversionInternal::stringToSetting<int64_t>;
+%template(stringToBoolean) TypeConversionInternal::stringToSetting<bool>;
+%template(stringToFloat) TypeConversionInternal::stringToSetting<float>;
+%template(stringToDouble) TypeConversionInternal::stringToSetting<double>;
 
 ////////////////////////////////////////////////////////////////////////
 // We need all STL declarations before the rename call
 ////////////////////////////////////////////////////////////////////////
 
 %template(StringList) std::vector<std::string>;
+%template(UnsignedList) std::vector<unsigned>;
 %template(SizeList) std::vector<size_t>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
