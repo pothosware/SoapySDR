@@ -199,18 +199,18 @@ namespace SoapySDR { namespace Java {
         // names trigger different typemaps.
         #define RX_STREAM_READ_FCNS(ctype, format) \
             inline SoapySDR::Java::StreamResult readArray( \
-                const ctype *buffer, \
+                ctype *outputBuffer, \
                 const size_t length, \
                 const long timeoutUs) \
             { \
-                return this->_read1D(buffer, length, timeoutUs, format); \
+                return this->_read1D(outputBuffer, length, timeoutUs, format); \
             } \
             inline SoapySDR::Java::StreamResult readBuffer( \
-                const ctype *nioBuffer, \
+                ctype *outputNIOBuffer, \
                 const size_t length, \
                 const long timeoutUs) \
             { \
-                return this->_read1D(nioBuffer, length, timeoutUs, format); \
+                return this->_read1D(outputNIOBuffer, length, timeoutUs, format); \
             }
 
         RX_STREAM_READ_FCNS(int8_t, SOAPY_SDR_CS8)

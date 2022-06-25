@@ -109,9 +109,10 @@
         $2 = size_t($input_numElems);
     }
     
-    %apply const ctype * { ctype * };
-    %apply (const ctype *buffer, const size_t length) { (ctype *buffer, const size_t length) };
-    %apply (const ctype *nioBuffer, const size_t length) { (ctype *nioBuffer, const size_t length) };
+    %apply const ctype * buffer { ctype * outputBuffer };
+    %apply const ctype * nioBuffer { ctype * outputNIOBuffer };
+    %apply (const ctype *buffer, const size_t length) { (ctype *outputBuffer, const size_t length) };
+    %apply (const ctype *nioBuffer, const size_t length) { (ctype *outputNIOBuffer, const size_t length) };
 %enddef
 
 BUFFER_TYPEMAPS(int8_t, jbyteArray, byte[], java.nio.ByteBuffer)
