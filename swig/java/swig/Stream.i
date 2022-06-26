@@ -158,9 +158,13 @@ BUFFER_TYPEMAPS(double, jdoubleArray, double[], java.nio.DoubleBuffer)
 %}
 
 %{
+#include "RxStream.hpp"
 #include "Stream.hpp"
+#include "TxStream.hpp"
 %}
 
 // TODO: figure out naming everything "write", may just need to put it in javacode
 
 %include "Stream.hpp"
+%include "RxStream.hpp"
+%include "TxStream.hpp"

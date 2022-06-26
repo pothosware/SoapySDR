@@ -1,10 +1,12 @@
-// Copyright (c) 2020-2022 Nicholas Corgan
+// Copyright (c) 2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #pragma once
 
 #include <SoapySDR/Constants.h>
+#include <SoapySDR/Errors.h>
 #include <SoapySDR/Formats.hpp>
+#include <SoapySDR/Logger.hpp>
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Types.hpp>
 #include <SoapySDR/Version.hpp>
