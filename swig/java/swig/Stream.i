@@ -45,7 +45,9 @@
     %typemap(jni) (const ctype *nioBuffer) "jobject"
     %typemap(jtype) (const ctype *nioBuffer) #nio_jtype_jstype
     %typemap(jstype) (const ctype *nioBuffer) #nio_jtype_jstype
-    %typemap(javain) (const ctype *nioBuffer) "$javainput"
+    %typemap(javain,
+             pre="if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");"
+            ) (const ctype *nioBuffer) "$javainput"
 
     %typemap(in) (const ctype *buffer, const size_t length) {
         const auto $input_numElems = jenv->GetArrayLength($input);
@@ -58,7 +60,7 @@
         void * $input_buffer = jenv->GetPrimitiveArrayCritical($input, nullptr);
         if(not $input_buffer)
         {
-            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed");
+            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed.");
             return $null;
         }
 
@@ -77,7 +79,11 @@
         void * $input_buffer = nullptr;
         size_t $input_numElems = 0;
 
-        printf("%zu %zu\n", size_t($input_jbytes), size_t($input_elemSize));
+        if($input_jbytes < 0)
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "Invalid NIO buffer.");
+            return $null;
+        }
 
         if(($input_jbytes % $input_elemSize) == 0)
         {
@@ -88,7 +94,7 @@
 
                 if(not $input_buffer)
                 {
-                    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed");
+                    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetDirectBufferAddress failed.");
                     return $null;
                 }
 
@@ -101,7 +107,7 @@
         }
         else
         {
-            std::string errorMsg = "Buffer size must be divisble by element size "+std::to_string($input_elemSize)+".";
+            std::string errorMsg = "NIO buffer size must be divisible by element size "+std::to_string($input_elemSize)+".";
             SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
         }
 
@@ -113,6 +119,14 @@
     %apply const ctype * nioBuffer { ctype * outputNIOBuffer };
     %apply (const ctype *buffer, const size_t length) { (ctype *outputBuffer, const size_t length) };
     %apply (const ctype *nioBuffer, const size_t length) { (ctype *outputNIOBuffer, const size_t length) };
+
+    // Apply everything to the non-const NIO buffer, but we need one-more check when reading.
+    %typemap(javain,
+             pre="
+             if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");
+             if(!$javainput.isReadOnly()) throw new java.lang.IllegalArgumentException(\"Cannot read into a read-only NIO buffer.\");
+             "
+            ) ctype *nioBuffer "$javainput"
 %enddef
 
 BUFFER_TYPEMAPS(int8_t, jbyteArray, byte[], java.nio.ByteBuffer)

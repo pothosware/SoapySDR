@@ -82,11 +82,9 @@ public class StreamingAPITest
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
-        // Test array and NIO buffer overloads. For the NIO buffer, test
-        // buffers allocated with each method, for the sake of thoroughness.
+        // Test array and NIO buffer overloads.
         var arr = new byte[mtu*2];
-        var buff = ByteBuffer.allocate(mtu*2);
-        var directBuff = ByteBuffer.allocateDirect(mtu*2);
+        var buff = ByteBuffer.allocateDirect(mtu*2);
 
         if(streamFormatMatches)
         {
@@ -98,9 +96,8 @@ public class StreamingAPITest
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
-            streamResult = txStream.writeBuffer(directBuff, params.timeNs, params.timeoutUs);
+            streamResult = txStream.readStatus(params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
-            assertEquals(0, streamResult.getNumSamples());
 
             // We should only be able to accept even-length buffers since we're writing
             // samples.
@@ -116,9 +113,18 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocate(mtu-1), params.timeNs, params.timeoutUs);
+                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeNs, params.timeoutUs);
                 });
-            assertTrue(buffWriteEx.getMessage().contains("interleaved"));
+            assertTrue(buffWriteEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocate(mtu), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
         }
         else
         {
@@ -163,8 +169,5 @@ public class StreamingAPITest
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
         testTxStreamWriteCS8(txStream, params, true);
-
-        assertEquals(ErrorCode.NOT_SUPPORTED, txStream.deactivate(params.streamFlags, params.timeNs));
-        assertFalse(txStream.active());
     }
 }
