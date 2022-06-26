@@ -88,7 +88,17 @@ public class StreamingAPITest
 
         if(streamFormatMatches)
         {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
             var streamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -161,7 +171,17 @@ public class StreamingAPITest
 
         if(streamFormatMatches)
         {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
             var streamResult = rxStream.readArray(arr, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(arr, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
