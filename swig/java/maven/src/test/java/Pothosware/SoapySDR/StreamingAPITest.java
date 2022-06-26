@@ -146,6 +146,85 @@ public class StreamingAPITest
         }
     }
 
+    // TODO: generic if I figure it out
+    private void testRxStreamWriteCS8(
+        RxStream rxStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        // Test array and NIO buffer overloads.
+        var arr = new byte[mtu*2];
+        var buff = ByteBuffer.allocateDirect(mtu*2);
+
+        if(streamFormatMatches)
+        {
+            var streamResult = rxStream.readArray(arr, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = rxStream.readBuffer(buff, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readArray(new byte[mtu-1], params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains("interleaved"));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocate(mtu), params.timeoutUs);
+                });
+            assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
+
+            // Make sure we can't read into a read-only buffer.
+            var readonlyBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocateDirect(mtu).asReadOnlyBuffer(), params.timeoutUs);
+                });
+            assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
+        }
+        else
+        {
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS8));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var badStreamResult = rxStream.readBuffer(buff, params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains(StreamFormat.CS8));
+        }
+    }
+
     //
     // Tests (TODO: generic if I figure it out)
     //
@@ -169,5 +248,26 @@ public class StreamingAPITest
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
         testTxStreamWriteCS8(txStream, params, true);
+    }
+
+    @Test
+    public void testRxStreamingCS8()
+    {
+        var device = getTestDevice();
+        var params = new TestParams();
+
+        //
+        // Test with single channel
+        //
+
+        var rxStream = device.setupRxStream(StreamFormat.CS8, params.oneChannel, params.streamArgsMap);
+        assertEquals(StreamFormat.CS8, rxStream.getFormat());
+        // TODO: compare channels when stream returns int[]
+        assertEquals(params.streamArgsMap, rxStream.getArgs());
+        assertFalse(rxStream.active());
+
+        assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
+
+        testRxStreamWriteCS8(rxStream, params, true);
     }
 }
