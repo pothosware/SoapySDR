@@ -8,6 +8,8 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
 
+#include <jni.h>
+
 #include <cassert>
 #include <stdexcept>
 #include <utility>
@@ -53,11 +55,11 @@ public:
             return this->_write1D(nioBuffer, length, timeNs, timeoutUs, format); \
         }
 
-    TX_STREAM_WRITE_FCNS(int8_t, SOAPY_SDR_CS8)
-    TX_STREAM_WRITE_FCNS(short, SOAPY_SDR_CS16)
-    TX_STREAM_WRITE_FCNS(int, SOAPY_SDR_CS32)
-    TX_STREAM_WRITE_FCNS(float, SOAPY_SDR_CF32)
-    TX_STREAM_WRITE_FCNS(double, SOAPY_SDR_CF64)
+    TX_STREAM_WRITE_FCNS(jbyte, SOAPY_SDR_CS8)
+    TX_STREAM_WRITE_FCNS(jshort, SOAPY_SDR_CS16)
+    TX_STREAM_WRITE_FCNS(jint, SOAPY_SDR_CS32)
+    TX_STREAM_WRITE_FCNS(jfloat, SOAPY_SDR_CF32)
+    TX_STREAM_WRITE_FCNS(jdouble, SOAPY_SDR_CF64)
 
     StreamResult readStatus(const long timeoutUs)
     {

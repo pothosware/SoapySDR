@@ -8,6 +8,8 @@
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
 
+#include <jni.h>
+
 #include <cassert>
 #include <stdexcept>
 #include <utility>
@@ -51,11 +53,11 @@ public:
             return this->_read1D(outputNIOBuffer, length, timeoutUs, format); \
         }
 
-    RX_STREAM_READ_FCNS(int8_t, SOAPY_SDR_CS8)
-    RX_STREAM_READ_FCNS(short, SOAPY_SDR_CS16)
-    RX_STREAM_READ_FCNS(int, SOAPY_SDR_CS32)
-    RX_STREAM_READ_FCNS(float, SOAPY_SDR_CF32)
-    RX_STREAM_READ_FCNS(double, SOAPY_SDR_CF64)
+    RX_STREAM_READ_FCNS(jbyte, SOAPY_SDR_CS8)
+    RX_STREAM_READ_FCNS(jshort, SOAPY_SDR_CS16)
+    RX_STREAM_READ_FCNS(jint, SOAPY_SDR_CS32)
+    RX_STREAM_READ_FCNS(jfloat, SOAPY_SDR_CF32)
+    RX_STREAM_READ_FCNS(jdouble, SOAPY_SDR_CF64)
 
 private:
     template <typename T>

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Constants.hpp"
+#include "StreamExecutionPolicy.hpp"
 
 #include <SoapySDR/Constants.h>
 #include <SoapySDR/Device.hpp>
@@ -93,6 +94,16 @@ public:
         return _active;
     }
 
+    inline StreamExecutionPolicy getExecutionPolicy(void) const
+    {
+        return _executionPolicy;
+    }
+
+    inline void setExecutionPolicy(const StreamExecutionPolicy executionPolicy)
+    {
+        _executionPolicy = executionPolicy;
+    }
+
     ErrorCode activate(
         const int flags = 0,
         const long long timeNs = 0,
@@ -110,6 +121,7 @@ protected:
     const std::vector<size_t> _channels;
     const SoapySDR::Kwargs _args;
 
+    StreamExecutionPolicy _executionPolicy{StreamExecutionPolicy::EFFICIENT};
     bool _active{false};
 };
 }}

@@ -1,6 +1,10 @@
 // Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+%{
+#include "BufferHandling.hpp"
+%}
+
 // TODO: ignore NativeStreamFormat setters
 %nodefaultctor SoapySDR::Java::NativeStreamFormat;
 %nodefaultctor SoapySDR::Java::StreamFormat;
@@ -50,26 +54,22 @@
             ) (const ctype *nioBuffer) "$javainput"
 
     %typemap(in) (const ctype *buffer, const size_t length) {
-        const auto $input_numElems = jenv->GetArrayLength($input);
-        if($input_numElems % 2)
+        $1 = SoapySDR::Java::get1DArray<ctype>(jenv, $input, arg1->getExecutionPolicy(), $2);
+        if((not $1) or ($2 == 0))
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "Failed to get native array pointer.");
+            return $null;
+        }
+        else if ($2 % 2)
         {
             SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "Buffers for interleaved samples must be of even length.");
+            SoapySDR::Java::release1DArray(jenv, $input, arg1->getExecutionPolicy(), $1);
             return $null;
         }
-
-        void * $input_buffer = jenv->GetPrimitiveArrayCritical($input, nullptr);
-        if(not $input_buffer)
-        {
-            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "GetPrimitiveArrayCritical failed.");
-            return $null;
-        }
-
-        $1 = (ctype *)$input_buffer;
-        $2 = size_t($input_numElems);
     }
 
     %typemap(freearg) (const ctype *buffer, const size_t length) {
-        jenv->ReleasePrimitiveArrayCritical($input, $1, 0);
+        SoapySDR::Java::release1DArray(jenv, $input, arg1->getExecutionPolicy(), $1);
     }
 
     %typemap(in) (const ctype *nioBuffer, const size_t length) {
@@ -129,11 +129,11 @@
             ) ctype *nioBuffer "$javainput"
 %enddef
 
-BUFFER_TYPEMAPS(int8_t, jbyteArray, byte[], java.nio.ByteBuffer)
-BUFFER_TYPEMAPS(short, jshortArray, short[], java.nio.ShortBuffer)
-BUFFER_TYPEMAPS(int, jintArray, int[], java.nio.IntBuffer)
-BUFFER_TYPEMAPS(float, jfloatArray, float[], java.nio.FloatBuffer)
-BUFFER_TYPEMAPS(double, jdoubleArray, double[], java.nio.DoubleBuffer)
+BUFFER_TYPEMAPS(jbyte, jbyteArray, byte[], java.nio.ByteBuffer)
+BUFFER_TYPEMAPS(jshort, jshortArray, short[], java.nio.ShortBuffer)
+BUFFER_TYPEMAPS(jint, jintArray, int[], java.nio.IntBuffer)
+BUFFER_TYPEMAPS(jfloat, jfloatArray, float[], java.nio.FloatBuffer)
+BUFFER_TYPEMAPS(jdouble, jdoubleArray, double[], java.nio.DoubleBuffer)
 
 // This should be fine for derived classes to use.
 %typemap(javacode) SoapySDR::Java::Stream
@@ -165,6 +165,7 @@ BUFFER_TYPEMAPS(double, jdoubleArray, double[], java.nio.DoubleBuffer)
 
 // TODO: figure out naming everything "write", may just need to put it in javacode
 
+%include "StreamExecutionPolicy.hpp"
 %include "Stream.hpp"
 %include "RxStream.hpp"
 %include "TxStream.hpp"
