@@ -58,6 +58,11 @@ jobs:
                 git clone https://github.com/bluebird75/luaunit -b LUAUNIT_V3_4
                 sudo mkdir -p /usr/local/share/lua/5.1
                 sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
+
+                # The version of Maven shipped with Ubuntu 20.04 is bugged.
+                # See: https://askubuntu.com/questions/1367854/when-compiling-a-project-maven-throws-an-error
+                wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+                tar xzf apache-maven-3.8.6-bin.tar.gz
           - name: Build SoapySDR
             run: |
                 mkdir -p ${{github.workspace}}/build
@@ -103,6 +108,10 @@ jobs:
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))'
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
+          - name: Build and test Java bindings
+            run: |
+                cd ${{github.workspace}}/swig/java/maven
+                export PATH=$PATH:${{github.workspace}}/apache-maven-3.8.6/bin mvn test
     osx-ci:
         name: OS X
         runs-on: macos-latest
