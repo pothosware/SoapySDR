@@ -25,9 +25,9 @@ public class TimeConversionTest
         // For some reason, @RepeatedTest wasn't working
         for(int i = 0; i < 100; ++i)
         {
+            long timeNs = java.lang.Math.abs(rng.nextLong());
             for(double rate: rates)
             {
-                long timeNs = java.lang.Math.abs(rng.nextLong());
                 long ticks = Time.timeNsToTicks(timeNs, rate);
                 long timeNsOut = Time.ticksToTimeNs(ticks, rate);
 
@@ -43,9 +43,9 @@ public class TimeConversionTest
         // For some reason, @RepeatedTest wasn't working
         for(int i = 0; i < 100; ++i)
         {
+            long ticks = java.lang.Math.abs(rng.nextLong()) >> 8;
             for(double rate: rates)
             {
-                long ticks = java.lang.Math.abs(rng.nextLong());
                 long timeNs = Time.ticksToTimeNs(ticks, rate);
                 long ticksOut = Time.timeNsToTicks(timeNs, rate);
                 assertEquals(ticks, ticksOut);
