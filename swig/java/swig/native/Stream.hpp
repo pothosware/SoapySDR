@@ -30,7 +30,12 @@ enum class StreamFlags
     END_ABRUPT     = (1 << 3),
     ONE_PACKET     = (1 << 4),
     MORE_FRAGMENTS = (1 << 5),
-    WAIT_TRIGGER   = (1 << 6)
+    WAIT_TRIGGER   = (1 << 6),
+    USER_FLAG0     = (1 << 16),
+    USER_FLAG1     = (1 << 17),
+    USER_FLAG2     = (1 << 18),
+    USER_FLAG3     = (1 << 19),
+    USER_FLAG4     = (1 << 20),
 };
 
 struct StreamResult
