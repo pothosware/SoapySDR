@@ -40,18 +40,11 @@
 // to copy buffers.
 //
 
-%define BUFFER_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype, nio_jtype_jstype)
+%define ARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
     %typemap(jni) (const ctype *buffer) #arr_jnitype
     %typemap(jtype) (const ctype *buffer) #arr_jtype_jstype
     %typemap(jstype) (const ctype *buffer) #arr_jtype_jstype
     %typemap(javain) (const ctype *buffer) "$javainput"
-
-    %typemap(jni) (const ctype *nioBuffer) "jobject"
-    %typemap(jtype) (const ctype *nioBuffer) #nio_jtype_jstype
-    %typemap(jstype) (const ctype *nioBuffer) #nio_jtype_jstype
-    %typemap(javain,
-             pre="if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");"
-            ) (const ctype *nioBuffer) "$javainput"
 
     %typemap(in) (const ctype *buffer, const size_t length) {
         $1 = SoapySDR::Java::get1DArray<ctype>(jenv, $input, arg1->getExecutionPolicy(), $2);
@@ -72,6 +65,28 @@
         SoapySDR::Java::release1DArray(jenv, $input, arg1->getExecutionPolicy(), $1);
     }
 
+    %apply const ctype * buffer { ctype * outputBuffer };
+    %apply (const ctype *buffer, const size_t length) { (ctype *outputBuffer, const size_t length) };
+%enddef
+
+%define NIO_BUFFER_TYPEMAPS(ctype, nio_jtype_jstype)
+    %typemap(jni) (const ctype *nioBuffer) "jobject"
+    %typemap(jtype) (const ctype *nioBuffer) #nio_jtype_jstype
+    %typemap(jstype) (const ctype *nioBuffer) #nio_jtype_jstype
+    %typemap(javain,
+             pre="if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");"
+            ) (const ctype *nioBuffer) "$javainput"
+
+    %typemap(jni) (ctype *outputNIOBuffer) "jobject"
+    %typemap(jtype) (ctype *outputNIOBuffer) #nio_jtype_jstype
+    %typemap(jstype) (ctype *outputNIOBuffer) #nio_jtype_jstype
+    %typemap(javain,
+             pre="
+             if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");
+             if($javainput.isReadOnly()) throw new java.lang.IllegalArgumentException(\"Cannot read into a read-only NIO buffer.\");
+             "
+            ) (ctype *outputNIOBuffer) "$javainput"
+            
     %typemap(in) (const ctype *nioBuffer, const size_t length) {
         const auto $input_jbytes = jenv->GetDirectBufferCapacity($input);
         const size_t $input_elemSize = SoapySDR::formatToSize(arg1->getFormat()); // arg1 should always be the stream class
@@ -114,19 +129,13 @@
         $1 = (ctype *)$input_buffer;
         $2 = size_t($input_numElems);
     }
-    
-    %apply const ctype * buffer { ctype * outputBuffer };
-    %apply const ctype * nioBuffer { ctype * outputNIOBuffer };
-    %apply (const ctype *buffer, const size_t length) { (ctype *outputBuffer, const size_t length) };
-    %apply (const ctype *nioBuffer, const size_t length) { (ctype *outputNIOBuffer, const size_t length) };
 
-    // Apply everything to the non-const NIO buffer, but we need one-more check when reading.
-    %typemap(javain,
-             pre="
-             if(!$javainput.isDirect()) throw new java.lang.IllegalArgumentException(\"The given NIO buffer must be direct.\");
-             if(!$javainput.isReadOnly()) throw new java.lang.IllegalArgumentException(\"Cannot read into a read-only NIO buffer.\");
-             "
-            ) ctype *nioBuffer "$javainput"
+    %apply (const ctype *nioBuffer, const size_t length) { (ctype *outputNIOBuffer, const size_t length) };
+%enddef
+
+%define BUFFER_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype, nio_jtype_jstype)
+    ARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
+    NIO_BUFFER_TYPEMAPS(ctype, nio_jtype_jstype)
 %enddef
 
 BUFFER_TYPEMAPS(jbyte, jbyteArray, byte[], java.nio.ByteBuffer)
