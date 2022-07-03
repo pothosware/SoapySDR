@@ -30,7 +30,7 @@ public class StreamingAPITest
     // Utility
     //
 
-    private class TestParams
+    private static class TestParams
     {
         public int streamElems = 1024;
 
@@ -43,19 +43,24 @@ public class StreamingAPITest
         public int timeoutUs = 1000;
         public long numElems = 1024;
 
-        public byte[] byteArray = null;
+        public byte[] byte1DArray = null;
+        public byte[][] byte2DArray = null;
         public ByteBuffer byteBuffer = null;
 
-        public short[] shortArray = null;
+        public short[] short1DArray = null;
+        public short[][] short2DArray = null;
         public ShortBuffer shortBuffer = null;
 
-        public int[] intArray = null;
+        public int[] int1DArray = null;
+        public int[][] int2DArray = null;
         public IntBuffer intBuffer = null;
 
-        public float[] floatArray = null;
+        public float[] float1DArray = null;
+        public float[][] float2DArray = null;
         public FloatBuffer floatBuffer = null;
 
-        public double[] doubleArray = null;
+        public double[] double1DArray = null;
+        public double[][] double2DArray = null;
         public DoubleBuffer doubleBuffer = null;
 
         public TestParams()
@@ -66,26 +71,43 @@ public class StreamingAPITest
             streamFlags.add(StreamFlags.HAS_TIME);
             streamFlags.add(StreamFlags.END_BURST);
 
-            byteArray = new byte[streamElems];
+            byte1DArray = new byte[streamElems];
+            byte2DArray = new byte[2][];
+            byte2DArray[0] = new byte[streamElems];
+            byte2DArray[1] = new byte[streamElems];
             byteBuffer = ByteBuffer.allocateDirect(streamElems);
 
             //
             // For some reason, only ByteBuffer has allocateDirect
             //
 
-            shortArray = new short[streamElems*2];
+            short1DArray = new short[streamElems*2];
+            short2DArray = new short[2][];
+            short2DArray[0] = new short[streamElems];
+            short2DArray[1] = new short[streamElems];
             shortBuffer = ByteBuffer.allocateDirect(streamElems*2*2).asShortBuffer();
 
-            intArray = new int[streamElems*2];
+            int1DArray = new int[streamElems*2];
+            int2DArray = new int[2][];
+            int2DArray[0] = new int[streamElems];
+            int2DArray[1] = new int[streamElems];
             intBuffer = ByteBuffer.allocateDirect(streamElems*2*4).asIntBuffer();
 
-            floatArray = new float[streamElems*2];
+            float1DArray = new float[streamElems*2];
+            float2DArray = new float[2][];
+            float2DArray[0] = new float[streamElems];
+            float2DArray[1] = new float[streamElems];
             floatBuffer = ByteBuffer.allocateDirect(streamElems*2*4).asFloatBuffer();
 
-            doubleArray = new double[streamElems*2];
+            double1DArray = new double[streamElems*2];
+            double2DArray = new double[2][];
+            double2DArray[0] = new double[streamElems];
+            double2DArray[1] = new double[streamElems];
             doubleBuffer = ByteBuffer.allocateDirect(streamElems*2*8).asDoubleBuffer();
         }
     }
+
+    private static TestParams params = new TestParams();
 
     private void testDeviceKeys(Device device)
     {
@@ -115,7 +137,6 @@ public class StreamingAPITest
 
     private void testTxStreamWriteCS8(
         TxStream txStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)txStream.getMTU();
@@ -126,14 +147,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.byte1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.byte1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -177,7 +198,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.byte1DArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS8));
 
@@ -193,7 +214,6 @@ public class StreamingAPITest
 
     private void testRxStreamReadCS8(
         RxStream rxStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)rxStream.getMTU();
@@ -204,14 +224,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(params.byteArray, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.byte1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(params.byteArray, params.timeoutUs);
+            streamResult = rxStream.readArray(params.byte1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -261,7 +281,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    rxStream.readArray(params.byteArray, params.timeoutUs);
+                    rxStream.readArray(params.byte1DArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS8));
 
@@ -281,7 +301,6 @@ public class StreamingAPITest
 
     private void testTxStreamWriteCS16(
         TxStream txStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)txStream.getMTU();
@@ -292,14 +311,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.short1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.short1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -343,7 +362,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.short1DArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS16));
 
@@ -359,7 +378,6 @@ public class StreamingAPITest
 
     private void testRxStreamReadCS16(
         RxStream rxStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)rxStream.getMTU();
@@ -370,14 +388,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(params.shortArray, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.short1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(params.shortArray, params.timeoutUs);
+            streamResult = rxStream.readArray(params.short1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -427,7 +445,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    rxStream.readArray(params.shortArray, params.timeoutUs);
+                    rxStream.readArray(params.short1DArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS16));
 
@@ -447,7 +465,6 @@ public class StreamingAPITest
 
     private void testTxStreamWriteCS32(
         TxStream txStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)txStream.getMTU();
@@ -458,14 +475,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.int1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.int1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -509,7 +526,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.int1DArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS32));
 
@@ -525,7 +542,6 @@ public class StreamingAPITest
 
     private void testRxStreamReadCS32(
         RxStream rxStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)rxStream.getMTU();
@@ -536,14 +552,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(params.intArray, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.int1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(params.intArray, params.timeoutUs);
+            streamResult = rxStream.readArray(params.int1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -593,7 +609,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    rxStream.readArray(params.intArray, params.timeoutUs);
+                    rxStream.readArray(params.int1DArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS32));
 
@@ -613,7 +629,6 @@ public class StreamingAPITest
 
     private void testTxStreamWriteCF32(
         TxStream txStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)txStream.getMTU();
@@ -624,14 +639,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.float1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.float1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -675,7 +690,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.float1DArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF32));
 
@@ -691,7 +706,6 @@ public class StreamingAPITest
 
     private void testRxStreamReadCF32(
         RxStream rxStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)rxStream.getMTU();
@@ -702,14 +716,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(params.floatArray, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.float1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(params.floatArray, params.timeoutUs);
+            streamResult = rxStream.readArray(params.float1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -759,7 +773,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    rxStream.readArray(params.floatArray, params.timeoutUs);
+                    rxStream.readArray(params.float1DArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CF32));
 
@@ -779,7 +793,6 @@ public class StreamingAPITest
 
     private void testTxStreamWriteCF64(
         TxStream txStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)txStream.getMTU();
@@ -790,14 +803,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.double1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.double1DArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -841,7 +854,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.double1DArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF64));
 
@@ -857,7 +870,6 @@ public class StreamingAPITest
 
     private void testRxStreamReadCF64(
         RxStream rxStream,
-        TestParams params,
         boolean streamFormatMatches)
     {
         var mtu = (int)rxStream.getMTU();
@@ -868,14 +880,14 @@ public class StreamingAPITest
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(params.doubleArray, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.double1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(params.doubleArray, params.timeoutUs);
+            streamResult = rxStream.readArray(params.double1DArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -925,7 +937,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    rxStream.readArray(params.doubleArray, params.timeoutUs);
+                    rxStream.readArray(params.double1DArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CF64));
 
@@ -946,7 +958,6 @@ public class StreamingAPITest
     private void testTxStreaming(String format)
     {
         var device = getTestDevice();
-        var params = new TestParams();
 
         //
         // Test with single channel
@@ -960,11 +971,11 @@ public class StreamingAPITest
 
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
-        testTxStreamWriteCS8(txStream, params, format.equals(StreamFormat.CS8));
-        testTxStreamWriteCS16(txStream, params, format.equals(StreamFormat.CS16));
-        testTxStreamWriteCS32(txStream, params, format.equals(StreamFormat.CS32));
-        testTxStreamWriteCF32(txStream, params, format.equals(StreamFormat.CF32));
-        testTxStreamWriteCF64(txStream, params, format.equals(StreamFormat.CF64));
+        testTxStreamWriteCS8(txStream, format.equals(StreamFormat.CS8));
+        testTxStreamWriteCS16(txStream, format.equals(StreamFormat.CS16));
+        testTxStreamWriteCS32(txStream, format.equals(StreamFormat.CS32));
+        testTxStreamWriteCF32(txStream, format.equals(StreamFormat.CF32));
+        testTxStreamWriteCF64(txStream, format.equals(StreamFormat.CF64));
     }
 
     // For some reason, parameterized tests weren't working.

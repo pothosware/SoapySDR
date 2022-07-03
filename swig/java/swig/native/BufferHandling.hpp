@@ -7,8 +7,6 @@
 
 #include <jni.h>
 
-#include <vector>
-
 namespace SoapySDR { namespace Java {
 
 namespace detail {
@@ -43,6 +41,10 @@ _1DARRAYPOINTERFUNCS(jfloat, jfloatArray, GetFloatArrayElements, ReleaseFloatArr
 _1DARRAYPOINTERFUNCS(jdouble, jdoubleArray, GetDoubleArrayElements, ReleaseDoubleArrayElements)
 
 }
+
+//
+// 1D array
+//
 
 template <typename ElemType, typename Array>
 ElemType *get1DArray(
@@ -98,5 +100,13 @@ void release1DArray(
         break;
     }
 }
+
+//
+// 2D array
+//
+
+bool twoDimArrayLengthsMatch(
+    JNIEnv *jenv,
+    const jobjectArray &array);
 
 }}

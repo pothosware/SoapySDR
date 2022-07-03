@@ -2,6 +2,7 @@
 # There's enough native bridge code to warrant a separate library.
 ########################################################################
 set(SoapySDRJavaNative_srcs
+    BufferHandling.cpp
     Stream.cpp)
 
 configure_file(

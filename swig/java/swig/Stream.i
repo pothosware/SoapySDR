@@ -3,6 +3,7 @@
 
 %{
 #include "BufferHandling.hpp"
+#include "Imported2DArray.hpp"
 %}
 
 // TODO: ignore NativeStreamFormat setters
@@ -40,7 +41,7 @@
 // to copy buffers.
 //
 
-%define ARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
+%define _1DARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
     %typemap(jni) (const ctype *buffer) #arr_jnitype
     %typemap(jtype) (const ctype *buffer) #arr_jtype_jstype
     %typemap(jstype) (const ctype *buffer) #arr_jtype_jstype
@@ -67,6 +68,37 @@
 
     %apply const ctype * buffer { ctype * outputBuffer };
     %apply (const ctype *buffer, const size_t length) { (ctype *outputBuffer, const size_t length) };
+%enddef
+
+%define _2DARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
+    %typemap(jni) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) "jobjectArray"
+    %typemap(jtype) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) #arr_jtype_jstype
+    %typemap(jstype) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) #arr_jtype_jstype
+    %typemap(javain) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) "$javainput"
+
+    %typemap(in) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) {
+        if(not SoapySDR::Java::twoDimArrayLengthsMatch(jenv, $input))
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "For multi-channel operations, all inner arrays must be of the same length.");
+            return $null;
+        }
+
+        $1 = SoapySDR::Java::Imported2DArray<ctype, arr_jnitype>::import(
+            jenv,
+            $input,
+            arg1->getExecutionPolicy());
+        if($1->anyNull())
+        {
+            SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "Failed to get native inner array pointer.");
+            $1->releaseAll();
+            return $null;
+        }
+    }
+
+    %typemap(freearg) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) {
+        $1->releaseAll();
+        delete $1;
+    }
 %enddef
 
 %define NIO_BUFFER_TYPEMAPS(ctype, nio_jtype_jstype)
@@ -133,16 +165,17 @@
     %apply (const ctype *nioBuffer, const size_t length) { (ctype *outputNIOBuffer, const size_t length) };
 %enddef
 
-%define BUFFER_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype, nio_jtype_jstype)
-    ARRAY_TYPEMAPS(ctype, arr_jnitype, arr_jtype_jstype)
+%define BUFFER_TYPEMAPS(ctype, arr_jnitype, _1d_arr_jtype_jstype, _2d_arr_jtype_jstype, nio_jtype_jstype)
+    _1DARRAY_TYPEMAPS(ctype, arr_jnitype, _1d_arr_jtype_jstype)
+    _2DARRAY_TYPEMAPS(ctype, arr_jnitype, _2d_arr_jtype_jstype)
     NIO_BUFFER_TYPEMAPS(ctype, nio_jtype_jstype)
 %enddef
 
-BUFFER_TYPEMAPS(jbyte, jbyteArray, byte[], java.nio.ByteBuffer)
-BUFFER_TYPEMAPS(jshort, jshortArray, short[], java.nio.ShortBuffer)
-BUFFER_TYPEMAPS(jint, jintArray, int[], java.nio.IntBuffer)
-BUFFER_TYPEMAPS(jfloat, jfloatArray, float[], java.nio.FloatBuffer)
-BUFFER_TYPEMAPS(jdouble, jdoubleArray, double[], java.nio.DoubleBuffer)
+BUFFER_TYPEMAPS(jbyte, jbyteArray, byte[], byte[][], java.nio.ByteBuffer)
+BUFFER_TYPEMAPS(jshort, jshortArray, short[], short[][], java.nio.ShortBuffer)
+BUFFER_TYPEMAPS(jint, jintArray, int[], int[][], java.nio.IntBuffer)
+BUFFER_TYPEMAPS(jfloat, jfloatArray, float[], float[][], java.nio.FloatBuffer)
+BUFFER_TYPEMAPS(jdouble, jdoubleArray, double[], double[][], java.nio.DoubleBuffer)
 
 // This should be fine for derived classes to use.
 %typemap(javacode) SoapySDR::Java::Stream
