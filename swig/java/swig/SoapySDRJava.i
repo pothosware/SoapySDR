@@ -1,6 +1,8 @@
 // Copyright (c) 2021-2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
+// TODO: StreamFormatToSize
+
 %module(directors="1") SoapySDR
 %feature("compactdefaultargs");
 

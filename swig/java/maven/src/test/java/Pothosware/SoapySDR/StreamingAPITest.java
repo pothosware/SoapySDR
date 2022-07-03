@@ -32,6 +32,8 @@ public class StreamingAPITest
 
     private class TestParams
     {
+        public int streamElems = 1024;
+
         public int[] oneChannel = new int[]{0};
         public int[] twoChannels = new int[]{0,1};
         public String streamArgsString = "bufflen=8192,buffers=15";
@@ -41,6 +43,21 @@ public class StreamingAPITest
         public int timeoutUs = 1000;
         public long numElems = 1024;
 
+        public byte[] byteArray = null;
+        public ByteBuffer byteBuffer = null;
+
+        public short[] shortArray = null;
+        public ShortBuffer shortBuffer = null;
+
+        public int[] intArray = null;
+        public IntBuffer intBuffer = null;
+
+        public float[] floatArray = null;
+        public FloatBuffer floatBuffer = null;
+
+        public double[] doubleArray = null;
+        public DoubleBuffer doubleBuffer = null;
+
         public TestParams()
         {
             streamArgsMap.put("bufflen", "8192");
@@ -48,6 +65,25 @@ public class StreamingAPITest
 
             streamFlags.add(StreamFlags.HAS_TIME);
             streamFlags.add(StreamFlags.END_BURST);
+
+            byteArray = new byte[streamElems];
+            byteBuffer = ByteBuffer.allocateDirect(streamElems);
+
+            //
+            // For some reason, only ByteBuffer has allocateDirect
+            //
+
+            shortArray = new short[streamElems*2];
+            shortBuffer = ByteBuffer.allocateDirect(streamElems*2*2).asShortBuffer();
+
+            intArray = new int[streamElems*2];
+            intBuffer = ByteBuffer.allocateDirect(streamElems*2*4).asIntBuffer();
+
+            floatArray = new float[streamElems*2];
+            floatBuffer = ByteBuffer.allocateDirect(streamElems*2*4).asFloatBuffer();
+
+            doubleArray = new double[streamElems*2];
+            doubleBuffer = ByteBuffer.allocateDirect(streamElems*2*8).asDoubleBuffer();
         }
     }
 
@@ -73,7 +109,10 @@ public class StreamingAPITest
         return device;
     }
 
-    // TODO: generic if I figure it out
+    //
+    // CS8
+    //
+
     private void testTxStreamWriteCS8(
         TxStream txStream,
         TestParams params,
@@ -82,27 +121,23 @@ public class StreamingAPITest
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
-        // Test array and NIO buffer overloads.
-        var arr = new byte[mtu*2];
-        var buff = ByteBuffer.allocateDirect(mtu*2);
-
         if(streamFormatMatches)
         {
             // Pause the JNI and get the direct heap location to the buffer.
             txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
-            var streamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+            var streamResult = txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
-            streamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
-            streamResult = txStream.writeBuffer(buff, params.timeNs, params.timeoutUs);
+            streamResult = txStream.writeBuffer(params.byteBuffer, params.timeNs, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -115,7 +150,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeArray(new byte[mtu-1], params.timeNs, params.timeoutUs);
+                    txStream.writeArray(new byte[mtu-1], params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains("interleaved"));
 
@@ -123,7 +158,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeNs, params.timeoutUs);
+                    txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains("divisible"));
 
@@ -132,7 +167,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeBuffer(ByteBuffer.allocate(mtu), params.timeNs, params.timeoutUs);
+                    txStream.writeBuffer(ByteBuffer.allocate(mtu), params.timeNs, params.timeoutUs);
                 });
             assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
         }
@@ -142,7 +177,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                    txStream.writeArray(params.byteArray, params.timeNs, params.timeoutUs);
                 });
             assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS8));
 
@@ -150,13 +185,12 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = txStream.writeBuffer(buff, params.timeNs, params.timeoutUs);
+                    txStream.writeBuffer(params.byteBuffer, params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CS8));
         }
     }
 
-    // TODO: generic if I figure it out
     private void testRxStreamReadCS8(
         RxStream rxStream,
         TestParams params,
@@ -165,27 +199,23 @@ public class StreamingAPITest
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
-        // Test array and NIO buffer overloads.
-        var arr = new byte[mtu*2];
-        var buff = ByteBuffer.allocateDirect(mtu*2);
-
         if(streamFormatMatches)
         {
             // Pause the JNI and get the direct heap location to the buffer.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
             assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
-            var streamResult = rxStream.readArray(arr, params.timeoutUs);
+            var streamResult = rxStream.readArray(params.byteArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
             // Copy the array and operate on the copy.
             rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
             assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
-            streamResult = rxStream.readArray(arr, params.timeoutUs);
+            streamResult = rxStream.readArray(params.byteArray, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
-            streamResult = rxStream.readBuffer(buff, params.timeoutUs);
+            streamResult = rxStream.readBuffer(params.byteBuffer, params.timeoutUs);
             assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
             assertEquals(0, streamResult.getNumSamples());
 
@@ -195,7 +225,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readArray(new byte[mtu-1], params.timeoutUs);
+                    rxStream.readArray(new byte[mtu-1], params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains("interleaved"));
 
@@ -203,7 +233,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeoutUs);
+                    rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1), params.timeoutUs);
                 });
             assertTrue(buffReadEx.getMessage().contains("divisible"));
 
@@ -212,7 +242,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocate(mtu), params.timeoutUs);
+                    rxStream.readBuffer(ByteBuffer.allocate(mtu), params.timeoutUs);
                 });
             assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
 
@@ -221,7 +251,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readBuffer(ByteBuffer.allocateDirect(mtu).asReadOnlyBuffer(), params.timeoutUs);
+                    rxStream.readBuffer(params.byteBuffer.asReadOnlyBuffer(), params.timeoutUs);
                 });
             assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
         }
@@ -231,7 +261,7 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readArray(arr, params.timeoutUs);
+                    rxStream.readArray(params.byteArray, params.timeoutUs);
                 });
             assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS8));
 
@@ -239,18 +269,681 @@ public class StreamingAPITest
                 IllegalArgumentException.class,
                 () ->
                 {
-                    var badStreamResult = rxStream.readBuffer(buff, params.timeoutUs);
+                    rxStream.readBuffer(params.byteBuffer, params.timeoutUs);
                 });
             assertTrue(buffReadEx.getMessage().contains(StreamFormat.CS8));
         }
     }
 
     //
-    // Tests (TODO: generic if I figure it out)
+    // CS16
     //
 
-    @Test
-    public void testTxStreamingCS8()
+    private void testTxStreamWriteCS16(
+        TxStream txStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.writeBuffer(params.shortBuffer, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(new short[mtu-1], params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains("interleaved"));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1).asShortBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocate(mtu).asShortBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.shortArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS16));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(params.shortBuffer, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CS16));
+        }
+    }
+
+    private void testRxStreamReadCS16(
+        RxStream rxStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.shortArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.shortArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = rxStream.readBuffer(params.shortBuffer, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(new short[mtu-1], params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains("interleaved"));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1).asShortBuffer(), params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocate(mtu).asShortBuffer(), params.timeoutUs);
+                });
+            assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
+
+            // Make sure we can't read into a read-only buffer.
+            var readonlyBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.shortBuffer.asReadOnlyBuffer(), params.timeoutUs);
+                });
+            assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
+        }
+        else
+        {
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.shortArray, params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS16));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.shortBuffer, params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains(StreamFormat.CS16));
+        }
+    }
+
+    //
+    // CS32
+    //
+
+    private void testTxStreamWriteCS32(
+        TxStream txStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.writeBuffer(params.intBuffer, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(new int[mtu-1], params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains("interleaved"));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1).asIntBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocate(mtu).asIntBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.intArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS32));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(params.intBuffer, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CS32));
+        }
+    }
+
+    private void testRxStreamReadCS32(
+        RxStream rxStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.intArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.intArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = rxStream.readBuffer(params.intBuffer, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(new int[mtu-1], params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains("interleaved"));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1).asIntBuffer(), params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocate(mtu).asIntBuffer(), params.timeoutUs);
+                });
+            assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
+
+            // Make sure we can't read into a read-only buffer.
+            var readonlyBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.intBuffer.asReadOnlyBuffer(), params.timeoutUs);
+                });
+            assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
+        }
+        else
+        {
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.intArray, params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains(StreamFormat.CS32));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.intBuffer, params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains(StreamFormat.CS32));
+        }
+    }
+
+    //
+    // CF32
+    //
+
+    private void testTxStreamWriteCF32(
+        TxStream txStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.writeBuffer(params.floatBuffer, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(new float[mtu-1], params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains("interleaved"));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1).asFloatBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocate(mtu).asFloatBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.floatArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF32));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(params.floatBuffer, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CF32));
+        }
+    }
+
+    private void testRxStreamReadCF32(
+        RxStream rxStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.floatArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.floatArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = rxStream.readBuffer(params.floatBuffer, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(new float[mtu-1], params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains("interleaved"));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1).asFloatBuffer(), params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocate(mtu).asFloatBuffer(), params.timeoutUs);
+                });
+            assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
+
+            // Make sure we can't read floato a read-only buffer.
+            var readonlyBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.floatBuffer.asReadOnlyBuffer(), params.timeoutUs);
+                });
+            assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
+        }
+        else
+        {
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.floatArray, params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains(StreamFormat.CF32));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.floatBuffer, params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains(StreamFormat.CF32));
+        }
+    }
+
+    //
+    // CF64
+    //
+
+    private void testTxStreamWriteCF64(
+        TxStream txStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.writeBuffer(params.doubleBuffer, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(new double[mtu-1], params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains("interleaved"));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocateDirect(mtu-1).asDoubleBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(ByteBuffer.allocate(mtu).asDoubleBuffer(), params.timeNs, params.timeoutUs);
+                });
+            assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.doubleArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF64));
+
+            var buffWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeBuffer(params.doubleBuffer, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CF64));
+        }
+    }
+
+    private void testRxStreamReadCF64(
+        RxStream rxStream,
+        TestParams params,
+        boolean streamFormatMatches)
+    {
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.doubleArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the array and operate on the copy.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.doubleArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = rxStream.readBuffer(params.doubleBuffer, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should only be able to accept even-length buffers since we're writing
+            // samples.
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(new double[mtu-1], params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains("interleaved"));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocateDirect(mtu-1).asDoubleBuffer(), params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains("divisible"));
+
+            // We need the buffer to be direct so we can access the underlying memory through the JNI.
+            var indirectBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(ByteBuffer.allocate(mtu).asDoubleBuffer(), params.timeoutUs);
+                });
+            assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
+
+            // Make sure we can't read doubleo a read-only buffer.
+            var readonlyBuffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readBuffer(params.doubleBuffer.asReadOnlyBuffer(), params.timeoutUs);
+                });
+            assertTrue(readonlyBuffReadEx.getMessage().contains("read-only"));
+        }
+        else
+        {
+            var arrReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.doubleArray, params.timeoutUs);
+                });
+            assertTrue(arrReadEx.getMessage().contains(StreamFormat.CF64));
+
+            var buffReadEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                        rxStream.readBuffer(params.doubleBuffer, params.timeoutUs);
+                });
+            assertTrue(buffReadEx.getMessage().contains(StreamFormat.CF64));
+        }
+    }
+
+    //
+    // Tests
+    //
+
+    private void testTxStreaming(String format)
     {
         var device = getTestDevice();
         var params = new TestParams();
@@ -259,35 +952,50 @@ public class StreamingAPITest
         // Test with single channel
         //
 
-        var txStream = device.setupTxStream(StreamFormat.CS8, params.oneChannel, params.streamArgsMap);
-        assertEquals(StreamFormat.CS8, txStream.getFormat());
+        var txStream = device.setupTxStream(format, params.oneChannel, params.streamArgsMap);
+        assertEquals(format, txStream.getFormat());
         // TODO: compare channels when stream returns int[]
         assertEquals(params.streamArgsMap, txStream.getArgs());
         assertFalse(txStream.active());
 
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
-        testTxStreamWriteCS8(txStream, params, true);
+        testTxStreamWriteCS8(txStream, params, format.equals(StreamFormat.CS8));
+        testTxStreamWriteCS16(txStream, params, format.equals(StreamFormat.CS16));
+        testTxStreamWriteCS32(txStream, params, format.equals(StreamFormat.CS32));
+        testTxStreamWriteCF32(txStream, params, format.equals(StreamFormat.CF32));
+        testTxStreamWriteCF64(txStream, params, format.equals(StreamFormat.CF64));
+    }
+
+    // For some reason, parameterized tests weren't working.
+
+    @Test
+    public void testTxStreamingCS8()
+    {
+        testTxStreaming(StreamFormat.CS8);
     }
 
     @Test
-    public void testRxStreamingCS8()
+    public void testTxStreamingCS16()
     {
-        var device = getTestDevice();
-        var params = new TestParams();
+        testTxStreaming(StreamFormat.CS16);
+    }
 
-        //
-        // Test with single channel
-        //
+    @Test
+    public void testTxStreamingCS32()
+    {
+        testTxStreaming(StreamFormat.CS32);
+    }
 
-        var rxStream = device.setupRxStream(StreamFormat.CS8, params.oneChannel, params.streamArgsMap);
-        assertEquals(StreamFormat.CS8, rxStream.getFormat());
-        // TODO: compare channels when stream returns int[]
-        assertEquals(params.streamArgsMap, rxStream.getArgs());
-        assertFalse(rxStream.active());
+    @Test
+    public void testTxStreamingCF32()
+    {
+        testTxStreaming(StreamFormat.CF32);
+    }
 
-        assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
-
-        testRxStreamReadCS8(rxStream, params, true);
+    @Test
+    public void testTxStreamingCF64()
+    {
+        testTxStreaming(StreamFormat.CF64);
     }
 }
