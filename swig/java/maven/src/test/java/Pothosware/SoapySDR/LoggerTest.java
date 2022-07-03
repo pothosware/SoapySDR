@@ -58,12 +58,11 @@ public class LoggerTest
         LogLevel logLevel = LogLevel.CRITICAL;
         int intArg = 1351;
         float floatArg = 41.8F;
-        LocalTime localDateArg = LocalTime.now();
         String stringArg = "foobar";
 
         Logger.log(logLevel, "message");
         Logger.logf(logLevel, "message: %d", intArg);
-        Logger.logf(logLevel, "message: %d %f %s %s", intArg, floatArg, localDateArg, stringArg);
+        Logger.logf(logLevel, "message: %d %f %s", intArg, floatArg, stringArg);
     }
 
     @Test
