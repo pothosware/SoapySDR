@@ -4,7 +4,6 @@
 %module(directors="1") SoapySDR
 %feature("compactdefaultargs");
 
-%include "java_init.i"
 %include "soapy_common.i"
 %include "enums.swg"
 
