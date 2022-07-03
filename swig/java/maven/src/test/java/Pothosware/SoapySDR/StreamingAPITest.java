@@ -157,7 +157,7 @@ public class StreamingAPITest
     }
 
     // TODO: generic if I figure it out
-    private void testRxStreamWriteCS8(
+    private void testRxStreamReadCS8(
         RxStream rxStream,
         TestParams params,
         boolean streamFormatMatches)
@@ -288,6 +288,6 @@ public class StreamingAPITest
 
         assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
-        testRxStreamWriteCS8(rxStream, params, true);
+        testRxStreamReadCS8(rxStream, params, true);
     }
 }
