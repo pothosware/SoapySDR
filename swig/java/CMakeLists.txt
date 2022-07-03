@@ -41,6 +41,8 @@ if (NOT ENABLE_JAVA)
     return()
 endif()
 
+message(WARNING "This does not build the entire Java module and is only used as part of a Maven build.")
+
 ########################################################################
 # Build Module
 ########################################################################
