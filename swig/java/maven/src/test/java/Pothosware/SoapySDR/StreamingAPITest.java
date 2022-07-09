@@ -135,10 +135,12 @@ public class StreamingAPITest
     // CS8
     //
 
-    private void testTxStreamWriteCS8(
+    private void test1DTxStreamWriteCS8(
         TxStream txStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, txStream.getChannels().size());
+
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -212,10 +214,54 @@ public class StreamingAPITest
         }
     }
 
-    private void testRxStreamReadCS8(
+    private void test2DTxStreamWriteCS8(
+        TxStream txStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, txStream.getChannels().size());
+
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.byte2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.byte2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // TODO: bad 2D arrays
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.byte2DArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS8));
+        }
+    }
+
+    private void test1DRxStreamReadCS8(
         RxStream rxStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, rxStream.getChannels().size());
+
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -299,10 +345,12 @@ public class StreamingAPITest
     // CS16
     //
 
-    private void testTxStreamWriteCS16(
+    private void test1DTxStreamWriteCS16(
         TxStream txStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, txStream.getChannels().size());
+
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -376,10 +424,12 @@ public class StreamingAPITest
         }
     }
 
-    private void testRxStreamReadCS16(
+    private void test1DRxStreamReadCS16(
         RxStream rxStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, rxStream.getChannels().size());
+
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -463,10 +513,12 @@ public class StreamingAPITest
     // CS32
     //
 
-    private void testTxStreamWriteCS32(
+    private void test1DTxStreamWriteCS32(
         TxStream txStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, txStream.getChannels().size());
+
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -540,10 +592,12 @@ public class StreamingAPITest
         }
     }
 
-    private void testRxStreamReadCS32(
+    private void test1DRxStreamReadCS32(
         RxStream rxStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, rxStream.getChannels().size());
+
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -627,10 +681,12 @@ public class StreamingAPITest
     // CF32
     //
 
-    private void testTxStreamWriteCF32(
+    private void test1DTxStreamWriteCF32(
         TxStream txStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, txStream.getChannels().size());
+
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -704,10 +760,12 @@ public class StreamingAPITest
         }
     }
 
-    private void testRxStreamReadCF32(
+    private void test1DRxStreamReadCF32(
         RxStream rxStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, rxStream.getChannels().size());
+
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -791,10 +849,12 @@ public class StreamingAPITest
     // CF64
     //
 
-    private void testTxStreamWriteCF64(
+    private void test1DTxStreamWriteCF64(
         TxStream txStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, txStream.getChannels().size());
+
         var mtu = (int)txStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -868,10 +928,12 @@ public class StreamingAPITest
         }
     }
 
-    private void testRxStreamReadCF64(
+    private void test1DRxStreamReadCF64(
         RxStream rxStream,
         boolean streamFormatMatches)
     {
+        assertEquals(1, rxStream.getChannels().size());
+
         var mtu = (int)rxStream.getMTU();
         assertEquals(1024, mtu);
 
@@ -971,11 +1033,25 @@ public class StreamingAPITest
 
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
-        testTxStreamWriteCS8(txStream, format.equals(StreamFormat.CS8));
-        testTxStreamWriteCS16(txStream, format.equals(StreamFormat.CS16));
-        testTxStreamWriteCS32(txStream, format.equals(StreamFormat.CS32));
-        testTxStreamWriteCF32(txStream, format.equals(StreamFormat.CF32));
-        testTxStreamWriteCF64(txStream, format.equals(StreamFormat.CF64));
+        test1DTxStreamWriteCS8(txStream, format.equals(StreamFormat.CS8));
+        test1DTxStreamWriteCS16(txStream, format.equals(StreamFormat.CS16));
+        test1DTxStreamWriteCS32(txStream, format.equals(StreamFormat.CS32));
+        test1DTxStreamWriteCF32(txStream, format.equals(StreamFormat.CF32));
+        test1DTxStreamWriteCF64(txStream, format.equals(StreamFormat.CF64));
+
+        //
+        // Test with multiple channels
+        //
+
+        txStream = device.setupTxStream(format, params.twoChannels, params.streamArgsMap);
+        assertEquals(format, txStream.getFormat());
+        // TODO: compare channels when stream returns int[]
+        assertEquals(params.streamArgsMap, txStream.getArgs());
+        assertFalse(txStream.active());
+
+        assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
+
+        test2DTxStreamWriteCS8(txStream, format.equals(StreamFormat.CS8));
     }
 
     private void testRxStreaming(String format)
@@ -994,11 +1070,11 @@ public class StreamingAPITest
 
         assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
-        testRxStreamReadCS8(rxStream, format.equals(StreamFormat.CS8));
-        testRxStreamReadCS16(rxStream, format.equals(StreamFormat.CS16));
-        testRxStreamReadCS32(rxStream, format.equals(StreamFormat.CS32));
-        testRxStreamReadCF32(rxStream, format.equals(StreamFormat.CF32));
-        testRxStreamReadCF64(rxStream, format.equals(StreamFormat.CF64));
+        test1DRxStreamReadCS8(rxStream, format.equals(StreamFormat.CS8));
+        test1DRxStreamReadCS16(rxStream, format.equals(StreamFormat.CS16));
+        test1DRxStreamReadCS32(rxStream, format.equals(StreamFormat.CS32));
+        test1DRxStreamReadCF32(rxStream, format.equals(StreamFormat.CF32));
+        test1DRxStreamReadCF64(rxStream, format.equals(StreamFormat.CF64));
     }
 
     // For some reason, parameterized tests weren't working.
