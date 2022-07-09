@@ -978,6 +978,29 @@ public class StreamingAPITest
         testTxStreamWriteCF64(txStream, format.equals(StreamFormat.CF64));
     }
 
+    private void testRxStreaming(String format)
+    {
+        var device = getTestDevice();
+
+        //
+        // Test with single channel
+        //
+
+        var rxStream = device.setupRxStream(format, params.oneChannel, params.streamArgsMap);
+        assertEquals(format, rxStream.getFormat());
+        // TODO: compare channels when stream returns int[]
+        assertEquals(params.streamArgsMap, rxStream.getArgs());
+        assertFalse(rxStream.active());
+
+        assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
+
+        testRxStreamReadCS8(rxStream, format.equals(StreamFormat.CS8));
+        testRxStreamReadCS16(rxStream, format.equals(StreamFormat.CS16));
+        testRxStreamReadCS32(rxStream, format.equals(StreamFormat.CS32));
+        testRxStreamReadCF32(rxStream, format.equals(StreamFormat.CF32));
+        testRxStreamReadCF64(rxStream, format.equals(StreamFormat.CF64));
+    }
+
     // For some reason, parameterized tests weren't working.
 
     @Test
@@ -1008,5 +1031,35 @@ public class StreamingAPITest
     public void testTxStreamingCF64()
     {
         testTxStreaming(StreamFormat.CF64);
+    }
+
+    @Test
+    public void testRxStreamingCS8()
+    {
+        testRxStreaming(StreamFormat.CS8);
+    }
+
+    @Test
+    public void testRxStreamingCS16()
+    {
+        testRxStreaming(StreamFormat.CS16);
+    }
+
+    @Test
+    public void testRxStreamingCS32()
+    {
+        testRxStreaming(StreamFormat.CS32);
+    }
+
+    @Test
+    public void testRxStreamingCF32()
+    {
+        testRxStreaming(StreamFormat.CF32);
+    }
+
+    @Test
+    public void testRxStreamingCF64()
+    {
+        testRxStreaming(StreamFormat.CF64);
     }
 }
