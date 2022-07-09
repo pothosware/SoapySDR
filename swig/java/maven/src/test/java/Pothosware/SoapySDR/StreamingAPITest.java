@@ -758,7 +758,7 @@ public class StreamingAPITest
                 });
             assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
 
-            // Make sure we can't read floato a read-only buffer.
+            // Make sure we can't read into a read-only buffer.
             var readonlyBuffReadEx = assertThrows(
                 IllegalArgumentException.class,
                 () ->
@@ -922,7 +922,7 @@ public class StreamingAPITest
                 });
             assertTrue(indirectBuffReadEx.getMessage().contains("direct"));
 
-            // Make sure we can't read doubleo a read-only buffer.
+            // Make sure we can't read into a read-only buffer.
             var readonlyBuffReadEx = assertThrows(
                 IllegalArgumentException.class,
                 () ->
