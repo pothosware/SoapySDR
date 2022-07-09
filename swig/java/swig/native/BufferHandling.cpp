@@ -18,7 +18,11 @@ bool twoDimArrayLengthsMatch(
     {
         auto innerArr = (jarray)jenv->GetObjectArrayElement(array, i);
         const auto thisInnerDim = jenv->GetArrayLength(innerArr);
-        good = (i == 0) and (thisInnerDim == innerDim);
+
+        if(i == 0)
+            innerDim = thisInnerDim;
+        else
+            good = (thisInnerDim == innerDim);
 
         jenv->DeleteLocalRef(innerArr);
     }
