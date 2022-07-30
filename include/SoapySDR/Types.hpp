@@ -5,7 +5,7 @@
 ///
 /// \copyright
 /// Copyright (c) 2014-2021 Josh Blum
-///                    2021 Nicholas Corgan
+///               2021-2022 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -123,7 +123,7 @@ public:
     std::string units;
 
     //! The data type of the argument (required)
-    enum Type {BOOL, INT, FLOAT, STRING} type;
+    enum Type {BOOL, INT, FLOAT, STRING} type{STRING};
 
     /*!
      * The range of possible numeric values (optional)
