@@ -5,15 +5,12 @@
 #include <SoapySDR/Types.hpp>
 %}
 
-%include <attribute.i>
 %include <std_map.i>
 %include <std_string.i>
 
 //
 // ArgInfo
 //
-
-// TODO: ignore setters
 
 %typemap(javacode) SoapySDR::ArgInfo
 %{
@@ -60,16 +57,11 @@
 // Range
 //
 
-// TODO: docs
-%attribute(SoapySDR::Range, double, Minimum, minimum);
-%attribute(SoapySDR::Range, double, Maximum, maximum);
-%attribute(SoapySDR::Range, double, Step, step);
-
 %typemap(javacode) SoapySDR::Range
 %{
     @Override
     public String toString() {
-        return String.format("Range: min=%f, max=%f, step=%f", getMinimum(), getMaximum(), getStep());
+        return String.format("Range: min=%f, max=%f, step=%f", minimum(), maximum(), step());
     }
 
     @Override
@@ -81,9 +73,9 @@
     public int hashCode() {
         return new org.apache.commons.lang3.builder.HashCodeBuilder(1351, 4063)
             .append(getClass().getName())
-            .append(getMinimum())
-            .append(getMaximum())
-            .append(getStep())
+            .append(minimum())
+            .append(maximum())
+            .append(step())
             .toHashCode();
     }
 %}

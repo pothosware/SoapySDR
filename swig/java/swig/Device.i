@@ -5,7 +5,6 @@
 #include "Stream.hpp"
 %}
 
-%include <attribute.i>
 %include <std_pair.i>
 %include <stdint.i>
 %include <typemaps.i>

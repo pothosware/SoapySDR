@@ -84,19 +84,19 @@ public class SoapyTypesTest
     public void testRange()
     {
         Range range0Params = new Range();
-        assertEquals(0.0, range0Params.getMinimum());
-        assertEquals(0.0, range0Params.getMaximum());
-        assertEquals(0.0, range0Params.getStep());
+        assertEquals(0.0, range0Params.minimum());
+        assertEquals(0.0, range0Params.maximum());
+        assertEquals(0.0, range0Params.step());
 
         Range range2Params = new Range(1.0, 2.0);
-        assertEquals(1.0, range2Params.getMinimum());
-        assertEquals(2.0, range2Params.getMaximum());
-        assertEquals(0.0, range2Params.getStep());
+        assertEquals(1.0, range2Params.minimum());
+        assertEquals(2.0, range2Params.maximum());
+        assertEquals(0.0, range2Params.step());
 
         Range range3Params = new Range(3.0, 4.0, 0.1);
-        assertEquals(3.0, range3Params.getMinimum());
-        assertEquals(4.0, range3Params.getMaximum());
-        assertEquals(0.1, range3Params.getStep());
+        assertEquals(3.0, range3Params.minimum());
+        assertEquals(4.0, range3Params.maximum());
+        assertEquals(0.1, range3Params.step());
 
         Range range3Params2 = new Range(3.0, 4.0, 0.1);
         assertEquals(range3Params, range3Params2);
