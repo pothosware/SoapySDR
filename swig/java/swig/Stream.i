@@ -156,6 +156,7 @@
         {
             std::string errorMsg = "NIO buffer size must be divisible by element size "+std::to_string($input_elemSize)+".";
             SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, errorMsg.c_str());
+            return $null;
         }
 
         $1 = (ctype *)$input_buffer;
