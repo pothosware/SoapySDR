@@ -45,9 +45,14 @@
     %typemap(jni) (const ctype *buffer) #arr_jnitype
     %typemap(jtype) (const ctype *buffer) #arr_jtype_jstype
     %typemap(jstype) (const ctype *buffer) #arr_jtype_jstype
-    %typemap(javain) (const ctype *buffer) "$javainput"
+    %typemap(javain,
+        pre="
+            if($javainput == null) throw new NullPointerException(\"Null array\");
+        ") (const ctype *buffer) "$javainput"
 
     %typemap(in) (const ctype *buffer, const size_t length) {
+        assert($input);
+
         $1 = SoapySDR::Java::get1DArray<ctype>(jenv, $input, arg1->getExecutionPolicy(), $2);
         if((not $1) or ($2 == 0))
         {
@@ -63,7 +68,7 @@
     }
 
     %typemap(freearg) (const ctype *buffer, const size_t length) {
-        SoapySDR::Java::release1DArray(jenv, $input, arg1->getExecutionPolicy(), $1);
+        if($1) SoapySDR::Java::release1DArray(jenv, $input, arg1->getExecutionPolicy(), $1);
     }
 
     %apply const ctype * buffer { ctype * outputBuffer };
@@ -74,9 +79,18 @@
     %typemap(jni) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) "jobjectArray"
     %typemap(jtype) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) #arr_jtype_jstype
     %typemap(jstype) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) #arr_jtype_jstype
-    %typemap(javain) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) "$javainput"
+    %typemap(javain,
+        pre="
+            if($javainput == null) throw new NullPointerException(\"Null outer array\");
+            for(int chan = 0; chan < $javainput.length; ++chan)
+            {
+                if($javainput[chan] == null) throw new NullPointerException(\"Null array for channel \"+chan);
+            }
+        ") (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) "$javainput"
 
     %typemap(in) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) {
+        assert($input);
+
         if(not SoapySDR::Java::twoDimArrayLengthsMatch(jenv, $input))
         {
             SWIG_JavaThrowException(jenv, SWIG_JavaIllegalArgumentException, "For multi-channel operations, all inner arrays must be of the same length.");
@@ -96,8 +110,11 @@
     }
 
     %typemap(freearg) (const SoapySDR::Java::Imported2DArray<ctype, arr_jnitype> &) {
-        $1->releaseAll();
-        delete $1;
+        if($1)
+        {
+            $1->releaseAll();
+            delete $1;
+        }
     }
 %enddef
 
@@ -120,6 +137,8 @@
             ) (ctype *outputNIOBuffer) "$javainput"
             
     %typemap(in) (const ctype *nioBuffer, const size_t length) {
+        assert($input);
+
         const auto $input_jbytes = jenv->GetDirectBufferCapacity($input);
         const size_t $input_elemSize = SoapySDR::formatToSize(arg1->getFormat()); // arg1 should always be the stream class
 
