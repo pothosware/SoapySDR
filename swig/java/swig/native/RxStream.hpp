@@ -46,7 +46,7 @@ public:
         { \
             return this->_read1D(outputBuffer, length, timeoutUs, format); \
         } \
-        inline SoapySDR::Java::StreamResult writeArray( \
+        inline SoapySDR::Java::StreamResult readArray( \
             const SoapySDR::Java::Imported2DArray<ctype, arrtype> &array, \
             const long timeoutUs) \
         { \

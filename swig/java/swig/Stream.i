@@ -205,8 +205,6 @@ BUFFER_TYPEMAPS(jdouble, jdoubleArray, double[], double[][], java.nio.DoubleBuff
 #include "TxStream.hpp"
 %}
 
-// TODO: figure out naming everything "write", may just need to put it in javacode
-
 %include "StreamExecutionPolicy.hpp"
 %include "Stream.hpp"
 %include "RxStream.hpp"
