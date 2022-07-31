@@ -177,6 +177,14 @@ public class StreamingAPITest
                 });
             assertTrue(arrWriteEx.getMessage().contains("interleaved"));
 
+            // Make sure our null check works.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeArray((byte[])null, params.timeNs, params.timeoutUs);
+                });
+
             var buffWriteEx = assertThrows(
                 IllegalArgumentException.class,
                 () ->
@@ -193,6 +201,14 @@ public class StreamingAPITest
                     txStream.writeBuffer(ByteBuffer.allocate(mtu), params.timeNs, params.timeoutUs);
                 });
             assertTrue(indirectBuffWriteEx.getMessage().contains("direct"));
+
+            // Make sure our null check works.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeBuffer((ByteBuffer)null, params.timeNs, params.timeoutUs);
+                });
         }
         else
         {
