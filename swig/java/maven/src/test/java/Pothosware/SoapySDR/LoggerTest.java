@@ -24,19 +24,25 @@ public class LoggerTest
         {
             super();
             filepath = path;
+
+            try
+            {
+                printWriter = new PrintWriter(new BufferedWriter(new FileWriter(filepath, true)), true);
+            }
+            catch(IOException e)
+            {
+                System.err.println(e);
+            }
         }
 
         @Override
         public void log(LogLevel logLevel, String message)
         {
-            try
-            {
-                new PrintWriter(new BufferedWriter(new FileWriter(filepath, true))).println(logLevel.toString() + ": " + message);
-            }
-            catch(IOException e){}
+            printWriter.println(logLevel.toString() + ": " + message);
         }
 
-        private String filepath;
+        private String filepath = null;
+        private PrintWriter printWriter = null;
     }
 
     private class ExceptionLogger implements Logger.SoapyLogger
@@ -96,7 +102,14 @@ public class LoggerTest
         assertTrue(loggerFile.exists());
 
         // Make sure the expected contents were written once.
-        // TODO
+        var buffer = new char[512];
+        var fileReader = new FileReader(loggerFile);
+        var numRead = fileReader.read(buffer);
+        assertTrue(numRead > 0);
+
+        var expectedString = String.format("CRITICAL: message\nCRITICAL: message: %d\nCRITICAL: message: %d %f %s\n", 1351, 1351, 41.8F, "foobar");
+        var logString = new String(buffer, 0, numRead);
+        assertEquals(expectedString, logString);
     }
 
     @Test
