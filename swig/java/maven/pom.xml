@@ -67,7 +67,6 @@
                                 <option>-DENABLE_DOCS=OFF</option>
                                 <option>-DENABLE_APPS=OFF</option>
                                 <option>-DENABLE_TESTS=OFF</option>
-                                <option>-DCMAKE_BUILD_TYPE=Debug</option>
                             </options>
                         </configuration>
                     </execution>
