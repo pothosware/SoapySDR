@@ -67,11 +67,11 @@
     }
 %}
 
-// TODO: make SizeList private after figuring out the Stream getter
+// TODO: make SizeListInternal private after figuring out the Stream getter
 %typemap(jstype) const std::vector<size_t> &channels "int[]"
 %typemap(javain,
     pre="
-        var temp$javainput = new SizeList();
+        var temp$javainput = new SizeListInternal();
         for(int chan: $javainput)
             temp$javainput.add((long)chan);
     ",
@@ -82,13 +82,13 @@
 %typemap(jstype) const std::complex<double> & "org.apache.commons.math3.complex.Complex"
 %typemap(javain,
     pre="
-        ComplexDouble temp$javainput = new ComplexDouble($javainput.getReal(), $javainput.getImaginary());
+        ComplexDoubleInternal temp$javainput = new ComplexDoubleInternal($javainput.getReal(), $javainput.getImaginary());
     ",
     pgcppname="temp$javainput") const std::complex<double> & "$javaclassname.getCPtr(temp$javainput)"
 
 %typemap(jstype) std::complex<double> "org.apache.commons.math3.complex.Complex"
 %typemap(javaout) std::complex<double> {
-    ComplexDouble tempComplex = new ComplexDouble($jnicall, true);
+    ComplexDoubleInternal tempComplex = new ComplexDoubleInternal($jnicall, true);
 
     return new org.apache.commons.math3.complex.Complex(tempComplex.real(), tempComplex.imag());
 }
@@ -200,13 +200,13 @@ struct TypeConversionInternal
 ////////////////////////////////////////////////////////////////////////
 
 %template(StringList) std::vector<std::string>;
-%template(UnsignedList) std::vector<unsigned>;
-%template(SizeList) std::vector<size_t>;
+%template(UnsignedListInternal) std::vector<unsigned>;
+%template(SizeListInternal) std::vector<size_t>;
 %template(Kwargs) std::map<std::string, std::string>;
 %template(ArgInfoList) std::vector<SoapySDR::ArgInfo>;
 %template(KwargsList) std::vector<std::map<std::string, std::string>>;
 %template(RangeList) std::vector<SoapySDR::Range>;
-%template(ComplexDouble) std::complex<double>;
+%template(ComplexDoubleInternal) std::complex<double>;
 
 ////////////////////////////////////////////////////////////////////////
 // Environment variable hackery
