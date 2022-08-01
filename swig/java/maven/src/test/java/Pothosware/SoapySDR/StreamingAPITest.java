@@ -565,6 +565,91 @@ public class StreamingAPITest
         }
     }
 
+    private void test2DTxStreamWriteCS16(
+        TxStream txStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, txStream.getChannels().size());
+
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.short2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.short2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new short[txStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new short[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new short[txStream.getChannels().size()][];
+                    arr[0] = new short[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new short[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeArray((short[][])null, params.timeNs, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new short[txStream.getChannels().size()][];
+                    arr[0] = new short[mtu];
+                    arr[1] = null;
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.short2DArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS16));
+        }
+    }
+
     private void test1DRxStreamReadCS16(
         RxStream rxStream,
         boolean streamFormatMatches)
@@ -650,6 +735,88 @@ public class StreamingAPITest
         }
     }
 
+    private void test2DRxStreamReadCS16(
+        RxStream rxStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, rxStream.getChannels().size());
+
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.short2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.short2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new short[rxStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new short[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new short[rxStream.getChannels().size()][];
+                    arr[0] = new short[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new short[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    rxStream.readArray((short[][])null, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new short[rxStream.getChannels().size()][];
+                    arr[0] = new short[mtu];
+                    arr[1] = null;
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.short2DArray, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS16));
+        }
+    }
+
     //
     // CS32
     //
@@ -730,6 +897,91 @@ public class StreamingAPITest
                     txStream.writeBuffer(params.intBuffer, params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CS32));
+        }
+    }
+
+    private void test2DTxStreamWriteCS32(
+        TxStream txStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, txStream.getChannels().size());
+
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.int2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.int2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new int[txStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new int[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new int[txStream.getChannels().size()][];
+                    arr[0] = new int[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new int[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeArray((int[][])null, params.timeNs, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new int[txStream.getChannels().size()][];
+                    arr[0] = new int[mtu];
+                    arr[1] = null;
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.int2DArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS32));
         }
     }
 
@@ -818,6 +1070,88 @@ public class StreamingAPITest
         }
     }
 
+    private void test2DRxStreamReadCS32(
+        RxStream rxStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, rxStream.getChannels().size());
+
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.int2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.int2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new int[rxStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new int[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new int[rxStream.getChannels().size()][];
+                    arr[0] = new int[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new int[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    rxStream.readArray((int[][])null, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new int[rxStream.getChannels().size()][];
+                    arr[0] = new int[mtu];
+                    arr[1] = null;
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.int2DArray, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CS32));
+        }
+    }
+
     //
     // CF32
     //
@@ -898,6 +1232,91 @@ public class StreamingAPITest
                     txStream.writeBuffer(params.floatBuffer, params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CF32));
+        }
+    }
+
+    private void test2DTxStreamWriteCF32(
+        TxStream txStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, txStream.getChannels().size());
+
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.float2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.float2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new float[txStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new float[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new float[txStream.getChannels().size()][];
+                    arr[0] = new float[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new float[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeArray((float[][])null, params.timeNs, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new float[txStream.getChannels().size()][];
+                    arr[0] = new float[mtu];
+                    arr[1] = null;
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.float2DArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF32));
         }
     }
 
@@ -986,6 +1405,88 @@ public class StreamingAPITest
         }
     }
 
+    private void test2DRxStreamReadCF32(
+        RxStream rxStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, rxStream.getChannels().size());
+
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.float2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.float2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new float[rxStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new float[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new float[rxStream.getChannels().size()][];
+                    arr[0] = new float[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new float[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    rxStream.readArray((float[][])null, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new float[rxStream.getChannels().size()][];
+                    arr[0] = new float[mtu];
+                    arr[1] = null;
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.float2DArray, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF32));
+        }
+    }
+
     //
     // CF64
     //
@@ -1066,6 +1567,91 @@ public class StreamingAPITest
                     txStream.writeBuffer(params.doubleBuffer, params.timeNs, params.timeoutUs);
                 });
             assertTrue(buffWriteEx.getMessage().contains(StreamFormat.CF64));
+        }
+    }
+
+    private void test2DTxStreamWriteCF64(
+        TxStream txStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, txStream.getChannels().size());
+
+        var mtu = (int)txStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, txStream.getExecutionPolicy());
+            var streamResult = txStream.writeArray(params.double2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            txStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, txStream.getExecutionPolicy());
+            streamResult = txStream.writeArray(params.double2DArray, params.timeNs, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            streamResult = txStream.readStatus(params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new double[txStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new double[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new double[txStream.getChannels().size()][];
+                    arr[0] = new double[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new double[mtu];
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    txStream.writeArray((double[][])null, params.timeNs, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new double[txStream.getChannels().size()][];
+                    arr[0] = new double[mtu];
+                    arr[1] = null;
+
+                    txStream.writeArray(arr, params.timeNs, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    txStream.writeArray(params.double2DArray, params.timeNs, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF64));
         }
     }
 
@@ -1154,6 +1740,88 @@ public class StreamingAPITest
         }
     }
 
+    private void test2DRxStreamReadCF64(
+        RxStream rxStream,
+        boolean streamFormatMatches)
+    {
+        assertEquals(2, rxStream.getChannels().size());
+
+        var mtu = (int)rxStream.getMTU();
+        assertEquals(1024, mtu);
+
+        if(streamFormatMatches)
+        {
+            // Pause the JNI and get the direct heap location to the buffer.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.EFFICIENT);
+            assertEquals(StreamExecutionPolicy.EFFICIENT, rxStream.getExecutionPolicy());
+            var streamResult = rxStream.readArray(params.double2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // Copy the arrays and operate on the copies.
+            rxStream.setExecutionPolicy(StreamExecutionPolicy.THREAD_SAFE);
+            assertEquals(StreamExecutionPolicy.THREAD_SAFE, rxStream.getExecutionPolicy());
+            streamResult = rxStream.readArray(params.double2DArray, params.timeoutUs);
+            assertEquals(ErrorCode.NOT_SUPPORTED, streamResult.getErrorCode());
+            assertEquals(0, streamResult.getNumSamples());
+
+            // We should catch the wrong number of channels.
+            var wrongNumChansEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new double[rxStream.getChannels().size()+1][];
+                    for(int chan = 0; chan < arr.length; ++chan)
+                        arr[chan] = new double[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(wrongNumChansEx.getMessage().contains("Outer array dimension"));
+
+            // We should catch jagged arrays.
+            var jaggedArraysEx= assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    var arr = new double[rxStream.getChannels().size()][];
+                    arr[0] = new double[mtu+1];
+                    for(int chan = 1; chan < arr.length; ++chan)
+                        arr[chan] = new double[mtu];
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+            assertTrue(jaggedArraysEx.getMessage().contains("For multi-channel"));
+
+            // Make sure our null checks work.
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    rxStream.readArray((double[][])null, params.timeoutUs);
+                });
+            assertThrows(
+                NullPointerException.class,
+                () ->
+                {
+                    var arr = new double[rxStream.getChannels().size()][];
+                    arr[0] = new double[mtu];
+                    arr[1] = null;
+
+                    rxStream.readArray(arr, params.timeoutUs);
+                });
+        }
+        else
+        {
+            var arrWriteEx = assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                {
+                    rxStream.readArray(params.double2DArray, params.timeoutUs);
+                });
+            assertTrue(arrWriteEx.getMessage().contains(StreamFormat.CF64));
+        }
+    }
+
     //
     // Tests
     //
@@ -1193,6 +1861,10 @@ public class StreamingAPITest
         assertEquals(ErrorCode.NOT_SUPPORTED, txStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
         test2DTxStreamWriteCS8(txStream, format.equals(StreamFormat.CS8));
+        test2DTxStreamWriteCS16(txStream, format.equals(StreamFormat.CS16));
+        test2DTxStreamWriteCS32(txStream, format.equals(StreamFormat.CS32));
+        test2DTxStreamWriteCF32(txStream, format.equals(StreamFormat.CF32));
+        test2DTxStreamWriteCF64(txStream, format.equals(StreamFormat.CF64));
     }
 
     private void testRxStreaming(String format)
@@ -1230,6 +1902,10 @@ public class StreamingAPITest
         assertEquals(ErrorCode.NOT_SUPPORTED, rxStream.activate(params.streamFlags, params.timeNs, params.timeoutUs));
 
         test2DRxStreamReadCS8(rxStream, format.equals(StreamFormat.CS8));
+        test2DRxStreamReadCS16(rxStream, format.equals(StreamFormat.CS16));
+        test2DRxStreamReadCS32(rxStream, format.equals(StreamFormat.CS32));
+        test2DRxStreamReadCF32(rxStream, format.equals(StreamFormat.CF32));
+        test2DRxStreamReadCF64(rxStream, format.equals(StreamFormat.CF64));
     }
 
     // For some reason, parameterized tests weren't working.
