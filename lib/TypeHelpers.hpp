@@ -136,8 +136,9 @@ static inline SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
         out.units = toCString(info.units);
         out.type = SoapySDRArgInfoType(info.type);
         out.range = toRange(info.range);
-        out.options = toStrArray(info.options, &out.numOptions);
         out.optionNames = toStrArray(info.optionNames, &out.numOptions);
+        // do options after optionNames so correct numOptions is reported if no optionNames
+        out.options = toStrArray(info.options, &out.numOptions);
     }
     catch (const std::bad_alloc &)
     {
