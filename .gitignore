@@ -1,0 +1,2 @@
+# Ignore CMake generated output
+build/
