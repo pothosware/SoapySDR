@@ -320,7 +320,6 @@ jobs:
                 luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Error.TIMEOUT)"
                 luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))"
                 luajit -e "SoapySDR = require('SoapySDR'); print(SoapySDR.Device.new('driver=null'))"
-
     freebsd-ci:
         name: FreeBSD
         runs-on: macos-12
