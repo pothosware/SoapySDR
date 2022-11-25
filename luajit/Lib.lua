@@ -420,14 +420,19 @@ if not __internal.SoapySDR then
         void* SoapySDRDevice_getNativeDeviceHandle(const SoapySDRDevice *device);
     ]]
 
-    local libName = nil
-    if package.config:sub(1,1) == "/" then
-        libName = "libSoapySDR"
-    else
-        libName = "SoapySDR"
+    __internal.SoapySDR = nil
+
+    function loadSoapySDR(name)
+        __internal.SoapySDR = ffi.load(name, true)
     end
 
-    __internal.SoapySDR = ffi.load(libName, true)
+    if not pcall(loadSoapySDR, "SoapySDR") then
+        loadSoapySDR("libSoapySDR")
+    end
+
+    if not __internal.SoapySDR then
+        error("Failed to load SoapySDR library")
+    end
 end
 
 return __internal.SoapySDR

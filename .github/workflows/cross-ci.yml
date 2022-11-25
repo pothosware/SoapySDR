@@ -1,0 +1,45 @@
+name: Cross-compile CI
+on: [push, pull_request]
+jobs:
+    dockcross:
+        name: Dockcross
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    # TODO: restore with Android support branch
+                    #- image: android-x86_64
+                    #- image: android-arm64
+                    - image: linux-i686
+                    - image: linux-arm64
+                    - image: linux-ppc64le
+                    # Raspberry Pi
+                    - image: linux-armv6
+                    - image: linux-armv6-lts
+                    - image: linux-armv6-musl
+                    - image: linux-armv7
+                    - image: linux-armv7-lts
+                    # Beaglebone
+                    - image: linux-armv7a
+                    # Windows builds not natively supported by Github Actions
+                    - image: windows-static-x64
+                    - image: windows-static-x64-posix
+                    - image: windows-static-x86
+                    - image: windows-shared-x64
+                    - image: windows-shared-x64-posix
+                    - image: windows-shared-x86
+        steps:
+          - uses: actions/checkout@v2
+          - name: Install dependencies
+            run: |
+                git clone https://github.com/dockcross/dockcross
+          - name: Prepare Dockcross script
+            run: |
+                cd dockcross
+                sudo docker run --rm dockcross/${{matrix.image}} > ../dockcross-${{matrix.image}}
+                sudo chmod +x ../dockcross-${{matrix.image}}
+          - name: Build SoapySDR
+            run: |
+                sudo ./dockcross-${{matrix.image}} cmake -DENABLE_PYTHON=OFF -DENABLE_PYTHON3=OFF -DENABLE_LUAJIT=OFF -Bbuild -S.
+                sudo ./dockcross-${{matrix.image}} cmake --build build
