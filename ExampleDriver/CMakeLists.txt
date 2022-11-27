@@ -17,8 +17,8 @@ set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 # Header and library resources needed to communicate with the device.
 # These may be found within the build tree or in an external project.
 ########################################################################
-set(MY_DEVICE_INCLUDE_DIRS ...)
-set(MY_DEVICE_LIBRARIES ...)
+set(MY_DEVICE_INCLUDE_DIRS "")
+set(MY_DEVICE_LIBRARIES "")
 
 ########################################################################
 # build the module

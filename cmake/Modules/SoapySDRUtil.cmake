@@ -100,7 +100,11 @@ function(SOAPY_SDR_MODULE_UTIL)
     if(CMAKE_COMPILER_IS_GNUCXX)
         #force a compile-time error when symbols are missing
         #otherwise modules will cause a runtime error on load
-        target_link_libraries(${MODULE_TARGET} PRIVATE "-Wl,--no-undefined")
+        if(APPLE)
+            target_link_libraries(${MODULE_TARGET} PRIVATE "-Wl,-undefined,error")
+        else()
+            target_link_libraries(${MODULE_TARGET} PRIVATE "-Wl,--no-undefined")
+        endif()
     endif()
 
     if (NOT MODULE_DESTINATION)
