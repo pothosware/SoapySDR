@@ -98,6 +98,13 @@ jobs:
                 ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
                 ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
                 ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+          - name: Test module registration
+            run: |
+                mkdir -p ${{github.workspace}}/build-example
+                cd ${{github.workspace}}/build-example
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
+                sudo make install
+                SoapySDRUtil --check=my_device
     osx-ci:
         name: OS X
         strategy:
@@ -158,6 +165,13 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Test module registration
+            run: |
+                mkdir -p ${{github.workspace}}/build-example
+                cd ${{github.workspace}}/build-example
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
+                sudo make install
+                SoapySDRUtil --check=my_device
     windows-ci:
         name: Windows
         strategy:
@@ -209,7 +223,7 @@ jobs:
                       os: windows-2019
                       msvc: false
 
-                    # TODO: reenable after fix
+                    # TODO: reenable if Github updates GCC past 11.2
                     #- cmake_config: -G "MinGW Makefiles"
                     #  os: windows-2022
                     #  msvc: false
@@ -245,10 +259,20 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Test module registration
+            run: |
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
+                mkdir -p ${{github.workspace}}\build-example
+                cd ${{github.workspace}}\build-example
+                cmake ${{matrix.config.cmake_config}} -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}\ExampleDriver
+                cmake --build . --config ${{matrix.build_type}}
+                cmake --install . --config ${{matrix.build_type}}
+                SoapySDRUtil --check=my_device
     freebsd-ci:
         name: FreeBSD
         runs-on: macos-12
         env:
+            INSTALL_PREFIX: /usr/local
             PYTHON_EXECUTABLE: /usr/local/bin/python3.9
         strategy:
             fail-fast: false
@@ -260,7 +284,7 @@ jobs:
         - uses: vmactions/freebsd-vm@v0
           name: Test in FreeBSD
           with:
-              envs: "PYTHON_EXECUTABLE"
+              envs: "INSTALL_PREFIX PYTHON_EXECUTABLE"
               release: ${{matrix.release}}
               copyback: false
               prepare: |
@@ -274,7 +298,7 @@ jobs:
                   echo "----------------------------------"
                   mkdir build
                   cd build
-                  cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ..
+                  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
                   make
 
                   echo
@@ -306,3 +330,13 @@ jobs:
                   ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)" || exit 1
                   ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))" || exit 1
                   ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))" || exit 1
+
+                  echo
+                  echo "----------------------------------"
+                  echo "Testing module registration..."
+                  echo "----------------------------------"
+                  mkdir -p ${{github.workspace}}/build-example
+                  cd ${{github.workspace}}/build-example
+                  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
+                  make install
+                  SoapySDRUtil --check=my_device
