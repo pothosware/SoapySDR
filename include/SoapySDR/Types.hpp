@@ -123,7 +123,7 @@ public:
     std::string units;
 
     //! The data type of the argument (required)
-    enum Type {BOOL, INT, FLOAT, STRING} type{STRING};
+    enum Type {BOOL, INT, FLOAT, STRING} type;
 
     /*!
      * The range of possible numeric values (optional)

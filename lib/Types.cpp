@@ -75,7 +75,8 @@ SoapySDR::Range::Range(const double minimum, const double maximum, const double 
     return;
 }
 
-SoapySDR::ArgInfo::ArgInfo(void)
+SoapySDR::ArgInfo::ArgInfo(void):
+    type(SoapySDR::ArgInfo::Type::STRING)
 {
     return;
 }
