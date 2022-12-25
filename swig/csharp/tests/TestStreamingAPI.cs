@@ -105,7 +105,7 @@ public class TestStreamingAPI
             Assert.AreEqual(streamFlags, streamResult.Flags);
         }
 
-        Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Deactivate(streamFlags, timeNs));
+        Assert.Throws<System.InvalidOperationException>(delegate { txStream.Deactivate(streamFlags, timeNs); });
         Assert.False(txStream.Active);
         txStream.Close();
 
@@ -143,7 +143,7 @@ public class TestStreamingAPI
         Assert.AreEqual(Pothosware.SoapySDR.StreamFlags.None, streamResult.Flags);
         Assert.AreEqual(0, streamResult.ChanMask);
 
-        Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Deactivate(streamFlags, timeNs));
+        Assert.Throws<System.InvalidOperationException>(delegate { txStream.Deactivate(streamFlags, timeNs); });
         Assert.False(txStream.Active);
         txStream.Close();
 
@@ -211,7 +211,7 @@ public class TestStreamingAPI
             Assert.AreEqual(Pothosware.SoapySDR.StreamFlags.None, streamResult.Flags);
         }
 
-        Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, rxStream.Deactivate(streamFlags, timeNs));
+        Assert.Throws<System.InvalidOperationException>(delegate { rxStream.Deactivate(streamFlags, timeNs); });
         Assert.False(rxStream.Active);
         rxStream.Close();
 
@@ -242,7 +242,7 @@ public class TestStreamingAPI
             }
         }
 
-        Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, rxStream.Deactivate(streamFlags, timeNs));
+        Assert.Throws<System.InvalidOperationException>(delegate { rxStream.Deactivate(streamFlags, timeNs); });
         Assert.False(rxStream.Active);
         rxStream.Close();
 
@@ -330,7 +330,7 @@ public class TestStreamingAPI
             Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Write(span, streamFlags, timeNs, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
 
-            Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Deactivate(streamFlags, timeNs));
+            Assert.Throws<System.InvalidOperationException>(delegate { txStream.Deactivate(streamFlags, timeNs); });
             Assert.False(txStream.Active);
             txStream.Close();
 
@@ -358,7 +358,7 @@ public class TestStreamingAPI
             Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Write(mems, streamFlags, timeNs, timeoutUs, out streamResult));
             Assert.AreEqual(0, streamResult.NumSamples);
 
-            Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, txStream.Deactivate(streamFlags, timeNs));
+            Assert.Throws<System.InvalidOperationException>(delegate { txStream.Deactivate(streamFlags, timeNs); });
             Assert.False(txStream.Active);
             txStream.Close();
 
@@ -417,7 +417,7 @@ public class TestStreamingAPI
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(Pothosware.SoapySDR.StreamFlags.None, streamResult.Flags);
 
-            Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, rxStream.Deactivate(streamFlags, timeNs));
+            Assert.Throws<System.InvalidOperationException>(delegate { rxStream.Deactivate(streamFlags, timeNs); });
             Assert.False(rxStream.Active);
             rxStream.Close();
 
@@ -448,7 +448,7 @@ public class TestStreamingAPI
             Assert.AreEqual(0, streamResult.NumSamples);
             Assert.AreEqual(Pothosware.SoapySDR.StreamFlags.None, streamResult.Flags);
 
-            Assert.AreEqual(Pothosware.SoapySDR.ErrorCode.NotSupported, rxStream.Deactivate(streamFlags, timeNs));
+            Assert.Throws<System.InvalidOperationException>(delegate { rxStream.Deactivate(streamFlags, timeNs); });
             Assert.False(rxStream.Active);
             rxStream.Close();
 

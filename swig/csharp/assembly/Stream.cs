@@ -108,7 +108,7 @@ namespace Pothosware.SoapySDR
             ErrorCode ret;
             if(_streamHandle != null)
             {
-                if(!_active)
+                if(_active)
                 {
                     ret = _device.DeactivateStreamInternal(
                         _streamHandle,
