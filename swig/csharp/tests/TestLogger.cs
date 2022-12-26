@@ -63,8 +63,8 @@ public class TestLogger
     [Test]
     public void Test_Logger()
     {
-        // TODO: test value after getter implemented
         Pothosware.SoapySDR.Logger.LogLevel = Pothosware.SoapySDR.LogLevel.Notice;
+        Assert.AreEqual(Pothosware.SoapySDR.LogLevel.Notice, Pothosware.SoapySDR.Logger.LogLevel);
 
         // Before doing anything, the standard stdio logger should be used. Unfortunately,
         // we can't intercept and programmatically check the output.
@@ -96,8 +96,8 @@ public class TestLogger
     [Test]
     public void Test_LoggerException()
     {
-        // TODO: test value after getter implemented
         Pothosware.SoapySDR.Logger.LogLevel = Pothosware.SoapySDR.LogLevel.Notice;
+        Assert.AreEqual(Pothosware.SoapySDR.LogLevel.Notice, Pothosware.SoapySDR.Logger.LogLevel);
 
         // Make sure exceptions from the C# callback given to C++ propagate up
         // to C# properly.

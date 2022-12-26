@@ -31,13 +31,12 @@ namespace Pothosware.SoapySDR
             public override void Handle(LogLevel logLevel, string message) => Delegate?.Invoke(logLevel, message);
         }
 
-        // TODO: add read after getter implemented
-
         /// <summary>
         /// The log level threshold. Messages with lower priorities are dropped.
         /// </summary>
         public static LogLevel LogLevel
         {
+            get => LogHandlerBase.GetLogLevel();
             set => LogHandlerBase.SetLogLevel(value);
         }
 

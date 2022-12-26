@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Nicholas Corgan
+-- Copyright (c) 2021-2022 Nicholas Corgan
 -- SPDX-License-Identifier: BSL-1.0
 
 ---
@@ -81,6 +81,12 @@ local Logger =
     -- @tparam Level logLevel a possible logging level
     setLevel = function(logLevel)
         lib.SoapySDR_setLogLevel(logLevel)
+    end,
+
+    ---
+    -- Get the log level threshold
+    getLevel = function()
+        return tonumber(lib.SoapySDR_getLogLevel())
     end
 }
 

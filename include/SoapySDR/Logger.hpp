@@ -7,6 +7,7 @@
 ///
 /// \copyright
 /// Copyright (c) 2014-2015 Josh Blum
+///                    2022 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -65,5 +66,10 @@ SOAPY_SDR_API void registerLogHandler(const LogHandler &handler);
  * Log messages with lower priority are dropped.
  */
 SOAPY_SDR_API void setLogLevel(const LogLevel logLevel);
+
+/*!
+ * Get the log level threshold.
+ */
+SOAPY_SDR_API LogLevel getLogLevel(void);
 
 }

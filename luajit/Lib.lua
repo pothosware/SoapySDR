@@ -105,6 +105,8 @@ if not __internal.SoapySDR then
 
         void SoapySDR_setLogLevel(const SoapySDRLogLevel logLevel);
 
+        SoapySDRLogLevel SoapySDR_getLogLevel();
+
         /* SoapySDR/Version.h */
 
         const char *SoapySDR_getAPIVersion(void);

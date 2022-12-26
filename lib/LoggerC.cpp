@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2021 Josh Blum
+//                    2022 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 #include <SoapySDR/Logger.h>
@@ -104,6 +105,11 @@ void SoapySDR_registerLogHandler(const SoapySDRLogHandler handler)
 void SoapySDR_setLogLevel(const SoapySDRLogLevel logLevel)
 {
     registeredLogLevel = logLevel;
+}
+
+SoapySDRLogLevel SoapySDR_getLogLevel(void)
+{
+    return registeredLogLevel;
 }
 
 }
