@@ -42,6 +42,11 @@
             SoapySDR::log((SoapySDR::LogLevel)logLevel, message);
         }
 
+        static SoapySDR::CSharp::LogLevel GetLogLevel()
+        {
+            return SoapySDR::CSharp::LogLevel(SoapySDR::getLogLevel());
+        }
+
         static void SetLogLevel(const SoapySDR::CSharp::LogLevel logLevel)
         {
             SoapySDR::setLogLevel((SoapySDR::LogLevel)logLevel);

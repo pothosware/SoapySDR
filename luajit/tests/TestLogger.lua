@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Nicholas Corgan
+-- Copyright (c) 2021-2022 Nicholas Corgan
 -- SPDX-License-Identifier: BSL-1.0
 
 SoapySDR = require("SoapySDR")
@@ -16,6 +16,7 @@ function testLogger()
 
     SoapySDR.Logger.registerHandler(logFunction)
     SoapySDR.Logger.setLevel(SoapySDR.Logger.Level.INFO)
+    luaunit.assertEquals(SoapySDR.Logger.getLevel(), SoapySDR.Logger.Level.INFO)
 
     SoapySDR.Logger.log(SoapySDR.Logger.Level.WARNING, "Warning")
     SoapySDR.Logger.log(SoapySDR.Logger.Level.ERROR, "Error")
@@ -45,14 +46,15 @@ function testErrorDuringLog()
     end
 
     SoapySDR.Logger.registerHandler(errorLogFunction)
-    SoapySDR.Logger.setLevel(SoapySDR.Logger.Level.INFO)
+    SoapySDR.Logger.setLevel(SoapySDR.Logger.Level.NOTICE)
+    luaunit.assertEquals(SoapySDR.Logger.getLevel(), SoapySDR.Logger.Level.NOTICE)
 
-    luaunit.assertFalse(pcall(SoapySDR.Logger.log, SoapySDR.Logger.Level.INFO, "Info"))
+    luaunit.assertFalse(pcall(SoapySDR.Logger.log, SoapySDR.Logger.Level.NOTICE, "Notice"))
 
     tmpFile:seek("set")
     local logContents = tmpFile:read("*a")
 
-    luaunit.assertEquals(logContents, "Info\n")
+    luaunit.assertEquals(logContents, "Notice\n")
 end
 
 local runner = luaunit.LuaUnit.new()

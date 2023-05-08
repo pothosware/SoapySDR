@@ -6,7 +6,7 @@
 /// \copyright
 /// Copyright (c) 2014-2021 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
-///                    2021 Nicholas Corgan
+///               2021-2022 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -36,7 +36,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.8-2"
+#define SOAPY_SDR_ABI_VERSION "0.8-3"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -164,9 +164,14 @@
 #define SOAPY_SDR_API_HAS_PARALLEL_STRING_MAKE
 
 /*!
- * Compatiblity define for querying information for specific settings
+ * Compatibility define for querying information for specific settings
  */
 #define SOAPY_SDR_API_HAS_GET_SPECIFIC_SETTING_INFO
+
+/*!
+ * Compatibility define for getting log level
+ */
+#define SOAPY_SDR_API_HAS_GET_LOG_LEVEL
 
 #ifdef __cplusplus
 extern "C" {

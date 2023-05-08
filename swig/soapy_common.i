@@ -21,12 +21,16 @@
 // SoapySDR/Errors.h
 %ignore SoapySDR_errToStr;
 
+// SoapySDR/Formats.h
+%ignore SoapySDR_formatToSize;
+
 // SoapySDR/Logger.h
 %ignore SoapySDR_log;
 %ignore SoapySDR_vlogf;
 %ignore SoapySDR_logf;
 %ignore SoapySDRLogHandler;
 %ignore SoapySDR_registerLogHandler;
+%ignore SoapySDR_getLogLevel;
 %ignore SoapySDR_setLogLevel;
 
 // SoapySDR/Logger.hpp
