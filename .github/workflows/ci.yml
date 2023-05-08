@@ -124,11 +124,6 @@ jobs:
             matrix:
                 build_type: [Release, Debug]
                 config:
-                    - cc: gcc-9
-                      cxx: g++-9
-                      test_luajit: false
-                      os: macos-11
-
                     - cc: gcc-10
                       cxx: g++-10
                       test_luajit: false
