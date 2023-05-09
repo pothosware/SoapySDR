@@ -11,44 +11,56 @@ jobs:
                     - cc: gcc-9
                       cxx: g++-9
                       os: ubuntu-20.04
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: gcc-10
                       cxx: g++-10
                       os: ubuntu-20.04
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: gcc-11
                       cxx: g++-11
                       os: ubuntu-22.04
+                      python3_ver: '3.10'
 
                     - cc: gcc-12
                       cxx: g++-12
                       os: ubuntu-22.04
+                      python3_ver: '3.10'
 
                     - cc: clang-10
                       cxx: clang++-10
                       os: ubuntu-20.04
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: clang-11
                       cxx: clang++-11
                       os: ubuntu-20.04
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: clang-12
                       cxx: clang++-12
                       os: ubuntu-20.04
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: clang-13
                       cxx: clang++-13
                       os: ubuntu-22.04
+                      python3_ver: '3.10'
 
                     - cc: clang-14
                       cxx: clang++-14
                       os: ubuntu-22.04
+                      python3_ver: '3.10'
         runs-on: ${{matrix.config.os}}
         env:
             CC: ${{matrix.config.cc}}
             CXX: ${{matrix.config.cxx}}
-            PYTHON_EXECUTABLE: /usr/bin/python
-            PYTHON3_EXECUTABLE: /usr/bin/python3
             INSTALL_PREFIX: /usr/local
         steps:
           - uses: actions/checkout@v2
@@ -64,7 +76,7 @@ jobs:
             run: |
                 mkdir -p ${{github.workspace}}/build
                 cd ${{github.workspace}}/build
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} ${{github.workspace}}
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
                 make
           - name: Install
             run: |
@@ -80,24 +92,23 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
-          - name: Test Python bindings
+          - name: Test Python2 bindings
+            if: ${{matrix.config.python2_ver}}
             run: |
-                export PYTHONPATH=$(${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
-                echo ${PYTHONPATH}
-                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-                ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
-                ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
-                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-                ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python2_ver}} ${{github.workspace}}/python/get_python_lib.py ${INSTALL_PREFIX})
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Test Python3 bindings
             run: |
-                export PYTHONPATH=$(${PYTHON3_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix='${INSTALL_PREFIX}'))")
-                echo ${PYTHONPATH}
-                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-                ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
-                ${PYTHON3_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
-                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-                ${PYTHON3_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python3_ver}} ${{github.workspace}}/python/get_python_lib.py ${INSTALL_PREFIX})
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                python${{matrix.config.python3_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                python${{matrix.config.python3_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Test module registration
             run: |
                 mkdir -p ${{github.workspace}}/build-example
@@ -115,26 +126,30 @@ jobs:
                     - cc: gcc-10
                       cxx: g++-10
                       os: macos-11
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: gcc-11
                       cxx: g++-11
                       os: macos-11
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
                     - cc: clang
                       cxx: clang++
                       os: macos-11
+                      python2_ver: '2.7'
+                      python3_ver: '3.8'
 
-                    # TODO: re-enable after MacOS Monterey Python issue fixed
-                    #
-                    #- cc: clang
-                    #cxx: clang++
-                    #os: macos-12
+                    - cc: clang
+                      cxx: clang++
+                      os: macos-12
+                      python2_ver: '2.7'
+                      python3_ver: '3.9'
         runs-on: ${{matrix.config.os}}
         env:
             CC: ${{matrix.config.cc}}
             CXX: ${{matrix.config.cxx}}
-            PYTHON_EXECUTABLE: /usr/bin/python
-            PYTHON3_EXECUTABLE: /usr/bin/python3
             INSTALL_PREFIX: /usr/local
         steps:
           - uses: actions/checkout@v2
@@ -146,7 +161,7 @@ jobs:
             run: |
                 mkdir -p ${{github.workspace}}/build
                 cd ${{github.workspace}}/build
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE} -DPYTHON3_EXECUTABLE=${PYTHON3_EXECUTABLE} ${{github.workspace}}
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
                 make
           - name: Install
             run: |
@@ -161,6 +176,32 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Set up Python2
+            uses: actions/setup-python@v4
+            with:
+                python-version: ${{matrix.config.python2_ver}}
+          - name: Test Python2 bindings
+            run: |
+                export DYLD_LIBRARY_PATH=/usr/local/lib
+                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python2_ver}} ${{github.workspace}}/python/get_python_lib.py ${INSTALL_PREFIX})
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+          - name: Set up Python3
+            uses: actions/setup-python@v4
+            with:
+                python-version: ${{matrix.config.python3_ver}}
+          - name: Test Python3 bindings
+            run: |
+                export DYLD_LIBRARY_PATH=/usr/local/lib
+                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python3_ver}} ${{github.workspace}}/python/get_python_lib.py ${INSTALL_PREFIX}):$LD_LIBRARY_PATH
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                python${{matrix.config.python3_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                python${{matrix.config.python3_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                python${{matrix.config.python3_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Test module registration
             run: |
                 mkdir -p ${{github.workspace}}/build-example
@@ -173,114 +214,139 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                build_type: [Release, Debug]
-                config:
-                    #
-                    # MSVC
-                    #
-
-                    - cmake_config: -G "Visual Studio 14 2015" -A "Win32"
-                      arch: win32
-                      os: windows-2019
+                platform:
+                    - cmake_gen: '"Visual Studio 14 2015" -A "Win32"'
                       msvc: true
+                      arch: win32
+                      python_arch: x86
+                      os: windows-2019
 
-                    - cmake_config: -G "Visual Studio 14 2015" -A "x64"
+                    - cmake_gen: '"Visual Studio 14 2015" -A "x64"'
+                      msvc: true
                       arch: x64
+                      python_arch: x64
                       os: windows-2019
+
+                    - cmake_gen: '"Visual Studio 16 2019" -A "Win32"'
                       msvc: true
-
-                      # Note: skipping VS2017, possible bugginess in parallel installs
-
-                    - cmake_config: -G "Visual Studio 16 2019" -A "Win32"
                       arch: win32
+                      python_arch: x86
                       os: windows-2019
-                      msvc: true
 
-                    - cmake_config: -G "Visual Studio 16 2019" -A "x64"
+                    - cmake_gen: '"Visual Studio 16 2019" -A "x64"'
+                      msvc: true
                       arch: x64
+                      python_arch: x64
                       os: windows-2019
-                      msvc: true
 
-                    - cmake_config: -G "Visual Studio 17 2022" -A "Win32"
+                    - cmake_gen: '"Visual Studio 17 2022" -A "Win32"'
+                      msvc: true
                       arch: win32
+                      python_arch: x86
                       os: windows-2022
-                      msvc: true
 
-                    - cmake_config: -G "Visual Studio 17 2022" -A "x64"
+                    - cmake_gen: '"Visual Studio 17 2022" -A "x64"'
+                      msvc: true
                       arch: x64
+                      python_arch: x64
                       os: windows-2022
-                      msvc: true
 
-                    #
-                    # MinGW
-                    #
+#                    - cmake_gen: '"MinGW Makefiles"'
+#                      msvc: false
+#                      python_arch: x64
+#                      os: windows-2019
 
-                    - cmake_config: -G "MinGW Makefiles"
-                      os: windows-2019
-                      msvc: false
+#                    TODO: restore if Github upgrades past buggy 11.2
+#                    - cmake_gen: 'MinGW Makefiles'
+#                      msvc: false
+#                      python_arch: x64
+#                      os: windows-2022
 
-                    # TODO: reenable if Github updates GCC past 11.2
-                    #- cmake_config: -G "MinGW Makefiles"
-                    #  os: windows-2022
-                    #  msvc: false
-        runs-on: ${{matrix.config.os}}
+                build:
+                    - type: Release
+                      python_version: '2.7.18'
+                      python_name: 'python'
+                      cmake_flags: '-DENABLE_PYTHON=ON -DENABLE_PYTHON3=OFF'
+
+                    - type: Release
+                      python_version: '3.9.13'
+                      python_name: 'python3'
+                      cmake_flags: '-DENABLE_PYTHON=OFF -DENABLE_PYTHON3=ON'
+
+                    - type: Debug
+                      cmake_flags: '-DENABLE_PYTHON=OFF -DENABLE_PYTHON3=OFF'
+
+                exclude:
+                    - platform: {os: windows-2022}
+                      build: {python_version: '2.7.18'}
+        runs-on: ${{matrix.platform.os}}
         env:
-            # Easier to have multiple copies of a subpath than deal with CI path parsing issues
             INSTALL_PREFIX: 'C:\Program Files\SoapySDR'
         steps:
           - uses: actions/checkout@v2
           - uses: ilammy/msvc-dev-cmd@v1
-            if:
-                ${{matrix.config.msvc == true}}
+            if: ${{matrix.platform.msvc}}
             with:
-                arch: ${{matrix.config.arch}}
+                arch: ${{matrix.platform.arch}}
           - name: Build SoapySDR
             run: |
                 mkdir ${{github.workspace}}\build
                 cd ${{github.workspace}}\build
-                cmake ${{matrix.config.cmake_config}} -DENABLE_PYTHON=OFF -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
-                cmake --build . --config ${{matrix.build_type}}
+                cmake -G ${{matrix.platform.cmake_gen}} -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build.type}} ${{matrix.build.cmake_flags}} ${{github.workspace}}
+                cmake --build . --config ${{matrix.build.type}}
           - name: Install
             run: |
                 cd ${{github.workspace}}\build
-                cmake --install . --config ${{matrix.build_type}}
+                cmake --install . --config ${{matrix.build.type}}
           - name: Run unit tests
             run: |
                 $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
                 cd ${{github.workspace}}\build
-                ctest --output-on-failure -C ${{matrix.build_type}}
+                ctest --output-on-failure -C ${{matrix.build.type}}
           - name: Test SoapySDRUtil
             run: |
                 $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
+          - name: Test Python bindings
+            if: ${{matrix.build.python_name}}
+            env:
+                PYTHON_EXE: 'C:\hostedtoolcache\windows\Python\${{matrix.build.python_version}}\${{matrix.platform.python_arch}}\${{matrix.build.python_name}}.exe'
+            run: |
+                $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
+                $Env:PYTHONPATH += ";$Env:INSTALL_PREFIX\Lib\site-packages"
+                & "$Env:PYTHON_EXE" -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                & "$Env:PYTHON_EXE" -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                & "$Env:PYTHON_EXE" -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
+                & "$Env:PYTHON_EXE" -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+                & "$Env:PYTHON_EXE" -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Test module registration
             run: |
                 $Env:PATH += ";$Env:INSTALL_PREFIX\bin"
                 mkdir -p ${{github.workspace}}\build-example
                 cd ${{github.workspace}}\build-example
-                cmake ${{matrix.config.cmake_config}} -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}\ExampleDriver
-                cmake --build . --config ${{matrix.build_type}}
-                cmake --install . --config ${{matrix.build_type}}
+                cmake -G ${{matrix.platform.cmake_gen}} -DCMAKE_INSTALL_PREFIX="$Env:INSTALL_PREFIX" -DCMAKE_BUILD_TYPE=${{matrix.build.type}} ${{github.workspace}}\ExampleDriver
+                cmake --build . --config ${{matrix.build.type}}
+                cmake --install . --config ${{matrix.build.type}}
                 SoapySDRUtil --check=my_device
     freebsd-ci:
         name: FreeBSD
         runs-on: macos-12
-        env:
-            INSTALL_PREFIX: /usr/local
-            PYTHON_EXECUTABLE: /usr/local/bin/python3.9
         strategy:
             fail-fast: false
             matrix:
                 build_type: [Release, Debug]
-                release: ["12.3", "13.1"] # TODO: re-enable 13.0 after Python issue fixed
+                release: ['12.3', '13.1'] # Skip 13.0, EOL and has broken Python package
+        env:
+            INSTALL_PREFIX: /usr/local
+            PYTHON3_VER: '3.9'
         steps:
         - uses: actions/checkout@v2
         - uses: vmactions/freebsd-vm@v0
           name: Test in FreeBSD
           with:
-              envs: "INSTALL_PREFIX PYTHON_EXECUTABLE"
+              envs: 'INSTALL_PREFIX PYTHON3_VER'
               release: ${{matrix.release}}
               copyback: false
               prepare: |
@@ -319,13 +385,13 @@ jobs:
 
                   echo
                   echo "----------------------------------"
-                  echo "Testing Python bindings..."
+                  echo "Testing Python 3 bindings..."
                   echo "----------------------------------"
-                  ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.getAPIVersion())" || exit 1
-                  ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)" || exit 1
-                  ${PYTHON_EXECUTABLE} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)" || exit 1
-                  ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))" || exit 1
-                  ${PYTHON_EXECUTABLE} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))" || exit 1
+                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.getAPIVersion())" || exit 1
+                  python${PYTHON3_VER} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)" || exit 1
+                  python${PYTHON3_VER} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)" || exit 1
+                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))" || exit 1
+                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))" || exit 1
 
                   echo
                   echo "----------------------------------"
