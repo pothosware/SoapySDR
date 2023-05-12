@@ -125,6 +125,9 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
             for k, v in self.iteritems():
                 out.append("%s=%s"%(k, v))
             return '{'+(', '.join(out))+'}'
+
+        def __repr__(self):
+            return self.__str__()
     %}
 };
 
@@ -136,6 +139,9 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
             fields = [self.minimum(), self.maximum()]
             if self.step() != 0.0: fields.append(self.step())
             return ', '.join(['%g'%f for f in fields])
+
+        def __repr__(self):
+            return self.__str__()
     %}
 };
 
@@ -161,6 +167,33 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
     %{
         def __str__(self):
             return "ret=%s, flags=%s, timeNs=%s"%(self.ret, self.flags, self.timeNs)
+
+        def __repr__(self):
+            return self.__str__()
+    %}
+};
+
+////////////////////////////////////////////////////////////////////////
+// Native stream format class
+// Allows proper wrapper for SoapySDR::Device::getNativeStreamFormat()
+////////////////////////////////////////////////////////////////////////
+%inline %{
+    struct NativeStreamFormat
+    {
+        std::string format;
+        double fullScale;
+    };
+%}
+
+%extend NativeStreamFormat
+{
+    %insert("python")
+    %{
+        def __str__(self):
+            return "format=%s, fullScale=%f"%(self.format, self.fullScale)
+
+        def __repr__(self):
+            return self.__str__()
     %}
 };
 
@@ -169,7 +202,7 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
 ////////////////////////////////////////////////////////////////////////
 %include <SoapySDR/Constants.h>
 //import types.h for the defines
-//these ignores are C++ functions that were taken by %template() above
+//ignore C functions
 %ignore SoapySDRKwargs;
 %ignore SoapySDRKwargs_clear;
 %ignore SoapySDRKwargsList_clear;
@@ -281,6 +314,21 @@ def registerLogHandler(handler):
 // Device object
 ////////////////////////////////////////////////////////////////////////
 
+// These are being replaced later.
+%ignore SoapySDR::Device::getNativeStreamFormat;
+%ignore SoapySDR::Device::readStream;
+%ignore SoapySDR::Device::writeStream;
+%ignore SoapySDR::Device::readStreamStatus;
+
+// These have no meaning on this layer.
+%ignore SoapySDR::Device::getNumDirectAccessBuffers;
+%ignore SoapySDR::Device::getDirectAccessBufferAddrs;
+%ignore SoapySDR::Device::acquireReadBuffer;
+%ignore SoapySDR::Device::releaseReadBuffer;
+%ignore SoapySDR::Device::acquireWriteBuffer;
+%ignore SoapySDR::Device::releaseWriteBuffer;
+%ignore SoapySDR::Device::getNativeDeviceHandle;
+
 // SWIG warns that one parallel Device::make() function shadows another,
 // leading to the second being ignored. Despite this, SWIG generates both
 // functions anyway, making this a false positive warning message.
@@ -326,7 +374,15 @@ def extractBuffPointer(buff):
     %template(readSettingInt) SoapySDR::Device::readSetting<long long>;
     %template(readSettingFloat) SoapySDR::Device::readSetting<double>;
 
-    StreamResult readStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long timeoutUs)
+    NativeStreamFormat __getNativeStreamFormat(const int direction, const size_t channel)
+    {
+        NativeStreamFormat format;
+        format.format = self->getNativeStreamFormat(direction, channel, format.fullScale);
+
+        return format;
+    }
+
+    StreamResult __readStream(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long timeoutUs)
     {
         StreamResult sr;
         sr.flags = flags;
@@ -336,7 +392,7 @@ def extractBuffPointer(buff):
         return sr;
     }
 
-    StreamResult writeStream__(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
+    StreamResult __writeStream(SoapySDR::Stream *stream, const std::vector<size_t> &buffs, const size_t numElems, const int flags, const long long timeNs, const long timeoutUs)
     {
         StreamResult sr;
         sr.flags = flags;
@@ -346,7 +402,7 @@ def extractBuffPointer(buff):
         return sr;
     }
 
-    StreamResult readStreamStatus__(SoapySDR::Stream *stream, const long timeoutUs)
+    StreamResult __readStreamStatus(SoapySDR::Stream *stream, const long timeoutUs)
     {
         StreamResult sr;
         sr.ret = self->readStreamStatus(stream, sr.chanMask, sr.flags, sr.timeNs, timeoutUs);
@@ -366,15 +422,21 @@ def extractBuffPointer(buff):
         def __str__(self):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
 
+        def __repr__(self):
+            return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
+
+        def getNativeStreamFormat(self, direction, chan):
+            return self.__getNativeStreamFormat(direction, chan)
+
         def readStream(self, stream, buffs, numElems, flags = 0, timeoutUs = 100000):
             ptrs = [extractBuffPointer(b) for b in buffs]
-            return self.readStream__(stream, ptrs, numElems, flags, timeoutUs)
+            return self.__readStream(stream, ptrs, numElems, flags, timeoutUs)
 
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
             ptrs = [extractBuffPointer(b) for b in buffs]
-            return self.writeStream__(stream, ptrs, numElems, flags, timeNs, timeoutUs)
+            return self.__writeStream(stream, ptrs, numElems, flags, timeNs, timeoutUs)
 
         def readStreamStatus(self, stream, timeoutUs = 100000):
-            return self.readStreamStatus__(stream, timeoutUs)
+            return self.__readStreamStatus(stream, timeoutUs)
     %}
 };
