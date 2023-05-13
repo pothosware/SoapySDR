@@ -1,6 +1,6 @@
 // Copyright (c) 2014-2019 Josh Blum
 // Copyright (c) 2016-2016 Bastille Networks
-// Copyright (c)      2021 Nicholas Corgan
+// Copyright (c) 2021-2023 Nicholas Corgan
 // SPDX-License-Identifier: BSL-1.0
 
 %define DOCSTRING
@@ -17,6 +17,12 @@ See https://pothosware.github.io/SoapySDR/doxygen/latest/index.html for details.
 %enddef
 
 %module(directors="1", docstring=DOCSTRING) SoapySDR
+
+// SWIG 4.0 added the ability to automatically generate Python docstrings
+// from Doxygen input.
+#if SWIG_VERSION >= 0x040000
+%include "doctypes.i"
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 // python3.8 and up need to have the dll search path set
@@ -426,17 +432,65 @@ def extractBuffPointer(buff):
             return "%s:%s"%(self.getDriverKey(), self.getHardwareKey())
 
         def getNativeStreamFormat(self, direction, chan):
+            r"""
+            Get the hardware's native stream format for this channel.
+            This is the format used by the underlying transport layer.
+            :type direction: int
+            :param direction: the channel direction RX or TX
+            :type chan: an available channel on the device
+            :rtype SoapySDR.NativeStreamFormat
+            :returns the native stream format and max possible value
+            """
             return self.__getNativeStreamFormat(direction, chan)
 
         def readStream(self, stream, buffs, numElems, flags = 0, timeoutUs = 100000):
+            r"""
+            Read elements from a stream for reception.
+            :type stream: SoapySDR.Stream
+            :param stream: SoapySDR stream handle
+            :type buffs: numpy.ndarray
+            :param buffs: a 2D NumPy array of the underlying stream type
+            :type numElems: int
+            :param numElems: the number of elements in each buffer
+            :type timeoutUs: int
+            :param timeoutUs: the timeout in microseconds
+            :rtype: SoapySDR.StreamResult
+            :returns the number of elements read per buffer, plus metadata
+            """
             ptrs = [extractBuffPointer(b) for b in buffs]
             return self.__readStream(stream, ptrs, numElems, flags, timeoutUs)
 
         def writeStream(self, stream, buffs, numElems, flags = 0, timeNs = 0, timeoutUs = 100000):
+            r"""
+            Write elements to a stream for transmission.
+            :type stream: SoapySDR.Stream
+            :param stream: SoapySDR stream handle
+            :type numElems: int
+            :param numElems: the number of elements in each buffer
+            :type flags: int
+            :param flags: optional input flags
+            :type timeNs: int
+            :param timeNs: the buffer's timestamp in nanoseconds
+            :type timeoutUs: int
+            :param timeoutUs: the timeout in microseconds
+            :rtype: SoapySDR.StreamResult
+            :returns the number of elements written per buffer, plus metadata
+            """
             ptrs = [extractBuffPointer(b) for b in buffs]
             return self.__writeStream(stream, ptrs, numElems, flags, timeNs, timeoutUs)
 
         def readStreamStatus(self, stream, timeoutUs = 100000):
+            r"""
+            Readback status information about a stream. This call
+            is typically used on a transmit stream to report time
+            errors, underflows, and burst completion.
+            :type stream: SoapySDR.Stream
+            :param stream: SoapySDR stream handle
+            :type timeoutUs: int
+            :param timeoutUs: the timeout in microseconds
+            :rtype: SoapySDR.StreamResult
+            :returns any stream errors, plus other metadata
+            """
             return self.__readStreamStatus(stream, timeoutUs)
     %}
 };
