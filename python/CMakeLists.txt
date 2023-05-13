@@ -21,7 +21,7 @@ list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 ########################################################################
 ## set the swig flags
 ########################################################################
-set(CMAKE_SWIG_FLAGS -threads -I${SoapySDR_INCLUDE_DIRS})
+set(CMAKE_SWIG_FLAGS -threads -I${SoapySDR_INCLUDE_DIRS} -I${CMAKE_CURRENT_SOURCE_DIR})
 
 #check for size_t issue on arm 32-bit platforms
 include(CheckCXXSourceCompiles)
@@ -97,6 +97,10 @@ function(BUILD_PYTHON_MODULE PYTHON_VERSION)
     set(python_libraries SoapySDR Python${PYTHON_VERSION}::Module)
 
     set_target_properties(${SWIG_MODULE_SoapySDR${PYTHON_VERSION}_REAL_NAME} PROPERTIES OUTPUT_NAME _SoapySDR)
+
+    if(${SWIG_VERSION} VERSION_GREATER "4.0.0")
+        set_target_properties(${SWIG_MODULE_SoapySDR${PYTHON_VERSION}_REAL_NAME} PROPERTIES SWIG_COMPILE_OPTIONS -doxygen)
+    endif()
 
     if(MINGW)
         # https://stackoverflow.com/a/50792585
