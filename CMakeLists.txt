@@ -108,7 +108,7 @@ find_package(SoapySDR CONFIG REQUIRED)
 # Install cmake helper modules
 ########################################################################
 include(CMakePackageConfigHelpers)
-if (UNIX)
+if (UNIX OR MSYS)
     set(CMAKE_LIB_DEST ${CMAKE_INSTALL_DATADIR}/cmake/${PROJECT_NAME})
 elseif (WIN32)
     set(CMAKE_LIB_DEST cmake)
