@@ -1,19 +1,33 @@
 import os
+import pathlib
 import sys
-import site
-from distutils.sysconfig import get_python_lib
+import sysconfig
 
 if __name__ == '__main__':
-    prefix = sys.argv[1]
+    prefix = pathlib.Path(sys.argv[1]).resolve()
 
-    #ask distutils where to install the python module
-    install_dir = get_python_lib(plat_specific=True, prefix=prefix)
+    # default install dir for the running Python interpreter
+    default_install_dir = pathlib.Path(sysconfig.get_path('platlib')).resolve()
 
-    #use sites when the prefix is already recognized
+    # if default falls under the desired prefix, we're done
     try:
-        paths = [p for p in site.getsitepackages() if p.startswith(prefix)]
-        if len(paths) == 1: install_dir = paths[0]
-    except AttributeError: pass
+        relative_install_dir = default_install_dir.relative_to(prefix)
+    except ValueError:
+        # get install dir for the specified prefix
+        # can't use the default scheme because distributions modify it
+        # newer Python versions have 'venv' scheme, use for all OSs.
+        if 'venv' in sysconfig.get_scheme_names():
+            scheme = 'venv'
+        elif os.name == 'nt':
+            scheme = 'nt'
+        else:
+            scheme = 'posix_prefix'
+        prefix_install_dir = pathlib.Path(sysconfig.get_path(
+            'platlib',
+            scheme=scheme,
+            vars={'base': prefix, 'platbase': prefix},
+        )).resolve()
+        relative_install_dir = prefix_install_dir.relative_to(prefix)
 
-    #strip the prefix to return a relative path
-    print(os.path.relpath(install_dir, prefix))
+    # want a relative path for use in the build system
+    print(relative_install_dir)
