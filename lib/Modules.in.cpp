@@ -256,7 +256,7 @@ std::string SoapySDR::loadModule(const std::string &path)
     getModuleLoading().clear();
     if (handle == NULL) return "LoadLibrary() failed: " + GetLastErrorMessage();
 #else
-    void *handle = dlopen(path.c_str(), RTLD_LAZY);
+    void *handle = dlopen(path.c_str(), RTLD_LAZY | RTLD_LOCAL);
     getModuleLoading().clear();
     if (handle == NULL) return "dlopen() failed: " + std::string(dlerror());
 #endif
