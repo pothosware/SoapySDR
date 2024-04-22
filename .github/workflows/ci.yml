@@ -294,10 +294,11 @@ jobs:
 #                      os: windows-2022
 
                 build:
-                    - type: Release
-                      python_version: '2.7.18'
-                      python_name: 'python'
-                      cmake_flags: '-DENABLE_PYTHON2=ON -DENABLE_PYTHON3=OFF'
+#                    no python2 in the windows matrix
+#                    - type: Release
+#                      python_version: '2.7.18'
+#                      python_name: 'python'
+#                      cmake_flags: '-DENABLE_PYTHON2=ON -DENABLE_PYTHON3=OFF'
 
                     - type: Release
                       python_version: '3.9.13'
