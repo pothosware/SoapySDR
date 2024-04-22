@@ -124,8 +124,13 @@ function(BUILD_PYTHON_MODULE PYTHON_VERSION)
     target_include_directories(${SWIG_MODULE_SoapySDR${PYTHON_VERSION}_REAL_NAME} PRIVATE ${python_includes})
     SWIG_LINK_LIBRARIES(SoapySDR${PYTHON_VERSION} ${python_libraries})
 
+    set(get_python_lib ${SOAPYSDR_PYTHON_DIR}/get_python_lib.py)
+    if (${PYTHON_VERSION} EQUAL 2)
+        set(get_python_lib ${SOAPYSDR_PYTHON_DIR}/get_python2_lib.py)
+    endif()
+
     execute_process(
-        COMMAND ${Python${PYTHON_VERSION}_EXECUTABLE} ${SOAPYSDR_PYTHON_DIR}/get_python_lib.py ${CMAKE_INSTALL_PREFIX}
+        COMMAND ${Python${PYTHON_VERSION}_EXECUTABLE} ${get_python_lib} ${CMAKE_INSTALL_PREFIX}
         OUTPUT_STRIP_TRAILING_WHITESPACE
         OUTPUT_VARIABLE PYTHON_INSTALL_DIR)
 
