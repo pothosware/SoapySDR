@@ -135,12 +135,6 @@ jobs:
             matrix:
                 build_type: [Release, Debug]
                 config:
-                    - cc: gcc-10
-                      cxx: g++-10
-                      test_luajit: false
-                      os: macos-11
-                      python3_ver: '3.8'
-
                     - cc: gcc-11
                       cxx: g++-11
                       test_luajit: false
@@ -229,17 +223,6 @@ jobs:
             fail-fast: false
             matrix:
                 platform:
-                    - cmake_gen: '"Visual Studio 14 2015" -A "Win32"'
-                      msvc: true
-                      arch: win32
-                      python_arch: x86
-                      os: windows-2019
-
-                    - cmake_gen: '"Visual Studio 14 2015" -A "x64"'
-                      msvc: true
-                      arch: x64
-                      python_arch: x64
-                      os: windows-2019
 
                     - cmake_gen: '"Visual Studio 16 2019" -A "Win32"'
                       msvc: true
@@ -264,17 +247,6 @@ jobs:
                       arch: x64
                       python_arch: x64
                       os: windows-2022
-
-#                    - cmake_gen: '"MinGW Makefiles"'
-#                      msvc: false
-#                      python_arch: x64
-#                      os: windows-2019
-
-#                    TODO: restore if Github upgrades past buggy 11.2
-#                    - cmake_gen: 'MinGW Makefiles'
-#                      msvc: false
-#                      python_arch: x64
-#                      os: windows-2022
 
                 build:
 
@@ -383,85 +355,3 @@ jobs:
                 cmake --build . --config ${{matrix.build.type}}
                 cmake --install . --config ${{matrix.build.type}}
                 SoapySDRUtil --check=my_device
-    freebsd-ci:
-        name: FreeBSD
-        runs-on: macos-12
-        strategy:
-            fail-fast: false
-            matrix:
-                build_type: [Release, Debug]
-                release: ['12.3', '13.1'] # Skip 13.0, EOL and has broken Python package
-        env:
-            INSTALL_PREFIX: /usr/local
-            PYTHON3_VER: '3.9'
-        steps:
-        - uses: actions/checkout@v2
-        - uses: vmactions/freebsd-vm@v0
-          name: Test in FreeBSD
-          with:
-              envs: 'INSTALL_PREFIX PYTHON3_VER'
-              release: ${{matrix.release}}
-              copyback: false
-              prepare: |
-                  pkg install -y cmake devel/swig lang/python3 lang/luajit
-              run: |
-                  # We can't separate these steps, so add prints for clarity.
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Building..."
-                  echo "----------------------------------"
-                  mkdir build
-                  cd build
-                  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
-                  make
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Installing..."
-                  echo "----------------------------------"
-                  make install
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Running unit tests..."
-                  echo "----------------------------------"
-                  ctest --output-on-failure
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Testing SoapySDRUtil..."
-                  echo "----------------------------------"
-                  SoapySDRUtil --info
-                  SoapySDRUtil --check=null
-                  SoapySDRUtil --make="driver=null"
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Testing Python 3 bindings..."
-                  echo "----------------------------------"
-                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.getAPIVersion())" || exit 1
-                  python${PYTHON3_VER} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)" || exit 1
-                  python${PYTHON3_VER} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)" || exit 1
-                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))" || exit 1
-                  python${PYTHON3_VER} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))" || exit 1
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Testing LuaJIT bindings..."
-                  echo "----------------------------------"
-                  luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.API_VERSION)' || exit 1
-                  luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.ABI_VERSION)' || exit 1
-                  luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.TIMEOUT)' || exit 1
-                  luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Error.ToString(SoapySDR.Error.TIMEOUT))' || exit 1
-                  luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))' || exit 1
-
-                  echo
-                  echo "----------------------------------"
-                  echo "Testing module registration..."
-                  echo "----------------------------------"
-                  mkdir -p ${{github.workspace}}/build-example
-                  cd ${{github.workspace}}/build-example
-                  cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
-                  make install
-                  SoapySDRUtil --check=my_device
