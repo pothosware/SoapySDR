@@ -139,27 +139,23 @@ jobs:
                       cxx: g++-10
                       test_luajit: false
                       os: macos-11
-                      python2_ver: '2.7'
                       python3_ver: '3.8'
 
                     - cc: gcc-11
                       cxx: g++-11
                       test_luajit: false
                       os: macos-11
-                      python2_ver: '2.7'
                       python3_ver: '3.8'
 
                     - cc: clang
                       cxx: clang++
                       test_luajit: true
                       os: macos-11
-                      python2_ver: '2.7'
                       python3_ver: '3.8'
 
                     - cc: clang
                       cxx: clang++
                       os: macos-12
-                      python2_ver: '2.7'
                       python3_ver: '3.9'
         runs-on: ${{matrix.config.os}}
         env:
@@ -199,19 +195,6 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
-          - name: Set up Python2
-            uses: actions/setup-python@v4
-            with:
-                python-version: ${{matrix.config.python2_ver}}
-          - name: Test Python2 bindings
-            run: |
-                export DYLD_LIBRARY_PATH=/usr/local/lib
-                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python2_ver}} ${{github.workspace}}/swig/python/get_python_lib.py ${INSTALL_PREFIX})
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
-                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Set up Python3
             uses: actions/setup-python@v4
             with:
@@ -294,11 +277,6 @@ jobs:
 #                      os: windows-2022
 
                 build:
-#                    no python2 in the windows matrix
-#                    - type: Release
-#                      python_version: '2.7.18'
-#                      python_name: 'python'
-#                      cmake_flags: '-DENABLE_PYTHON2=ON -DENABLE_PYTHON3=OFF'
 
                     - type: Release
                       python_version: '3.9.13'
