@@ -31,9 +31,9 @@ static inline char *toCString(const std::string &s)
     return out;
 }
 
-static inline char **toStrArray(const std::vector<std::string> &strs, size_t *length)
+static inline char **toStrArray(const std::vector<std::string> &strs, size_t *length, size_t minLength = 0)
 {
-    auto out = callocArrayType<char *>(strs.size());
+    auto out = callocArrayType<char *>(std::max(minLength, strs.size()));
     for (size_t i = 0; i < strs.size(); i++)
     {
         try
@@ -136,9 +136,10 @@ static inline SoapySDRArgInfo toArgInfo(const SoapySDR::ArgInfo &info)
         out.units = toCString(info.units);
         out.type = SoapySDRArgInfoType(info.type);
         out.range = toRange(info.range);
-        out.optionNames = toStrArray(info.optionNames, &out.numOptions);
-        // do options after optionNames so correct numOptions is reported if no optionNames
         out.options = toStrArray(info.options, &out.numOptions);
+        size_t namesLength = 0;
+        // will be calloc-ed to be at least as long as options to prevent clients from reading garbage
+        out.optionNames = toStrArray(info.optionNames, &namesLength, out.numOptions);
     }
     catch (const std::bad_alloc &)
     {
