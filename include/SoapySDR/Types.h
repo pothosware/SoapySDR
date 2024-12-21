@@ -91,7 +91,7 @@ typedef struct
      */
     SoapySDRRange range;
 
-    //! The size of the options set, or 0 when not used.
+    //! The size of the options and optionNames sets, or 0 when not used.
     size_t numOptions;
 
     /*!
@@ -102,7 +102,8 @@ typedef struct
 
     /*!
      * A discrete list of displayable names for the enumerated options (optional)
-     * When not specified, the option value itself can be used as a display name.
+     * When not specified, the respective entry in this list will be NULL, and
+     * the option key itself can be used as a display name instead.
      */
     char **optionNames;
 
