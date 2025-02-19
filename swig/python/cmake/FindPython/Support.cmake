@@ -7,7 +7,7 @@
 
 cmake_policy (GET CMP0094 _${_PYTHON_PREFIX}_LOOKUP_POLICY)
 
-cmake_policy (VERSION 3.7)
+cmake_policy (VERSION 3.7...3.14)
 
 if (_${_PYTHON_PREFIX}_LOOKUP_POLICY)
   cmake_policy (SET CMP0094 ${_${_PYTHON_PREFIX}_LOOKUP_POLICY})
