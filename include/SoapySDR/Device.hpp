@@ -230,7 +230,7 @@ public:
      * the same sample rate. See setSampleRate().
      *
      * \param direction the channel direction (`SOAPY_SDR_RX` or `SOAPY_SDR_TX`)
-     * \param format A string representing the desired buffer format in read/writeStream()
+     * \param format A string representing the desired buffer format in `readStream()` / `writeStream()`.
      * \parblock
      *
      * The first character selects the number type:
@@ -254,8 +254,8 @@ public:
      * \param args stream args or empty for defaults.
      * \parblock
      *
-     *   Recommended keys to use in the args dictionary:
-     *    - "WIRE" - format of the samples between device and host
+     * Recommended keys to use in the args dictionary:
+     *  - "WIRE" - format of the samples between device and host
      * \endparblock
      * \return an opaque pointer to a stream handle.
      * \parblock
