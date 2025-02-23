@@ -265,15 +265,8 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
  * the same sample rate. See SoapySDRDevice_setSampleRate().
  *
  * \param device a pointer to a device instance
- * \return the opaque pointer to a stream handle.
- * \parblock
- *
- * The returned stream is not required to have internal locking, and may not be used
- * concurrently from multiple threads.
- * \endparblock
- *
  * \param direction the channel direction (`SOAPY_SDR_RX` or `SOAPY_SDR_TX`)
- * \param format A string representing the desired buffer format in read/writeStream()
+ * \param format A string representing the desired buffer format in `readStream()` / `writeStream()`.
  * \parblock
  *
  * The first character selects the number type:
@@ -295,13 +288,18 @@ SOAPY_SDR_API SoapySDRArgInfo *SoapySDRDevice_getStreamArgsInfo(const SoapySDRDe
  * \endparblock
  * \param channels a list of channels or empty for automatic
  * \param numChans the number of elements in the channels array
- * \param args stream args or empty for defaults
+ * \param args stream args or empty for defaults.
  * \parblock
  *
- *   Recommended keys to use in the args dictionary:
- *    - "WIRE" - format of the samples between device and host
+ * Recommended keys to use in the args dictionary:
+ *  - "WIRE" - format of the samples between device and host
  * \endparblock
- * \return the stream pointer or nullptr for failure
+ * \return the stream pointer or nullptr for failure.
+ * \parblock
+ *
+ * The returned stream is not required to have internal locking, and may not be used
+ * concurrently from multiple threads.
+ * \endparblock
  */
 SOAPY_SDR_API SoapySDRStream *SoapySDRDevice_setupStream(SoapySDRDevice *device,
     const int direction,
