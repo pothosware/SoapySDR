@@ -6,7 +6,7 @@
 /// \copyright
 /// Copyright (c) 2014-2019 Josh Blum
 /// Copyright (c) 2016-2016 Bastille Networks
-///                    2021 Nicholas Corgan
+///               2021-2023 Nicholas Corgan
 /// SPDX-License-Identifier: BSL-1.0
 ///
 
@@ -19,6 +19,7 @@
 #include <string>
 #include <complex>
 #include <cstddef> //size_t
+#include <memory>
 
 namespace SoapySDR
 {
@@ -32,6 +33,8 @@ class Stream;
 class SOAPY_SDR_API Device
 {
 public:
+
+    using SPtr = std::shared_ptr<Device>;
 
     //! virtual destructor for inheritance
     virtual ~Device(void);
@@ -74,6 +77,30 @@ public:
     static Device *make(const std::string &args);
 
     /*!
+     * Make a new Device object given device construction args.
+     * The device pointer will be stored in a table so subsequent calls
+     * with the same arguments will produce the same device.
+     * On destruction of the shared_ptr, unmake() will automatically be
+     * called.
+     *
+     * \param args a markup string of key/value arguments
+     * \return a shared pointer to a new Device object
+     */
+    static SPtr makeShared(const Kwargs &args = Kwargs());
+
+    /*!
+     * Make a new Device object given device construction args.
+     * The device pointer will be stored in a table so subsequent calls
+     * with the same arguments will produce the same device.
+     * On destruction of the shared_ptr, unmake() will automatically be
+     * called.
+     *
+     * \param args a markup string of key/value arguments
+     * \return a shared pointer to a new Device object
+     */
+    static SPtr makeShared(const std::string &args);
+
+    /*!
      * Unmake or release a device object handle.
      *
      * \param device a pointer to a device object
@@ -103,6 +130,30 @@ public:
      * \return a list of device pointers per each specified argument
      */
     static std::vector<Device *> make(const std::vector<std::string> &argsList);
+
+    /*!
+     * Create a list of devices from a list of construction arguments.
+     * This is a convenience call to parallelize device construction,
+     * and is fundamentally a parallel for loop of makeShared(Kwargs).
+     * On destruction of the vector, unmake() will automatically be
+     * called for each device.
+     *
+     * \param argsList a list of device arguments per each device
+     * \return a list of shared device pointers per each specified argument
+     */
+    static std::vector<SPtr> makeShared(const KwargsList &argsList);
+
+    /*!
+     * Create a list of devices from a list of construction arguments.
+     * This is a convenience call to parallelize device construction,
+     * and is fundamentally a parallel for loop of makeShared(Kwargs).
+     * On destruction of the vector, unmake() will automatically be
+     * called for each device.
+     *
+     * \param argsList a list of device arguments per each device
+     * \return a list of shared device pointers per each specified argument
+     */
+    static std::vector<SPtr> makeShared(const std::vector<std::string> &argsList);
 
     /*!
      * Unmake or release a list of device handles.
