@@ -8,17 +8,10 @@ jobs:
             matrix:
                 build_type: [Release, Debug]
                 config:
-                    - cc: gcc-9
-                      cxx: g++-9
-                      os: ubuntu-20.04
-                      python2_ver: '2.7'
-                      python3_ver: '3.8'
-
                     - cc: gcc-10
                       cxx: g++-10
-                      os: ubuntu-20.04
-                      python2_ver: '2.7'
-                      python3_ver: '3.8'
+                      os: ubuntu-22.04
+                      python3_ver: '3.10'
 
                     - cc: gcc-11
                       cxx: g++-11
@@ -30,23 +23,20 @@ jobs:
                       os: ubuntu-22.04
                       python3_ver: '3.10'
 
-                    - cc: clang-10
-                      cxx: clang++-10
-                      os: ubuntu-20.04
-                      python2_ver: '2.7'
-                      python3_ver: '3.8'
+                    - cc: gcc-12
+                      cxx: g++-12
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
 
-                    - cc: clang-11
-                      cxx: clang++-11
-                      os: ubuntu-20.04
-                      python2_ver: '2.7'
-                      python3_ver: '3.8'
+                    - cc: gcc-13
+                      cxx: g++-13
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
 
-                    - cc: clang-12
-                      cxx: clang++-12
-                      os: ubuntu-20.04
-                      python2_ver: '2.7'
-                      python3_ver: '3.8'
+                    - cc: gcc-14
+                      cxx: g++-14
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
 
                     - cc: clang-13
                       cxx: clang++-13
@@ -57,6 +47,26 @@ jobs:
                       cxx: clang++-14
                       os: ubuntu-22.04
                       python3_ver: '3.10'
+
+                    - cc: clang-15
+                      cxx: clang++-15
+                      os: ubuntu-22.04
+                      python3_ver: '3.10'
+
+                    - cc: clang-16
+                      cxx: clang++-16
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
+
+                    - cc: clang-17
+                      cxx: clang++-17
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
+
+                    - cc: clang-18
+                      cxx: clang++-18
+                      os: ubuntu-24.04
+                      python3_ver: '3.12'
         runs-on: ${{matrix.config.os}}
         env:
             CC: ${{matrix.config.cc}}
@@ -67,11 +77,10 @@ jobs:
           - name: Install dependencies
             run: |
                 sudo apt update --fix-missing
-                sudo apt install -y libpython2-dev libpython3-dev python3-numpy doxygen luajit lua-ldoc
+                sudo apt install -y libpython3-dev python3-numpy doxygen luajit lua-ldoc
 
                 # Note: we need the grep because apt-cache will return 0 even when no packages are found
                 if sudo apt-cache search python-numpy | grep 'numpy -'; then sudo apt install -y python-numpy; fi
-                if sudo apt-cache search python2-numpy | grep 'numpy -'; then sudo apt install -y python2-numpy; fi
 
                 # LuaRocks stopped installing properly through apt, so just copy the file from its repo
                 git clone https://github.com/bluebird75/luaunit -b LUAUNIT_V3_4
@@ -97,15 +106,6 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
-          - name: Test Python2 bindings
-            if: ${{matrix.config.python2_ver}}
-            run: |
-                export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python2_ver}} ${{github.workspace}}/swig/python/get_python_lib.py ${INSTALL_PREFIX})
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
-                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
-                python${{matrix.config.python2_ver}} -c "from SoapySDR import *; print(SOAPY_SDR_TIMEOUT)"
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
-                python${{matrix.config.python2_ver}} -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
           - name: Test Python3 bindings
             run: |
                 export PYTHONPATH=${INSTALL_PREFIX}/$(python${{matrix.config.python3_ver}} ${{github.workspace}}/swig/python/get_python_lib.py ${INSTALL_PREFIX})
