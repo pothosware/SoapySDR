@@ -147,11 +147,6 @@ jobs:
 
                     - cc: clang
                       cxx: clang++
-                      os: macos-13
-                      python3_ver: '3.9'
-
-                    - cc: clang
-                      cxx: clang++
                       os: macos-15
                       python3_ver: '3.9'
         runs-on: ${{matrix.config.os}}
