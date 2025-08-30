@@ -1,7 +1,7 @@
 ########################################################################
 # Project setup
 ########################################################################
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.3...3.10)
 project(SoapySDRLuaJIT)
 enable_testing()
 

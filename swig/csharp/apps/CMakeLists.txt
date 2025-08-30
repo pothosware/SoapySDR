@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3.0)
+cmake_minimum_required(VERSION 3.3...3.10)
 project(SoapySDRCSharpApps CSharp)
 
 function(CSHARP_BUILD_APP name)
