@@ -65,8 +65,8 @@ set(SOAPY_SDR_ROOT_ENV "SOAPY_SDR_ROOT" CACHE STRING
 # select the release build type by default to get optimization flags
 ########################################################################
 if(NOT CMAKE_BUILD_TYPE)
-   set(CMAKE_BUILD_TYPE "Release")
-   message(STATUS "Build type not specified: defaulting to release.")
+    set(CMAKE_BUILD_TYPE "Release")
+    message(STATUS "Build type not specified: defaulting to release.")
 endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "")
 
@@ -83,10 +83,11 @@ option(CMAKE_BUILD_WITH_INSTALL_RPATH "build with install rpath" FALSE)
 # the RPATH to be used when installing, but only if it's not a system directory
 option(CMAKE_AUTOSET_INSTALL_RPATH "install with automatic rpath" TRUE)
 if(CMAKE_AUTOSET_INSTALL_RPATH)
-LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
-IF("${isSystemDir}" STREQUAL "-1")
-    SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-ENDIF("${isSystemDir}" STREQUAL "-1")
+    include(GNUInstallDirs)
+    list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
+    if("${isSystemDir}" STREQUAL "-1")
+        set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    endif("${isSystemDir}" STREQUAL "-1")
 endif(CMAKE_AUTOSET_INSTALL_RPATH)
 
 # add the automatically determined parts of the RPATH
