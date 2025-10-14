@@ -81,7 +81,7 @@ option(CMAKE_SKIP_BUILD_RPATH "skip rpath build" FALSE)
 option(CMAKE_BUILD_WITH_INSTALL_RPATH "build with install rpath" FALSE)
 
 # the RPATH to be used when installing, but only if it's not a system directory
-option(CMAKE_AUTOSET_INSTALL_RPATH TRUE)
+option(CMAKE_AUTOSET_INSTALL_RPATH "install with automatic rpath" TRUE)
 if(CMAKE_AUTOSET_INSTALL_RPATH)
 LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}" isSystemDir)
 IF("${isSystemDir}" STREQUAL "-1")
