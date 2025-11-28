@@ -322,11 +322,6 @@ def registerLogHandler(handler):
 %ignore SoapySDR::Device::releaseWriteBuffer;
 %ignore SoapySDR::Device::getNativeDeviceHandle;
 
-// SWIG warns that one parallel Device::make() function shadows another,
-// leading to the second being ignored. Despite this, SWIG generates both
-// functions anyway, making this a false positive warning message.
-%warnfilter(509) SoapySDR::Device::make;
-
 %nodefaultctor SoapySDR::Device;
 %include <SoapySDR/Device.hpp>
 
