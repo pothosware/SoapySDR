@@ -27,7 +27,7 @@
  * #endif
  * \endcode
  */
-#define SOAPY_SDR_API_VERSION 0x00080200
+#define SOAPY_SDR_API_VERSION 0x00090000
 
 /*!
  * ABI Version Information - incremented when the ABI is changed.
@@ -36,7 +36,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.8-3"
+#define SOAPY_SDR_ABI_VERSION "0.9"
 
 /*!
  * Compatibility define for GPIO access API with masks

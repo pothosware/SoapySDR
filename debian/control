@@ -1,13 +1,11 @@
 Source: soapysdr
 Section: comm
 Priority: optional
-Maintainer: Josh Blum <josh@pothosware.com>
+Maintainer: Christian W. Zuckschwerdt <zany@triq.net>
 Build-Depends:
-    debhelper (>= 9.0.0),
-    cmake (>= 2.8.7),
-    swig (>= 2.0.0),
-    python,
-    python-dev,
+    debhelper,
+    cmake,
+    swig,
     python3,
     python3-dev
 Standards-Version: 4.5.0
@@ -15,7 +13,7 @@ Homepage: https://github.com/pothosware/SoapySDR/wiki
 Vcs-Git: https://github.com/pothosware/SoapySDR.git
 Vcs-Browser: https://github.com/pothosware/SoapySDR
 
-Package: libsoapysdr0.8
+Package: libsoapysdr0.9
 Section: libs
 Architecture: any
 Multi-Arch: same
@@ -32,7 +30,7 @@ Package: libsoapysdr-dev
 Section: libdevel
 Architecture: any
 Depends:
-    libsoapysdr0.8 (= ${binary:Version}),
+    libsoapysdr0.9 (= ${binary:Version}),
     ${misc:Depends}
 Description: SoapySDR library development files
  SoapySDR is a library providing a common interface to SDR (software
@@ -47,7 +45,7 @@ Conflicts: soapysdr
 Replaces: soapysdr
 Provides: soapysdr
 Depends:
-    libsoapysdr0.8 (= ${binary:Version}),
+    libsoapysdr0.9 (= ${binary:Version}),
     ${shlibs:Depends},
     ${misc:Depends}
 Description: software defined radio interface library tools
@@ -58,27 +56,11 @@ Description: software defined radio interface library tools
  This package contains the SoapySDRUtil command line utility which can
  list available modules and hardware.
 
-Package: python-soapysdr
-Section: python
-Architecture: any
-Depends:
-    libsoapysdr0.8 (= ${binary:Version}),
-    python,
-    ${shlibs:Depends},
-    ${misc:Depends}
-Recommends: python-numpy
-Description: SoapySDR Python 2 bindings
- SoapySDR is a library providing a common interface to SDR (software
- defined radio) hardware. Support for different hardware is added through
- external modules.
- .
- This package contains the Python 2 bindings for the library.
-
 Package: python3-soapysdr
 Section: python
 Architecture: any
 Depends:
-    libsoapysdr0.8 (= ${binary:Version}),
+    libsoapysdr0.9 (= ${binary:Version}),
     python3,
     ${shlibs:Depends},
     ${misc:Depends}
@@ -108,6 +90,9 @@ Depends:
     soapysdr-module-uhd,
     soapysdr-module-plutosdr,
     soapysdr-module-fcdpp,
+    soapysdr-module-rtltcp,
+    soapysdr-module-audio,
+    soapysdr-module-hydrasdr,
     ${misc:Depends}
 Description: software defined radio hardware support modules
  SoapySDR is a library providing a common interface to SDR (software
