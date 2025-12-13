@@ -1,5 +1,37 @@
 This this the changelog file for the SoapySDR project.
 
+Release 0.9.0 (2025-12-13)
+==========================
+
+- Fixed CMAKE_INSTALL_LIBDIR definition (#471)
+- Fixed macOS rpath installation (#470)
+- Updated swig for compat with newer CMake (fixes #360)
+- Updated for compat with newer CMake
+- Updated cmake_policy in swig for CMake 3.12 compat (#453)
+- Updated Doxygen config to remove obsolete settings (#452)
+- Fixed pre-callocate optionNames even if no names are provided (#444)
+- Fixed use old get python lib for v2 (#437)
+- Fixed treat MinGW and MSYS CMake installation paths as Unix
+- Fixed loadModule dlopen to hide symbols using RTLD_LOCAL (#434)
+- Removed deprecated use of distutils, fix for Python 3.12+
+- Fixed pkg-config use cmake full paths (fixes #352)
+- Added Python docstrings, depending on SWIG version
+- Fixed better support Python 2+3 builds
+- Added getLogLevel() for symmetry
+- Fixed csharp Stream.Deactivate logic bug
+- Changed ArgInfo move enum member initialization to constructor
+- Updated TypeHelpers.hpp
+- Added .NET API (MSVC 2019+)
+- Added ArgInfo initialized value for type field
+- Fixed Device templated readSetting() constness
+- Added Device getSettingInfo() overloads for getting specific setting info
+- Added luajit new user flags
+- Added flags for SDR specific data
+- Added LuaJIT bindings
+- Added sample format option to rate test
+- Fixed Wnon-virtual-dtor to conditional
+- Removed stod call, which crashes with some OS X configurations
+
 Release 0.8.1 (2021-07-25)
 ==========================
 
