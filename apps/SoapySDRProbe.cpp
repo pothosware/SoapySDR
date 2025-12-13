@@ -13,7 +13,7 @@ std::string toString(const std::vector<Type> &options)
     if (options.empty()) return "";
     for (size_t i = 0; i < options.size(); i++)
     {
-        if (not ss.str().empty()) ss << ", ";
+        if (!ss.str().empty()) ss << ", ";
         ss << options[i];
     }
     return ss.str();
@@ -34,12 +34,12 @@ std::string toString(const SoapySDR::RangeList &range, const double scale)
     std::stringstream ss;
     for (size_t i = 0; i < range.size(); i++)
     {
-        if (range.size() >= MAXRLEN and i >= MAXRLEN/2 and i < (range.size()-MAXRLEN/2))
+        if (range.size() >= MAXRLEN && i >= MAXRLEN/2 && i < (range.size()-MAXRLEN/2))
         {
             if (i == MAXRLEN) ss << ", ...";
             continue;
         }
-        if (not ss.str().empty()) ss << ", ";
+        if (!ss.str().empty()) ss << ", ";
         if (range[i].minimum() == range[i].maximum()) ss << (range[i].minimum()/scale);
         else ss << "[" << (range[i].minimum()/scale) << ", " << (range[i].maximum()/scale) << "]";
     }
@@ -58,7 +58,7 @@ std::string toString(const std::vector<double> &nums, const double scale)
 
     for (size_t i = 0; i < nums.size(); i++)
     {
-        if (not ss.str().empty()) ss << ", ";
+        if (!ss.str().empty()) ss << ", ";
         ss << (nums[i]/scale);
     }
     return "[" + ss.str() + "]";
@@ -80,12 +80,12 @@ std::string toString(const SoapySDR::ArgInfo &argInfo, const std::string indent 
     {
         desc.replace(pos, 1, replace);
     }
-    if (not desc.empty()) ss << " - " << desc << std::endl << indent << "  ";
+    if (!desc.empty()) ss << " - " << desc << std::endl << indent << "  ";
 
     //other fields
     ss << " [key=" << argInfo.key;
-    if (not argInfo.units.empty()) ss << ", units=" << argInfo.units;
-    if (not argInfo.value.empty()) ss << ", default=" << argInfo.value;
+    if (!argInfo.units.empty()) ss << ", units=" << argInfo.units;
+    if (!argInfo.value.empty()) ss << ", default=" << argInfo.value;
 
     //type
     switch (argInfo.type)
@@ -98,7 +98,7 @@ std::string toString(const SoapySDR::ArgInfo &argInfo, const std::string indent 
 
     //optional range/enumeration
     if (argInfo.range.minimum() < argInfo.range.maximum()) ss << ", range=" << toString(argInfo.range);
-    if (not argInfo.options.empty()) ss << ", options=(" << toString(argInfo.options) << ")";
+    if (!argInfo.options.empty()) ss << ", options=(" << toString(argInfo.options) << ")";
 
     ss << "]";
 
@@ -133,14 +133,14 @@ std::string sensorReadings(SoapySDR::Device *device)
         std::string reading = device->readSensor(key);
 
         ss << "     * " << sensors[i];
-        if (not info.name.empty()) ss << " (" << info.name << ")";
+        if (!info.name.empty()) ss << " (" << info.name << ")";
         ss << ":";
         if (info.range.maximum() > std::numeric_limits<double>::min()) ss << toString(info.range);
         ss << toString(info.options);
         ss << " " << reading;
-        if (not info.units.empty()) ss << " " << info.units;
+        if (!info.units.empty()) ss << " " << info.units;
         ss << std::endl;
-        if (not info.description.empty()) ss << "        " << info.description << std::endl;
+        if (!info.description.empty()) ss << "        " << info.description << std::endl;
     }
 
     return ss.str();
@@ -162,14 +162,14 @@ std::string channelSensorReadings(SoapySDR::Device *device, const int dir, const
         std::string reading = device->readSensor(dir, chan, key);
 
         ss << "     * " << sensors[i];
-        if (not info.name.empty()) ss << " (" << info.name << ")";
+        if (!info.name.empty()) ss << " (" << info.name << ")";
         ss << ":";
         if (info.range.maximum() > std::numeric_limits<double>::min()) ss << toString(info.range);
         ss << toString(info.options);
         ss << " " << reading;
-        if (not info.units.empty()) ss << " " << info.units;
+        if (!info.units.empty()) ss << " " << info.units;
         ss << std::endl;
-        if (not info.description.empty()) ss << "        " << info.description << std::endl;
+        if (!info.description.empty()) ss << "        " << info.description << std::endl;
     }
 
     return ss.str();
@@ -201,7 +201,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     //formats
     std::string formats = toString(device->getStreamFormats(dir, chan));
-    if (not formats.empty()) ss << "  Stream formats: " << formats << std::endl;
+    if (!formats.empty()) ss << "  Stream formats: " << formats << std::endl;
 
     //native
     double fullScale = 0.0;
@@ -210,11 +210,11 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     //stream args
     std::string streamArgs = toString(device->getStreamArgsInfo(dir, chan));
-    if (not streamArgs.empty()) ss << "  Stream args:" << std::endl << streamArgs;
+    if (!streamArgs.empty()) ss << "  Stream args:" << std::endl << streamArgs;
 
     //antennas
     std::string antennas = toString(device->listAntennas(dir, chan));
-    if (not antennas.empty()) ss << "  Antennas: " << antennas << std::endl;
+    if (!antennas.empty()) ss << "  Antennas: " << antennas << std::endl;
 
     //corrections
     std::vector<std::string> correctionsList;
@@ -222,7 +222,7 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
     if (device->hasDCOffset(dir, chan)) correctionsList.push_back("DC offset");
     if (device->hasIQBalance(dir, chan)) correctionsList.push_back("IQ balance");
     std::string corrections = toString(correctionsList);
-    if (not corrections.empty()) ss << "  Corrections: " << corrections << std::endl;
+    if (!corrections.empty()) ss << "  Corrections: " << corrections << std::endl;
 
     //gains
     ss << "  Full gain range: " << toString(device->getGainRange(dir, chan)) << " dB" << std::endl;
@@ -244,23 +244,23 @@ static std::string probeChannel(SoapySDR::Device *device, const int dir, const s
 
     //freq args
     std::string freqArgs = toString(device->getFrequencyArgsInfo(dir, chan));
-    if (not freqArgs.empty()) ss << "  Tune args:" << std::endl << freqArgs;
+    if (!freqArgs.empty()) ss << "  Tune args:" << std::endl << freqArgs;
 
     //rates
     ss << "  Sample rates: " << toString(device->getSampleRateRange(dir, chan), 1e6) << " MSps" << std::endl;
 
     //bandwidths
     const auto bws = device->getBandwidthRange(dir, chan);
-    if (not bws.empty()) ss << "  Filter bandwidths: " << toString(bws, 1e6) << " MHz" << std::endl;
+    if (!bws.empty()) ss << "  Filter bandwidths: " << toString(bws, 1e6) << " MHz" << std::endl;
 
     //sensors
     std::string sensors = toString(device->listSensors(dir, chan));
-    if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+    if (!sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
     ss << channelSensorReadings(device, dir, chan);
 
     //settings
     std::string settings = toString(device->getSettingInfo(dir, chan));
-    if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
+    if (!settings.empty()) ss << "  Other Settings:" << std::endl << settings;
 
     return ss.str();
 }
@@ -299,26 +299,26 @@ std::string SoapySDRDeviceProbe(SoapySDR::Device *device)
     ss << "  Timestamps: " << (device->hasHardwareTime()?"YES":"NO") << std::endl;
 
     std::string clockSources = toString(device->listClockSources());
-    if (not clockSources.empty()) ss << "  Clock sources: " << clockSources << std::endl;
+    if (!clockSources.empty()) ss << "  Clock sources: " << clockSources << std::endl;
 
     std::string timeSources = toString(device->listTimeSources());
-    if (not timeSources.empty()) ss << "  Time sources: " << timeSources << std::endl;
+    if (!timeSources.empty()) ss << "  Time sources: " << timeSources << std::endl;
 
     std::string sensors = toString(device->listSensors());
-    if (not sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
+    if (!sensors.empty()) ss << "  Sensors: " << sensors << std::endl;
     ss << sensorReadings(device);
 
     std::string registers = toString(device->listRegisterInterfaces());
-    if (not registers.empty()) ss << "  Registers: " << registers << std::endl;
+    if (!registers.empty()) ss << "  Registers: " << registers << std::endl;
 
     std::string settings = toString(device->getSettingInfo());
-    if (not settings.empty()) ss << "  Other Settings:" << std::endl << settings;
+    if (!settings.empty()) ss << "  Other Settings:" << std::endl << settings;
 
     std::string gpios = toString(device->listGPIOBanks());
-    if (not gpios.empty()) ss << "  GPIOs: " << gpios << std::endl;
+    if (!gpios.empty()) ss << "  GPIOs: " << gpios << std::endl;
 
     std::string uarts = toString(device->listUARTs());
-    if (not uarts.empty()) ss << "  UARTs: " << uarts << std::endl;
+    if (!uarts.empty()) ss << "  UARTs: " << uarts << std::endl;
 
     /*******************************************************************
      * Per-channel info

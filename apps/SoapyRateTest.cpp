@@ -44,7 +44,7 @@ void runRateTestStreamLoop(
     std::cout << "Starting stream loop, press Ctrl+C to exit..." << std::endl;
     device->activateStream(stream);
     signal(SIGINT, sigIntHandler);
-    while (not loopDone)
+    while (!loopDone)
     {
         int ret(0);
         int flags(0);
@@ -129,8 +129,8 @@ int SoapySDRRateTest(
 
         //parse the direction to the integer enum
         int direction(-1);
-        if (directionStr == "RX" or directionStr == "rx") direction = SOAPY_SDR_RX;
-        if (directionStr == "TX" or directionStr == "tx") direction = SOAPY_SDR_TX;
+        if (directionStr == "RX" || directionStr == "rx") direction = SOAPY_SDR_RX;
+        if (directionStr == "TX" || directionStr == "tx") direction = SOAPY_SDR_TX;
         if (direction == -1) throw std::invalid_argument("direction not in RX/TX: " + directionStr);
 
         //build channels list, using KwargsFromString is a easy parsing hack

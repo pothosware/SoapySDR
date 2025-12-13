@@ -58,14 +58,14 @@ int main(void)
     for (size_t i = 0; i < 100; i++)
     {
         const long long timeNs = rand64bits();
-        if (not loopbackTimeToTicks(timeNs, 1e9)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(-timeNs, 1e9)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(timeNs, 52e6)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(-timeNs, 52e6)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(timeNs, 61.44e6)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(-timeNs, 61.44e6)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(timeNs, 100e6/3)) return EXIT_FAILURE;
-        if (not loopbackTimeToTicks(-timeNs, 100e6/3)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(timeNs, 1e9)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(-timeNs, 1e9)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(timeNs, 52e6)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(-timeNs, 52e6)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(timeNs, 61.44e6)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(-timeNs, 61.44e6)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(timeNs, 100e6/3)) return EXIT_FAILURE;
+        if (!loopbackTimeToTicks(-timeNs, 100e6/3)) return EXIT_FAILURE;
     }
     printf("OK\n");
 
@@ -74,14 +74,14 @@ int main(void)
     for (size_t i = 0; i < 100; i++)
     {
         const long long ticks = rand64bits() >> 8; //room for max rate
-        if (not loopbackTicksToTime(ticks, 1e9)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(-ticks, 1e9)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(ticks, 52e6)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(-ticks, 52e6)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(ticks, 61.44e6)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(-ticks, 61.44e6)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(ticks, 100e6/3)) return EXIT_FAILURE;
-        if (not loopbackTicksToTime(-ticks, 100e6/3)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(ticks, 1e9)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(-ticks, 1e9)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(ticks, 52e6)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(-ticks, 52e6)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(ticks, 61.44e6)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(-ticks, 61.44e6)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(ticks, 100e6/3)) return EXIT_FAILURE;
+        if (!loopbackTicksToTime(-ticks, 100e6/3)) return EXIT_FAILURE;
     }
     printf("OK\n");
 

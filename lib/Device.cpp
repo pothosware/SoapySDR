@@ -58,8 +58,8 @@ bool SoapySDR::Device::getFullDuplex(const int, const size_t) const
 {
     auto numRxChs = this->getNumChannels(SOAPY_SDR_RX);
     auto numTxChs = this->getNumChannels(SOAPY_SDR_TX);
-    if (numRxChs > 0 and numTxChs == 0) return false; //no tx channels
-    if (numRxChs == 0 and numTxChs > 0) return false; //no rx channels
+    if (numRxChs > 0 && numTxChs == 0) return false; //no tx channels
+    if (numRxChs == 0 && numTxChs > 0) return false; //no rx channels
     return true; //assume full duplex (usually true minus some tdd devices)
 }
 
@@ -373,11 +373,11 @@ void SoapySDR::Device::setFrequency(const int dir, const size_t chan, double fre
         //add offset for RF element (first element)
         if (comp_i == 0) freq += offset;
 
-        if (args.count(name) != 0 and args.at(name) == "IGNORE")
+        if (args.count(name) != 0 && args.at(name) == "IGNORE")
         {
             //do nothing, dont change component
         }
-        else if (args.count(name) != 0 and args.at(name) != "DEFAULT")
+        else if (args.count(name) != 0 && args.at(name) != "DEFAULT")
         {
             //specific frequency for component specified
             const double f(std::atof(args.at(name).c_str()));
@@ -485,7 +485,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
         info.type = SoapySDR::ArgInfo::FLOAT;
         info.description = "Tune the LO with an offset and compensate with the baseband CORDIC.";
         SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(1));
-        if (not ranges.empty()) info.range = ranges.front();
+        if (!ranges.empty()) info.range = ranges.front();
         args.push_back(info);
     }
 
@@ -503,7 +503,7 @@ SoapySDR::ArgInfoList SoapySDR::Device::getFrequencyArgsInfo(const int dir, cons
         info.options.push_back("IGNORE");
         info.optionNames.push_back("Ignore");
         SoapySDR::RangeList ranges = this->getFrequencyRange(dir, chan, comps.at(comp_i));
-        if (not ranges.empty()) info.range = ranges.front();
+        if (!ranges.empty()) info.range = ranges.front();
         args.push_back(info);
     }
 

@@ -69,14 +69,14 @@ SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
     for (const auto &it : Registry::listFindFunctions())
     {
         const bool specifiedDriver = args.count("driver") != 0;
-        if (specifiedDriver and args.at("driver") != it.first) continue;
+        if (specifiedDriver && args.at("driver") != it.first) continue;
 
         //protect the cache to search it for results and update it
         std::lock_guard<std::recursive_mutex> lock(cacheMutex);
         auto &cacheEntry = cache[std::make_pair(it.first, args)];
 
         //use the cache entry if its been initialized (valid) and not expired
-        if (cacheEntry.second.valid() and cacheEntry.first > std::chrono::high_resolution_clock::now())
+        if (cacheEntry.second.valid() && cacheEntry.first > std::chrono::high_resolution_clock::now())
         {
             futures[it.first] = cacheEntry.second;
         }
@@ -143,7 +143,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
     Kwargs discoveredArgs;
     lock.unlock();
     const auto results = Device::enumerate(inputArgs);
-    if (not results.empty()) discoveredArgs = results.front();
+    if (!results.empty()) discoveredArgs = results.front();
     lock.lock();
 
     //check the device table for an already allocated device
@@ -161,7 +161,7 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
     //unless there is only one available driver option
     const bool specifiedDriver = hybridArgs.count("driver") != 0;
     const auto makeFunctions = Registry::listMakeFunctions();
-    if (not specifiedDriver and makeFunctions.size() > 2) //more than factory: null + one loaded driver
+    if (!specifiedDriver && makeFunctions.size() > 2) //more than factory: null + one loaded driver
     {
         throw std::runtime_error("SoapySDR::Device::make() no driver specified and no enumeration results");
     }
@@ -171,16 +171,16 @@ SoapySDR::Device* SoapySDR::Device::make(const Kwargs &inputArgs)
     std::shared_future<Device *> deviceFuture;
     for (const auto &it : makeFunctions)
     {
-        if (not specifiedDriver and it.first == "null") continue; //skip null unless explicitly specified
-        if (specifiedDriver and hybridArgs.at("driver") != it.first) continue; //filter for driver match
+        if (!specifiedDriver && it.first == "null") continue; //skip null unless explicitly specified
+        if (specifiedDriver && hybridArgs.at("driver") != it.first) continue; //filter for driver match
         auto &cacheEntry = cache[discoveredArgs];
-        if (not cacheEntry.valid()) cacheEntry = std::async(std::launch::deferred, it.second, hybridArgs);
+        if (!cacheEntry.valid()) cacheEntry = std::async(std::launch::deferred, it.second, hybridArgs);
         deviceFuture = cacheEntry;
         break;
     }
 
     //no match found for the arguments in the loop above
-    if (not deviceFuture.valid()) throw std::runtime_error("SoapySDR::Device::make() no match");
+    if (!deviceFuture.valid()) throw std::runtime_error("SoapySDR::Device::make() no match");
 
     //unlock the mutex to block on the factory call
     lock.unlock();

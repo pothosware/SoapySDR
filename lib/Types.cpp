@@ -8,8 +8,8 @@
 static std::string trim(const std::string &s)
 {
     std::string out = s;
-    while (not out.empty() and std::isspace(out[0])) out = out.substr(1);
-    while (not out.empty() and std::isspace(out[out.size()-1])) out = out.substr(0, out.size()-1);
+    while (!out.empty() && std::isspace(out[0])) out = out.substr(1);
+    while (!out.empty() && std::isspace(out[out.size()-1])) out = out.substr(0, out.size()-1);
     return out;
 }
 
@@ -33,11 +33,11 @@ SoapySDR::Kwargs SoapySDR::KwargsFromString(const std::string &markup)
             if (ch == ',') inKey = true;
             else val += ch;
         }
-        if ((inKey and (not val.empty() or (ch == ','))) or ((i+1) == markup.size()))
+        if ((inKey && (!val.empty() || (ch == ','))) || ((i+1) == markup.size()))
         {
             key = trim(key);
             val = trim(val);
-            if (not key.empty()) kwargs[key] = val;
+            if (!key.empty()) kwargs[key] = val;
             key = "";
             val = "";
         }
@@ -52,7 +52,7 @@ std::string SoapySDR::KwargsToString(const SoapySDR::Kwargs &args)
 
     for (const auto &pair : args)
     {
-        if (not markup.empty()) markup += ", ";
+        if (!markup.empty()) markup += ", ";
         markup += pair.first + "=" + pair.second;
     }
 

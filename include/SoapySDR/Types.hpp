@@ -176,7 +176,7 @@ namespace Detail {
 template <typename Type>
 typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSetting(const std::string &s)
 {
-  if (s.empty() or s == SOAPY_SDR_FALSE) {
+  if (s.empty() || s == SOAPY_SDR_FALSE) {
     return false;
   }
   if (s == SOAPY_SDR_TRUE) {
@@ -189,7 +189,7 @@ typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSet
 
     // Either the input wasn't numeric, so str_end should point to the front of the string,
     // or the whole string was consumed and the resulting number is non-zero.
-    return (s == str_end) or ((d != 0.0) and (std::strlen(str_end) == 0));
+    return (s == str_end) || ((d != 0.0) && (std::strlen(str_end) == 0));
   } catch (std::invalid_argument&) {
   }
   // other values are true
@@ -197,13 +197,13 @@ typename std::enable_if<std::is_same<Type, bool>::value, Type>::type StringToSet
 }
 
 template <typename Type>
-typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_signed<Type>::value, Type>::type StringToSetting(const std::string &s)
+typename std::enable_if<!std::is_same<Type, bool>::value && std::is_integral<Type>::value && std::is_signed<Type>::value, Type>::type StringToSetting(const std::string &s)
 {
     return Type(std::stoll(s));
 }
 
 template <typename Type>
-typename std::enable_if<not std::is_same<Type, bool>::value and std::is_integral<Type>::value and std::is_unsigned<Type>::value, Type>::type StringToSetting(const std::string &s)
+typename std::enable_if<!std::is_same<Type, bool>::value && std::is_integral<Type>::value && std::is_unsigned<Type>::value, Type>::type StringToSetting(const std::string &s)
 {
     return Type(std::stoull(s));
 }

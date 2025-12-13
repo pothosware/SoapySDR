@@ -47,7 +47,7 @@ std::string getEnvImpl(const char *name)
 std::string SoapySDR::getRootPath(void)
 {
     const std::string rootPathEnv = getEnvImpl("@SOAPY_SDR_ROOT_ENV@");
-    if (not rootPathEnv.empty()) return rootPathEnv;
+    if (!rootPathEnv.empty()) return rootPathEnv;
 
     // Get the path to the current dynamic linked library.
     // The path to this library can be used to determine
@@ -66,7 +66,7 @@ std::string SoapySDR::getRootPath(void)
             const std::string libPath(path, size);
             const size_t slash0Pos = libPath.find_last_of("/\\");
             const size_t slash1Pos = libPath.substr(0, slash0Pos).find_last_of("/\\");
-            if (slash0Pos != std::string::npos and slash1Pos != std::string::npos)
+            if (slash0Pos != std::string::npos && slash1Pos != std::string::npos)
                 return libPath.substr(0, slash1Pos);
         }
     }
@@ -295,7 +295,7 @@ std::string SoapySDR::unloadModule(const std::string &path)
 #ifdef _WIN32
     BOOL success = FreeLibrary((HMODULE)handle);
     getModuleLoading().clear();
-    if (not success) return "FreeLibrary() failed: " + GetLastErrorMessage();
+    if (!success) return "FreeLibrary() failed: " + GetLastErrorMessage();
 #else
     int status = dlclose(handle);
     getModuleLoading().clear();
@@ -345,7 +345,7 @@ void SoapySDR::loadModules(void)
     {
         if (getModuleHandles().count(paths[i]) != 0) continue; //was manually loaded
         const std::string errorMsg = loadModule(paths[i]);
-        if (not errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
+        if (!errorMsg.empty()) SoapySDR::logf(SOAPY_SDR_ERROR, "SoapySDR::loadModule(%s)\n  %s", paths[i].c_str(), errorMsg.c_str());
         for (const auto &it : SoapySDR::getLoaderResult(paths[i]))
         {
             if (it.second.empty()) continue;

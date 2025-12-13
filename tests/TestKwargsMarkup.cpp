@@ -32,8 +32,8 @@ int main(void)
     #define checkArgsEq(lhs, rhs) \
     { \
         printf("Test line %d\n", __LINE__); \
-        if (not checkArgsInLhs__(lhs, rhs)) return EXIT_FAILURE; \
-        if (not checkArgsInLhs__(rhs, lhs)) return EXIT_FAILURE; \
+        if (!checkArgsInLhs__(lhs, rhs)) return EXIT_FAILURE; \
+        if (!checkArgsInLhs__(rhs, lhs)) return EXIT_FAILURE; \
     }
 
     //string to args - empty string

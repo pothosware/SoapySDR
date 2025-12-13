@@ -60,7 +60,7 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
     if (new_vals != nullptr) args->vals = new_vals;
 
     //error: the current allocation has no space for the new element
-    if (new_keys == nullptr or new_vals == nullptr) return -1;
+    if (new_keys == nullptr || new_vals == nullptr) return -1;
 
     //make copies of the key and value to store
     auto new_key = strdup(key);
@@ -68,7 +68,7 @@ int SoapySDRKwargs_set(SoapySDRKwargs *args, const char *key, const char *val)
 
     //error: could not make a copy of the key or value string
     //free both pointers in case one of them was allocated
-    if (new_key == nullptr or new_val == nullptr)
+    if (new_key == nullptr || new_val == nullptr)
     {
         SoapySDR_free(new_key);
         SoapySDR_free(new_val);

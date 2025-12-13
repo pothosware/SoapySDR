@@ -107,9 +107,9 @@ static int printInfo(void)
     {
         std::cout << "Module found: " << mod;
         const auto &errMsg = SoapySDR::loadModule(mod);
-        if (not errMsg.empty()) std::cout << "\n  " << errMsg;
+        if (!errMsg.empty()) std::cout << "\n  " << errMsg;
         const auto version = SoapySDR::getModuleVersion(mod);
-        if (not version.empty()) std::cout << std::string(maxPathLen-mod.size(), ' ') << " (" << version << ")";
+        if (!version.empty()) std::cout << std::string(maxPathLen-mod.size(), ' ') << " (" << version << ")";
         std::cout << std::endl;
     }
     if (modules.empty()) std::cout << "No modules found!" << std::endl;
@@ -118,7 +118,7 @@ static int printInfo(void)
     std::string factories;
     for (const auto &it : SoapySDR::Registry::listFindFunctions())
     {
-        if (not factories.empty()) factories += ", ";
+        if (!factories.empty()) factories += ", ";
         factories += it.first;
     }
     if (factories.empty()) factories = "No factories found!";
@@ -130,7 +130,7 @@ static int printInfo(void)
         std::string targets;
         for (const auto &target : SoapySDR::ConverterRegistry::listTargetFormats(source))
         {
-            if (not targets.empty()) targets += ", ";
+            if (!targets.empty()) targets += ", ";
             targets += target;
         }
         std::cout << " - " << std::setw(5) << source << " -> [" << targets << "]" << std::endl;
@@ -235,7 +235,7 @@ static int watchDevice(const std::string &argStr)
     try
     {
         auto device = SoapySDR::Device::make(argStr);
-        while (not loopDone)
+        while (!loopDone)
         {
             std::cout << sensorReadings(device) << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -374,15 +374,15 @@ int main(int argc, char *argv[])
     }
 
     //use serial if provided
-    if (not serial.empty())
+    if (!serial.empty())
     {
         auto args = SoapySDR::KwargsFromString(argStr);
         args["serial"] = serial;
         argStr = SoapySDR::KwargsToString(args);
     }
 
-    if (not sparsePrintFlag) printBanner();
-    if (not driverName.empty()) return checkDriver(driverName);
+    if (!sparsePrintFlag) printBanner();
+    if (!driverName.empty()) return checkDriver(driverName);
     if (findDevicesFlag) return findDevices(argStr, sparsePrintFlag);
     if (makeDeviceFlag)  return makeDevice(argStr);
     if (probeDeviceFlag) return probeDevice(argStr);
