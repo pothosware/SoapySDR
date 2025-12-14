@@ -307,6 +307,9 @@ def registerLogHandler(handler):
 // Device object
 ////////////////////////////////////////////////////////////////////////
 
+// Rename one shadowed overloaded method
+%rename(make_listStrArgs) SoapySDR::Device::make(const std::vector<std::string> &);
+
 // These are being replaced later.
 %ignore SoapySDR::Device::getNativeStreamFormat;
 %ignore SoapySDR::Device::readStream;
@@ -338,7 +341,24 @@ for key in sorted(globals().keys()):
 %insert("python")
 %{
 class Device(Device):
+    # Possible call styles:
+    # Device()                                                   # simple make() with Kwargs.
+    # Device(driver="rtlsdr")                                    # simple make() with Kwargs.
+    # Device({ "driver": "rtlsdr" })                             # simple make() with Kwargs
+    # Device("driver=rtlsdr")                                    # simple make() with string
+    # Device(("driver=rtlsdr", "driver=plutosdr"))               # parallel make() with string
+    # Device(({ "driver": "rtlsdr" }, { "driver": "plutosdr" })) # parallel make() with Kwargs
+    # Device({ "driver": "rtlsdr" }, { "driver": "plutosdr" })   # parallel make() with Kwargs
+    # Device("driver=rtlsdr", "driver=plutosdr")                 # parallel make() with string
     def __new__(cls, *args, **kwargs):
+        if kwargs:
+            return cls.make(*args, kwargs)
+        if len(args) == 1 and isinstance(args[0], tuple) and args[0] and isinstance(args[0][0], str):
+            return cls.make_listStrArgs(*args)
+        if len(args) > 1 and isinstance(args[0], str):
+            return cls.make_listStrArgs(args)
+        if len(args) > 1 and isinstance(args[0], dict):
+            return cls.make(args)
         return cls.make(*args, **kwargs)
 
 def extractBuffPointer(buff):
