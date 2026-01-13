@@ -36,6 +36,16 @@ static DeviceCounts &getDeviceCounts(void)
     return table;
 }
 
+using Deleter = void(*)(SoapySDR::Device *);
+
+static inline Deleter getDeviceDeleter(void)
+{
+    return [](SoapySDR::Device *device)
+    {
+        SoapySDR::Device::unmake(device);
+    };
+}
+
 void automaticLoadModules(void);
 
 SoapySDR::KwargsList SoapySDR::Device::enumerate(const Kwargs &args)
@@ -204,6 +214,29 @@ SoapySDR::Device *SoapySDR::Device::make(const std::string &args)
     return make(KwargsFromString(args));
 }
 
+//
+// makeShared
+//
+
+template <typename Args>
+static inline SoapySDR::Device::SPtr makeSharedCommon(const Args &args)
+{
+    return SoapySDR::Device::SPtr(
+        SoapySDR::Device::make(args),
+        getDeviceDeleter()
+    );
+}
+
+SoapySDR::Device::SPtr SoapySDR::Device::makeShared(const Kwargs &args)
+{
+    return makeSharedCommon(args);
+}
+
+SoapySDR::Device::SPtr SoapySDR::Device::makeShared(const std::string &args)
+{
+    return makeSharedCommon(args);
+}
+
 void SoapySDR::Device::unmake(Device *device)
 {
     if (device == nullptr) return; //safe to unmake a null device
@@ -278,6 +311,40 @@ std::vector<SoapySDR::Device *> SoapySDR::Device::make(const std::vector<std::st
         SoapySDR::KwargsFromString);
 
     return make(kwargsList);
+}
+
+//
+// Parallel makeShared
+//
+
+template <typename Args>
+static inline std::vector<SoapySDR::Device::SPtr> makeSharedParallelCommon(const std::vector<Args> &argsList)
+{
+    auto rawPtrs = SoapySDR::Device::make(argsList);
+    std::vector<SoapySDR::Device::SPtr> sharedPtrs;
+    std::transform(
+        rawPtrs.begin(),
+        rawPtrs.end(),
+        std::back_inserter(sharedPtrs),
+        [](SoapySDR::Device *device)
+        {
+            return SoapySDR::Device::SPtr(
+                device,
+                getDeviceDeleter()
+            );
+        });
+
+    return sharedPtrs;
+}
+
+std::vector<SoapySDR::Device::SPtr> SoapySDR::Device::makeShared(const KwargsList &argsList)
+{
+    return makeSharedParallelCommon(argsList);
+}
+
+std::vector<SoapySDR::Device::SPtr> SoapySDR::Device::makeShared(const std::vector<std::string> &argsList)
+{
+    return makeSharedParallelCommon(argsList);
 }
 
 void SoapySDR::Device::unmake(const std::vector<Device *> &devices)
