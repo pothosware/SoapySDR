@@ -73,7 +73,7 @@ jobs:
             CXX: ${{matrix.config.cxx}}
             INSTALL_PREFIX: /usr/local
         steps:
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v7
           - name: Install dependencies
             run: |
                 sudo apt update --fix-missing
@@ -88,19 +88,15 @@ jobs:
                 sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
           - name: Build SoapySDR
             run: |
-                mkdir -p ${{github.workspace}}/build
-                cd ${{github.workspace}}/build
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
-                make
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build
+                cmake --build build
           - name: Install
             run: |
-                cd ${{github.workspace}}/build
-                sudo make install
+                sudo cmake --install build
                 sudo ldconfig
           - name: Run unit tests
             run: |
-                cd ${{github.workspace}}/build
-                ctest --output-on-failure
+                ctest --output-on-failure --test-dir build
           - name: Test SoapySDRUtil
             run: |
                 SoapySDRUtil --info
@@ -123,10 +119,9 @@ jobs:
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
           - name: Test module registration
             run: |
-                mkdir -p ${{github.workspace}}/build-example
-                cd ${{github.workspace}}/build-example
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
-                sudo make install
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build-example -S ExampleDriver
+                cmake --build build-example
+                sudo cmake --install build-example
                 SoapySDRUtil --check=my_device
     osx-ci:
         name: OS X
@@ -135,19 +130,19 @@ jobs:
             matrix:
                 build_type: [Release, Debug]
                 config:
-                    - cc: gcc-14
-                      cxx: g++-14
-                      os: macos-14
-                      python3_ver: '3.9'
-
-                    - cc: clang
-                      cxx: clang++
-                      os: macos-14
+                    - cc: gcc-15
+                      cxx: g++-15
+                      os: macos-15
                       python3_ver: '3.9'
 
                     - cc: clang
                       cxx: clang++
                       os: macos-15
+                      python3_ver: '3.9'
+
+                    - cc: clang
+                      cxx: clang++
+                      os: macos-26
                       python3_ver: '3.9'
         runs-on: ${{matrix.config.os}}
         env:
@@ -155,39 +150,35 @@ jobs:
             CXX: ${{matrix.config.cxx}}
             INSTALL_PREFIX: /usr/local
         steps:
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v7
           - name: Install dependencies
             run: |
                 brew install --formula doxygen luajit numpy swig
 
                 # Installing Lua 5.1 dependencies via package is ugly
-                cd ${{runner.workspace}}
                 git clone https://github.com/bluebird75/luaunit.git -b LUAUNIT_V3_4
                 sudo mkdir -p /usr/local/share/lua/5.1
                 sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
           - name: Build SoapySDR
             run: |
-                mkdir -p ${{github.workspace}}/build
-                cd ${{github.workspace}}/build
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}
-                make
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build
+                cmake --build build
           - name: Install
             run: |
                 cd ${{github.workspace}}/build
                 install_name_tool -add_rpath @executable_path/../lib apps/SoapySDRUtil
-                sudo make install
+                sudo cmake --install .
           - name: Run unit tests
             run: |
                 export DYLD_LIBRARY_PATH=/usr/local/lib
-                cd ${{github.workspace}}/build
-                ctest --output-on-failure
+                ctest --output-on-failure --test-dir build
           - name: Test SoapySDRUtil
             run: |
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
           - name: Set up Python3
-            uses: actions/setup-python@v4
+            uses: actions/setup-python@v7
             with:
                 python-version: ${{matrix.config.python3_ver}}
           - name: Test Python3 bindings
@@ -209,10 +200,9 @@ jobs:
                 luajit -e 'SoapySDR = require("SoapySDR"); print(SoapySDR.Device.new("driver=null"))'
           - name: Test module registration
             run: |
-                mkdir -p ${{github.workspace}}/build-example
-                cd ${{github.workspace}}/build-example
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{github.workspace}}/ExampleDriver
-                sudo make install
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build-example -S ExampleDriver
+                cmake --build build-example
+                sudo cmake --install build-example
                 SoapySDRUtil --check=my_device
     windows-ci:
         name: Windows
@@ -220,7 +210,6 @@ jobs:
             fail-fast: false
             matrix:
                 platform:
-
                     - cmake_gen: '"Visual Studio 17 2022" -A "Win32"'
                       msvc: true
                       arch: win32
@@ -233,17 +222,17 @@ jobs:
                       python_arch: x64
                       os: windows-2022
 
-                    - cmake_gen: '"Visual Studio 17 2022" -A "x64"'
+                    - cmake_gen: '"Visual Studio 18 2026" -A "x64"'
                       msvc: true
                       arch: x64
                       python_arch: x64
                       os: windows-2025
 
                 build:
-
                     - type: Release
-                      python_version: '3.9.13'
-                      python_name: 'python3'
+                      # Seems CMake can't find Python3 bindings on Windows runners
+                      # python_version: '3.10.11'
+                      # python_name: 'python3'
                       cmake_flags: '-DENABLE_PYTHON2=OFF -DENABLE_PYTHON3=ON'
 
                     - type: Debug
@@ -259,7 +248,7 @@ jobs:
             LUAJIT_LUA_DIR: 'C:\Program Files\LuaJIT\lua'
             LUA_PATH: '.\?.lua;C:\Program Files\LuaJIT\lua\?.lua;C:\Program Files\LuaJIT\lua\?\init.lua;C:\Program Files\SoapySDR\share\lua\5.1\?.lua;C:\Program Files\SoapySDR\share\lua\5.1\?\?.lua;C:\Program Files\SoapySDR\share\lua\5.1\?\init.lua'
         steps:
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v7
           - uses: ilammy/msvc-dev-cmd@v1
             if: ${{matrix.platform.msvc}}
             with:

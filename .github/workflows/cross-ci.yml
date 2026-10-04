@@ -30,7 +30,7 @@ jobs:
                     - image: windows-shared-x64-posix
                     - image: windows-shared-x86
         steps:
-          - uses: actions/checkout@v2
+          - uses: actions/checkout@v7
           - name: Install dependencies
             run: |
                 git clone https://github.com/dockcross/dockcross
