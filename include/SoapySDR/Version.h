@@ -36,7 +36,7 @@
  * And <i>extra</i> is empty for releases but set on development branches.
  * The ABI should remain constant across patch releases of the library.
  */
-#define SOAPY_SDR_ABI_VERSION "0.8-3"
+#define SOAPY_SDR_ABI_VERSION "0.8-4"
 
 /*!
  * Compatibility define for GPIO access API with masks
@@ -172,6 +172,10 @@
  * Compatibility define for getting log level
  */
 #define SOAPY_SDR_API_HAS_GET_LOG_LEVEL
+
+/*!
+ * Compatibility define for shared_ptr factory functions
+ */
 
 #ifdef __cplusplus
 extern "C" {
