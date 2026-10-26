@@ -16,6 +16,10 @@ message(STATUS "SWIG_FOUND: ${SWIG_FOUND} - ${SWIG_VERSION}")
 ########################################################################
 # Find Python
 ########################################################################
+if(POLICY CMP0094)
+    cmake_policy(SET CMP0094 NEW) # FindPython prefers the first interpreter on PATH over the highest version
+endif()
+
 # the vendored FindPython shim predates CMake's free-threaded ABI support (3.30)
 if(CMAKE_VERSION VERSION_LESS "3.30")
     list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)

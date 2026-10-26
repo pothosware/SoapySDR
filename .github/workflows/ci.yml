@@ -219,9 +219,14 @@ jobs:
                 git clone https://github.com/bluebird75/luaunit.git -b LUAUNIT_V3_4
                 sudo mkdir -p /usr/local/share/lua/5.1
                 sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
+          - name: Set up Python3
+            uses: actions/setup-python@v7
+            with:
+                python-version: ${{matrix.config.python3_ver}}
           - name: Build SoapySDR
             run: |
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build
+                # build against the same interpreter the tests use, not the runner's default python3
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPython3_EXECUTABLE=$(python -c 'import sys; print(sys.executable)') -B build
                 cmake --build build
           - name: Install
             run: |
@@ -237,10 +242,6 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
-          - name: Set up Python3
-            uses: actions/setup-python@v7
-            with:
-                python-version: ${{matrix.config.python3_ver}}
           - name: Test Python3 bindings
             run: |
                 export DYLD_LIBRARY_PATH=/usr/local/lib
