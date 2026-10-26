@@ -123,6 +123,66 @@ jobs:
                 cmake --build build-example
                 sudo cmake --install build-example
                 SoapySDRUtil --check=my_device
+    linux-ci-freethreaded:
+        name: Linux (free-threaded Python)
+        strategy:
+            fail-fast: false
+            matrix:
+                build_type: [Release, Debug]
+                config:
+                    - cc: gcc-14
+                      cxx: g++-14
+                      os: ubuntu-24.04
+                      python3_ver: '3.13t'
+        runs-on: ${{matrix.config.os}}
+        env:
+            CC: ${{matrix.config.cc}}
+            CXX: ${{matrix.config.cxx}}
+            INSTALL_PREFIX: /usr/local
+        steps:
+          - uses: actions/checkout@v7
+          - name: Set up free-threaded Python3
+            uses: actions/setup-python@v7
+            with:
+                python-version: ${{matrix.config.python3_ver}}
+          - name: Install dependencies
+            run: |
+                sudo apt update --fix-missing
+                sudo apt install -y doxygen
+
+                # apt's SWIG is older than 4.4.0, so use the PyPI swig wheel for -nogil support
+                python -m pip install "swig>=4.4"
+          - name: Print tool versions
+            run: |
+                python -c "import sys, sysconfig; print(sys.version); print('Py_GIL_DISABLED =', sysconfig.get_config_var('Py_GIL_DISABLED'))"
+                swig -version
+                cmake --version
+          - name: Build SoapySDR
+            run: |
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DENABLE_PYTHON2=OFF -DPython3_EXECUTABLE=$(python -c 'import sys; print(sys.executable)') -B build
+                cmake --build build
+          - name: Install
+            run: |
+                sudo cmake --install build
+                sudo ldconfig
+          - name: Run unit tests
+            run: |
+                ctest --output-on-failure --test-dir build
+          - name: Test SoapySDRUtil
+            run: |
+                SoapySDRUtil --info
+                SoapySDRUtil --check=null
+                SoapySDRUtil --make="driver=null"
+          - name: Test Python3 bindings (free-threaded)
+            run: |
+                export PYTHONPATH=${INSTALL_PREFIX}/$(python ${{github.workspace}}/swig/python/get_python_lib.py ${INSTALL_PREFIX})
+                python -c "import SoapySDR; print(SoapySDR.getAPIVersion())"
+                python -c "from SoapySDR import *; print(SOAPY_SDR_ABI_VERSION)"
+                python -c "import SoapySDR; print(SoapySDR.errToStr(SoapySDR.SOAPY_SDR_TIMEOUT))"
+
+                # a module without Py_mod_gil re-enables the GIL with a RuntimeWarning, so treat it as an error
+                python -W error::RuntimeWarning -c "import SoapySDR; print(SoapySDR.Device.make('driver=null'))"
+                python -c "import sys, SoapySDR; assert not sys._is_gil_enabled(), 'GIL was re-enabled on import'"
     osx-ci:
         name: OS X
         strategy:
@@ -159,9 +219,14 @@ jobs:
                 git clone https://github.com/bluebird75/luaunit.git -b LUAUNIT_V3_4
                 sudo mkdir -p /usr/local/share/lua/5.1
                 sudo cp luaunit/luaunit.lua /usr/local/share/lua/5.1
+          - name: Set up Python3
+            uses: actions/setup-python@v7
+            with:
+                python-version: ${{matrix.config.python3_ver}}
           - name: Build SoapySDR
             run: |
-                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -B build
+                # build against the same interpreter the tests use, not the runner's default python3
+                cmake -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DPython3_EXECUTABLE=$(python -c 'import sys; print(sys.executable)') -B build
                 cmake --build build
           - name: Install
             run: |
@@ -177,10 +242,6 @@ jobs:
                 SoapySDRUtil --info
                 SoapySDRUtil --check=null
                 SoapySDRUtil --make="driver=null"
-          - name: Set up Python3
-            uses: actions/setup-python@v7
-            with:
-                python-version: ${{matrix.config.python3_ver}}
           - name: Test Python3 bindings
             run: |
                 export DYLD_LIBRARY_PATH=/usr/local/lib

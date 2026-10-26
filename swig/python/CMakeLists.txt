@@ -16,7 +16,14 @@ message(STATUS "SWIG_FOUND: ${SWIG_FOUND} - ${SWIG_VERSION}")
 ########################################################################
 # Find Python
 ########################################################################
-list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+if(POLICY CMP0094)
+    cmake_policy(SET CMP0094 NEW) # FindPython prefers the first interpreter on PATH over the highest version
+endif()
+
+# the vendored FindPython shim predates CMake's free-threaded ABI support (3.30)
+if(CMAKE_VERSION VERSION_LESS "3.30")
+    list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+endif()
 
 ########################################################################
 ## set the swig flags
@@ -33,6 +40,13 @@ endif()
 ## set the swig flags - shared with python3 build
 ########################################################################
 set(CMAKE_SWIG_FLAGS -threads -I${SoapySDR_INCLUDE_DIRS} -I${CMAKE_CURRENT_SOURCE_DIR}/.. -I${CMAKE_CURRENT_SOURCE_DIR})
+
+# SWIG 4.4.0+ can mark the module as free-threading safe, a no-op for GIL builds
+set(SOAPY_PYTHON_NOGIL FALSE)
+if(SWIG_FOUND AND SWIG_VERSION VERSION_GREATER_EQUAL "4.4.0")
+    list(APPEND CMAKE_SWIG_FLAGS -nogil)
+    set(SOAPY_PYTHON_NOGIL TRUE)
+endif()
 
 #check for size_t issue on arm 32-bit platforms
 include(CheckCXXSourceCompiles)
@@ -76,8 +90,10 @@ if(${Python3_FOUND})
     message(STATUS " * Interpreter: ${Python3_EXECUTABLE} (${Python3_INTERPRETER_ID})")
     message(STATUS " * Include: ${Python3_INCLUDE_DIRS}")
     message(STATUS " * Library: ${Python3_LIBRARIES}")
+    message(STATUS " * Free-threading: ${SOAPY_PYTHON_NOGIL}")
 endif()
 cmake_dependent_option(ENABLE_PYTHON3 "Enable Python3 bindings" ON "ENABLE_LIBRARY;SWIG_FOUND;Python3_FOUND" OFF)
+add_feature_info(Python3FreeThreading SOAPY_PYTHON_NOGIL "Python3 free-threading support (SWIG >= 4.4.0)")
 add_feature_info(Python3 ENABLE_PYTHON3 "Python3 bindings v${Python3_VERSION}")
 
 ########################################################################

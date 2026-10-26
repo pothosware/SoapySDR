@@ -73,6 +73,7 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
 #include <SoapySDR/Formats.hpp>
 #include <SoapySDR/Time.hpp>
 #include <SoapySDR/Logger.hpp>
+#include <atomic>
 %}
 
 ////////////////////////////////////////////////////////////////////////
@@ -235,12 +236,12 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
     public:
         _SoapySDR_pythonLogHandlerBase(void)
         {
-            globalHandle = this;
+            globalHandle.store(this, std::memory_order_release);
             SoapySDR::registerLogHandler(&globalHandler);
         }
         virtual ~_SoapySDR_pythonLogHandlerBase(void)
         {
-            globalHandle = nullptr;
+            globalHandle.store(nullptr, std::memory_order_release);
             // Restore the default, C coded, log handler.
             SoapySDR::registerLogHandler(nullptr);
         }
@@ -249,15 +250,17 @@ SoapySDR library: {2}""".format(COMPILE_ABI_VERSION, PYTHONLIB_ABI_VERSION, CORE
     private:
         static void globalHandler(const SoapySDR::LogLevel logLevel, const char *message)
         {
-            if (globalHandle != nullptr) globalHandle->handle(logLevel, message);
+            auto *h = globalHandle.load(std::memory_order_acquire);
+            if (h != nullptr) h->handle(logLevel, message);
         }
 
-        static _SoapySDR_pythonLogHandlerBase *globalHandle;
+        // Written from Python and read from driver log threads without the GIL.
+        static std::atomic<_SoapySDR_pythonLogHandlerBase *> globalHandle;
     };
 %}
 
 %{
-    _SoapySDR_pythonLogHandlerBase *_SoapySDR_pythonLogHandlerBase::globalHandle = nullptr;
+    std::atomic<_SoapySDR_pythonLogHandlerBase *> _SoapySDR_pythonLogHandlerBase::globalHandle{nullptr};
 %}
 
 %insert("python")
